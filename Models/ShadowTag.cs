@@ -1,10 +1,47 @@
-﻿namespace ShadowViewer.Models
+﻿using SqlSugar;
+
+namespace ShadowViewer.Models
 {
     public class ShadowTag
     {
-        public string name;
-        public SolidColorBrush foreground;
-        public SolidColorBrush background;
+        private string name;
+        private SolidColorBrush foreground;
+        private SolidColorBrush background;
+        [SugarColumn(IsIgnore = true)]
+        public SolidColorBrush Foreground
+        {
+            get { return foreground; }
+            set { foreground = value; }
+        }
+        [SugarColumn(IsIgnore = true)]
+        public SolidColorBrush Background
+        {
+            get { return background; }
+            set { background = value; }
+        }
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)", IsPrimaryKey = true)]
+        public string Name { 
+            get => name;
+            set
+            {
+                if(name != value)
+                {
+                    name = value;
+                }
+            }
+        }
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)",ColumnName = "Background")]
+        public string BackgroundHex
+        {
+            get => background.Color.ToHex();
+            set => background = new SolidColorBrush(value.ToColor());
+        }
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)", ColumnName = "Foreground")]
+        public string ForegroundHex
+        {
+            get => foreground.Color.ToHex();
+            set => foreground = new SolidColorBrush(value.ToColor());
+        }
         public ShadowTag(string name, SolidColorBrush foreground , SolidColorBrush background)
         {
             this.name = name;
@@ -17,14 +54,7 @@
         public ShadowTag( string name, string foreground, string background) :
             this(name,new SolidColorBrush(foreground.ToColor()),
                 new SolidColorBrush(background.ToColor())) { }
-        public string BackgroundHex
-        {
-            get => background.Color.ToHex(); 
-        }
-        public string ForegroundHex
-        {
-             get => foreground.Color.ToHex(); 
-        }
+        public ShadowTag() { }
         public override string ToString()
         {
             return name;
@@ -32,11 +62,6 @@
         public string Log()
         {
             return $"ShadowTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
-        }
-        public static ShadowTag LoadFromDB(SqliteDataReader reader)
-        {
-            return new ShadowTag(reader.GetString(0),
-                        reader.GetString(1), reader.GetString(2));
-        }
+        } 
     }
 }

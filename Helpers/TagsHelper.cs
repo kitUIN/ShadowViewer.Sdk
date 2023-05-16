@@ -9,7 +9,7 @@
         {
             Affiliations["Local"] = new ShadowTag(I18nHelper.GetString("Shadow.Tag.Local"), "#000000", "#ffd657");
             //TODO:插件Affiliations注入
-            ShadowTags = TagDB.GetAll();
+            ShadowTags = DBHelper.GetAll<ShadowTag>();
         }
     }
 }

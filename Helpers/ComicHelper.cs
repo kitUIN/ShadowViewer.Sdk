@@ -5,11 +5,11 @@
         public static LocalComic CreateFolder(string name,string img, string parent)
         {
             string id = Guid.NewGuid().ToString("N");
-            while (ComicDB.Contains(nameof(id), id))
+            while (DBHelper.GetClient().Queryable<LocalComic>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
             }
-            var time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            var time = DateTime.Now;
             if (img == "") { img = "ms-appx:///Assets/Default/folder.png"; }
             if (name == "") { name = id; }
             var comic =  new LocalComic(id, name, time, time, id, img: img, parent: parent, isFolder: true, percent:"");
@@ -20,12 +20,12 @@
             if (id == null)
             {
                 id = Guid.NewGuid().ToString("N");
-                while (ComicDB.Contains(nameof(id), id))
+                while (DBHelper.GetClient().Queryable<LocalComic>().Any(x => x.Id == id))
                 {
                     id = Guid.NewGuid().ToString("N");
                 }
             }
-            var time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            var time = DateTime.Now;
             var comic = new LocalComic(id, name, time, time, link, img: img, size: size,
                 affiliation: affiliation, parent: parent);
             return comic;

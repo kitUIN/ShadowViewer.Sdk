@@ -1,213 +1,88 @@
-﻿namespace ShadowViewer.Helpers
+﻿using NetTaste;
+using SqlSugar;
+
+namespace ShadowViewer.Helpers
 {
     public static class DBHelper
     {
         public static string DBPath { get; } = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, "ShadowViewer.db");
+        
+        public static SqlSugarClient GetClient()
+        {
+            return GetClient(DBPath);
+        }
+        public static SqlSugarClient GetClient(string dbpath)
+        {
+            return new SqlSugarClient(new ConnectionConfig()
+            {
+                ConnectionString = $"DataSource={dbpath}",
+                DbType = DbType.Sqlite,
+                IsAutoCloseConnection = true
+            }, db => { db.Aop.OnLogExecuting = (sql, pars) => { Log.ForContext<SqlSugarClient>().Debug(sql); }; });
+        }
         /// <summary>
         /// 初始化数据库
         /// </summary>
-        /// <param name="dbpath">The dbpath.</param>
-        /// <param name="commandText">The command text.</param>
-        public static void Init(string dbpath,string commandText)
+        /// <param name="dbpath"></param>
+        /// <param name="obj"></param>
+        public static void Init(string dbpath, Type obj)
         {
-             
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-                SqliteCommand command = db.CreateCommand();
-                command.CommandText = commandText;
-                command.ExecuteReader();
-            }
+            SqlSugarClient db = GetClient(dbpath);
+            db.CodeFirst.InitTables(obj);
+        }
+        public static void Init(Type obj)
+        {
+            Init(DBPath, obj);
         }
         /// <summary>
         /// 在数据库添加一个新行
         /// </summary>
-        /// <param name="dbpath">The dbpath.</param>
-        /// <param name="table">The table.</param>
-        /// <param name="parameters">The parameters.</param>
-        public static void Add(string dbpath, string table, Dictionary<string, object> parameters)
+        public static void Add<T>(string dbpath, T obj) where T : class, new()
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-
-                SqliteCommand command = db.CreateCommand();
-                command.CommandText = $"insert into {table} values ({string.Join(",", parameters.Keys)});";
-                foreach (var item in parameters)
-                {
-                    command.Parameters.AddWithValue(item.Key, item.Value);
-                }
-                command.ExecuteReader();
-            }
+            SqlSugarClient db = GetClient(dbpath);
+            db.Insertable(obj).ExecuteCommand();
+        }
+        public static void Add<T>(T obj) where T : class, new()
+        {
+            Add(DBPath, obj);
         }
         /// <summary>
         /// 获取数据库中所有的行
         /// </summary>
-        /// <param name="dbpath">The dbpath.</param>
-        /// <param name="table">The table.</param>
-        /// <param name="convert">The convert.</param>
-        /// <returns></returns>
-        public static List<object> GetAll(string dbpath, string table, Func<SqliteDataReader, object> convert)
+        public static List<T> GetAll<T>(string dbpath)
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-
-                SqliteCommand command = db.CreateCommand();
-                command.CommandText = $"select * from {table}";
-                var res = new List<object>();
-                using (SqliteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        res.Add(convert(reader));
-                    }
-                }
-                return res;
-            }
+            SqlSugarClient db = GetClient(dbpath);
+            return db.Queryable<T>().ToList();
         }
-        /// <summary>
-        /// 从数据库中获取一个行
-        /// </summary>
-        /// <param name="dbpath">The dbpath.</param>
-        /// <param name="table">The table.</param>
-        /// <param name="where">The where.</param>
-        /// <param name="convert">The convert.</param>
-        /// <returns></returns>
-        public static List<object> Get(string dbpath, string table, KeyValuePair<string, object> where, Func<SqliteDataReader, object> convert)
+        public static List<T> GetAll<T>()
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-
-                SqliteCommand command = db.CreateCommand();
-                command.CommandText = $"select * from {table} where {where.Key} = @WhereArg;";
-                command.Parameters.AddWithValue("@WhereArg", where.Value);
-                var res = new List<object>();
-                using (SqliteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        res.Add(convert(reader));
-                    }
-                }
-                return res;
-            }
-        }
-        /// <summary>
-        /// 从数据库中获取一个行(多个条件And)
-        /// </summary>
-        /// <param name="dbpath">The dbpath.</param>
-        /// <param name="table">The table.</param>
-        /// <param name="where">The where.</param>
-        /// <param name="convert">The convert.</param>
-        /// <returns></returns>
-        public static List<object> Get(string dbpath, string table, Dictionary<string, object> where, Func<SqliteDataReader, object> convert)
-        {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-                var text = $"select * from {table} where ";
-                bool flag = false;
-                SqliteCommand command = db.CreateCommand();
-                foreach (var item in where)
-                {
-                    if (flag)
-                    {
-                        text += " And ";
-                    }
-                    text += item.Key + " = @"+ item.Key;
-                    flag = true;
-                }
-                command.CommandText = text + ";";
-                foreach (var item in where)
-                {
-                    command.Parameters.AddWithValue("@" + item.Key, item.Value);
-                }
-                
-                var res = new List<object>();
-                using (SqliteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        res.Add(convert(reader));
-                    }
-                }
-                return res;
-            }
+            return GetAll<T>(DBPath);
         }
         /// <summary>
         /// 数据库中更新行
         /// </summary>
-        /// <param name="dbpath">The dbpath.</param>
-        /// <param name="table">The table.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="newArg">The new argument.</param>
-        /// <param name="where">The where.</param>
-        /// <param name="whereArg">The where argument.</param>
-        public static void Update(string dbpath, string table, string name, object newArg, string where, object whereArg)
+        public static void Update<T>(string dbpath, T obj) where T : class, new()
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-
-                SqliteCommand command = db.CreateCommand();
-                command.CommandText = $"update {table} set [{name}] = @NewArg where [{where}] = @WhereArg;";
-                command.Parameters.AddWithValue("@NewArg", newArg);
-                command.Parameters.AddWithValue("@WhereArg", whereArg);
-                command.ExecuteReader();
-            }
+            SqlSugarClient db = GetClient(dbpath);
+            db.Updateable(obj).ExecuteCommand();
         }
-
+        public static void Update<T>(T obj) where T : class, new()
+        {
+            Update<T>(DBPath,obj);
+        }
 
         /// <summary>
         /// 数据库中删除行
         /// </summary>
-        /// <param name="dbpath">The dbpath.</param>
-        /// <param name="table">The table.</param>
-        /// <param name="where">The where.</param>
-        /// <param name="whereArg">The value.</param>
-        public static void Remove(string dbpath, string table , string where, object whereArg)
+        public static void Remove<T>(string dbpath, T obj)
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-
-                SqliteCommand command = db.CreateCommand();
-                command.CommandText = $"delete from {table} where {where} = @ID;";
-                command.Parameters.AddWithValue("@ID", whereArg);
-                command.ExecuteReader();
-            }
+            SqlSugarClient db = GetClient(dbpath);
+            db.DeleteableByObject(obj).ExecuteCommand();
         }
-        /// <summary>
-        /// 是否存在
-        /// </summary>
-        /// <param name="table">The table.</param>
-        /// <param name="where">The where.</param>
-        /// <param name="whereArg">The where argument.</param>
-        /// <returns>
-        ///   <c>true</c> if [contains] [the specified table]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool Contains(string dbpath, string table ,string where, string whereArg)
+        public static void Remove<T>(T obj)
         {
-            using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
-            {
-                db.Open();
-
-                SqliteCommand command = db.CreateCommand();
-                command.CommandText = $"select count(*) from {table} where {where} = @WhereArg;";
-                command.Parameters.AddWithValue("@WhereArg", whereArg); 
-                using (SqliteDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        return reader.GetInt32(0) > 0;
-                    }
-                }
-                return false;
-            }
+            Remove<T>(DBPath, obj);
         }
-        
     }
     
 }

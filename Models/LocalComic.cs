@@ -1,88 +1,170 @@
-﻿namespace ShadowViewer.Models
+﻿
+
+using SqlSugar;
+
+namespace ShadowViewer.Models
 {
     public partial class LocalComic: ObservableObject
     {
+        #region Private Field
+        private string id;
+        private string name;
+        private string author;
+        private string img;
+        private string percent;
+        private string group;
+        private string remark;
+        private DateTime createTime;
+        private DateTime lastReadTime;
+        private string parent;
+        private string affiliation;
+        private string link;
+        private long size;
+        private string sizeString;
+        private bool isFolder = false;
+        #endregion
+        #region SQL 实体访问器
         /// <summary>
         /// ID
         /// </summary>
-        [ObservableProperty]
-        private string id;
+        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true)]
+        public string Id
+        {
+            get => id;
+            set => SetProperty(id, value, callback: OnChanged, propertyName: nameof(Id));
+        }
         /// <summary>
         /// 名称
         /// </summary>
-        [ObservableProperty]
-        private string name;
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
+        public string Name
+        {
+            get => name;
+            set => SetProperty(name, value, callback: OnChanged, propertyName: nameof(Name));
+        }
         /// <summary>
         /// 作者
         /// </summary>
-        [ObservableProperty]
-        private string author;
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
+        public string Author
+        {
+            get => author;
+            set => SetProperty(author, value, callback: OnChanged, propertyName: nameof(Author));
+        }
         /// <summary>
         /// 缩略图地址
         /// </summary>
-        [ObservableProperty]
-        private string img;
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
+        public string Img
+        {
+            get => img;
+            set => SetProperty(img, value, callback: OnChanged, propertyName: nameof(Img));
+        }
         /// <summary>
         /// 阅读进度(0-100%)
         /// </summary>
-        [ObservableProperty]
-        private string percent;
+        [SugarColumn(ColumnDataType = "Nvarchar(5)")]
+        public string Percent
+        {
+            get => percent;
+            set => SetProperty(percent, value, callback: OnChanged, propertyName: nameof(Percent));
+        }
         /// <summary>
         /// 汉化组
         /// </summary>
-        [ObservableProperty]
-        private string group;
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
+        public string Group
+        {
+            get => group;
+            set => SetProperty(group, value, callback: OnChanged, propertyName: nameof(Group));
+        }
         /// <summary>
-        /// 描述
+        /// 备注
         /// </summary>
-        [ObservableProperty]
-        private string description;
+        [SugarColumn(ColumnDataType = "Ntext")]
+        public string Remark
+        {
+            get => remark;
+            set => SetProperty(remark, value, callback: OnChanged, propertyName: nameof(Remark));
+        }
         /// <summary>
         /// 创建时间
         /// </summary>
-        [ObservableProperty]
-        private string createTime;
+        public DateTime CreateTime
+        {
+            get => createTime;
+            set => SetProperty(createTime, value, callback: OnChanged, propertyName: nameof(CreateTime));
+        }
         /// <summary>
         /// 最后阅读时间
         /// </summary>
-        [ObservableProperty]
-        private string lastReadTime;
+        public DateTime LastReadTime
+        {
+            get => lastReadTime;
+            set => SetProperty(lastReadTime, value, callback: OnChanged, propertyName: nameof(LastReadTime));
+        }
+
         /// <summary>
         /// 父文件夹
         /// </summary>
-        [ObservableProperty]
-        private string parent;
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
+        public string Parent
+        {
+            get => parent;
+            set => SetProperty(parent, value, callback: OnChanged, propertyName: nameof(Parent));
+        }
         /// <summary>
         /// 标签
         /// </summary>
-        public ObservableCollection<string> Tags { get; } = new ObservableCollection<string>();
+        [SugarColumn(IsJson = true, ColumnDataType = "Ntext")]
+        public ObservableCollection<string> Tags { get; } = new ObservableCollection<string>(); 
         /// <summary>
-        /// 类型
+        /// 所属
         /// </summary>
-        [ObservableProperty]
-        private string affiliation;
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
+        public string Affiliation
+        {
+            get => affiliation;
+            set => SetProperty(affiliation, value, callback: OnChanged, propertyName: nameof(Affiliation));
+        }
         /// <summary>
         /// 链接对象
         /// </summary>
-        [ObservableProperty]
-        private string link;
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
+        public string Link
+        {
+            get => link;
+            set => SetProperty(link, value, callback: OnChanged, propertyName: nameof(Link));
+        }
         /// <summary>
         /// 文件大小
         /// </summary>
-        [ObservableProperty]
-        private long size;
+        public long Size
+        {
+            get => size;
+            set => SetProperty(size, value, callback: OnChanged, propertyName: nameof(Size));
+        }
         /// <summary>
         /// 文件大小(String)
         /// </summary>
-        [ObservableProperty]
-        private string sizeString;
+        [SugarColumn(IsIgnore = true)]
+        public string SizeString
+        {
+            get => sizeString;
+            set => SetProperty(sizeString, value, callback: OnChanged, propertyName: nameof(SizeString));
+        }
         /// <summary>
         /// 是否是文件夹
         /// </summary>
-        [ObservableProperty]
-        private bool isFolder = false;
-        public LocalComic(string id, string name, string createTime, 
-            string lastReadTime, string link,string description="",string group = "", string author="", string parent = "local",
+        public bool IsFolder
+        {
+            get => isFolder;
+            set => SetProperty(isFolder, value, callback: OnChanged, propertyName: nameof(IsFolder));
+        }
+        #endregion
+
+        public LocalComic(string id, string name, DateTime createTime,
+            DateTime lastReadTime, string link,string remark = "",string group = "", string author="", string parent = "local",
             string percent="0%", string tags = "" , string affiliation = "Local", string img="", long size=0, bool isFolder=false)
         {
             this.id = id;
@@ -91,7 +173,7 @@
             this.group  = group;
             this.img = img;
             this.percent = percent;
-            this.description = description;
+            this.remark = remark;
             this.createTime = createTime;
             this.lastReadTime = lastReadTime;
             this.parent = parent;
@@ -102,61 +184,28 @@
             this.sizeString = ShowSize(size);
             this.isFolder = isFolder;
             Tags.CollectionChanged += Tags_CollectionChanged;
-            
         }
-
+        public LocalComic() { }
         private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ComicDB.Update(nameof(Tags), nameof(Id), Tags.JoinToString(), Id);
+            DBHelper.Update(this);
         }
-         
-        partial void OnSizeChanged(long value)
+        private void OnChanged(string newValue)
         {
-            SizeString = ShowSize(value);
+            DBHelper.Update(this);
         }
-        partial void OnImgChanged(string oldValue, string newValue)
+        private void OnChanged(DateTime obj)
         {
-            if (oldValue != newValue)
-            {
-                ComicDB.Update(nameof(Img), nameof(Id), newValue, Id);
-            }
+            DBHelper.Update(this);
         }
-        partial void OnAuthorChanged(string oldValue, string newValue)
+        private void OnChanged(long obj)
         {
-            if (oldValue != newValue)
-            {
-                ComicDB.Update(nameof(Author), nameof(Id), newValue, Id);
-            }
+            DBHelper.Update(this);
         }
-        partial void OnGroupChanged(string oldValue, string newValue)
+        private void OnChanged(bool obj)
         {
-            if (oldValue != newValue)
-            {
-                ComicDB.Update(nameof(Group), nameof(Id), newValue, Id);
-            }
+            DBHelper.Update(this);
         }
-        partial void OnNameChanged(string oldValue, string newValue)
-        {
-            if (oldValue != newValue)
-            {
-                ComicDB.Update(nameof(Name), nameof(Id), newValue, Id); 
-            }
-        }
-        partial void OnLinkChanged(string oldValue, string newValue)
-        {
-            if (oldValue != newValue)
-            {
-                ComicDB.Update(nameof(Link), nameof(Id), newValue, Id);
-            }
-        }
-        partial void OnParentChanged(string oldValue, string newValue)
-        {
-            if(oldValue != newValue && newValue != Name)
-            {
-                ComicDB.Update(nameof(Parent), nameof(Id), newValue, Id);
-            }
-        }
-         
         private static ObservableCollection<string> LoadTags(string tags)
         {
             var res = new HashSet<string>();
@@ -189,7 +238,7 @@
             }
             return $"{size} B";
         }
-        
+        [SugarColumn(IsIgnore = true)]
         public string Path 
         { 
             get

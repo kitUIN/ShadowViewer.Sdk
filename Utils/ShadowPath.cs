@@ -1,5 +1,8 @@
 ﻿namespace ShadowViewer.Utils
 {
+    /// <summary>
+    /// 路径树
+    /// </summary>
     public class ShadowPath
     { 
         private LocalComic comic;
@@ -16,13 +19,9 @@
 
         public ShadowPath(IEnumerable<string> black)
         {
-            this.comic = new LocalComic("local", "local", "", "", "local", img: "ms-appx:///Assets/Default/folder.png");
-            var children = ComicDB.Get(new Dictionary<string, object>()
-            {
-                {"Parent", "local"},
-                {"IsFolder", true},
-            });
-            Children = children.Where(c => !black.Contains(c.Id)).Select(c => new ShadowPath(c)).ToList();
+            var time = DateTime.Now;
+            this.comic = new LocalComic("local", "local", time, time, "local", img: "ms-appx:///Assets/Default/folder.png");
+            Children = DBHelper.GetClient().Queryable<LocalComic>().Where(x => x.Parent == "local" && x.IsFolder&& !black.Contains(x.Id)).Select(c => new ShadowPath(c)).ToList();
         }
     }
 }
