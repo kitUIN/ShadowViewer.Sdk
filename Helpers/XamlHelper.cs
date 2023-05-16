@@ -133,8 +133,8 @@
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Orientation = Orientation.Vertical,
             };
-            var nameBox = CreateOneLineTextBox(I18nHelper.GetString("Shadow.Dialog.CreateFolder.Name"),
-                I18nHelper.GetString("Shadow.Dialog.CreateFolder.Title"), oldName, 222);
+            var nameBox = CreateOneLineTextBox(I18nHelper.GetString("Shadow.String.CreateFolder.Name"),
+                I18nHelper.GetString("Shadow.String.CreateFolder.Title"), oldName, 222);
             grid.Children.Add(nameBox);
             dialog.Content = grid;
             dialog.IsPrimaryButtonEnabled = true;

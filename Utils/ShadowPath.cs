@@ -21,7 +21,7 @@
         {
             var time = DateTime.Now;
             this.comic = new LocalComic("local", "local", time, time, "local", img: "ms-appx:///Assets/Default/folder.png");
-            Children = DBHelper.GetClient().Queryable<LocalComic>().Where(x => x.Parent == "local" && x.IsFolder&& !black.Contains(x.Id)).Select(c => new ShadowPath(c)).ToList();
+            Children = DBHelper.Db.Queryable<LocalComic>().Where(x => x.Parent == "local" && x.IsFolder&& !black.Contains(x.Id)).Select(c => new ShadowPath(c)).ToList();
         }
     }
 }

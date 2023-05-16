@@ -8,7 +8,10 @@
         public static void Init()
         {
             Affiliations["Local"] = new ShadowTag(I18nHelper.GetString("Shadow.Tag.Local"), "#000000", "#ffd657");
-            //TODO:插件Affiliations注入
+            foreach (string name in PluginHelper.EnabledPlugins)
+            {
+                Affiliations[name] = PluginHelper.PluginInstances[name].AffiliationTag();
+            }
             ShadowTags = DBHelper.GetAll<ShadowTag>();
         }
     }

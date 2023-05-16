@@ -33,11 +33,10 @@
         /// </summary>
         /// <returns></returns>
         public void PluginSettingsExpander(SettingsExpander expander);
+ 
         /// <summary>
-        /// 插件标签注入
+        /// 插件所属标签注入
         /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <returns></returns>
-        public ShadowTag PluginTagHandler(string tag);
+        public ShadowTag AffiliationTag();
     }
 }

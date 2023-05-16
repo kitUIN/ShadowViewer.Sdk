@@ -1,6 +1,4 @@
-﻿
-
-using SqlSugar;
+﻿using SqlSugar;
 
 namespace ShadowViewer.Models
 {
@@ -27,11 +25,11 @@ namespace ShadowViewer.Models
         /// <summary>
         /// ID
         /// </summary>
-        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true)]
+        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable =false)]
         public string Id
         {
             get => id;
-            set => SetProperty(id, value, callback: OnChanged, propertyName: nameof(Id));
+            set => SetProperty(ref id, value,  propertyName: nameof(Id));
         }
         /// <summary>
         /// 名称
@@ -40,7 +38,14 @@ namespace ShadowViewer.Models
         public string Name
         {
             get => name;
-            set => SetProperty(name, value, callback: OnChanged, propertyName: nameof(Name));
+            set
+            {   var oldValue = name;
+                SetProperty(ref name, value, propertyName: nameof(Name));
+                if(oldValue != null)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 作者
@@ -49,7 +54,16 @@ namespace ShadowViewer.Models
         public string Author
         {
             get => author;
-            set => SetProperty(author, value, callback: OnChanged, propertyName: nameof(Author));
+            set
+            {
+                var oldValue = author;
+                SetProperty(ref author, value, propertyName: nameof(Author));
+                if (oldValue != null)
+                {
+                    OnChanged();
+                }
+            }
+
         }
         /// <summary>
         /// 缩略图地址
@@ -58,7 +72,15 @@ namespace ShadowViewer.Models
         public string Img
         {
             get => img;
-            set => SetProperty(img, value, callback: OnChanged, propertyName: nameof(Img));
+            set
+            {
+                var oldValue = img;
+                SetProperty(ref img, value, propertyName: nameof(Img));
+                if (oldValue != null)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 阅读进度(0-100%)
@@ -67,7 +89,15 @@ namespace ShadowViewer.Models
         public string Percent
         {
             get => percent;
-            set => SetProperty(percent, value, callback: OnChanged, propertyName: nameof(Percent));
+            set
+            {
+                var oldValue = percent;
+                SetProperty(ref percent, value, propertyName: nameof(Percent));
+                if (oldValue != null)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 汉化组
@@ -76,7 +106,15 @@ namespace ShadowViewer.Models
         public string Group
         {
             get => group;
-            set => SetProperty(group, value, callback: OnChanged, propertyName: nameof(Group));
+            set
+            {
+                var oldValue = group;
+                SetProperty(ref group, value, propertyName: nameof(Group));
+                if (oldValue != null)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 备注
@@ -85,7 +123,15 @@ namespace ShadowViewer.Models
         public string Remark
         {
             get => remark;
-            set => SetProperty(remark, value, callback: OnChanged, propertyName: nameof(Remark));
+            set
+            {
+                var oldValue = remark;
+                SetProperty(ref remark, value, propertyName: nameof(Remark));
+                if (oldValue != null)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 创建时间
@@ -93,7 +139,15 @@ namespace ShadowViewer.Models
         public DateTime CreateTime
         {
             get => createTime;
-            set => SetProperty(createTime, value, callback: OnChanged, propertyName: nameof(CreateTime));
+            set
+            {
+                var oldValue = createTime;
+                SetProperty(ref createTime, value, propertyName: nameof(CreateTime));
+                if (oldValue != default)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 最后阅读时间
@@ -101,7 +155,15 @@ namespace ShadowViewer.Models
         public DateTime LastReadTime
         {
             get => lastReadTime;
-            set => SetProperty(lastReadTime, value, callback: OnChanged, propertyName: nameof(LastReadTime));
+            set
+            {
+                var oldValue = createTime;
+                SetProperty(ref lastReadTime, value, propertyName: nameof(LastReadTime));
+                if (oldValue != default)
+                {
+                    OnChanged();
+                }
+            }
         }
 
         /// <summary>
@@ -111,13 +173,32 @@ namespace ShadowViewer.Models
         public string Parent
         {
             get => parent;
-            set => SetProperty(parent, value, callback: OnChanged, propertyName: nameof(Parent));
+            set
+            {
+                var oldValue = parent;
+                SetProperty(ref parent, value, propertyName: nameof(Parent));
+                if (oldValue != default)
+                {
+                    OnChanged();
+                }
+            }
         }
+        private ObservableCollection<string> tags = new ObservableCollection<string>();
         /// <summary>
         /// 标签
         /// </summary>
         [SugarColumn(IsJson = true, ColumnDataType = "Ntext")]
-        public ObservableCollection<string> Tags { get; } = new ObservableCollection<string>(); 
+        public ObservableCollection<string> Tags
+        {
+            get => tags;
+            set{
+                tags = value;
+                if (tags != null)
+                {
+                    tags.CollectionChanged += Tags_CollectionChanged;
+                }
+            }
+        }
         /// <summary>
         /// 所属
         /// </summary>
@@ -125,7 +206,15 @@ namespace ShadowViewer.Models
         public string Affiliation
         {
             get => affiliation;
-            set => SetProperty(affiliation, value, callback: OnChanged, propertyName: nameof(Affiliation));
+            set
+            {
+                var oldValue = affiliation;
+                SetProperty(ref affiliation, value, propertyName: nameof(Affiliation));
+                if (oldValue != default)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 链接对象
@@ -134,7 +223,15 @@ namespace ShadowViewer.Models
         public string Link
         {
             get => link;
-            set => SetProperty(link, value, callback: OnChanged, propertyName: nameof(Link));
+            set
+            {
+                var oldValue = link;
+                SetProperty(ref link, value, propertyName: nameof(Link));
+                if (oldValue != default)
+                {
+                    OnChanged();
+                }
+            }
         }
         /// <summary>
         /// 文件大小
@@ -142,7 +239,16 @@ namespace ShadowViewer.Models
         public long Size
         {
             get => size;
-            set => SetProperty(size, value, callback: OnChanged, propertyName: nameof(Size));
+            set 
+            {
+                var oldValue = size;
+                SetProperty(ref size, value, propertyName: nameof(Size));
+                if (oldValue != default)
+                {
+                    OnChanged();
+                }
+                SizeString = ShowSize(size);
+            }
         }
         /// <summary>
         /// 文件大小(String)
@@ -151,7 +257,7 @@ namespace ShadowViewer.Models
         public string SizeString
         {
             get => sizeString;
-            set => SetProperty(sizeString, value, callback: OnChanged, propertyName: nameof(SizeString));
+            set => SetProperty(ref sizeString, value,  propertyName: nameof(SizeString));
         }
         /// <summary>
         /// 是否是文件夹
@@ -159,7 +265,7 @@ namespace ShadowViewer.Models
         public bool IsFolder
         {
             get => isFolder;
-            set => SetProperty(isFolder, value, callback: OnChanged, propertyName: nameof(IsFolder));
+            set => SetProperty(ref isFolder, value,  propertyName: nameof(IsFolder));
         }
         #endregion
 
@@ -185,24 +291,12 @@ namespace ShadowViewer.Models
             this.isFolder = isFolder;
             Tags.CollectionChanged += Tags_CollectionChanged;
         }
-        public LocalComic() { }
+        public LocalComic() {  }
         private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             DBHelper.Update(this);
         }
-        private void OnChanged(string newValue)
-        {
-            DBHelper.Update(this);
-        }
-        private void OnChanged(DateTime obj)
-        {
-            DBHelper.Update(this);
-        }
-        private void OnChanged(long obj)
-        {
-            DBHelper.Update(this);
-        }
-        private void OnChanged(bool obj)
+        private void OnChanged()
         {
             DBHelper.Update(this);
         }

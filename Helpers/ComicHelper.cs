@@ -5,7 +5,7 @@
         public static LocalComic CreateFolder(string name,string img, string parent)
         {
             string id = Guid.NewGuid().ToString("N");
-            while (DBHelper.GetClient().Queryable<LocalComic>().Any(x => x.Id == id))
+            while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
             }
@@ -20,7 +20,7 @@
             if (id == null)
             {
                 id = Guid.NewGuid().ToString("N");
-                while (DBHelper.GetClient().Queryable<LocalComic>().Any(x => x.Id == id))
+                while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
                 {
                     id = Guid.NewGuid().ToString("N");
                 }
