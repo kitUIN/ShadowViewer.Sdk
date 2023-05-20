@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <PackageReference Include="Aspose.Zip" Version="23.4.0" />
       <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
       <PackageReference Include="CommunityToolkit.Labs.WinUI.TokenView" Version="0.0.6" />
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />

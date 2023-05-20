@@ -1,4 +1,5 @@
 ﻿using SqlSugar;
+using Windows.Devices.Spi;
 
 namespace ShadowViewer.Models
 {
@@ -18,6 +19,8 @@ namespace ShadowViewer.Models
         private string affiliation;
         private string link;
         private long size;
+        private int episodeCounts;
+        private int counts;
         private string sizeString;
         private bool isFolder = false;
         private bool isTemp = false;
@@ -42,9 +45,9 @@ namespace ShadowViewer.Models
             set
             {   var oldValue = name;
                 SetProperty(ref name, value, propertyName: nameof(Name));
-                if(oldValue != null)
+                if(oldValue != null && oldValue != value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -59,9 +62,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = author;
                 SetProperty(ref author, value, propertyName: nameof(Author));
-                if (oldValue != null)
+                if (oldValue != null && oldValue != value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
 
@@ -77,9 +80,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = img;
                 SetProperty(ref img, value, propertyName: nameof(Img));
-                if (oldValue != null)
+                if (oldValue != null && oldValue != value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -94,9 +97,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = percent;
                 SetProperty(ref percent, value, propertyName: nameof(Percent));
-                if (oldValue != null)
+                if (oldValue != null && oldValue != value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -111,9 +114,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = group;
                 SetProperty(ref group, value, propertyName: nameof(Group));
-                if (oldValue != null)
+                if (oldValue != null && oldValue != value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -128,9 +131,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = remark;
                 SetProperty(ref remark, value, propertyName: nameof(Remark));
-                if (oldValue != null)
+                if (oldValue != null && oldValue != value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -144,9 +147,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = createTime;
                 SetProperty(ref createTime, value, propertyName: nameof(CreateTime));
-                if (oldValue != default)
+                if (oldValue != default && oldValue!= value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -160,9 +163,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = createTime;
                 SetProperty(ref lastReadTime, value, propertyName: nameof(LastReadTime));
-                if (oldValue != default)
+                if (oldValue != default && oldValue!= value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -178,9 +181,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = parent;
                 SetProperty(ref parent, value, propertyName: nameof(Parent));
-                if (oldValue != default)
+                if (oldValue != default && oldValue!= value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -196,6 +199,7 @@ namespace ShadowViewer.Models
                 tags = value;
                 if (tags != null)
                 {
+                    Log.Debug("添加Tag响应");
                     tags.CollectionChanged += Tags_CollectionChanged;
                 }
             }
@@ -211,9 +215,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = affiliation;
                 SetProperty(ref affiliation, value, propertyName: nameof(Affiliation));
-                if (oldValue != default)
+                if (oldValue != default && oldValue!= value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -228,9 +232,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = link;
                 SetProperty(ref link, value, propertyName: nameof(Link));
-                if (oldValue != default)
+                if (oldValue != default && oldValue!= value)
                 {
-                    OnChanged();
+                    Update();
                 }
             }
         }
@@ -242,9 +246,35 @@ namespace ShadowViewer.Models
             {
                 var oldValue = isTemp;
                 SetProperty(ref isTemp, value, propertyName: nameof(IsTemp));
-                if (oldValue != default)
+                if (oldValue != default && oldValue!= value)
                 {
-                    OnChanged();
+                    Update();
+                }
+            }
+        }
+        public int EpisodeCounts
+        {
+            get => episodeCounts;
+            set
+            {
+                var oldValue = episodeCounts;
+                SetProperty(ref episodeCounts, value, propertyName: nameof(EpisodeCounts));
+                if (oldValue != default && oldValue!= value)
+                {
+                    Update();
+                }
+            }
+        }
+        public int Counts
+        {
+            get => counts;
+            set
+            {
+                var oldValue = counts;
+                SetProperty(ref counts, value, propertyName: nameof(Counts));
+                if (oldValue != default && oldValue!= value)
+                {
+                    Update();
                 }
             }
         }
@@ -258,9 +288,9 @@ namespace ShadowViewer.Models
             {
                 var oldValue = size;
                 SetProperty(ref size, value, propertyName: nameof(Size));
-                if (oldValue != default)
+                if (oldValue != default && oldValue!= value)
                 {
-                    OnChanged();
+                    Update();
                 }
                 SizeString = ShowSize(size);
             }
@@ -286,7 +316,7 @@ namespace ShadowViewer.Models
 
         public LocalComic(string id, string name, DateTime createTime,
             DateTime lastReadTime, string link,string remark = "",string group = "", string author="", string parent = "local",
-            string percent="0%", string tags = "" , string affiliation = "Local", string img="", long size=0, bool isFolder=false)
+            string percent="0%", string tags = "" , string affiliation = "Local", string img="", long size=0, bool isFolder=false,bool isTemp=false)
         {
             this.id = id;
             this.name = name;
@@ -304,6 +334,7 @@ namespace ShadowViewer.Models
             this.size = size;
             this.sizeString = ShowSize(size);
             this.isFolder = isFolder;
+            this.isTemp = isTemp;
             Tags.CollectionChanged += Tags_CollectionChanged;
         }
         public LocalComic() {  }
@@ -311,9 +342,14 @@ namespace ShadowViewer.Models
         {
             DBHelper.Update(this);
         }
-        private void OnChanged()
+        public void Update()
         {
             DBHelper.Update(this);
+        }
+        public void Add()
+        {
+            DBHelper.Add(this);
+            Log.Information("添加LocalComic:{ComicId}", Id);
         }
         private static ObservableCollection<string> LoadTags(string tags)
         {

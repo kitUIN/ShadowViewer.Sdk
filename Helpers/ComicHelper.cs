@@ -18,7 +18,7 @@ namespace ShadowViewer.Helpers
             var comic =  new LocalComic(id, name, time, time, id, img: img, parent: parent, isFolder: true, percent:"");
             return comic;
         }
-        public static LocalComic CreateComic(string name, string img, string parent, string link, string affiliation = "Local",long size=0,string id=null)
+        public static LocalComic CreateComic(string name, string img, string parent, string link, string affiliation = "Local",long size=0,string id=null,bool isTemp=false)
         {
             if (id == null)
             {
@@ -28,43 +28,63 @@ namespace ShadowViewer.Helpers
                     id = Guid.NewGuid().ToString("N");
                 }
             }
+            if(img is null) { img = "ms-appx:///Assets/Default/DefaultComic.png"; }
             var time = DateTime.Now;
             var comic = new LocalComic(id, name, time, time, link, img: img, size: size,
-                affiliation: affiliation, parent: parent);
+                affiliation: affiliation, parent: parent, isTemp: isTemp);
             return comic;
         } 
-        /// <summary>
-        /// 从文件夹导入漫画
-        /// </summary>
-        /// <param name="folder">The folder.</param>
-        /// <param name="parent">The parent.</param>
-        public static async Task<LocalComic> ImportComicsAsync(StorageFolder folder, string parent, Action valueAction, Action CloseAction)
+        public static string LoadImgFromEntry(ShadowEntry entry,string dir)
         {
-            var first = await folder.GetFoldersAsync();
-            List<StorageFile> oneFiles = (await folder.GetFilesAsync()).ToList();
-            // 一层的漫画
-            var img = FileHelper.GetImgInFiles(oneFiles);
-            var size = await FileHelper.GetSizeInFiles(oneFiles);
-            // 无封面情况,从内部取
-
-            // 最多2层漫画
-            if (first.Count > 0)
+            MemoryStream Cycle(ShadowEntry entry)
             {
-                foreach (var item in first)
+                ShadowEntry temp = entry.Children.FirstOrDefault(x => !x.IsDirectory && x.Source != null);
+                if(temp is null)
                 {
-                    List<StorageFile> twoFiles = (await item.GetFilesAsync()).ToList();
-                    if (img is null)
+                    foreach (ShadowEntry item in entry.Children)
                     {
-                        img = FileHelper.GetImgInFiles(twoFiles);
+                        return Cycle(item);
                     }
-                    size += await FileHelper.GetSizeInFiles(twoFiles);
                 }
+                else
+                {
+                    return temp.Source;
+                }
+                return null;
             }
-            if (img is null)
+
+            var stream = Cycle(entry);
+            if (stream is null) return null;
+            string img = System.IO.Path.Combine(dir, Guid.NewGuid().ToString("N") + ".png");
+            using (var fileStream = new FileStream(img, FileMode.Create, FileAccess.Write))
             {
-                img = "";
+                stream.WriteTo(fileStream);
             }
-            return CreateComic(folder.DisplayName, img, parent, folder.Path, size: (long)size);
+            return img;
+        }
+        public static LocalComic ImportComicsFromEntry(string path, string parent, string img)
+        {
+            if (!Entrys.ContainsKey(path)) return null;
+            ShadowEntry entry = Entrys[path];
+            string fileName = Path.GetFileNameWithoutExtension(path).Split(new char[] { '\\', '/' }).Last();
+            return CreateComic(fileName, img, parent, path, size: entry.Size , isTemp:true);
+
+        }
+        public static async Task<LocalComic> ImportComicsFromZip(string path, string imgPath)
+        {
+            Entrys[path] = await CompressHelper.DeCompress(path);
+            var img = LoadImgFromEntry(Entrys[path], imgPath);
+            LocalComic comic = ImportComicsFromEntry(path, "local", img);
+            comic.Add();
+            return comic;
+        }
+        public static void EntryToComic(string comicPath,LocalComic comic, string path)
+        {
+            string uri = System.IO.Path.Combine(comicPath, comic.Id);
+            CompressHelper.DeCompress(path, uri);
+            comic.IsTemp = false;
+            comic.Link = uri;
+            ComicHelper.Entrys.Remove(path);
         }
         /// <summary>
         /// 字母顺序A-Z

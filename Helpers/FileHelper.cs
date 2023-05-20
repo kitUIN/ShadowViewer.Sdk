@@ -19,6 +19,11 @@
         }
         public static async Task<StorageFolder> ToStorageFolder(this string path)
         {
+            path.CreateDirectory();
+            return await StorageFolder.GetFolderFromPathAsync(path);
+        }
+        public static void CreateDirectory(this string path)
+        {
             string[] substrings = path.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
             string[] result = new string[substrings.Length];
             for (int i = 0; i < substrings.Length; i++)
@@ -31,8 +36,7 @@
                 {
                     Directory.CreateDirectory(result[i]);
                 }
-            }
-            return await StorageFolder.GetFolderFromPathAsync(path);
+            } 
         }
         public static async Task<StorageFile> ToStorageFile(this string path)
         {

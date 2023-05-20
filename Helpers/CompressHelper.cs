@@ -1,5 +1,7 @@
-﻿using Aspose.Zip;
-using Aspose.Zip.SevenZip;
+﻿
+using SharpCompress.Archives;
+using SharpCompress.Archives.SevenZip;
+using SharpCompress.Archives.Rar;
 using SharpCompress.Common;
 using SharpCompress.Compressors.Xz;
 using SharpCompress.Readers;
@@ -18,85 +20,77 @@ namespace ShadowViewer.Helpers
 
         public static void DeCompress(string zip, string destinationDirectory)
         {
-            if (zip.EndsWith(".zip"))
+            
+            destinationDirectory.CreateDirectory();
+            switch(Path.GetExtension(zip).ToLower())
             {
-                ZipDeCompress(zip, destinationDirectory);
-            } else if (zip.EndsWith(".7z"))
-            {
-                SevenZipDeCompress(zip, destinationDirectory);
-            }
-
+               
+                case ".7z":
+                    SevenZipDeCompress(zip, destinationDirectory);
+                    break;
+                case ".rar":
+                    RarDeCompress(zip, destinationDirectory);
+                    break;
+                default:
+                    ZipDeCompress(zip, destinationDirectory);
+                    break;
+            }  
         }
+        public static void RarDeCompress(string zip, string destinationDirectory)
+        {
+            using (var archive = RarArchive.Open(zip))
+            {
+                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                {
+                    entry.WriteToDirectory(destinationDirectory, new ExtractionOptions()
+                    {
+                        ExtractFullPath = true,
+                        Overwrite = true
+                    });
+                }
+            }
+        } 
         public static void SevenZipDeCompress(string zip, string destinationDirectory)
         {
-            using (SevenZipArchive archive = new SevenZipArchive(zip))
+            var archive = ArchiveFactory.Open(zip);
+            foreach (var entry in archive.Entries.Where(x=> !x.IsDirectory))
             {
-                archive.ExtractToDirectory(destinationDirectory);
+                entry.WriteToDirectory(destinationDirectory, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
             }
         }
-        public static async Task LoadEntry(IReader reader, ShadowEntry root)
-        {
-            string[] names = reader.Entry.Key.Split("/");
-            ShadowEntry temp = root;
-            ShadowEntry tmp = null;
-            for (int i = 0; i < names.Length; i++)
-            {
-                tmp = temp.Children.FirstOrDefault(x => x.Name == names[i]);
-                if (tmp is null)
-                {
-                    if (i == names.Length - 1)
-                    {
-                        if (reader.Entry.IsDirectory)
-                        {
-                            temp.Children.Add(new ShadowEntry()
-                            {
-                                Name = names[i],
-                            });
-                        }
-                        else if (FileHelper.IsPic(names[i]))
-                        {
-                            MemoryStream ms = new MemoryStream();
-                            using (EntryStream entryStream = reader.OpenEntryStream())
-                            { 
-                                await entryStream.CopyToAsync(ms);
-                                ms.Seek(0, SeekOrigin.Begin); 
-                            }  
-                            temp.Children.Add(new ShadowEntry()
-                            {
-                                Name = names[i],
-                                Source = ms,
-                                Size = reader.Entry.Size,
-                            }); 
-                        }
-
-                    }
-                    else
-                    {
-                        temp.Children.Add(new ShadowEntry()
-                        {
-                            Name = names[i],
-                        });
-                        
-                    }
-                }
-                else
-                {
-                    temp = tmp;
-                }
-
-            }
-        }
+        
         public static void ZipDeCompress(string zip, string destinationDirectory)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            using (FileStream zipFile = File.Open(zip, FileMode.Open))
+            
+            using (Stream stream = File.OpenRead(zip))
+            using (var reader = ReaderFactory.Open(stream))
             {
-                using (var archive = new Archive(zipFile))
+                while (reader.MoveToNextEntry())
                 {
-                     archive.ExtractToDirectory(destinationDirectory);
+                    if (!reader.Entry.IsDirectory)
+                    {
+                         reader.WriteEntryToDirectory(destinationDirectory, new ExtractionOptions()
+                        {
+                            ExtractFullPath = true,
+                            Overwrite = true
+                        });
+                    }
                 }
             }
         }
+        public static async Task<ShadowEntry> DeCompress(string zip)
+        { 
+            switch (Path.GetExtension(zip).ToLower())
+            {
+                case ".7z":
+                    return await SevenZipDeCompress(zip);
+ 
+                default:
+                    return await ZipDeCompress(zip);
+            }
+        }
+
+        //Zip，GZip，BZip2，Tar，Rar，LZip和XZ。
         public static async Task<ShadowEntry> ZipDeCompress(string zip)
         {
             using (Stream stream = File.OpenRead(zip))
@@ -105,16 +99,32 @@ namespace ShadowViewer.Helpers
                 ShadowEntry root = new ShadowEntry()
                 {
                     Name = zip.Split("/").Last(),
-
                 };
                 while (reader.MoveToNextEntry())
                 {
-                    await LoadEntry(reader, root);
-                     
+                    await ShadowEntry.LoadEntry(reader, root);
                 }
+                root.LoadChildren();
                 return root;
             }
-            
+        }
+         public static async Task<ShadowEntry> SevenZipDeCompress(string zip)
+        {
+
+            using (var fileStream = File.OpenRead(zip))
+            using (var archive =  SevenZipArchive.Open(fileStream))
+            {
+                ShadowEntry root = new ShadowEntry()
+                {
+                    Name = zip.Split("/").Last(),
+                };
+                foreach (SevenZipArchiveEntry entry in archive.Entries)
+                {
+                    await ShadowEntry.LoadEntry(entry, root);
+                }
+                root.LoadChildren();
+                return root;
+            }
         }
     }
 }

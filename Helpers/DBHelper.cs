@@ -28,7 +28,7 @@ namespace ShadowViewer.Helpers
         /// 在数据库添加一个新行
         /// </summary>
         public static void Add<T>(T obj) where T : class, new()
-        {
+        { 
             Db.Insertable(obj).ExecuteCommand();
         }
         /// <summary>

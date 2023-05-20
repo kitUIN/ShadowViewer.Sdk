@@ -63,5 +63,9 @@ namespace ShadowViewer.Models
         {
             return $"ShadowTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
         } 
+        public void Add()
+        {
+            DBHelper.Add(this);
+        }
     }
 }
