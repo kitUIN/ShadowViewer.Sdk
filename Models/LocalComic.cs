@@ -1,6 +1,4 @@
 ﻿using SqlSugar;
-using Windows.Devices.Spi;
-
 namespace ShadowViewer.Models
 {
     public partial class LocalComic: ObservableObject
@@ -43,11 +41,12 @@ namespace ShadowViewer.Models
         {
             get => name;
             set
-            {   var oldValue = name;
+            {   string oldValue = name;
                 SetProperty(ref name, value, propertyName: nameof(Name));
                 if(oldValue != null && oldValue != value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Name), oldValue, Name);
                 }
             }
         }
@@ -60,11 +59,12 @@ namespace ShadowViewer.Models
             get => author;
             set
             {
-                var oldValue = author;
+                string oldValue = author;
                 SetProperty(ref author, value, propertyName: nameof(Author));
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Author), oldValue, Author);
                 }
             }
 
@@ -78,11 +78,12 @@ namespace ShadowViewer.Models
             get => img;
             set
             {
-                var oldValue = img;
+                string oldValue = img;
                 SetProperty(ref img, value, propertyName: nameof(Img));
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Img), oldValue, Img);
                 }
             }
         }
@@ -95,11 +96,12 @@ namespace ShadowViewer.Models
             get => percent;
             set
             {
-                var oldValue = percent;
+                string oldValue = percent;
                 SetProperty(ref percent, value, propertyName: nameof(Percent));
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Percent), oldValue, Percent);
                 }
             }
         }
@@ -112,11 +114,12 @@ namespace ShadowViewer.Models
             get => group;
             set
             {
-                var oldValue = group;
+                string oldValue = group;
                 SetProperty(ref group, value, propertyName: nameof(Group));
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Group), oldValue, Group);
                 }
             }
         }
@@ -129,11 +132,12 @@ namespace ShadowViewer.Models
             get => remark;
             set
             {
-                var oldValue = remark;
+                string oldValue = remark;
                 SetProperty(ref remark, value, propertyName: nameof(Remark));
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Remark), oldValue, Remark);
                 }
             }
         }
@@ -145,11 +149,12 @@ namespace ShadowViewer.Models
             get => createTime;
             set
             {
-                var oldValue = createTime;
+                DateTime oldValue = createTime;
                 SetProperty(ref createTime, value, propertyName: nameof(CreateTime));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(CreateTime), oldValue, CreateTime);
                 }
             }
         }
@@ -161,11 +166,12 @@ namespace ShadowViewer.Models
             get => lastReadTime;
             set
             {
-                var oldValue = createTime;
+                DateTime oldValue = lastReadTime;
                 SetProperty(ref lastReadTime, value, propertyName: nameof(LastReadTime));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(LastReadTime), oldValue, LastReadTime);
                 }
             }
         }
@@ -179,11 +185,12 @@ namespace ShadowViewer.Models
             get => parent;
             set
             {
-                var oldValue = parent;
+                string oldValue = parent;
                 SetProperty(ref parent, value, propertyName: nameof(Parent));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Parent), oldValue, Parent);
                 }
             }
         }
@@ -213,11 +220,12 @@ namespace ShadowViewer.Models
             get => affiliation;
             set
             {
-                var oldValue = affiliation;
+                string oldValue = affiliation;
                 SetProperty(ref affiliation, value, propertyName: nameof(Affiliation));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Affiliation), oldValue, Affiliation);
                 }
             }
         }
@@ -230,11 +238,12 @@ namespace ShadowViewer.Models
             get => link;
             set
             {
-                var oldValue = link;
+                string oldValue = link;
                 SetProperty(ref link, value, propertyName: nameof(Link));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Link), oldValue, Link);
                 }
             }
         }
@@ -244,11 +253,12 @@ namespace ShadowViewer.Models
             get => isTemp;
             set
             {
-                var oldValue = isTemp;
+                bool oldValue = isTemp;
                 SetProperty(ref isTemp, value, propertyName: nameof(IsTemp));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(IsTemp), oldValue.ToString(), IsTemp.ToString());
                 }
             }
         }
@@ -257,11 +267,12 @@ namespace ShadowViewer.Models
             get => episodeCounts;
             set
             {
-                var oldValue = episodeCounts;
+                int oldValue = episodeCounts;
                 SetProperty(ref episodeCounts, value, propertyName: nameof(EpisodeCounts));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(EpisodeCounts), oldValue, EpisodeCounts);
                 }
             }
         }
@@ -270,11 +281,12 @@ namespace ShadowViewer.Models
             get => counts;
             set
             {
-                var oldValue = counts;
+                int oldValue = counts;
                 SetProperty(ref counts, value, propertyName: nameof(Counts));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Counts), oldValue, Counts);
                 }
             }
         }
@@ -286,11 +298,12 @@ namespace ShadowViewer.Models
             get => size;
             set 
             {
-                var oldValue = size;
+                long oldValue = size;
                 SetProperty(ref size, value, propertyName: nameof(Size));
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
+                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Size), oldValue, Size);
                 }
                 SizeString = ShowSize(size);
             }
@@ -340,21 +353,22 @@ namespace ShadowViewer.Models
         public LocalComic() {  }
         private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            DBHelper.Update(this);
+           Update();
         }
         public void Update()
         {
             DBHelper.Update(this);
+            Log.Information("更新Comic:{ComicId}", Id);
         }
         public void Add()
         {
             DBHelper.Add(this);
-            Log.Information("添加LocalComic:{ComicId}", Id);
+            Log.Information("添加Comic:{ComicId}", Id);
         }
         private static ObservableCollection<string> LoadTags(string tags)
         {
-            var res = new HashSet<string>();
-            foreach (var tag in tags.Split(","))
+            HashSet<string> res = new HashSet<string>();
+            foreach (string tag in tags.Split(","))
             {
                 if (tag != "")
                 {

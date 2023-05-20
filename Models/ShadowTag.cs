@@ -66,6 +66,7 @@ namespace ShadowViewer.Models
         public void Add()
         {
             DBHelper.Add(this);
+            Serilog.Log.Information("添加 {Log}", Log());
         }
     }
 }
