@@ -1,7 +1,10 @@
-﻿namespace ShadowViewer.Helpers
+﻿ 
+
+namespace ShadowViewer.Helpers
 {
     public static class ComicHelper
-    { 
+    {
+        public static Dictionary<string, ShadowEntry> Entrys { get; private set; } = new Dictionary<string, ShadowEntry>();
         public static LocalComic CreateFolder(string name,string img, string parent)
         {
             string id = Guid.NewGuid().ToString("N");

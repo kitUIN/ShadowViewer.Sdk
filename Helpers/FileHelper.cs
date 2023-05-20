@@ -9,6 +9,10 @@
         {
             return pngs.Contains(file.FileType);
         }
+        public static bool IsPic(string file)
+        {
+            return pngs.Any(x => file.EndsWith(x));
+        }
         public static bool IsZip(this StorageFile file)
         {
             return zips.Contains(file.FileType);

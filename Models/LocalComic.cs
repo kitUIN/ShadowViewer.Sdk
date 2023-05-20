@@ -20,6 +20,7 @@ namespace ShadowViewer.Models
         private long size;
         private string sizeString;
         private bool isFolder = false;
+        private bool isTemp = false;
         #endregion
         #region SQL 实体访问器
         /// <summary>
@@ -227,6 +228,20 @@ namespace ShadowViewer.Models
             {
                 var oldValue = link;
                 SetProperty(ref link, value, propertyName: nameof(Link));
+                if (oldValue != default)
+                {
+                    OnChanged();
+                }
+            }
+        }
+        
+        public bool IsTemp
+        {
+            get => isTemp;
+            set
+            {
+                var oldValue = isTemp;
+                SetProperty(ref isTemp, value, propertyName: nameof(IsTemp));
                 if (oldValue != default)
                 {
                     OnChanged();

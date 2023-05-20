@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-
+﻿
 namespace ShadowViewer.Utils
 {
     

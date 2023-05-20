@@ -2,6 +2,11 @@
 {
     public static class ConfigHelper
     {
+        public static bool Contains(string container, string key)
+        {
+            ApplicationDataContainer CoreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
+            return CoreSettings.Values.ContainsKey(key);
+        }
         public static object Get(string container,string key)
         {
             ApplicationDataContainer CoreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
