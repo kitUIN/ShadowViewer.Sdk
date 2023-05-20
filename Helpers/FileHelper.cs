@@ -3,7 +3,7 @@
     public static class FileHelper
     {
         public static string[] pngs = { ".png", ".jpg", ".jpeg", ".bmp" };
-        public static string[] zips = { ".zip", ".rar", ".7z" };
+        public static string[] zips = { ".zip", ".rar", ".7z" , ".tar"};
         
         public static bool IsPic(this StorageFile file)
         {
@@ -13,15 +13,29 @@
         {
             return pngs.Any(x => file.EndsWith(x));
         }
+        /// <summary>
+        /// 是否是压缩文件
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public static bool IsZip(this StorageFile file)
         {
             return zips.Contains(file.FileType);
         }
+        /// <summary>
+        /// 获取StorageFolder,若没有则创建文件夹
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static async Task<StorageFolder> ToStorageFolder(this string path)
         {
             path.CreateDirectory();
             return await StorageFolder.GetFolderFromPathAsync(path);
         }
+        /// <summary>
+        /// 创建文件夹
+        /// </summary>
+        /// <param name="path"></param>
         public static void CreateDirectory(this string path)
         {
             string[] substrings = path.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
@@ -37,6 +51,28 @@
                     Directory.CreateDirectory(result[i]);
                 }
             } 
+        }
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        /// <param name="targetDir"></param>
+        public static void DeleteDirectory(this string targetDir)
+        {
+            if (!Directory.Exists(targetDir))
+            {
+                return;
+            }
+            File.SetAttributes(targetDir, System.IO.FileAttributes.Normal);
+            foreach (string file in Directory.GetFiles(targetDir))
+            {
+                File.SetAttributes(file, System.IO.FileAttributes.Normal);
+                File.Delete(file);
+            }
+            foreach (string subDir in Directory.GetDirectories(targetDir))
+            {
+                DeleteDirectory(subDir);
+            }
+            Directory.Delete(targetDir, false);
         }
         public static async Task<StorageFile> ToStorageFile(this string path)
         {

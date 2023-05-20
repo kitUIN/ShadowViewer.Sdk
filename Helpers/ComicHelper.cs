@@ -73,7 +73,7 @@ namespace ShadowViewer.Helpers
         public static async Task<LocalComic> ImportComicsFromZip(string path, string imgPath)
         {
             Entrys[path] = await CompressHelper.DeCompress(path);
-            var img = LoadImgFromEntry(Entrys[path], imgPath);
+            string img = LoadImgFromEntry(Entrys[path], imgPath);
             LocalComic comic = ImportComicsFromEntry(path, "local", img);
             comic.Add();
             return comic;

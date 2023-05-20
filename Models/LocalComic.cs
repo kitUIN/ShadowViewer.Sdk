@@ -46,7 +46,7 @@ namespace ShadowViewer.Models
                 if(oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Name), oldValue, Name);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Name), oldValue, Name);
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Author), oldValue, Author);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Author), oldValue, Author);
                 }
             }
 
@@ -83,7 +83,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Img), oldValue, Img);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Img), oldValue, Img);
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Percent), oldValue, Percent);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Percent), oldValue, Percent);
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Group), oldValue, Group);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Group), oldValue, Group);
                 }
             }
         }
@@ -137,7 +137,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Remark), oldValue, Remark);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Remark), oldValue, Remark);
                 }
             }
         }
@@ -154,7 +154,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(CreateTime), oldValue, CreateTime);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(CreateTime), oldValue, CreateTime);
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(LastReadTime), oldValue, LastReadTime);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(LastReadTime), oldValue, LastReadTime);
                 }
             }
         }
@@ -190,7 +190,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Parent), oldValue, Parent);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Parent), oldValue, Parent);
                 }
             }
         }
@@ -225,7 +225,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Affiliation), oldValue, Affiliation);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Affiliation), oldValue, Affiliation);
                 }
             }
         }
@@ -243,7 +243,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Link), oldValue, Link);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Link), oldValue, Link);
                 }
             }
         }
@@ -258,7 +258,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(IsTemp), oldValue.ToString(), IsTemp.ToString());
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(IsTemp), oldValue.ToString(), IsTemp.ToString());
                 }
             }
         }
@@ -272,7 +272,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(EpisodeCounts), oldValue, EpisodeCounts);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(EpisodeCounts), oldValue, EpisodeCounts);
                 }
             }
         }
@@ -286,7 +286,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Counts), oldValue, Counts);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Counts), oldValue, Counts);
                 }
             }
         }
@@ -303,7 +303,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}]{Field}({Old}->{New})", Id, nameof(Size), oldValue, Size);
+                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Size), oldValue, Size);
                 }
                 SizeString = ShowSize(size);
             }

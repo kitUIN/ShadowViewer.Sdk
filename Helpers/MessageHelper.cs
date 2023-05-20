@@ -22,7 +22,7 @@ namespace ShadowViewer.Helpers
             WeakReferenceMessenger.Default.Send(new NavigationMessage("Navigate", page, parameter, arg));
         }
         /// <summary>
-        /// 通知HomePage刷新元素
+        /// 通知BookShelfPage刷新元素
         /// </summary>
         public static void SendFilesReload()
         {

@@ -98,7 +98,7 @@ namespace ShadowViewer.Helpers
             {
                 ShadowEntry root = new ShadowEntry()
                 {
-                    Name = zip.Split("/").Last(),
+                    Name = zip.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last(),
                 };
                 while (reader.MoveToNextEntry())
                 {
@@ -116,7 +116,7 @@ namespace ShadowViewer.Helpers
             {
                 ShadowEntry root = new ShadowEntry()
                 {
-                    Name = zip.Split("/").Last(),
+                    Name = zip.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last(),
                 };
                 foreach (SevenZipArchiveEntry entry in archive.Entries)
                 {

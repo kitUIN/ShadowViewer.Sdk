@@ -3,6 +3,7 @@ using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
 using System.IO;
+using System.Security.Policy;
 
 namespace ShadowViewer.Utils
 {
@@ -14,12 +15,13 @@ namespace ShadowViewer.Utils
         public int Depth { get; set; } = 0;
         public int Counts { get; set; } = 0;
         public long Size { get; set; } = 0;
-        public bool IsDirectory { get => Children.Count > 0; }
+        public string Path { get; set; }
+        public bool IsDirectory { get => Children.Count > 0 || Source == null; }
         public List<ShadowEntry> Children { get; } = new List<ShadowEntry>();
         public ShadowEntry(){ }
         public static async Task LoadEntry(IReader reader, ShadowEntry root)
         {
-            string[] names = reader.Entry.Key.Split("/");
+            string[] names = reader.Entry.Key.Split(new char[] { '\\', '/' } ,StringSplitOptions.RemoveEmptyEntries);
             ShadowEntry temp = root;
             ShadowEntry tmp = null;
             for (int i = 0; i < names.Length; i++)
@@ -34,6 +36,7 @@ namespace ShadowViewer.Utils
                             temp.Children.Add(new ShadowEntry()
                             {
                                 Name = names[i],
+                                Path = string.Join("/", names.Take(i + 1))
                             });
                         }
                         else if (FileHelper.IsPic(names[i]))
@@ -48,6 +51,7 @@ namespace ShadowViewer.Utils
                             {
                                 Name = names[i],
                                 Source = ms,
+                                Path = string.Join("/", names.Take(i + 1)),
                                 Size = reader.Entry.Size,
                             });
                         }
@@ -58,6 +62,7 @@ namespace ShadowViewer.Utils
                         temp.Children.Add(new ShadowEntry()
                         {
                             Name = names[i],
+                            Path = string.Join("/", names.Take(i + 1))
                         });
 
                     }
@@ -71,7 +76,7 @@ namespace ShadowViewer.Utils
         }
         public static async Task LoadEntry(IArchiveEntry entry, ShadowEntry root)
         { 
-            string[] names = entry.Key.Split("/");
+            string[] names = entry.Key.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
             ShadowEntry temp = root;
             ShadowEntry tmp = null;
             for (int i = 0; i < names.Length; i++)
@@ -86,6 +91,7 @@ namespace ShadowViewer.Utils
                             temp.Children.Add(new ShadowEntry()
                             {
                                 Name = names[i],
+                                Path = string.Join("/", names.Take(i + 1))
                             });
                         }
                         else if (FileHelper.IsPic(names[i]))
@@ -101,6 +107,7 @@ namespace ShadowViewer.Utils
                                 Name = names[i],
                                 Source = ms,
                                 Size = entry.Size,
+                                Path = string.Join("/", names.Take(i + 1))
                             });
                         }
 
@@ -110,6 +117,7 @@ namespace ShadowViewer.Utils
                         temp.Children.Add(new ShadowEntry()
                         {
                             Name = names[i],
+                            Path = string.Join("/", names.Take(i + 1))
                         });
 
                     }
@@ -123,18 +131,20 @@ namespace ShadowViewer.Utils
         }
         public void LoadChildren()
         {
-            if (!IsDirectory)
+             
+            if (Children.Count > 0)
             {
                 foreach (ShadowEntry child in Children)
                 {
                     child.LoadChildren();
-                } 
-            }
-            else
-            {
+                }
                 Size = Children.Sum(x => x.Size);
                 Depth = Children.Max(x => x.Depth) + 1;
                 Counts = Children.Sum(x => x.Counts);
+            }
+            else
+            {
+                Counts = 1;
             }
         }
         public static ShadowEntry GetTwo(ShadowEntry root)
