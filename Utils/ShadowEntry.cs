@@ -137,5 +137,18 @@ namespace ShadowViewer.Utils
                 Counts = Children.Sum(x => x.Counts);
             }
         }
+        public static ShadowEntry GetTwo(ShadowEntry root)
+        {
+            if (root.Depth < 2) return null;
+            if (root.Depth == 2) return root;
+            foreach (ShadowEntry child in root.Children)
+            { 
+                if (GetTwo(child) is ShadowEntry result)
+                {
+                    return result;
+                }
+            } 
+            return null;
+        }
     }
 }
