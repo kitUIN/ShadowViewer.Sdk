@@ -81,6 +81,13 @@
             dialog.DefaultButton = ContentDialogButton.Primary;
             return dialog;
         }
+        /// <summary>
+        /// 通知ContentDialog
+        /// </summary>
+        /// <param name="xamlRoot"></param>
+        /// <param name="title"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static ContentDialog CreateMessageDialog(XamlRoot xamlRoot,string title,string message)
         {
             ContentDialog dialog = CreateContentDialog(xamlRoot);
@@ -140,5 +147,6 @@
             dialog.IsPrimaryButtonEnabled = true;
             return dialog;
         }
+        
     }
 }

@@ -84,7 +84,8 @@ namespace ShadowViewer.Helpers
             CompressHelper.DeCompress(path, uri);
             comic.IsTemp = false;
             comic.Link = uri;
-            ComicHelper.Entrys.Remove(path);
+            Entrys[path] = null; // 销毁资源
+            Entrys.Remove(path);
         }
         /// <summary>
         /// 字母顺序A-Z
