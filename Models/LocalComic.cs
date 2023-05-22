@@ -22,6 +22,7 @@ namespace ShadowViewer.Models
         private string sizeString;
         private bool isFolder = false;
         private bool isTemp = false;
+        private bool isFromZip = false;
         
         #endregion
         #region SQL 实体访问器
@@ -326,30 +327,56 @@ namespace ShadowViewer.Models
             get => isFolder;
             set => SetProperty(ref isFolder, value,  propertyName: nameof(IsFolder));
         }
+        /// <summary>
+        /// 是否是从zip导入
+        /// </summary>
+        public bool IsFromZip
+        {
+            get => isFromZip; 
+            set
+            {
+                bool oldValue = isFromZip;
+                SetProperty(ref isFromZip, value, propertyName: nameof(IsFromZip));
+                if (oldValue != default && oldValue != value)
+                {
+                    Update();
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(IsFromZip), oldValue, IsFromZip);
+                } 
+            }
+        }
         #endregion
 
-        public LocalComic(string id, string name, DateTime createTime,
-            DateTime lastReadTime, string link,string remark = "",string group = "", string author="", string parent = "local",
-            string percent="0%", string tags = "" , string affiliation = "Local", string img="", long size=0, bool isFolder=false,bool isTemp=false)
+         
+        public static LocalComic Create(string name, string link, string img = null, string remark = "", string group = "", string author = "", string parent = "local",
+            string percent = "0%", string tags = "", string affiliation = "Local",   long size = 0, bool isFolder = false, bool isTemp = false, bool isFromZip = false)
         {
-            this.id = id;
-            this.name = name;
-            this.author = author;
-            this.group  = group;
-            this.img = img;
-            this.percent = percent;
-            this.remark = remark;
-            this.createTime = createTime;
-            this.lastReadTime = lastReadTime;
-            this.parent = parent;
-            Tags = LoadTags(tags);
-            this.affiliation = affiliation;
-            this.link = link;
-            this.size = size;
-            this.sizeString = ComicHelper.ShowSize(size);
-            this.isFolder = isFolder;
-            this.isTemp = isTemp;
-            Tags.CollectionChanged += Tags_CollectionChanged;
+            string id = Guid.NewGuid().ToString("N");
+            while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
+            {
+                id = Guid.NewGuid().ToString("N");
+            }
+            if (img is null) { img = "ms-appx:///Assets/Default/picbroken.png"; }
+            DateTime time = DateTime.Now;
+            return new LocalComic()
+            {
+                Id = id,
+                Img = img,
+                CreateTime = time,
+                LastReadTime = time,
+                Tags = LoadTags(tags),
+                Size = size,
+                IsFolder = isFolder,
+                IsTemp = isTemp,
+                IsFromZip = isFromZip,
+                Name = name,
+                Link = link,
+                Remark = remark,
+                Group = group,
+                Author = author,
+                Parent = parent,
+                Percent = percent,
+                Affiliation = affiliation,
+            };
         }
         public LocalComic() {  }
         private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -377,12 +404,9 @@ namespace ShadowViewer.Models
         private static ObservableCollection<string> LoadTags(string tags)
         {
             HashSet<string> res = new HashSet<string>();
-            foreach (string tag in tags.Split(","))
+            foreach (string tag in tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
-                if (tag != "")
-                {
-                    res.Add(tag);
-                }
+                res.Add(tag);
             }
             return new ObservableCollection<string>(res);
         }

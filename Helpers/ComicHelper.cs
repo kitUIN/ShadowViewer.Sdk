@@ -5,34 +5,10 @@ namespace ShadowViewer.Helpers
     public static class ComicHelper
     {
         public static Dictionary<string, ShadowEntry> Entrys { get; private set; } = new Dictionary<string, ShadowEntry>();
-        public static LocalComic CreateFolder(string name,string img, string parent)
-        {
-            string id = Guid.NewGuid().ToString("N");
-            while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
-            {
-                id = Guid.NewGuid().ToString("N");
-            }
-            var time = DateTime.Now;
-            if (img == "") { img = "ms-appx:///Assets/Default/folder.png"; }
-            if (name == "") { name = id; }
-            var comic =  new LocalComic(id, name, time, time, id, img: img, parent: parent, isFolder: true, percent:"");
-            return comic;
-        }
-        public static LocalComic CreateComic(string name, string img, string parent, string link, string affiliation = "Local",long size=0,string id=null,bool isTemp=false)
-        {
-            if (id == null)
-            {
-                id = Guid.NewGuid().ToString("N");
-                while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
-                {
-                    id = Guid.NewGuid().ToString("N");
-                }
-            }
-            if(img is null) { img = "ms-appx:///Assets/Default/DefaultComic.png"; }
-            var time = DateTime.Now;
-            var comic = new LocalComic(id, name, time, time, link, img: img, size: size,
-                affiliation: affiliation, parent: parent, isTemp: isTemp);
-            return comic;
+        public static LocalComic CreateFolder(string name, string parent)
+        { 
+            if (name == "") name = I18nHelper.GetString("Shadow.String.CreateFolder.Title");
+            return LocalComic.Create(name, "", img: "ms-appx:///Assets/Default/folder.png", parent: parent, isFolder: true, percent:"");
         } 
         public static string LoadImgFromEntry(ShadowEntry entry,string dir)
         {
@@ -66,7 +42,7 @@ namespace ShadowViewer.Helpers
         {
             if (!Entrys.ContainsKey(path)) return null; 
             string fileName = Path.GetFileNameWithoutExtension(path).Split(new char[] { '\\', '/' }).Last();
-            return CreateComic(fileName, img, parent, path, size: size, isTemp:true);
+            return LocalComic.Create(fileName, path, img: img, parent:parent,   size: size, isTemp:true,isFromZip:true);
         }
         public static async Task<LocalComic> ImportComicsFromZip(string path, string imgPath)
         {
