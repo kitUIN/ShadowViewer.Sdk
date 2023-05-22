@@ -1,13 +1,10 @@
-﻿using Microsoft.UI.Xaml.Shapes;
-using SharpCompress.Archives;
+﻿using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
-using System.IO;
-using System.Security.Policy;
-
+ 
 namespace ShadowViewer.Utils
 {
-    public class ShadowEntry
+    public class ShadowEntry: IDisposable
     {
         public string Name { get; set; }
         public MemoryStream Source { get => stream; set => stream = value; }
@@ -159,6 +156,11 @@ namespace ShadowViewer.Utils
                 }
             } 
             return null;
+        }
+
+        public void Dispose()
+        {
+             
         }
     }
 }

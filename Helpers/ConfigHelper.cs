@@ -2,6 +2,7 @@
 {
     public static class ConfigHelper
     {
+        private static string container = "ShadowViewer";
         public static bool Contains(string container, string key)
         {
             ApplicationDataContainer CoreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
@@ -20,6 +21,7 @@
         {
             ApplicationDataContainer CoreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
             CoreSettings.Values[key] = value;
+            Log.Information("{Container}[{Key}]={Value}", container, key, value.ToString());
         }
         public static ApplicationDataCompositeValue CreateDict()
         {
@@ -36,16 +38,44 @@
         }
         public static object Get(string key)
         {
-            return Get("ShadowViewer", key);
+            return Get(container, key);
         }
         public static void Set(string key, string value)
         {
-            Set("ShadowViewer", key, value);
+            Set(container, key, value);
+        }
+        public static void Set(string key, object value)
+        {
+            Set(container, key, value);
+        }
+        public static bool Contains(string key)
+        {
+            return Contains(container, key);
+        } 
+        public static string GetString(string key)
+        {
+            return GetString(container, key);
+        }
+        public static bool GetBoolean(string key)
+        {
+            return GetBoolean(container, key);
         }
         public static ApplicationDataCompositeValue GetDict(string key)
         {
-            return GetDict("ShadowViewer", key);
+            return GetDict(container, key);
+        } 
+        public static string GetString(string container, string key)
+        {
+            return (string)Get(container,key);
         }
-        
+        public static bool GetBoolean(string container, string key)
+        {
+            object res = Get(container, key);
+            if (res == null)
+            {
+                return false;
+            }
+            return (bool)res;
+        }
     }
 }

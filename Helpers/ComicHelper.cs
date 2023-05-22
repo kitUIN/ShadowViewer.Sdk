@@ -62,19 +62,18 @@ namespace ShadowViewer.Helpers
             }
             return img;
         }
-        public static LocalComic ImportComicsFromEntry(string path, string parent, string img)
+        public static LocalComic ImportComicsFromEntry(string path, string parent, string img,long size)
         {
-            if (!Entrys.ContainsKey(path)) return null;
-            ShadowEntry entry = Entrys[path];
+            if (!Entrys.ContainsKey(path)) return null; 
             string fileName = Path.GetFileNameWithoutExtension(path).Split(new char[] { '\\', '/' }).Last();
-            return CreateComic(fileName, img, parent, path, size: entry.Size , isTemp:true);
-
+            return CreateComic(fileName, img, parent, path, size: size, isTemp:true);
         }
         public static async Task<LocalComic> ImportComicsFromZip(string path, string imgPath)
         {
             Entrys[path] = await CompressHelper.DeCompress(path);
             string img = LoadImgFromEntry(Entrys[path], imgPath);
-            LocalComic comic = ImportComicsFromEntry(path, "local", img);
+            long size = Entrys[path].Size;
+            LocalComic comic = ImportComicsFromEntry(path, "local", img, size);
             comic.Add();
             return comic;
         }
@@ -84,7 +83,8 @@ namespace ShadowViewer.Helpers
             CompressHelper.DeCompress(path, uri);
             comic.IsTemp = false;
             comic.Link = uri;
-            Entrys[path] = null; // 销毁资源
+            GC.SuppressFinalize(Entrys[path]);
+            //Entrys[path].Dispose(); // 销毁资源
             Entrys.Remove(path);
         }
         /// <summary>
