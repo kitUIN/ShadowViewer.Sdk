@@ -22,6 +22,7 @@ namespace ShadowViewer.Models
         private string sizeString;
         private bool isFolder = false;
         private bool isTemp = false;
+        
         #endregion
         #region SQL 实体访问器
         /// <summary>
@@ -46,7 +47,7 @@ namespace ShadowViewer.Models
                 if(oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Name), oldValue, Name);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Name), oldValue, Name);
                 }
             }
         }
@@ -64,7 +65,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Author), oldValue, Author);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Author), oldValue, Author);
                 }
             }
 
@@ -83,7 +84,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Img), oldValue, Img);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Img), oldValue, Img);
                 }
             }
         }
@@ -101,7 +102,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Percent), oldValue, Percent);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Percent), oldValue, Percent);
                 }
             }
         }
@@ -119,7 +120,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Group), oldValue, Group);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Group), oldValue, Group);
                 }
             }
         }
@@ -137,7 +138,7 @@ namespace ShadowViewer.Models
                 if (oldValue != null && oldValue != value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Remark), oldValue, Remark);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Remark), oldValue, Remark);
                 }
             }
         }
@@ -154,7 +155,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(CreateTime), oldValue, CreateTime);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(CreateTime), oldValue, CreateTime);
                 }
             }
         }
@@ -171,7 +172,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(LastReadTime), oldValue, LastReadTime);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(LastReadTime), oldValue, LastReadTime);
                 }
             }
         }
@@ -190,7 +191,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Parent), oldValue, Parent);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Parent), oldValue, Parent);
                 }
             }
         }
@@ -206,7 +207,7 @@ namespace ShadowViewer.Models
                 tags = value;
                 if (tags != null)
                 {
-                    Log.Debug("添加Tag响应");
+                    Logger.Debug("添加Tag响应");
                     tags.CollectionChanged += Tags_CollectionChanged;
                 }
             }
@@ -225,7 +226,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Affiliation), oldValue, Affiliation);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Affiliation), oldValue, Affiliation);
                 }
             }
         }
@@ -243,7 +244,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Link), oldValue, Link);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Link), oldValue, Link);
                 }
             }
         }
@@ -258,7 +259,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(IsTemp), oldValue.ToString(), IsTemp.ToString());
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(IsTemp), oldValue.ToString(), IsTemp.ToString());
                 }
             }
         }
@@ -272,7 +273,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(EpisodeCounts), oldValue, EpisodeCounts);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(EpisodeCounts), oldValue, EpisodeCounts);
                 }
             }
         }
@@ -286,7 +287,7 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Counts), oldValue, Counts);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Counts), oldValue, Counts);
                 }
             }
         }
@@ -303,9 +304,9 @@ namespace ShadowViewer.Models
                 if (oldValue != default && oldValue!= value)
                 {
                     Update();
-                    Log.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Size), oldValue, Size);
+                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Size), oldValue, Size);
                 }
-                SizeString = ShowSize(size);
+                SizeString = ComicHelper.ShowSize(size);
             }
         }
         /// <summary>
@@ -345,7 +346,7 @@ namespace ShadowViewer.Models
             this.affiliation = affiliation;
             this.link = link;
             this.size = size;
-            this.sizeString = ShowSize(size);
+            this.sizeString = ComicHelper.ShowSize(size);
             this.isFolder = isFolder;
             this.isTemp = isTemp;
             Tags.CollectionChanged += Tags_CollectionChanged;
@@ -358,12 +359,20 @@ namespace ShadowViewer.Models
         public void Update()
         {
             DBHelper.Update(this);
-            Log.Information("更新Comic:{ComicId}", Id);
+            Logger.Information("更新Comic:{ComicId}", Id);
         }
         public void Add()
         {
             DBHelper.Add(this);
-            Log.Information("添加Comic:{ComicId}", Id);
+            Logger.Information("添加Comic:{ComicId}", Id);
+        }
+        public void Remove() {
+            DBHelper.Remove(new LocalComic { Id = this.Id });
+            Logger.Information("删除Comic:{ComicId}", Id);
+        }
+        public static void Remove(LocalComic comic)
+        {
+            comic.Remove(); 
         }
         private static ObservableCollection<string> LoadTags(string tags)
         {
@@ -378,25 +387,7 @@ namespace ShadowViewer.Models
             return new ObservableCollection<string>(res);
         }
          
-        private string ShowSize(long size)
-        {
-            long KB = 1024;
-            long MB = KB * 1024;
-            long GB = MB * 1024;
-            if (size / GB >= 1)
-            {
-                return $"{Math.Round(size / (float)GB, 2)} GB";
-            }
-            else if (size / MB >= 1)
-            {
-                return $"{Math.Round(size / (float)MB, 2)} MB";
-            }
-            else if (size / KB >= 1)
-            {
-                return $"{Math.Round(size / (float)KB, 2)} KB";
-            }
-            return $"{size} B";
-        }
+        
         [SugarColumn(IsIgnore = true)]
         public string Path 
         { 
@@ -412,7 +403,7 @@ namespace ShadowViewer.Models
                 }
             } 
         }
-        
-
+        [SugarColumn(IsIgnore = true)]
+        public static ILogger Logger { get; } = Log.ForContext<LocalComic>();
     }
 }

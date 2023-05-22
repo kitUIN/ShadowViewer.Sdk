@@ -83,9 +83,30 @@ namespace ShadowViewer.Helpers
             CompressHelper.DeCompress(path, uri);
             comic.IsTemp = false;
             comic.Link = uri;
-            GC.SuppressFinalize(Entrys[path]);
-            //Entrys[path].Dispose(); // 销毁资源
+            ShadowEntry.InitLocal(Entrys[path], uri, comic.Id);
+            Entrys[path].Dispose();
+            GC.SuppressFinalize(Entrys[path]); // 销毁资源
             Entrys.Remove(path);
+        }
+
+        public static string ShowSize(long size)
+        {
+            long KB = 1024;
+            long MB = KB * 1024;
+            long GB = MB * 1024;
+            if (size / GB >= 1)
+            {
+                return $"{Math.Round(size / (float)GB, 2)} GB";
+            }
+            else if (size / MB >= 1)
+            {
+                return $"{Math.Round(size / (float)MB, 2)} MB";
+            }
+            else if (size / KB >= 1)
+            {
+                return $"{Math.Round(size / (float)KB, 2)} KB";
+            }
+            return $"{size} B";
         }
         /// <summary>
         /// 字母顺序A-Z

@@ -1,25 +1,25 @@
 ﻿
 namespace ShadowViewer.Utils
 {
-    
-    public class ShadowFile
+    public class ShadowFile : IDisposable
     {
         public IStorageItem Self { get; set; }
         public int Depth { get; set; } = 0 ;
         public int Counts { get; set; } = 0;
         public long Size { get; set; } = 0;
+        public bool IsDirectory { get => Self is StorageFolder; }
         public List<ShadowFile> Children { get; } = new List<ShadowFile>();
-        public ShadowFile(IStorageItem item) 
+        ShadowFile(IStorageItem item) 
         {
-            Self=item;
+            Self = item;
         }
         private async Task LoadChildren()
         {
             if(Self is StorageFolder folder)
             {
-                foreach (var item in await folder.GetItemsAsync())
+                foreach (IStorageItem item in await folder.GetItemsAsync())
                 {
-                    var file = new ShadowFile(item);
+                    ShadowFile file = new ShadowFile(item);
                     await file.LoadChildren();
                     Children.Add(file);
                 }
@@ -47,9 +47,46 @@ namespace ShadowViewer.Utils
         }
         public static async Task<ShadowFile> Create(IStorageItem item)
         {
-            var f = new ShadowFile(item);
+            ShadowFile f = new ShadowFile(item);
             await f.LoadChildren();
             return f;
+        }
+        public static List<ShadowFile> GetDepthFiles(ShadowFile root,int depth = 1)
+        {
+            if (root.Depth == depth && root.IsDirectory)
+            {
+                return new List<ShadowFile> { root };
+            }
+            else
+            {
+                List<ShadowFile> result = new List<ShadowFile>();
+                foreach (ShadowFile child in root.Children)
+                {
+                    result.AddRange(GetDepthFiles(child, depth));
+                }
+                return result;
+            }
+        }
+        
+        public static void InitLocal(ShadowFile root, string comicId)
+        {
+            List<ShadowFile> one = GetDepthFiles(root);
+            int order = 1;
+            foreach (ShadowFile child in one)
+            {
+                LocalEpisode ep = LocalEpisode.Create(((StorageFolder)child.Self).DisplayName, order, comicId, child.Children.Count, child.Size);
+                ep.Add();
+                order++;
+                foreach (ShadowFile item in child.Children)
+                {
+                    LocalPicture pic = LocalPicture.Create(((StorageFile)item.Self).DisplayName, ep.Id, comicId, item.Self.Path, item.Size);
+                    pic.Add();
+                }
+            }
+        }
+        public void Dispose()
+        {
+             
         }
     }
 }

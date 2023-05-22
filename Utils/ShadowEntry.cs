@@ -143,21 +143,39 @@ namespace ShadowViewer.Utils
             {
                 Counts = 1;
             }
-        }
-        public static ShadowEntry GetTwo(ShadowEntry root)
+        }  
+        public static List<ShadowEntry> GetDepth1Entries(ShadowEntry root)
         {
-            if (root.Depth < 2) return null;
-            if (root.Depth == 2) return root;
-            foreach (ShadowEntry child in root.Children)
-            { 
-                if (GetTwo(child) is ShadowEntry result)
+            if (root.Depth == 1)
+            {
+                return new List<ShadowEntry> { root };
+            }
+            else
+            {
+                List<ShadowEntry> result = new List<ShadowEntry>();
+                foreach (ShadowEntry child in root.Children)
                 {
-                    return result;
+                    result.AddRange(GetDepth1Entries(child));
                 }
+                return result;
             } 
-            return null;
         }
-
+        public static void InitLocal(ShadowEntry root, string initPath, string comicId)
+        {
+            List<ShadowEntry> one = GetDepth1Entries(root);
+            int order = 1;
+            foreach(ShadowEntry child in one)
+            {
+                LocalEpisode ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
+                ep.Add();
+                order++;
+                foreach (ShadowEntry item in child.Children)
+                {
+                    LocalPicture pic = LocalPicture.Create(item.Name, ep.Id, comicId, System.IO.Path.Combine(initPath, item.Path), item.Size);
+                    pic.Add();
+                }
+            }
+        }
         public void Dispose()
         {
              
