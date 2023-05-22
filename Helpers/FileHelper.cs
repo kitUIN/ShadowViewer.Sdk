@@ -99,7 +99,7 @@
         {
             var window = WindowHelper.GetWindowForElement(element);
             var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-            FolderPicker openPicker = new FolderPicker();
+            FolderPicker openPicker = new FolderPicker(); 
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
             openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
             openPicker.FileTypeFilter.Add("*");
