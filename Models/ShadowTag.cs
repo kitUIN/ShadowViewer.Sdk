@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using Serilog.Core;
+using SqlSugar;
 
 namespace ShadowViewer.Models
 {
@@ -62,11 +63,21 @@ namespace ShadowViewer.Models
         public string Log()
         {
             return $"ShadowTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
-        } 
+        }  
         public void Add()
         {
             DBHelper.Add(this);
-            Serilog.Log.Information("添加 {Log}", Log());
+            Logger.Information("添加{Log}", Log());
         }
+        public void Remove()
+        {
+            DBHelper.Remove(new ShadowTag { Name = this.Name });
+            Logger.Information("删除ShadowTag:{Name}", Name);
+        }
+        public static void Remove(ShadowTag tag)
+        {
+            tag.Remove();
+        }
+        public static ILogger Logger { get; } = Serilog.Log.ForContext<ShadowTag>();
     }
 }

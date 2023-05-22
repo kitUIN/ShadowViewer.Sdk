@@ -1,5 +1,4 @@
-﻿using Serilog.Core;
-using SqlSugar;
+﻿using SqlSugar;
 
 namespace ShadowViewer.Models
 {
@@ -29,7 +28,13 @@ namespace ShadowViewer.Models
         /// 页数
         /// </summary>
         public int Counts { get; set; }
+        /// <summary>
+        /// 大小
+        /// </summary>
         public long Size { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime CreateTime { get; set; }
 
         public void Update()

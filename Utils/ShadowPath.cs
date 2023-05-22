@@ -18,9 +18,8 @@
         }
 
         public ShadowPath(IEnumerable<string> black)
-        {
-            var time = DateTime.Now;
-            this.comic = new LocalComic("local", "local", time, time, "local", img: "ms-appx:///Assets/Default/folder.png");
+        { 
+            this.comic = LocalComic.Create("", "", img: "ms-appx:///Assets/Default/folder.png");
             Children = DBHelper.Db.Queryable<LocalComic>().Where(x => x.Parent == "local" && x.IsFolder&& !black.Contains(x.Id)).Select(c => new ShadowPath(c)).ToList();
         }
     }

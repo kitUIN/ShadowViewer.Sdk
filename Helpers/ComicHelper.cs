@@ -2,48 +2,85 @@
 
 namespace ShadowViewer.Helpers
 {
-    public static class ComicHelper
+    public class ComicHelper
     {
+        public static ILogger Logger { get; } = Log.ForContext<ComicHelper>();
         public static Dictionary<string, ShadowEntry> Entrys { get; private set; } = new Dictionary<string, ShadowEntry>();
         public static LocalComic CreateFolder(string name, string parent)
         { 
             if (name == "") name = I18nHelper.GetString("Shadow.String.CreateFolder.Title");
             return LocalComic.Create(name, "", img: "ms-appx:///Assets/Default/folder.png", parent: parent, isFolder: true, percent:"");
-        } 
-        public static string LoadImgFromEntry(ShadowEntry entry,string dir)
+        }
+        /// <summary>
+        /// 从文件夹导入漫画
+        /// </summary> 
+        public static async Task<LocalComic> ImportComicsFromFolder(StorageFolder folder,string parent)
         {
-            MemoryStream Cycle(ShadowEntry entry)
+            static ShadowFile Cycle(List<ShadowFile> entries)
             {
-                ShadowEntry temp = entry.Children.FirstOrDefault(x => !x.IsDirectory && x.Source != null);
-                if(temp is null)
+                ShadowFile imgEntry = null;
+                foreach (ShadowFile item in entries)
                 {
-                    foreach (ShadowEntry item in entry.Children)
-                    {
-                        return Cycle(item);
-                    }
-                }
-                else
-                {
-                    return temp.Source;
+                    imgEntry = item.Children.FirstOrDefault(x => x.Self is StorageFile f && f.IsPic());
+                    if (imgEntry != null) return imgEntry;
                 }
                 return null;
             }
-
-            var stream = Cycle(entry);
-            if (stream is null) return null;
+            ShadowFile root = await ShadowFile.Create(folder);
+            List<ShadowFile> two = ShadowFile.GetDepthFiles(root, 2);
+            ShadowFile imgEntry = Cycle(two);
+            if (imgEntry == null)
+            {
+                two = ShadowFile.GetDepthFiles(root, 1);
+                imgEntry = Cycle(two);
+            } 
+            LocalComic comic = LocalComic.Create(((StorageFolder)root.Self).DisplayName, root.Self.Path, img: imgEntry?.Self.Path, parent: parent, size: root.Size);
+            comic.Add();
+            ShadowFile.ToLocalComic(root, comic.Id);
+            root.Dispose();
+            return comic;
+        }
+        /// <summary>
+        /// 从缓存流中加载缩略图
+        /// </summary> 
+        public static string LoadImgFromEntry(ShadowEntry root, string dir)
+        {
+            static ShadowEntry Cycle(List<ShadowEntry> entries)
+            {
+                ShadowEntry imgEntry = null;
+                foreach (ShadowEntry item in entries)
+                {
+                    imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory && x.Source != null);
+                    if (imgEntry != null) return imgEntry;
+                }
+                return null;
+            }
+            List<ShadowEntry> two = ShadowEntry.GetDepthEntries(root, 2);
+            ShadowEntry imgEntry = Cycle(two); 
+            if (imgEntry == null)
+            {
+                two = ShadowEntry.GetDepthEntries(root, 1);
+                imgEntry = Cycle(two);
+            }
             string img = System.IO.Path.Combine(dir, Guid.NewGuid().ToString("N") + ".png");
             using (var fileStream = new FileStream(img, FileMode.Create, FileAccess.Write))
             {
-                stream.WriteTo(fileStream);
-            }
+                imgEntry.Source.WriteTo(fileStream);
+            } 
             return img;
         }
+        /// <summary>
+        /// 从缓存流中加载LocalComic
+        /// </summary> 
         public static LocalComic ImportComicsFromEntry(string path, string parent, string img,long size)
         {
             if (!Entrys.ContainsKey(path)) return null; 
-            string fileName = Path.GetFileNameWithoutExtension(path).Split(new char[] { '\\', '/' }).Last();
+            string fileName = Path.GetFileNameWithoutExtension(path).Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last(); 
             return LocalComic.Create(fileName, path, img: img, parent:parent,   size: size, isTemp:true,isFromZip:true);
         }
+        /// <summary>
+        /// 从压缩文件加载LocalComic
+        /// </summary> 
         public static async Task<LocalComic> ImportComicsFromZip(string path, string imgPath)
         {
             Entrys[path] = await CompressHelper.DeCompress(path);
@@ -53,18 +90,25 @@ namespace ShadowViewer.Helpers
             comic.Add();
             return comic;
         }
+        /// <summary>
+        /// 从缓存流转换到LocalComic
+        /// </summary> 
         public static void EntryToComic(string comicPath,LocalComic comic, string path)
         {
             string uri = System.IO.Path.Combine(comicPath, comic.Id);
             CompressHelper.DeCompress(path, uri);
             comic.IsTemp = false;
             comic.Link = uri;
-            ShadowEntry.InitLocal(Entrys[path], uri, comic.Id);
+            ShadowEntry.ToLocalComic(Entrys[path], uri, comic.Id);
             Entrys[path].Dispose();
             GC.SuppressFinalize(Entrys[path]); // 销毁资源
             Entrys.Remove(path);
         }
-
+        /// <summary>
+        /// Long 大小 转换成 字符串型 大小
+        /// </summary>
+        /// <param name="size"></param>
+        /// <returns></returns>
         public static string ShowSize(long size)
         {
             long KB = 1024;

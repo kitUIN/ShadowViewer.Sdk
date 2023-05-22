@@ -30,7 +30,13 @@ namespace ShadowViewer.Models
         /// </summary>
         [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
         public string Img { get; set; }
+        /// <summary>
+        /// 大小
+        /// </summary>
         public long Size { get; set; }
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime CreateTime { get; set; }
         public void Update()
         {

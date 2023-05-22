@@ -67,8 +67,12 @@ namespace ShadowViewer.Utils
                 return result;
             }
         }
-        
-        public static void InitLocal(ShadowFile root, string comicId)
+        /// <summary>
+        /// 转化为本地漫画
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="comicId"></param>
+        public static void ToLocalComic(ShadowFile root, string comicId)
         {
             List<ShadowFile> one = GetDepthFiles(root);
             int order = 1;
@@ -84,6 +88,9 @@ namespace ShadowViewer.Utils
                 }
             }
         }
+        /// <summary>
+        /// 销毁资源
+        /// </summary>
         public void Dispose()
         {
              

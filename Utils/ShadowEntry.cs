@@ -6,14 +6,38 @@ namespace ShadowViewer.Utils
 {
     public class ShadowEntry: IDisposable
     {
+        /// <summary>
+        /// 名称
+        /// </summary>
         public string Name { get; set; }
+        /// <summary>
+        /// 数据流
+        /// </summary>
         public MemoryStream Source { get => stream; set => stream = value; }
         private MemoryStream stream;
+        /// <summary>
+        /// 深度
+        /// </summary>
         public int Depth { get; set; } = 0;
+        /// <summary>
+        /// 个数
+        /// </summary>
         public int Counts { get; set; } = 0;
+        /// <summary>
+        /// 大小
+        /// </summary>
         public long Size { get; set; } = 0;
+        /// <summary>
+        /// 地址
+        /// </summary>
         public string Path { get; set; }
+        /// <summary>
+        /// 是否是文件夹
+        /// </summary>
         public bool IsDirectory { get => Children.Count > 0 || Source == null; }
+        /// <summary>
+        /// 含有
+        /// </summary>
         public List<ShadowEntry> Children { get; } = new List<ShadowEntry>();
         public ShadowEntry(){ }
         public static async Task LoadEntry(IReader reader, ShadowEntry root)
@@ -143,10 +167,10 @@ namespace ShadowViewer.Utils
             {
                 Counts = 1;
             }
-        }  
-        public static List<ShadowEntry> GetDepth1Entries(ShadowEntry root)
+        }
+        public static List<ShadowEntry> GetDepthEntries(ShadowEntry root,int depth = 1)
         {
-            if (root.Depth == 1)
+            if (root.Depth == depth)
             {
                 return new List<ShadowEntry> { root };
             }
@@ -155,14 +179,17 @@ namespace ShadowViewer.Utils
                 List<ShadowEntry> result = new List<ShadowEntry>();
                 foreach (ShadowEntry child in root.Children)
                 {
-                    result.AddRange(GetDepth1Entries(child));
+                    result.AddRange(GetDepthEntries(child, depth));
                 }
                 return result;
             } 
         }
-        public static void InitLocal(ShadowEntry root, string initPath, string comicId)
+        /// <summary>
+        /// 转化为本地漫画
+        /// </summary>
+        public static void ToLocalComic(ShadowEntry root, string initPath, string comicId)
         {
-            List<ShadowEntry> one = GetDepth1Entries(root);
+            List<ShadowEntry> one = GetDepthEntries(root);
             int order = 1;
             foreach(ShadowEntry child in one)
             {
@@ -176,6 +203,9 @@ namespace ShadowViewer.Utils
                 }
             }
         }
+        /// <summary>
+        /// 销毁资源
+        /// </summary>
         public void Dispose()
         {
              

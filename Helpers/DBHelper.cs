@@ -22,7 +22,6 @@ namespace ShadowViewer.Helpers
             {
                 Db.CodeFirst.InitTables(obj);
             }
-            
         }
         /// <summary>
         /// 在数据库添加一个新行

@@ -1,30 +1,20 @@
-﻿
-using SharpCompress.Archives;
+﻿using SharpCompress.Archives;
 using SharpCompress.Archives.SevenZip;
 using SharpCompress.Archives.Rar;
 using SharpCompress.Common;
-using SharpCompress.Compressors.Xz;
 using SharpCompress.Readers;
-using System;
-using System.IO;
-using System.Reflection.PortableExecutable;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation.Collections;
-using Windows.Storage.Compression;
-using Windows.Storage.Streams;
 
 namespace ShadowViewer.Helpers
 {
-    public static class CompressHelper
+    public class CompressHelper
     {
-
+        public static ILogger Logger { get; } = Log.ForContext<CompressHelper>();
         public static void DeCompress(string zip, string destinationDirectory)
-        {
-            
+        { 
             destinationDirectory.CreateDirectory();
-            switch(Path.GetExtension(zip).ToLower())
-            {
-               
+            Logger.Information("解压:{Zip}", zip);
+            switch (Path.GetExtension(zip).ToLower())
+            { 
                 case ".7z":
                     SevenZipDeCompress(zip, destinationDirectory);
                     break;

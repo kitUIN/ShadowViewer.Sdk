@@ -1,8 +1,7 @@
 ﻿namespace ShadowViewer.Helpers
 {
     public static class UriHelper
-    {
-         
+    { 
         public static async void LaunchUriAsync(this Uri uri)
         {
             if (uri != null)

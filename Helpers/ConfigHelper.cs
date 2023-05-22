@@ -1,6 +1,6 @@
 ﻿namespace ShadowViewer.Helpers
 {
-    public static class ConfigHelper
+    public class ConfigHelper
     {
         private static string container = "ShadowViewer";
         public static bool Contains(string container, string key)
@@ -21,7 +21,7 @@
         {
             ApplicationDataContainer CoreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
             CoreSettings.Values[key] = value;
-            Log.Information("{Container}[{Key}]={Value}", container, key, value.ToString());
+            Log.ForContext<ConfigHelper>().Information("{Container}[{Key}]={Value}", container, key, value.ToString());
         }
         public static ApplicationDataCompositeValue CreateDict()
         {
