@@ -60,7 +60,7 @@ namespace ShadowViewer.Utils
                                 Path = string.Join("/", names.Take(i + 1))
                             });
                         }
-                        else if (FileHelper.IsPic(names[i]))
+                        else if (names[i].IsPic())
                         {
                             MemoryStream ms = new MemoryStream();
                             using (EntryStream entryStream = reader.OpenEntryStream())
@@ -115,7 +115,7 @@ namespace ShadowViewer.Utils
                                 Path = string.Join("/", names.Take(i + 1))
                             });
                         }
-                        else if (FileHelper.IsPic(names[i]))
+                        else if (names[i].IsPic())
                         {
                             MemoryStream ms = new MemoryStream();
                             using (Stream entryStream = entry.OpenEntryStream())
