@@ -21,9 +21,7 @@ namespace ShadowViewer.Models
         private int counts;
         private string sizeString;
         private bool isFolder = false;
-        private bool isTemp = false;
-        private bool isFromZip = false;
-        
+
         #endregion
         #region SQL 实体访问器
         /// <summary>
@@ -250,20 +248,6 @@ namespace ShadowViewer.Models
             }
         }
         
-        public bool IsTemp
-        {
-            get => isTemp;
-            set
-            {
-                bool oldValue = isTemp;
-                SetProperty(ref isTemp, value, propertyName: nameof(IsTemp));
-                if (oldValue != default && oldValue!= value)
-                {
-                    Update();
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(IsTemp), oldValue.ToString(), IsTemp.ToString());
-                }
-            }
-        }
         public int EpisodeCounts
         {
             get => episodeCounts;
@@ -327,33 +311,27 @@ namespace ShadowViewer.Models
             get => isFolder;
             set => SetProperty(ref isFolder, value,  propertyName: nameof(IsFolder));
         }
-        /// <summary>
-        /// 是否是从zip导入
-        /// </summary>
-        public bool IsFromZip
-        {
-            get => isFromZip; 
-            set
-            {
-                bool oldValue = isFromZip;
-                SetProperty(ref isFromZip, value, propertyName: nameof(IsFromZip));
-                if (oldValue != default && oldValue != value)
-                {
-                    Update();
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(IsFromZip), oldValue, IsFromZip);
-                } 
-            }
-        }
         #endregion
 
-         
-        public static LocalComic Create(string name, string link, string img = null, string remark = "", string group = "", string author = "", string parent = "local",
-            string percent = "0%", string tags = "", string affiliation = "Local",   long size = 0, bool isFolder = false, bool isTemp = false, bool isFromZip = false)
+         public static string RandomId()
         {
             string id = Guid.NewGuid().ToString("N");
             while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
+            }
+            return id;
+        }
+        public static LocalComic Create(string name, string link, string img = null, string remark = "", string group = "", string author = "", string parent = "local",
+            string percent = "0%", string tags = "", string affiliation = "Local",   long size = 0, bool isFolder = false,string id=null)
+        {
+            if(id==null)
+            {
+                id = Guid.NewGuid().ToString("N");
+                while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
+                {
+                    id = Guid.NewGuid().ToString("N");
+                }
             }
             if (img is null) { img = "ms-appx:///Assets/Default/picbroken.png"; }
             DateTime time = DateTime.Now;
@@ -366,8 +344,6 @@ namespace ShadowViewer.Models
                 Tags = LoadTags(tags),
                 Size = size,
                 IsFolder = isFolder,
-                IsTemp = isTemp,
-                IsFromZip = isFromZip,
                 Name = name,
                 Link = link,
                 Remark = remark,

@@ -129,7 +129,7 @@
         /// <param name="xamlRoot">The xaml root.</param>
         /// <param name="oldName">The old name.</param>
         /// <returns></returns>
-        public static ContentDialog CreateOneLineTextBoxDialog(string title, XamlRoot xamlRoot, string oldName)
+        public static ContentDialog CreateOneLineTextBoxDialog(string title, XamlRoot xamlRoot, string oldName="",string header="",string placeholder = "")
         {
             ContentDialog dialog = CreateContentDialog(xamlRoot);
             dialog.Title = title;
@@ -140,8 +140,7 @@
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Orientation = Orientation.Vertical,
             };
-            var nameBox = CreateOneLineTextBox(I18nHelper.GetString("Shadow.String.CreateFolder.Name"),
-                I18nHelper.GetString("Shadow.String.CreateFolder.Title"), oldName, 222);
+            StackPanel nameBox = CreateOneLineTextBox( header, placeholder, oldName, 222);
             grid.Children.Add(nameBox);
             dialog.Content = grid;
             dialog.IsPrimaryButtonEnabled = true;

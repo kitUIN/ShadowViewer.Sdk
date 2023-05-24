@@ -11,11 +11,6 @@ namespace ShadowViewer.Utils
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// 数据流
-        /// </summary>
-        public MemoryStream Source { get => stream; set => stream = value; }
-        private MemoryStream stream;
-        /// <summary>
         /// 深度
         /// </summary>
         public int Depth { get; set; } = 0;
@@ -34,68 +29,14 @@ namespace ShadowViewer.Utils
         /// <summary>
         /// 是否是文件夹
         /// </summary>
-        public bool IsDirectory { get => Children.Count > 0 || Source == null; }
+        public bool IsDirectory { get => Children.Count > 0; }
         /// <summary>
         /// 含有
         /// </summary>
         public List<ShadowEntry> Children { get; } = new List<ShadowEntry>();
         public ShadowEntry(){ }
-        public static async Task LoadEntry(IReader reader, ShadowEntry root)
-        {
-            string[] names = reader.Entry.Key.Split(new char[] { '\\', '/' } ,StringSplitOptions.RemoveEmptyEntries);
-            ShadowEntry temp = root;
-            ShadowEntry tmp = null;
-            for (int i = 0; i < names.Length; i++)
-            {
-                tmp = temp.Children.FirstOrDefault(x => x.Name == names[i]);
-                if (tmp is null)
-                {
-                    if (i == names.Length - 1)
-                    {
-                        if (reader.Entry.IsDirectory)
-                        {
-                            temp.Children.Add(new ShadowEntry()
-                            {
-                                Name = names[i],
-                                Path = string.Join("/", names.Take(i + 1))
-                            });
-                        }
-                        else if (names[i].IsPic())
-                        {
-                            MemoryStream ms = new MemoryStream();
-                            using (EntryStream entryStream = reader.OpenEntryStream())
-                            {
-                                await entryStream.CopyToAsync(ms);
-                                ms.Seek(0, SeekOrigin.Begin);
-                            }
-                            temp.Children.Add(new ShadowEntry()
-                            {
-                                Name = names[i],
-                                Source = ms,
-                                Path = string.Join("/", names.Take(i + 1)),
-                                Size = reader.Entry.Size,
-                            });
-                        }
-
-                    }
-                    else
-                    {
-                        temp.Children.Add(new ShadowEntry()
-                        {
-                            Name = names[i],
-                            Path = string.Join("/", names.Take(i + 1))
-                        });
-
-                    }
-                }
-                else
-                {
-                    temp = tmp;
-                }
-
-            }
-        }
-        public static async Task LoadEntry(IArchiveEntry entry, ShadowEntry root)
+        
+        public static void LoadEntry(IArchiveEntry entry, ShadowEntry root)
         { 
             string[] names = entry.Key.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
             ShadowEntry temp = root;
@@ -117,21 +58,13 @@ namespace ShadowViewer.Utils
                         }
                         else if (names[i].IsPic())
                         {
-                            MemoryStream ms = new MemoryStream();
-                            using (Stream entryStream = entry.OpenEntryStream())
-                            {
-                                await entryStream.CopyToAsync(ms);
-                                ms.Seek(0, SeekOrigin.Begin);
-                            }
                             temp.Children.Add(new ShadowEntry()
                             {
                                 Name = names[i],
-                                Source = ms,
                                 Size = entry.Size,
                                 Path = string.Join("/", names.Take(i + 1))
                             });
                         }
-
                     }
                     else
                     {
@@ -140,7 +73,6 @@ namespace ShadowViewer.Utils
                             Name = names[i],
                             Path = string.Join("/", names.Take(i + 1))
                         });
-
                     }
                 }
                 else
@@ -152,7 +84,6 @@ namespace ShadowViewer.Utils
         }
         public void LoadChildren()
         {
-             
             if (Children.Count > 0)
             {
                 foreach (ShadowEntry child in Children)

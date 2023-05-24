@@ -1,9 +1,10 @@
-﻿namespace ShadowViewer.Helpers
+﻿using SharpCompress.Common;
+
+namespace ShadowViewer.Helpers
 {
     public class ComicHelper
     {
         public static ILogger Logger { get; } = Log.ForContext<ComicHelper>();
-        public static Dictionary<string, ShadowEntry> Entrys { get; private set; } = new Dictionary<string, ShadowEntry>();
         public static LocalComic CreateFolder(string name, string parent)
         { 
             if (name == "") name = I18nHelper.GetString("Shadow.String.CreateFolder.Title");
@@ -48,7 +49,7 @@
                 ShadowEntry imgEntry = null;
                 foreach (ShadowEntry item in entries)
                 {
-                    imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory && x.Source != null);
+                    imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory);
                     if (imgEntry != null) return imgEntry;
                 }
                 return null;
@@ -59,45 +60,22 @@
             {
                 two = ShadowEntry.GetDepthEntries(root, 1);
                 imgEntry = Cycle(two);
-            }
-            CacheImage img = CacheImage.Create(dir, imgEntry.Source);
-            return img.Path;
+            } 
+            return Path.Combine(dir, imgEntry.Path);
         }
-        /// <summary>
-        /// 从缓存流中加载LocalComic
-        /// </summary> 
-        public static LocalComic ImportComicsFromEntry(string path, string parent, string img,long size)
+        public static async Task<string> ZipPasswordDialog(XamlRoot xamlRoot)
         {
-            if (!Entrys.ContainsKey(path)) return null; 
-            string fileName = Path.GetFileNameWithoutExtension(path).Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last(); 
-            return LocalComic.Create(fileName, path, img: img, parent:parent,   size: size, isTemp:true,isFromZip:true);
+            string password = "";
+            ContentDialog dialog = XamlHelper.CreateOneLineTextBoxDialog(
+                I18nHelper.GetString("Shadow.String.ZipPassword"), xamlRoot, "");
+            dialog.PrimaryButtonClick += (s, e) =>
+            {
+                password = ((TextBox)((StackPanel)((StackPanel)dialog.Content).Children[0]).Children[1]).Text;
+            };
+            await dialog.ShowAsync();
+            return password;
         }
-        /// <summary>
-        /// 从压缩文件加载LocalComic
-        /// </summary> 
-        public static async Task<LocalComic> ImportComicsFromZip(string path, string imgPath)
-        {
-            Entrys[path] = await CompressHelper.DeCompress(path);
-            string img = LoadImgFromEntry(Entrys[path], imgPath);
-            long size = Entrys[path].Size;
-            LocalComic comic = ImportComicsFromEntry(path, "local", img, size);
-            comic.Add();
-            return comic;
-        }
-        /// <summary>
-        /// 从缓存流转换到LocalComic
-        /// </summary> 
-        public static void EntryToComic(string comicPath,LocalComic comic, string path)
-        {
-            string uri = System.IO.Path.Combine(comicPath, comic.Id);
-            CompressHelper.DeCompress(path, uri);
-            comic.IsTemp = false;
-            comic.Link = uri;
-            ShadowEntry.ToLocalComic(Entrys[path], uri, comic.Id);
-            Entrys[path].Dispose();
-            GC.SuppressFinalize(Entrys[path]); // 销毁资源
-            Entrys.Remove(path);
-        }
+         
         /// <summary>
         /// Long 大小 转换成 字符串型 大小
         /// </summary>
