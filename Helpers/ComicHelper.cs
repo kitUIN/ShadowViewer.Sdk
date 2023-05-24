@@ -1,6 +1,4 @@
-﻿ 
-
-namespace ShadowViewer.Helpers
+﻿namespace ShadowViewer.Helpers
 {
     public class ComicHelper
     {
@@ -62,12 +60,8 @@ namespace ShadowViewer.Helpers
                 two = ShadowEntry.GetDepthEntries(root, 1);
                 imgEntry = Cycle(two);
             }
-            string img = System.IO.Path.Combine(dir, Guid.NewGuid().ToString("N") + ".png");
-            using (var fileStream = new FileStream(img, FileMode.Create, FileAccess.Write))
-            {
-                imgEntry.Source.WriteTo(fileStream);
-            } 
-            return img;
+            CacheImage img = CacheImage.Create(dir, imgEntry.Source);
+            return img.Path;
         }
         /// <summary>
         /// 从缓存流中加载LocalComic
