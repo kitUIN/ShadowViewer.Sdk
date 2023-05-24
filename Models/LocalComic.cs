@@ -306,6 +306,7 @@ namespace ShadowViewer.Models
                 {
                     Update();
                     Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Size), oldValue, Size);
+                    SizeString = ComicHelper.ShowSize(Size);
                 } 
             }
         }
@@ -314,8 +315,9 @@ namespace ShadowViewer.Models
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public string SizeString
-        {
-            get => ComicHelper.ShowSize(Size); 
+        { 
+            get => sizeString;
+            set => SetProperty(ref sizeString, value, propertyName: nameof(SizeString));
         }
         /// <summary>
         /// 是否是文件夹
