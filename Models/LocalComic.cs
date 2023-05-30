@@ -46,6 +46,12 @@ namespace ShadowViewer.Models
                 if(oldValue != null && oldValue != value)
                 {
                     Update();
+                    CacheZip cache = DBHelper.Db.Queryable<CacheZip>().First(x => x.ComicId == Id);
+                    if(cache != null)
+                    {
+                        cache.Name = value;
+                        cache.Update();
+                    }
                     Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Name), oldValue, Name);
                 }
             }

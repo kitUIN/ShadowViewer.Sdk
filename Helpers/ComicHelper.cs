@@ -13,7 +13,7 @@ namespace ShadowViewer.Helpers
         /// <summary>
         /// 从文件夹导入漫画
         /// </summary> 
-        public static async Task<LocalComic> ImportComicsFromFolder(StorageFolder folder,string parent)
+        public static async Task<LocalComic> ImportComicsFromFolder(StorageFolder folder,string parent,string comicId=null,string comicName=null)
         {
             static ShadowFile Cycle(List<ShadowFile> entries)
             {
@@ -33,7 +33,7 @@ namespace ShadowViewer.Helpers
                 two = ShadowFile.GetDepthFiles(root, 1);
                 imgEntry = Cycle(two);
             } 
-            LocalComic comic = LocalComic.Create(((StorageFolder)root.Self).DisplayName, root.Self.Path, img: imgEntry?.Self.Path, parent: parent, size: root.Size);
+            LocalComic comic = LocalComic.Create(comicName ?? ((StorageFolder)root.Self).DisplayName, root.Self.Path, img: imgEntry?.Self.Path, parent: parent, size: root.Size,id:comicId);
             comic.Add();
             ShadowFile.ToLocalComic(root, comic.Id);
             root.Dispose();
@@ -63,17 +63,15 @@ namespace ShadowViewer.Helpers
             } 
             return Path.Combine(dir, imgEntry.Path);
         }
-        public static async Task<string> ZipPasswordDialog(XamlRoot xamlRoot)
+        public static ContentDialog ZipPasswordDialog(XamlRoot xamlRoot, IProgress<string> process)
         {
-            string password = "";
             ContentDialog dialog = XamlHelper.CreateOneLineTextBoxDialog(
                 I18nHelper.GetString("Shadow.String.ZipPassword"), xamlRoot, "");
             dialog.PrimaryButtonClick += (s, e) =>
             {
-                password = ((TextBox)((StackPanel)((StackPanel)dialog.Content).Children[0]).Children[1]).Text;
+                process.Report(((TextBox)((StackPanel)((StackPanel)dialog.Content).Children[0]).Children[1]).Text);
             };
-            await dialog.ShowAsync();
-            return password;
+            return dialog;
         }
          
         /// <summary>

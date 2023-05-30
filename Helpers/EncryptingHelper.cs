@@ -34,11 +34,28 @@ namespace ShadowViewer.Helpers
                 return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
             }
         }
+        public static string CreateSha1(byte[] bytes)
+        {
+            using (SHA1 sha1 = SHA1.Create())
+            {
+                byte[] hash = sha1.ComputeHash(bytes);
+                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+            }
+        }
         public static string CreateMd5(Stream stream)
         {
+
             using (MD5 md5 = MD5.Create())
             {
                 byte[] hash = md5.ComputeHash(stream);
+                return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+            }
+        }public static string CreateMd5(byte[] bytes)
+        {
+
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hash = md5.ComputeHash(bytes);
                 return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
             }
         }
