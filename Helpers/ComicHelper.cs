@@ -63,15 +63,34 @@ namespace ShadowViewer.Helpers
             } 
             return Path.Combine(dir, imgEntry.Path);
         }
-        public static ContentDialog ZipPasswordDialog(XamlRoot xamlRoot, IProgress<string> process)
+        public static async Task<bool> ImportAgainDialog(XamlRoot xamlRoot, string zip=null, string path=null)
         {
-            ContentDialog dialog = XamlHelper.CreateOneLineTextBoxDialog(
-                I18nHelper.GetString("Shadow.String.ZipPassword"), xamlRoot, "");
-            dialog.PrimaryButtonClick += (s, e) =>
+            ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot, I18nHelper.GetString("Shadow.String.ImportAgainTitle"), I18nHelper.GetString("Shadow.String.ImportAgainMessage"));
+            if (zip != null)
             {
-                process.Report(((TextBox)((StackPanel)((StackPanel)dialog.Content).Children[0]).Children[1]).Text);
-            };
-            return dialog;
+                string md5=EncryptingHelper.CreateMd5(zip);
+                string sha1 = EncryptingHelper.CreateSha1(zip);
+                CacheZip cache = DBHelper.Db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+                if(cache != null)
+                {
+                    LocalComic comic = DBHelper.Db.Queryable<LocalComic>().First(x => x.Id == cache.ComicId);
+                    if (comic != null)
+                    {
+                        await dialog.ShowAsync();
+                        return true;
+                    }
+                }
+            }
+            else if(path != null)
+            {
+                LocalComic comic = DBHelper.Db.Queryable<LocalComic>().First(x => x.Link == path);
+                if (comic != null)
+                {
+                    await dialog.ShowAsync();
+                    return true;
+                }
+            }
+            return false;
         }
          
         /// <summary>
