@@ -133,6 +133,8 @@ namespace ShadowViewer.Utils
                     pic.Add();
                 }
             }
+            // 销毁资源
+            root.Dispose();
         }
         /// <summary>
         /// 销毁资源

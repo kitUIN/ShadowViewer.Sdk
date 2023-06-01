@@ -19,8 +19,7 @@ namespace ShadowViewer.Cache
         public string CachePath { get; set; }
         [SugarColumn(ColumnDataType = "Nchar(32)", IsNullable = true)]
         public string ComicId { get;  set; }
-        public long Size { get; set; }
-        public static CacheZip Create(string md5, string sha1,long size,string password=null,string cachePath= null)
+        public static CacheZip Create(string md5, string sha1,string password=null,string cachePath= null)
         {
             string id = Guid.NewGuid().ToString("N");
             while (DBHelper.Db.Queryable<CacheZip>().Any(x => x.Id == id))
@@ -34,7 +33,6 @@ namespace ShadowViewer.Cache
                 Id = id,
                 Password = password,
                 CachePath = cachePath,
-                Size = size,
             };
         }
         public void Update()
