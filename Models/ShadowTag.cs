@@ -56,10 +56,6 @@ namespace ShadowViewer.Models
             this(name,new SolidColorBrush(foreground.ToColor()),
                 new SolidColorBrush(background.ToColor())) { }
         public ShadowTag() { }
-        public override string ToString()
-        {
-            return name;
-        }
         public string Log()
         {
             return $"ShadowTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
@@ -78,6 +74,7 @@ namespace ShadowViewer.Models
         {
             tag.Remove();
         }
+        [SugarColumn(IsIgnore = true)]
         public static ILogger Logger { get; } = Serilog.Log.ForContext<ShadowTag>();
     }
 }
