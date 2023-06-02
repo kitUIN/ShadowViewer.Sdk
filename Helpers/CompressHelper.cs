@@ -19,7 +19,7 @@ namespace ShadowViewer.Helpers
         /// <summary>
         /// 检测压缩包密码是否正确
         /// </summary>
-        public static bool CheckPassword(string zip, ReaderOptions readerOptions = null)
+        public static bool CheckPassword(string zip, ref ReaderOptions readerOptions)
         {
             string md5 = EncryptingHelper.CreateMd5(zip);
             string sha1 = EncryptingHelper.CreateSha1(zip);
@@ -41,8 +41,11 @@ namespace ShadowViewer.Helpers
                             using (Stream entryStream = entry.OpenEntryStream())
                             {
                                 // 密码正确添加压缩包密码存档
-                                CacheZip cache = CacheZip.Create(md5, sha1, password: readerOptions?.Password);
-                                cache.Add();
+                                if (cacheZip == null && readerOptions.Password != null || cacheZip != null && cacheZip.Password == null && readerOptions.Password!=null)
+                                {
+                                    CacheZip cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
+                                    cache.Add();
+                                }
                                 return true;
                             }
                         }

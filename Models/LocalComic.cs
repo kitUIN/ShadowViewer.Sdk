@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using SharpCompress;
+using SqlSugar;
 namespace ShadowViewer.Models
 {
     public partial class LocalComic: ObservableObject
@@ -257,30 +258,12 @@ namespace ShadowViewer.Models
         public int EpisodeCounts
         {
             get => episodeCounts;
-            set
-            {
-                int oldValue = episodeCounts;
-                SetProperty(ref episodeCounts, value, propertyName: nameof(EpisodeCounts));
-                if (oldValue != default && oldValue!= value)
-                {
-                    Update();
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(EpisodeCounts), oldValue, EpisodeCounts);
-                }
-            }
+            set => SetProperty(ref episodeCounts, value, propertyName: nameof(EpisodeCounts));
         }
         public int Counts
         {
             get => counts;
-            set
-            {
-                int oldValue = counts;
-                SetProperty(ref counts, value, propertyName: nameof(Counts));
-                if (oldValue != default && oldValue!= value)
-                {
-                    Update();
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Counts), oldValue, Counts);
-                }
-            }
+            set => SetProperty(ref counts, value, propertyName: nameof(Counts));
         }
         /// <summary>
         /// 文件大小
@@ -292,7 +275,7 @@ namespace ShadowViewer.Models
             {
                 long oldValue = size;
                 SetProperty(ref size, value, propertyName: nameof(Size));
-                if (oldValue != default && oldValue!= value)
+                if (oldValue != default && oldValue != value)
                 {
                     Update();
                     Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Size), oldValue, Size);
@@ -407,6 +390,26 @@ namespace ShadowViewer.Models
                 {
                     return "shadow://local/" + Parent + "/" + Id;
                 }
+            } 
+        }
+        [SugarColumn(IsIgnore = true)]
+        public string TagsString 
+        { 
+            get
+            {
+                return string.Join(",", Tags);
+            } 
+        }
+        [SugarColumn(IsIgnore = true)]
+        public string AffiliationString
+        { 
+            get
+            {
+                if (TagsHelper.Affiliations[Affiliation] is ShadowTag shadow)
+                {
+                    return shadow.Name;
+                }
+                else return null;
             } 
         }
         [SugarColumn(IsIgnore = true)]

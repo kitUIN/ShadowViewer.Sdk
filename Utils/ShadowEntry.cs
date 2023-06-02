@@ -135,6 +135,12 @@ namespace ShadowViewer.Utils
             }
             // 销毁资源
             root.Dispose();
+            if (DBHelper.Db.Queryable<LocalComic>().First(x => x.Id == comicId) is LocalComic comic)
+            {
+                comic.EpisodeCounts = DBHelper.Db.Queryable<LocalEpisode>().Where(x => x.ComicId == comicId).Count();
+                comic.Counts = DBHelper.Db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
+                comic.Update();
+            }
         }
         /// <summary>
         /// 销毁资源

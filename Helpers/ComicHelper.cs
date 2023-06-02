@@ -32,7 +32,11 @@ namespace ShadowViewer.Helpers
             {
                 two = ShadowFile.GetDepthFiles(root, 1);
                 imgEntry = Cycle(two);
-            } 
+            }
+            if(imgEntry == null)
+            {
+                throw new Exception("无效文件夹");
+            }
             LocalComic comic = LocalComic.Create(comicName ?? ((StorageFolder)root.Self).DisplayName, root.Self.Path, img: imgEntry?.Self.Path, parent: parent, size: root.Size,id:comicId);
             comic.Add();
             ShadowFile.ToLocalComic(root, comic.Id);

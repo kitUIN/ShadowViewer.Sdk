@@ -41,17 +41,17 @@ namespace ShadowViewer.Models
         public void Update()
         {
             DBHelper.Update(this);
-            Logger.Information("更新Picture:{Picture}", Id);
+            Logger.Information("更新[{C}][{E}]Picture:{Picture}",ComicId,EpisodeId, Id);
         }
         public void Add()
         {
             DBHelper.Add(this);
-            Logger.Information("添加Picture:{Picture}", Id);
+            Logger.Information("添加[{C}][{E}]Picture:{Picture}", ComicId, EpisodeId, Id);
         }
         public void Remove()
         {
             DBHelper.Remove(new LocalPicture { Id = this.Id });
-            Logger.Information("删除Picture:{Picture}", Id);
+            Logger.Information("删除[{C}][{E}]Picture:{Picture}", ComicId, EpisodeId, Id);
         }
         public static void Remove(LocalPicture localPicture)
         {

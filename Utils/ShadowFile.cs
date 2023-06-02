@@ -1,4 +1,7 @@
 ﻿
+using Microsoft.UI.Xaml.Controls;
+using ShadowViewer.Helpers;
+
 namespace ShadowViewer.Utils
 {
     public class ShadowFile : IDisposable
@@ -86,6 +89,12 @@ namespace ShadowViewer.Utils
                     LocalPicture pic = LocalPicture.Create(((StorageFile)item.Self).DisplayName, ep.Id, comicId, item.Self.Path, item.Size);
                     pic.Add();
                 }
+            }
+            if (DBHelper.Db.Queryable<LocalComic>().First(x => x.Id == comicId) is LocalComic comic)
+            {
+                comic.EpisodeCounts = DBHelper.Db.Queryable<LocalEpisode>().Where(x => x.ComicId == comicId).Count();
+                comic.Counts = DBHelper.Db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
+                comic.Update();
             }
         }
         /// <summary>
