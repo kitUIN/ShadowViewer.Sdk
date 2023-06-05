@@ -16,7 +16,6 @@
             this.comic = comic;
             Children = new List<ShadowPath>();
         }
-
         public ShadowPath(IEnumerable<string> black)
         { 
             this.comic = LocalComic.Create("", "", img: "ms-appx:///Assets/Default/folder.png");

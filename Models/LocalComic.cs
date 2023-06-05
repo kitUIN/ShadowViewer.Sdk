@@ -412,6 +412,14 @@ namespace ShadowViewer.Models
                 else return null;
             } 
         }
+        /// <summary>
+        /// 是否显示话数与页数
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public bool IsEpsDetailShow
+        {
+            get => !IsFolder;
+        }
         [SugarColumn(IsIgnore = true)]
         public static ILogger Logger { get; } = Log.ForContext<LocalComic>();
     }
