@@ -10,16 +10,19 @@
         public string Id { get => comic.Id; }
         public string Img { get => comic.Img; }
         public bool IsFolder { get => comic.IsFolder; }
-        public List<ShadowPath> Children { get; } 
+        public List<ShadowPath> Children { get; } = new List<ShadowPath>();
         public ShadowPath(LocalComic comic)
         {
             this.comic = comic;
-            Children = new List<ShadowPath>();
         }
         public ShadowPath(IEnumerable<string> black)
-        { 
-            this.comic = LocalComic.Create("", "", img: "ms-appx:///Assets/Default/folder.png");
-            Children = DBHelper.Db.Queryable<LocalComic>().Where(x => x.Parent == "local" && x.IsFolder&& !black.Contains(x.Id)).Select(c => new ShadowPath(c)).ToList();
+        {
+            this.comic = LocalComic.Create(I18nHelper.GetString("Shadow.Tag.Local"), "", img: "ms-appx:///Assets/Default/folder.png");
+            List<LocalComic> comics = DBHelper.Db.Queryable<LocalComic>().Where(x => x.IsFolder).ToList();
+            if(comics.Count > 0)
+            {
+                Children = comics.Where(x => !black.Contains(x.Id)).Select(x=> new ShadowPath(x)).ToList();
+            }
         }
     }
 }
