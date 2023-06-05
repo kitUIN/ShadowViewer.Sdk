@@ -1,8 +1,4 @@
-﻿
-using Microsoft.UI.Xaml.Controls;
-using ShadowViewer.Helpers;
-
-namespace ShadowViewer.Utils
+﻿namespace ShadowViewer.Utils
 {
     public class ShadowFile : IDisposable
     {
@@ -96,7 +92,7 @@ namespace ShadowViewer.Utils
                 comic.Counts = DBHelper.Db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
                 comic.Update();
             }
-        }
+        } 
         /// <summary>
         /// 销毁资源
         /// </summary>

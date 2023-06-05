@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Utils
+﻿namespace ShadowViewer.Core.Enums
 {
     public enum ShadowStyles
     {
