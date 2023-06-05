@@ -9,7 +9,6 @@
             TrackWindow(newWindow);
             return newWindow;
         }
-
         static public void TrackWindow(Window window)
         {
             window.Closed += (sender, args) => {
