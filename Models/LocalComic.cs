@@ -4,6 +4,7 @@ namespace ShadowViewer.Models
 {
     public partial class LocalComic: ObservableObject
     {
+        public const string DefaultFolderImg = "ms-appx:///Assets/Default/folder.png";
         #region Private Field
         private string id;
         private string name;
@@ -311,7 +312,7 @@ namespace ShadowViewer.Models
             }
             return id;
         }
-        public static LocalComic Create(string name, string link, string img = null, string remark = "", string group = "", string author = "", string parent = "local",
+        public static LocalComic Create(string name, string link, string img = DefaultFolderImg, string remark = "", string group = "", string author = "", string parent = "local",
             string percent = "0%", string tags = "", string affiliation = "Local",   long size = 0, bool isFolder = false,string id=null)
         {
             if(id==null)
@@ -322,7 +323,6 @@ namespace ShadowViewer.Models
                     id = Guid.NewGuid().ToString("N");
                 }
             }
-            if (img is null) { img = "ms-appx:///Assets/Default/picbroken.png"; }
             DateTime time = DateTime.Now;
             return new LocalComic()
             {
@@ -375,8 +375,7 @@ namespace ShadowViewer.Models
             }
             return new ObservableCollection<string>(res);
         }
-         
-        
+
         [SugarColumn(IsIgnore = true)]
         public string Path 
         { 

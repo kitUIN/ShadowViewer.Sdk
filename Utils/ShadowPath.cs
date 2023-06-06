@@ -4,8 +4,8 @@
     /// 路径树
     /// </summary>
     public class ShadowPath
-    { 
-        private LocalComic comic;
+    {
+        private readonly LocalComic comic;
         public string Name { get => comic.Name; }
         public string Id { get => comic.Id; }
         public string Img { get => comic.Img; }
