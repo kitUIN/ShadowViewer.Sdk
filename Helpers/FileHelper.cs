@@ -33,17 +33,22 @@
         /// <summary>
         /// 选择文件
         /// </summary>
-        /// <param name="element"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
         public static async Task<StorageFile> SelectFileAsync(UIElement element, params string[] filter)
         {
-            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(WindowHelper.GetWindowForElement(element));
+            return await SelectFileAsync(WindowHelper.GetWindowForElement(element), PickerLocationId.Desktop, PickerViewMode.List, filter);
+        }
+        public static async Task<StorageFile> SelectPicFileAsync(XamlRoot xamlRoot)
+        {
+            return await SelectFileAsync(WindowHelper.GetWindowForXamlRoot(xamlRoot), PickerLocationId.PicturesLibrary, PickerViewMode.Thumbnail, ".png", ".jpg", ".jpeg", ".bmp",".gif");
+        }
+        public static async Task<StorageFile> SelectFileAsync(Window window, PickerLocationId id, PickerViewMode mode, params string[] filter)
+        {
+            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
             FileOpenPicker openPicker = new FileOpenPicker();
             WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
-            openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
-            openPicker.ViewMode = PickerViewMode.Thumbnail;
-            foreach ( string filterItem in filter) { openPicker.FileTypeFilter.Add(filterItem); }
+            openPicker.SuggestedStartLocation = id;
+            openPicker.ViewMode = mode;
+            foreach (string filterItem in filter) openPicker.FileTypeFilter.Add(filterItem);
             StorageFile file = await openPicker.PickSingleFileAsync();
             if (file != null)
             {

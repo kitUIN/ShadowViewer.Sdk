@@ -2,7 +2,7 @@
 
 namespace ShadowViewer.Models
 {
-    public class LocalEpisode
+    public class LocalEpisode: IDataBaseItem
     {
         public LocalEpisode() { }
         /// <summary>
@@ -27,7 +27,7 @@ namespace ShadowViewer.Models
         /// <summary>
         /// 页数
         /// </summary>
-        public int Counts { get; set; }
+        public int PageCounts { get; set; }
         /// <summary>
         /// 大小
         /// </summary>
@@ -36,25 +36,46 @@ namespace ShadowViewer.Models
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
-
+        public static ISugarQueryable<LocalEpisode> Query()
+        {
+            return DBHelper.Db.Queryable<LocalEpisode>();
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Update()
         {
             DBHelper.Update(this);
             Logger.Information("更新[{C}]Episode:{Episode}",ComicId, Id);
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Add()
         {
-            DBHelper.Add(this);
-            Logger.Information("添加[{C}]Episode:{Episode}", ComicId, Id);
+            if (!Query().Any(x => x.Id == Id))
+            {
+                DBHelper.Add(this);
+                Logger.Information("添加[{C}]Episode:{Episode}", ComicId, Id);
+            }
+            else
+            {
+                Update();
+            }
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Remove()
         {
             DBHelper.Remove(new LocalEpisode { Id = this.Id });
             Logger.Information("删除[{C}]Episode:{Episode}", ComicId, Id);
         }
-        public static void Remove(LocalEpisode episode)
+        public static void Remove(string id)
         {
-            episode.Remove();
+            DBHelper.Remove(new LocalEpisode { Id = id });
+            Logger.Information("删除Episode:{Episode}", id);
+
         }
         public static LocalEpisode Create(string name, int order, string comicId, int counts, long size)
         {
@@ -70,7 +91,7 @@ namespace ShadowViewer.Models
                 Name = name,
                 Order = order,
                 ComicId = comicId,
-                Counts = counts,
+                PageCounts = counts,
                 Size = size,
                 CreateTime = time,
             };

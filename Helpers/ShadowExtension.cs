@@ -1,7 +1,8 @@
-﻿using System.Linq.Expressions;
-
-namespace ShadowViewer.Helpers
+﻿namespace ShadowViewer.Helpers
 {
+    /// <summary>
+    /// Shadow拓展方法类
+    /// </summary>
     public static class ShadowExtension
     {
         private static ILogger Logger { get; } = Log.ForContext<FileHelper>();
@@ -36,10 +37,8 @@ namespace ShadowViewer.Helpers
             return flag;
         }
         /// <summary>
-        /// 获取StorageFolder,若没有则创建文件夹
+        /// 从url获取StorageFolder,若没有则创建文件夹
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
         public static async Task<StorageFolder> ToStorageFolder(this string path)
         {
             path.CreateDirectory();
@@ -69,7 +68,6 @@ namespace ShadowViewer.Helpers
         /// <summary>
         /// 删除文件夹
         /// </summary>
-        /// <param name="targetDir"></param>
         public static void DeleteDirectory(this string targetDir)
         {
             if (!Directory.Exists(targetDir))
@@ -92,7 +90,6 @@ namespace ShadowViewer.Helpers
         /// <summary>
         /// 创建文件
         /// </summary>
-        /// <param name="path"></param>
         public static void CreateFile(this string path)
         {
             string[] substrings = path.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
@@ -115,11 +112,18 @@ namespace ShadowViewer.Helpers
                 Logger.Information("文件{Dir}不存在,新建", path);
             }
         }
+        /// <summary>
+        /// 从url获取StorageFile,若没有则创建文件
+        /// </summary>
         public static async Task<StorageFile> ToStorageFile(this string path)
         {
             path.CreateFile();
             return await StorageFile.GetFileFromPathAsync(path);
         }
+        /// <summary>
+        /// true -> Visible <br/>
+        /// false -> Collapsed
+        /// </summary>
         public static Visibility ToVisibility(this bool flag)
         {
             return flag ? Visibility.Visible : Visibility.Collapsed;

@@ -3,6 +3,9 @@ using SqlSugar;
 
 namespace ShadowViewer.Models
 {
+    /// <summary>
+    /// 标签 TODO:使用自动进位ID
+    /// </summary>
     public class ShadowTag: IDataBaseItem
     {
         private string name;
@@ -62,11 +65,8 @@ namespace ShadowViewer.Models
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public bool IsEnable { get; set; } = true;
-        /// <summary>
-        /// 是否显示图标
-        /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public bool IsIcon { get; set; } = false;
+        public string ToolTip { get; set; }
         /// <summary>
         /// 图标
         /// </summary>
