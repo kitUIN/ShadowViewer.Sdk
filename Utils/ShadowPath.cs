@@ -15,9 +15,16 @@
         {
             this.comic = comic;
         }
+        public void SetSize(long size)
+        {
+            if(comic.Parent != "")
+            {
+                comic.Size += size;
+            }
+        }
         public ShadowPath(IEnumerable<string> black)
         {
-            this.comic = LocalComic.Create(I18nHelper.GetString("Shadow.Tag.Local"), "", img: "ms-appx:///Assets/Default/folder.png");
+            this.comic = LocalComic.Create(I18nHelper.GetString("Shadow.Tag.Local"), "",id:"local",isFolder:true, parent:"",img: "ms-appx:///Assets/Default/folder.png");
             List<LocalComic> comics = DBHelper.Db.Queryable<LocalComic>().Where(x => x.IsFolder).ToList();
             if(comics.Count > 0)
             {
