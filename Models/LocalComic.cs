@@ -358,13 +358,18 @@ namespace ShadowViewer.Models
             DBHelper.Add(this);
             Logger.Information("添加Comic:{ComicId}", Id);
         }
-        public void Remove() {
-            DBHelper.Remove(new LocalComic { Id = this.Id });
-            Logger.Information("删除Comic:{ComicId}", Id);
-        }
-        public static void Remove(LocalComic comic)
+        public void Remove()
         {
-            comic.Remove(); 
+            Remove(this.Id);
+        }
+        public static void Remove(string id)
+        {
+            DBHelper.Remove(new LocalComic { Id = id });
+            Logger.Information("删除Comic:{ComicId}", id);
+        }
+        public static ISugarQueryable<LocalComic> Query()
+        {
+            return DBHelper.Db.Queryable<LocalComic>();
         }
         private static ObservableCollection<string> LoadTags(string tags)
         {

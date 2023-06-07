@@ -1,8 +1,10 @@
-﻿namespace ShadowViewer.Helpers
+﻿using Microsoft.UI.Xaml.Controls;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace ShadowViewer.Helpers
 {
     public static class XamlHelper
     {
-        
         public static FontIcon CreateFontIcon(string glyph)
         {
             return new FontIcon()
@@ -32,7 +34,7 @@
         {
             return CreateBitmapIcon(new Uri(uriString));
         }
-
+        
         /// <summary>
         /// 创建一个横着的带Header的TextBox
         /// </summary>
@@ -66,19 +68,51 @@
             grid.Children.Add(txt);
             return grid;
         }
-        
-        
+
         /// <summary>
         /// 创建一个基础的ContentDialog
         /// </summary>
-        /// <param name="xamlRoot">The xaml root.</param>
-        /// <returns></returns>
         public static ContentDialog CreateContentDialog(XamlRoot xamlRoot)
         {
             ContentDialog dialog = new ContentDialog();
             dialog.XamlRoot = xamlRoot;
-            dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+            dialog.Style = Microsoft.UI.Xaml.Application.Current.Resources["DefaultContentDialogStyle"] as Style;
             dialog.DefaultButton = ContentDialogButton.Primary;
+            return dialog;
+        }
+        public static ContentDialog CreateOneTextBoxDialog(XamlRoot xamlRoot,
+            string title = "", string header = "", string placeholder = "", string text = "",
+            Action<ContentDialog, ContentDialogButtonClickEventArgs, string> primaryAction = null,
+            Action<ContentDialog, ContentDialogButtonClickEventArgs, string> closeAction = null)
+        {
+            TextBox textBox = new TextBox()
+            {
+                Header = header,
+                Text = text,
+                PlaceholderText = placeholder,
+            };
+            ContentDialog dialog = new ContentDialog()
+            {
+                DefaultButton = ContentDialogButton.Primary,
+                Title = title,
+                PrimaryButtonText = I18nHelper.GetString("Shadow.String.Confirm"),
+                CloseButtonText = I18nHelper.GetString("Shadow.String.Canel"),
+                XamlRoot = xamlRoot,
+                IsPrimaryButtonEnabled = true,
+                Content = new Border()
+                {
+                    Child = textBox,
+                }
+            };
+            dialog.PrimaryButtonClick += (ContentDialog sender, ContentDialogButtonClickEventArgs args) =>
+            {
+                primaryAction?.Invoke(sender, args, textBox.Text);
+            };
+            dialog.CloseButtonClick += (ContentDialog sender, ContentDialogButtonClickEventArgs args) =>
+            {
+                closeAction?.Invoke(sender, args, textBox.Text);
+            };
+            // dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
             return dialog;
         }
         /// <summary>

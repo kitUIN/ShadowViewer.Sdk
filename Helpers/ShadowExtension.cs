@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.Helpers
+﻿using System.Linq.Expressions;
+
+namespace ShadowViewer.Helpers
 {
     public static class ShadowExtension
     {
