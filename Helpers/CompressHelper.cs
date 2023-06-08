@@ -1,14 +1,7 @@
 ﻿using SharpCompress.Archives;
 using SharpCompress.Common;
-using SharpCompress.Readers;
 using SharpCompress.IO;
-using Windows.UI.Core;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System.Xml.Linq;
 using ReaderOptions = SharpCompress.Readers.ReaderOptions;
-using Serilog.Core;
-using System.IO;
-using NetTaste;
 using System.Threading;
 
 namespace ShadowViewer.Helpers
@@ -31,27 +24,22 @@ namespace ShadowViewer.Helpers
             }
             try
             {
-                using (FileStream fStream = File.OpenRead(zip))
-                using (NonDisposingStream stream = NonDisposingStream.Create(fStream))
-                { 
-                    using (IArchive archive = ArchiveFactory.Open(stream, readerOptions))
+                using FileStream fStream = File.OpenRead(zip);
+                using NonDisposingStream stream = NonDisposingStream.Create(fStream);
+                using IArchive archive = ArchiveFactory.Open(stream, readerOptions);
+                foreach (IArchiveEntry entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                {
+                    using Stream entryStream = entry.OpenEntryStream();
+                    // 密码正确添加压缩包密码存档
+                    // 能正常打开一个entry就代表正确,所以这个循环只走了一次
+                    if (cacheZip == null && readerOptions?.Password != null || cacheZip != null && cacheZip.Password == null && readerOptions?.Password != null)
                     {
-                        foreach (IArchiveEntry entry in archive.Entries.Where(entry => !entry.IsDirectory))
-                        {
-                            using (Stream entryStream = entry.OpenEntryStream())
-                            {
-                                // 密码正确添加压缩包密码存档
-                                if (cacheZip == null && readerOptions.Password != null || cacheZip != null && cacheZip.Password == null && readerOptions.Password!=null)
-                                {
-                                    CacheZip cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
-                                    cache.Add();
-                                }
-                                return true;
-                            }
-                        }
-                        return true;
+                        CacheZip cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
+                        cache.Add();
                     }
+                    return true;
                 }
+                return true;
             }
             catch (Exception ex)
             {
@@ -61,7 +49,9 @@ namespace ShadowViewer.Helpers
                 return false;
             }
         }
-        public static async Task<object> DeCompressAsync(string zip, string destinationDirectory, string comicId, IProgress<MemoryStream> imgAction, IProgress<double> progress,Action beginAction, CancellationToken token ,ReaderOptions readerOptions = null)
+        public static async Task<object> DeCompressAsync(string zip, string destinationDirectory,
+            string comicId, IProgress<MemoryStream> imgAction, IProgress<double> progress,
+            Action beginAction, CancellationToken token ,ReaderOptions readerOptions = null)
         {
             Logger.Information("进入解压流程");
             string path = Path.Combine(destinationDirectory, comicId);
@@ -90,51 +80,51 @@ namespace ShadowViewer.Helpers
             using (NonDisposingStream stream = NonDisposingStream.Create(fStream))
             {
                 if (token.IsCancellationRequested) throw new TaskCanceledException();
-                using (IArchive archive = ArchiveFactory.Open(stream, readerOptions))
+                using IArchive archive = ArchiveFactory.Open(stream, readerOptions);
+                if (token.IsCancellationRequested) throw new TaskCanceledException();
+                IEnumerable<IArchiveEntry> total = archive.Entries.Where(entry => !entry.IsDirectory && entry.Key.IsPic()).OrderBy(x => x.Key);
+                if (token.IsCancellationRequested) throw new TaskCanceledException();
+                int totalCount = total.Count();
+                MemoryStream ms = new MemoryStream();
+                if (total.FirstOrDefault() is IArchiveEntry img)
+                {
+                    using (Stream entryStream = img.OpenEntryStream())
+                    {
+                        await entryStream.CopyToAsync(ms);
+                        // ms.Seek(0, SeekOrigin.Begin);
+                    }
+                    byte[] bytes = ms.ToArray();
+                    CacheImg.CreateImage(destinationDirectory, bytes, comicId);
+                    imgAction.Report(new MemoryStream(bytes));
+                }
+                beginAction.Invoke();
+                Logger.Information("开始解压:{Zip}", zip);
+                start = DateTime.Now;
+                int i = 0;
+                path.CreateDirectory();
+                foreach (IArchiveEntry entry in total)
                 {
                     if (token.IsCancellationRequested) throw new TaskCanceledException();
-                    IEnumerable<IArchiveEntry> total = archive.Entries.Where(entry => !entry.IsDirectory && entry.Key.IsPic()).OrderBy(x=>x.Key);
-                    if (token.IsCancellationRequested) throw new TaskCanceledException();
-                    int totalCount = total.Count();
-                    MemoryStream ms = new MemoryStream();
-                    if(total.FirstOrDefault() is IArchiveEntry img)
-                    {
-                        using (Stream entryStream = img.OpenEntryStream())
-                        {
-                            await entryStream.CopyToAsync(ms);
-                            ms.Seek(0, SeekOrigin.Begin);
-                        }
-                        imgAction.Report(ms);
-                    }
-                    beginAction.Invoke();
-                    Logger.Information("开始解压:{Zip}", zip);
-                    start = DateTime.Now;
-                    int i = 0;
-                    path.CreateDirectory();
-                    foreach (IArchiveEntry entry in total)
-                    {
-                        if (token.IsCancellationRequested) throw new TaskCanceledException();
-                        entry.WriteToDirectory(path, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
-                        i++;
-                        double result = (double)i / (double)totalCount;
-                        progress.Report(Math.Round(result * 100, 2));
-                        ShadowEntry.LoadEntry(entry, root);
-                    }
-                    root.LoadChildren();
-                    DateTime stop = DateTime.Now;
-                    cacheZip.ComicId = comicId;
-                    cacheZip.CachePath = path;
-                    cacheZip.Name = Path.GetFileNameWithoutExtension(zip).Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last();
-                    if (DBHelper.Db.Queryable<CacheZip>().Any(x=>x.Id == cacheZip.Id))
-                    {
-                        cacheZip.Update();
-                    }
-                    else
-                    {
-                        cacheZip.Add();
-                    }
-                    Logger.Information("解压:{Zip} 页数:{Pages} 耗时: {Time} s", zip, totalCount, (stop - start).TotalSeconds);
+                    entry.WriteToDirectory(path, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
+                    i++;
+                    double result = (double)i / (double)totalCount;
+                    progress.Report(Math.Round(result * 100, 2));
+                    ShadowEntry.LoadEntry(entry, root);
                 }
+                root.LoadChildren();
+                DateTime stop = DateTime.Now;
+                cacheZip.ComicId = comicId;
+                cacheZip.CachePath = path;
+                cacheZip.Name = Path.GetFileNameWithoutExtension(zip).Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last();
+                if (DBHelper.Db.Queryable<CacheZip>().Any(x => x.Id == cacheZip.Id))
+                {
+                    cacheZip.Update();
+                }
+                else
+                {
+                    cacheZip.Add();
+                }
+                Logger.Information("解压:{Zip} 页数:{Pages} 耗时: {Time} s", zip, totalCount, (stop - start).TotalSeconds);
             }
             return root;
         }

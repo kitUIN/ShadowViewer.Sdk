@@ -34,7 +34,6 @@
                     Depth = Children.Max(x => x.Depth) + 1;
                     Counts = Children.Sum(x => x.Counts) + 1;
                 }
-                
             }
             else if(Self is StorageFile file)
             {
@@ -42,7 +41,6 @@
                 Depth = 0;
                 Counts = 1;
             }
-            
         }
         public static async Task<ShadowFile> Create(IStorageItem item)
         {
@@ -92,13 +90,12 @@
                 comic.Counts = DBHelper.Db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
                 comic.Update();
             }
-        } 
+        }
         /// <summary>
         /// 销毁资源
         /// </summary>
         public void Dispose()
         {
-             
         }
     }
 }

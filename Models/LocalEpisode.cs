@@ -2,6 +2,9 @@
 
 namespace ShadowViewer.Models
 {
+    /// <summary>
+    /// 本地漫画-话
+    /// </summary>
     public class LocalEpisode: IDataBaseItem
     {
         public LocalEpisode() { }
@@ -68,14 +71,12 @@ namespace ShadowViewer.Models
         /// </summary>
         public void Remove()
         {
-            DBHelper.Remove(new LocalEpisode { Id = this.Id });
-            Logger.Information("删除[{C}]Episode:{Episode}", ComicId, Id);
+            Remove(Id);
         }
         public static void Remove(string id)
         {
             DBHelper.Remove(new LocalEpisode { Id = id });
             Logger.Information("删除Episode:{Episode}", id);
-
         }
         public static LocalEpisode Create(string name, int order, string comicId, int counts, long size)
         {
@@ -84,7 +85,7 @@ namespace ShadowViewer.Models
             {
                 id = Guid.NewGuid().ToString("N");
             }
-            DateTime time = DateTime.Now; 
+            DateTime time = DateTime.Now;
             return new LocalEpisode()
             {
                 Id = id,

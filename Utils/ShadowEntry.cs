@@ -1,7 +1,4 @@
 ﻿using SharpCompress.Archives;
-using SharpCompress.Common;
-using SharpCompress.Readers;
- 
 namespace ShadowViewer.Utils
 {
     public class ShadowEntry: IDisposable
@@ -35,9 +32,8 @@ namespace ShadowViewer.Utils
         /// </summary>
         public List<ShadowEntry> Children { get; } = new List<ShadowEntry>();
         public ShadowEntry(){ }
-        
         public static void LoadEntry(IArchiveEntry entry, ShadowEntry root)
-        { 
+        {
             string[] names = entry.Key.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
             ShadowEntry temp = root;
             ShadowEntry tmp = null;
@@ -113,7 +109,7 @@ namespace ShadowViewer.Utils
                     result.AddRange(GetDepthEntries(child, depth));
                 }
                 return result;
-            } 
+            }
         }
         /// <summary>
         /// 转化为本地漫画
@@ -147,7 +143,6 @@ namespace ShadowViewer.Utils
         /// </summary>
         public void Dispose()
         {
-             
         }
     }
 }

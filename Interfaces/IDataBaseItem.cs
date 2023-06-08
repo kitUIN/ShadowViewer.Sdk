@@ -1,5 +1,8 @@
 ﻿namespace ShadowViewer.Interfaces
 {
+    /// <summary>
+    /// 数据库成员基类
+    /// </summary>
     public interface IDataBaseItem
     {
         // <summary>

@@ -1,7 +1,9 @@
-﻿using SharpCompress;
-using SqlSugar;
+﻿using SqlSugar;
 namespace ShadowViewer.Models
 {
+    /// <summary>
+    /// 本地漫画
+    /// </summary>
     public partial class LocalComic: ObservableObject
     {
         public const string DefaultFolderImg = "ms-appx:///Assets/Default/folder.png";
@@ -359,6 +361,10 @@ namespace ShadowViewer.Models
         public static void Remove(string id)
         {
             DBHelper.Remove(new LocalComic { Id = id });
+            if (CacheImg.Query().ToList().FirstOrDefault(x => x.ComicId.Contains(id)) is CacheImg cacheImg)
+            {
+                cacheImg.ComicId.Remove(id);
+            }
             Logger.Information("删除Comic:{ComicId}", id);
         }
         public static ISugarQueryable<LocalComic> Query()

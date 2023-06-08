@@ -2,7 +2,10 @@
 
 namespace ShadowViewer.Cache
 {
-    public class CacheZip
+    /// <summary>
+    /// 缓存的解压密码
+    /// </summary>
+    public class CacheZip: IDataBaseItem
     {
         public CacheZip() { }
         [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable = false)]
@@ -35,24 +38,47 @@ namespace ShadowViewer.Cache
                 CachePath = cachePath,
             };
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Update()
         {
             DBHelper.Update(this);
             Logger.Information("更新CacheZip:{Id}", Id);
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Add()
         {
-            DBHelper.Add(this);
-            Logger.Information("添加CacheZip:{Id}", Id);
+            if (!Query().Any(x => x.Id == Id))
+            {
+                DBHelper.Add(this);
+                Logger.Information("添加CacheZip:{Id}", Id);
+            }
+            else
+            {
+                Update();
+            }
         }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void Remove()
         {
-            DBHelper.Remove(new CacheZip { Id = this.Id });
-            Logger.Information("删除CacheZip:{Id}", Id);
+            Remove(Id);
         }
-        public static void Remove(CacheZip zip)
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public static void Remove(string id)
         {
-            zip.Remove();
+            DBHelper.Remove(new CacheZip { Id = id });
+            Logger.Information("删除CacheZip:{Id}", id);
+        }
+        public static ISugarQueryable<CacheZip> Query()
+        {
+            return DBHelper.Db.Queryable<CacheZip>();
         }
         [SugarColumn(IsIgnore = true)]
         public static ILogger Logger { get; } = Log.ForContext<CacheZip>();
