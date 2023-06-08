@@ -255,7 +255,6 @@ namespace ShadowViewer.Models
                 }
             }
         }
-        
         public int EpisodeCounts
         {
             get => episodeCounts;
@@ -276,11 +275,6 @@ namespace ShadowViewer.Models
             {
                 long oldValue = size;
                 SetProperty(ref size, value, propertyName: nameof(Size));
-                if (oldValue != default && oldValue != value)
-                {
-                    Update();
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Size), oldValue, Size);
-                }
                 SizeString = ComicHelper.ShowSize(Size);
             }
         }

@@ -19,7 +19,8 @@
         {
             if(comic.Parent != "")
             {
-                comic.Size += size;
+                comic.Size = size;
+                comic.Update();
             }
         }
         public ShadowPath(IEnumerable<string> black)
