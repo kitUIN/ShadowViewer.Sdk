@@ -30,12 +30,14 @@ global using ShadowViewer.Models;
 global using ShadowViewer.Cache;
 global using ShadowViewer.Configs;
 global using ShadowViewer.ToolKits;
+global using ShadowViewer.Enums;
+global using ShadowViewer.Interfaces;
 global using Microsoft.UI;
 global using Windows.UI;
 global using System.Web;
 global using CommunityToolkit.WinUI.UI.Controls;
 global using CommunityToolkit.WinUI.Helpers;
 global using ShadowViewer.Helpers;
-global using ShadowViewer.Interfaces;
+
 global using ShadowViewer.Utils;
 global using System.IO;

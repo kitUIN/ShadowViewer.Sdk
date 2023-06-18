@@ -12,16 +12,6 @@ namespace ShadowViewer.Helpers
             WeakReferenceMessenger.Default.Send(new NavigationMessage("PluginReload"));
         }
         /// <summary>
-        /// 通知NavigationPage跳转到新的页面
-        /// </summary>
-        /// <param name="page">The page.</param>
-        /// <param name="parameter">The parameter.</param>
-        /// <param name="arg">The argument.</param>
-        public static void SendNavigationFrame(Type page,object parameter=null, NavigationTransitionInfo arg=null)
-        {
-            WeakReferenceMessenger.Default.Send(new NavigationMessage("Navigate", page, parameter, arg));
-        }
-        /// <summary>
         /// 通知BookShelfPage刷新元素
         /// </summary>
         public static void SendFilesReload()
