@@ -22,5 +22,9 @@
         /// 获取已启动的插件
         /// </summary>
         public IEnumerable<IPlugin> GetEnabledPlugins();
+        /// <summary>
+        /// 获取归属标签
+        /// </summary>
+        public LocalTag GetAffiliationTag(string id);
     }
 }

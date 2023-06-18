@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using ColorCode.Compilation.Languages;
+using SqlSugar;
 namespace ShadowViewer.Models
 {
     /// <summary>
@@ -203,23 +204,12 @@ namespace ShadowViewer.Models
                 }
             }
         }
-        private ObservableCollection<string> tags = new ObservableCollection<string>();
+
         /// <summary>
         /// 标签
         /// </summary>
-        [SugarColumn(IsJson = true, ColumnDataType = "Ntext")]
-        public ObservableCollection<string> Tags
-        {
-            get => tags;
-            set{
-                tags = value;
-                if (tags != null)
-                {
-                    Logger.Debug("添加Tag响应");
-                    tags.CollectionChanged += Tags_CollectionChanged;
-                }
-            }
-        }
+        [Navigate(NavigateType.OneToMany, nameof(LocalTag.ComicId),nameof(Id))]
+        public List<LocalTag> Tags { get; set; }
         /// <summary>
         /// 所属
         /// </summary>
@@ -315,7 +305,6 @@ namespace ShadowViewer.Models
                 Img = img,
                 CreateTime = time,
                 LastReadTime = time,
-                Tags = LoadTags(tags),
                 Size = size,
                 IsFolder = isFolder,
                 Name = name,
@@ -358,16 +347,7 @@ namespace ShadowViewer.Models
         }
         public static ISugarQueryable<LocalComic> Query()
         {
-            return DBHelper.Db.Queryable<LocalComic>();
-        }
-        private static ObservableCollection<string> LoadTags(string tags)
-        {
-            HashSet<string> res = new HashSet<string>();
-            foreach (string tag in tags.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                res.Add(tag);
-            }
-            return new ObservableCollection<string>(res);
+            return DBHelper.Db.Queryable<LocalComic>().Includes(x => x.Tags);
         }
 
         [SugarColumn(IsIgnore = true)]
@@ -383,26 +363,6 @@ namespace ShadowViewer.Models
                 {
                     return "shadow://local/" + Parent + "/" + Id;
                 }
-            } 
-        }
-        [SugarColumn(IsIgnore = true)]
-        public string TagsString 
-        { 
-            get
-            {
-                return string.Join(",", Tags);
-            } 
-        }
-        [SugarColumn(IsIgnore = true)]
-        public string AffiliationString
-        { 
-            get
-            {
-                if (TagsHelper.Affiliations[Affiliation] is ShadowTag shadow)
-                {
-                    return shadow.Name;
-                }
-                else return null;
             } 
         }
         /// <summary>

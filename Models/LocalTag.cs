@@ -4,26 +4,47 @@ using SqlSugar;
 namespace ShadowViewer.Models
 {
     /// <summary>
-    /// 标签 TODO:使用自动进位ID
+    /// 标签
     /// </summary>
-    public class ShadowTag: IDataBaseItem
+    public class LocalTag: IDataBaseItem
     {
         private string name;
+        private string id;
+        private string comicId;
         private SolidColorBrush foreground;
         private SolidColorBrush background;
+        /// <summary>
+        /// ID
+        /// </summary>
+        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable = false)]
+        public string Id
+        {
+            get => id;
+            set => id = value;
+        }
+        /// <summary>
+        /// Comic ID
+        /// </summary>
+        [SugarColumn(ColumnDataType = "Nchar(32)")]
+        public string ComicId
+        {
+            get => comicId;
+            set => comicId = value;
+        }
+
         [SugarColumn(IsIgnore = true)]
         public SolidColorBrush Foreground
         {
-            get { return foreground; }
-            set { foreground = value; }
+            get => foreground;
+            set => foreground = value;
         }
         [SugarColumn(IsIgnore = true)]
         public SolidColorBrush Background
         {
-            get { return background; }
-            set { background = value; }
+            get => background;
+            set => background = value;
         }
-        [SugarColumn(ColumnDataType = "Nvarchar(2048)", IsPrimaryKey = true)]
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
         public string Name {
             get => name;
             set
@@ -46,20 +67,37 @@ namespace ShadowViewer.Models
             get => foreground.Color.ToHex();
             set => foreground = new SolidColorBrush(value.ToColor());
         }
-        public ShadowTag(string name, SolidColorBrush foreground , SolidColorBrush background)
+        public LocalTag(string name, SolidColorBrush foreground , SolidColorBrush background)
         {
+            this.id = RandomId();
             this.name = name;
             this.foreground = foreground;
             this.background = background;
         }
-        public ShadowTag(string name, Color foreground, Color background) : 
+        public LocalTag(string name, Color foreground, Color background) : 
             this(name, new SolidColorBrush(foreground),
                 new SolidColorBrush(background)) { }
-        public ShadowTag( string name, string foreground, string background) :
+        public LocalTag( string name, string foreground, string background) :
             this(name,new SolidColorBrush(foreground.ToColor()),
                 new SolidColorBrush(background.ToColor())) { }
-        public ShadowTag() { }
-
+        public LocalTag() { }
+        public LocalTag Copy()
+        {
+            return new LocalTag(Name, foreground, background);
+        }
+        /// <summary>
+        /// 随机ID
+        /// </summary>
+        /// <returns></returns>
+        public static string RandomId()
+        {
+            string id = Guid.NewGuid().ToString("N");
+            while (DBHelper.Db.Queryable<LocalTag>().Any(x => x.Id == id))
+            {
+                id = Guid.NewGuid().ToString("N");
+            }
+            return id;
+        }
         /// <summary>
         /// 能否修改
         /// </summary>
@@ -72,9 +110,9 @@ namespace ShadowViewer.Models
         /// </summary>
         [SugarColumn(IsIgnore = true)]
         public string Icon { get; set; }
-        public string Log()
+        public new string ToString()
         {
-            return $"ShadowTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
+            return $"LocalTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
         }
         /// <summary>
         /// <inheritdoc/>
@@ -84,7 +122,7 @@ namespace ShadowViewer.Models
             if (!Query().Any(x => x.Name == Name))
             {
                 DBHelper.Add(this);
-                Logger.Information("添加{Log}", Log());
+                Logger.Information("添加{Log}", ToString());
             }
             else
             {
@@ -97,28 +135,28 @@ namespace ShadowViewer.Models
         public void Update()
         {
             DBHelper.Update(this);
-            Logger.Information("更新{Log}", Log());
+            Logger.Information("更新{Log}", ToString());
         }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public void Remove()
         {
-            Remove(this.Name);
+            Remove(this.Id);
         }
         /// <summary>
         /// 从数据库中删除
         /// </summary>
-        public static void Remove(string name)
+        public static void Remove(string id)
         {
-            DBHelper.Remove(new ShadowTag { Name = name });
-            Logger.Information("删除ShadowTag:{Name}", name);
+            DBHelper.Remove(new LocalTag { Id = id });
+            Logger.Information("删除LocalTag:{Name}", id);
         }
-        public static ISugarQueryable<ShadowTag> Query()
+        public static ISugarQueryable<LocalTag> Query()
         {
-            return DBHelper.Db.Queryable<ShadowTag>();
+            return DBHelper.Db.Queryable<LocalTag>();
         }
         [SugarColumn(IsIgnore = true)]
-        public static ILogger Logger { get; } = Serilog.Log.ForContext<ShadowTag>();
+        public static ILogger Logger { get; } = Serilog.Log.ForContext<LocalTag>();
     }
 }

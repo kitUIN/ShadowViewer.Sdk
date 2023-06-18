@@ -14,7 +14,7 @@
         /// <summary>
         /// 标签
         /// </summary>
-        public ObservableCollection<ShadowTag> Tags = new ObservableCollection<ShadowTag>();
+        public ObservableCollection<LocalTag> Tags = new ObservableCollection<LocalTag>();
         /// <summary>
         /// 话
         /// </summary>
@@ -23,18 +23,24 @@
         /// 是否有话
         /// </summary>
         public bool IsHaveEpisodes { get=> Episodes.Count !=0; }
-        public AttributesViewModel(LocalComic currentComic)
+        private IPluginsToolKit _pluginsToolKit;
+        public void Init(string comicId)
         {
-            CurrentComic = currentComic;
+            CurrentComic = LocalComic.Query().First(x=>x.Id == comicId);
             ReLoadTags();
             ReLoadEps();
+        }
+        public AttributesViewModel(IPluginsToolKit pluginsToolKit)
+        {
+            _pluginsToolKit = pluginsToolKit;
         }
         /// <summary>
         /// 重新加载-话
         /// </summary>
         public void ReLoadEps()
         {
-            foreach( var item in LocalEpisode.Query().Where(x => x.ComicId == CurrentComic.Id).ToList())
+            Episodes.Clear();
+            foreach ( LocalEpisode item in LocalEpisode.Query().Where(x => x.ComicId == CurrentComic.Id).ToList())
             {
                 Episodes.Add(item);
             }
@@ -45,23 +51,20 @@
         public void ReLoadTags()
         {
             Tags.Clear();
-            if (TagsHelper.Affiliations[CurrentComic.Affiliation] is ShadowTag shadow)
+            if (_pluginsToolKit.GetAffiliationTag(CurrentComic.Affiliation) is LocalTag shadow)
             {
                 shadow.IsEnable = false;
                 shadow.Icon = "\uE23F";
                 shadow.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Affiliation") + ": " + shadow.Name;
                 Tags.Add(shadow);
             }
-            foreach (string item in CurrentComic.Tags)
+            foreach (LocalTag item in CurrentComic.Tags)
             {
-                if (ShadowTag.Query().First(x => x.Name == item) is ShadowTag shadowTag)
-                {
-                    shadowTag.Icon = "\uEEDB";
-                    shadowTag.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Tag") + ": " + shadowTag.Name;
-                    Tags.Add(shadowTag);
-                }
+                item.Icon = "\uEEDB";
+                item.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Tag") + ": " + item.Name;
+                Tags.Add(item);
             }
-            Tags.Add(new ShadowTag
+            Tags.Add(new LocalTag
             {
                 Icon = "\uE008",
                 // Background = (SolidColorBrush)Application.Current.Resources["SystemControlBackgroundBaseMediumLowBrush"],
@@ -69,37 +72,49 @@
                 IsEnable = true,
                 Name = AppResourcesToolKit.GetString("Xaml.ToolTip.AddTag.Content"),
                 ToolTip = AppResourcesToolKit.GetString("Xaml.ToolTip.AddTag.Content"),
-        });
+            });
         }
         /// <summary>
         /// 添加-标签
         /// </summary>
-        public void AddNewTag(ShadowTag tag)
+        public void AddNewTag(LocalTag tag)
         {
-            tag.Add();
-            if (CurrentComic.Tags.Any(x => x == tag.Name))
+            if (LocalTag.Query().First(x =>x.Id==tag.Id) is LocalTag localTag)
             {
-                CurrentComic = LocalComic.Query().First(x => x.Id == CurrentComic.Id);
+                tag.ComicId = localTag.ComicId;
+                tag.Icon = "\uEEDB";
+                tag.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Tag") + ": " + localTag.Name;
+                tag.Update();
+                if(Tags.FirstOrDefault(x => x.Id == tag.Id) is LocalTag lo)
+                {
+                    Tags[Tags.IndexOf(lo)] = tag;
+                }
             }
             else
             {
-                CurrentComic.Tags.Add(tag.Name);
+                tag.Id = LocalTag.RandomId();
+                tag.ComicId = CurrentComic.Id;
+                tag.Icon = "\uEEDB";
+                tag.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Tag") + ": " + tag.Name;
+                tag.Add();
+                Tags.Insert(Math.Max(0, Tags.Count - 1), tag);
             }
-            ReLoadTags();
         }
         /// <summary>
         /// 删除-标签
         /// </summary>
-        public void RemoveTag(string name)
+        public void RemoveTag(string id)
         {
-            CurrentComic.Tags.Remove(name);
-            ShadowTag.Remove(name);
-            ReLoadTags();
+            if(Tags.FirstOrDefault(x => x.Id == id) is LocalTag tag)
+            {
+                Tags.Remove(tag);
+                LocalTag.Remove(id);
+            }
         }
         /// <summary>
         /// 是否是最后一个标签
         /// </summary>
-        public bool IsLastTag(ShadowTag tag)
+        public bool IsLastTag(LocalTag tag)
         {
             return Tags.IndexOf(tag) == Tags.Count - 1;
         }
