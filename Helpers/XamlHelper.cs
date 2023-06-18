@@ -1,7 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace ShadowViewer.Helpers
+﻿namespace ShadowViewer.Helpers
 {
     public static class XamlHelper
     {
@@ -95,8 +92,8 @@ namespace ShadowViewer.Helpers
             {
                 DefaultButton = ContentDialogButton.Primary,
                 Title = title,
-                PrimaryButtonText = I18nHelper.GetString("Shadow.String.Confirm"),
-                CloseButtonText = I18nHelper.GetString("Shadow.String.Canel"),
+                PrimaryButtonText = ResourcesToolKit.GetString("Shadow.String.Confirm"),
+                CloseButtonText = ResourcesToolKit.GetString("Shadow.String.Canel"),
                 XamlRoot = xamlRoot,
                 IsPrimaryButtonEnabled = true,
                 Content = new Border()
@@ -128,7 +125,7 @@ namespace ShadowViewer.Helpers
             dialog.Title = title;
             dialog.Content = message;
             dialog.IsPrimaryButtonEnabled = false;
-            dialog.CloseButtonText = I18nHelper.GetString("Shadow.String.Canel");
+            dialog.CloseButtonText = ResourcesToolKit.GetString("Shadow.String.Canel");
             return dialog;
         }
         public static StackPanel CreateOneLineTextBlock(string title, string value)
@@ -167,8 +164,8 @@ namespace ShadowViewer.Helpers
         {
             ContentDialog dialog = CreateContentDialog(xamlRoot);
             dialog.Title = title;
-            dialog.PrimaryButtonText = I18nHelper.GetString("Shadow.String.Confirm");
-            dialog.CloseButtonText = I18nHelper.GetString("Shadow.String.Canel");
+            dialog.PrimaryButtonText = ResourcesToolKit.GetString("Shadow.String.Confirm");
+            dialog.CloseButtonText = ResourcesToolKit.GetString("Shadow.String.Canel");
             StackPanel grid = new StackPanel()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,

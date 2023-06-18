@@ -28,6 +28,8 @@ global using Microsoft.UI.Xaml.Automation.Peers;
 global using Microsoft.UI.Xaml.Media;
 global using ShadowViewer.Models;
 global using ShadowViewer.Cache;
+global using ShadowViewer.Configs;
+global using ShadowViewer.ToolKits;
 global using Microsoft.UI;
 global using Windows.UI;
 global using System.Web;

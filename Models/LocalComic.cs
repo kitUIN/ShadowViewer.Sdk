@@ -23,7 +23,6 @@ namespace ShadowViewer.Models
         private long size;
         private int episodeCounts;
         private int counts;
-        private string sizeString;
         private bool isFolder = false;
 
         #endregion
@@ -273,21 +272,11 @@ namespace ShadowViewer.Models
         public long Size
         {
             get => size;
-            set 
+            set
             {
                 long oldValue = size;
                 SetProperty(ref size, value, propertyName: nameof(Size));
-                SizeString = ComicHelper.ShowSize(Size);
             }
-        }
-        /// <summary>
-        /// 文件大小(String)
-        /// </summary>
-        [SugarColumn(IsIgnore = true)]
-        public string SizeString
-        { 
-            get => sizeString;
-            set => SetProperty(ref sizeString, value, propertyName: nameof(SizeString));
         }
         /// <summary>
         /// 是否是文件夹

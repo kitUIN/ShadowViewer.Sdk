@@ -8,7 +8,7 @@
             ApplicationDataContainer CoreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
             return CoreSettings.Values.ContainsKey(key);
         }
-        public static object Get(string container,string key)
+        private static object Get(string container,string key)
         {
             ApplicationDataContainer CoreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
             if (CoreSettings.Values.ContainsKey(key))
@@ -36,14 +36,6 @@
             }
             return null;
         }
-        public static object Get(string key)
-        {
-            return Get(container, key);
-        }
-        public static void Set(string key, string value)
-        {
-            Set(container, key, value);
-        }
         public static void Set(string key, object value)
         {
             Set(container, key, value);
@@ -51,7 +43,7 @@
         public static bool Contains(string key)
         {
             return Contains(container, key);
-        } 
+        }
         public static string GetString(string key)
         {
             return GetString(container, key);
