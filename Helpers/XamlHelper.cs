@@ -92,8 +92,8 @@
             {
                 DefaultButton = ContentDialogButton.Primary,
                 Title = title,
-                PrimaryButtonText = ResourcesToolKit.GetString("Shadow.String.Confirm"),
-                CloseButtonText = ResourcesToolKit.GetString("Shadow.String.Canel"),
+                PrimaryButtonText = AppResourcesToolKit.GetString("Shadow.String.Confirm"),
+                CloseButtonText = AppResourcesToolKit.GetString("Shadow.String.Canel"),
                 XamlRoot = xamlRoot,
                 IsPrimaryButtonEnabled = true,
                 Content = new Border()
@@ -125,7 +125,7 @@
             dialog.Title = title;
             dialog.Content = message;
             dialog.IsPrimaryButtonEnabled = false;
-            dialog.CloseButtonText = ResourcesToolKit.GetString("Shadow.String.Canel");
+            dialog.CloseButtonText = AppResourcesToolKit.GetString("Shadow.String.Canel");
             return dialog;
         }
         public static StackPanel CreateOneLineTextBlock(string title, string value)
@@ -164,8 +164,8 @@
         {
             ContentDialog dialog = CreateContentDialog(xamlRoot);
             dialog.Title = title;
-            dialog.PrimaryButtonText = ResourcesToolKit.GetString("Shadow.String.Confirm");
-            dialog.CloseButtonText = ResourcesToolKit.GetString("Shadow.String.Canel");
+            dialog.PrimaryButtonText = AppResourcesToolKit.GetString("Shadow.String.Confirm");
+            dialog.CloseButtonText = AppResourcesToolKit.GetString("Shadow.String.Canel");
             StackPanel grid = new StackPanel()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,

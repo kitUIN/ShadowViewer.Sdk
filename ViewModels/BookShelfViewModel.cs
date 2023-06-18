@@ -53,7 +53,7 @@
             RefreshLocalComic();
             if(Path == "local")
             {
-                CurrentName = ResourcesToolKit.GetString("Shadow.Tag.Local");
+                CurrentName = AppResourcesToolKit.GetString("Shadow.Tag.Local");
             }
             else
             {
