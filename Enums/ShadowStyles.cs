@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Core.Enums
+﻿namespace ShadowViewer.Enums
 {
     /// <summary>
     /// 书架显示模式
