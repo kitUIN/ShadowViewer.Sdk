@@ -7,15 +7,10 @@
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Controls\**" />
-    <Content Remove="Controls\**" />
-    <EmbeddedResource Remove="Controls\**" />
-    <None Remove="Controls\**" />
-    <Page Remove="Controls\**" />
-    <PRIResource Remove="Controls\**" />
+    <Compile Remove="Helpers\TagsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Helpers\TagsHelper.cs" />
+    <None Remove="Controls\PluginMainSection.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,5 +25,11 @@
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
       <PackageReference Include="SharpCompress" Version="0.33.0" />
       <PackageReference Include="SqlSugarCore" Version="5.1.4.73" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\PluginMainSection.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>
