@@ -1,54 +1,76 @@
-﻿namespace ShadowViewer.Utils
+﻿using Microsoft.UI.Xaml.Controls;
+using ShadowViewer.Extensions;
+
+namespace ShadowViewer.Utils
 {
     public class ShadowFile : IDisposable
     {
-        public IStorageItem Self { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
         public int Depth { get; set; } = 0 ;
         public int Counts { get; set; } = 0;
         public long Size { get; set; } = 0;
-        public bool IsDirectory { get => Self is StorageFolder; }
+        public bool IsDirectory { get; set; }
         public List<ShadowFile> Children { get; } = new List<ShadowFile>();
-        ShadowFile(IStorageItem item) 
+        public ShadowFile(string folder) 
         {
-            Self = item;
+            GetFiles(folder, this);
         }
-        private async Task LoadChildren()
+        public ShadowFile(StorageFolder folder) : this(folder.Path) { }
+        public ShadowFile() { }
+
+        private void GetFiles(string filePath, ShadowFile node)
         {
-            if(Self is StorageFolder folder)
+            if (filePath.IsFolder())
             {
-                foreach (IStorageItem item in await folder.GetItemsAsync())
+                DirectoryInfo folder = new DirectoryInfo(filePath);
+                node.Name = folder.Name;
+                node.Path = folder.FullName;
+                node.IsDirectory = true;
+                FileInfo[] chldFiles = folder.GetFiles("*.*");
+                foreach (FileInfo chlFile in chldFiles)
                 {
-                    ShadowFile file = new ShadowFile(item);
-                    await file.LoadChildren();
-                    Children.Add(file);
+                    if (chlFile.FullName.IsPic())
+                    {
+                        ShadowFile chldNode = new ShadowFile()
+                        {
+                            Name = chlFile.Name,
+                            Path = chlFile.FullName,
+                            Size = chlFile.Length,
+                            Depth = 0,
+                            Counts = 1,
+                            IsDirectory=false,
+                        };
+                        node.Size += chlFile.Length;
+                        node.Counts += 1;
+                        node.Children.Add(chldNode);
+                    }
                 }
-                if(Children.Count == 0)
+                DirectoryInfo[] chldFolders = folder.GetDirectories();
+                foreach (DirectoryInfo chldFolder in chldFolders)
                 {
-                    Size = 0;
-                    Depth = 0;
-                    Counts = 1;
+                    ShadowFile chldNode = new ShadowFile();
+                    node.Children.Add(chldNode);
+                    GetFiles(chldFolder.FullName, chldNode);
+                    node.Size += chldNode.Size;
+                    node.Counts += chldNode.Counts;
+                }
+                if(node.Children.Count > 0)
+                {
+                    node.Depth = node.Children.Max(x => x.Depth) + 1;
                 }
                 else
                 {
-                    Size = Children.Sum(x => x.Size);
-                    Depth = Children.Max(x => x.Depth) + 1;
-                    Counts = Children.Sum(x => x.Counts) + 1;
+                    node.Depth = 1;
                 }
+                
             }
-            else if(Self is StorageFile file)
+            else if (filePath.IsFile())
             {
-                Size = (long)(await file.GetBasicPropertiesAsync()).Size;
-                Depth = 0;
-                Counts = 1;
+                return;
             }
         }
-        public static async Task<ShadowFile> Create(IStorageItem item)
-        {
-            ShadowFile f = new ShadowFile(item);
-            await f.LoadChildren();
-            return f;
-        }
-        public static List<ShadowFile> GetDepthFiles(ShadowFile root,int depth = 1)
+        public static List<ShadowFile> GetDepthFiles(ShadowFile root, int depth = 1)
         {
             if (root.Depth == depth && root.IsDirectory)
             {
@@ -75,12 +97,12 @@
             int order = 1;
             foreach (ShadowFile child in one)
             {
-                LocalEpisode ep = LocalEpisode.Create(((StorageFolder)child.Self).DisplayName, order, comicId, child.Children.Count, child.Size);
+                LocalEpisode ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
                 ep.Add();
                 order++;
                 foreach (ShadowFile item in child.Children)
                 {
-                    LocalPicture pic = LocalPicture.Create(((StorageFile)item.Self).DisplayName, ep.Id, comicId, item.Self.Path, item.Size);
+                    LocalPicture pic = LocalPicture.Create(child.Name, ep.Id, comicId, item.Path, item.Size);
                     pic.Add();
                 }
             }

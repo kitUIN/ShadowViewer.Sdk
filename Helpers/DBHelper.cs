@@ -1,4 +1,5 @@
 ﻿using SqlSugar;
+using System.Diagnostics.Metrics;
 
 namespace ShadowViewer.Helpers
 {
@@ -7,7 +8,7 @@ namespace ShadowViewer.Helpers
     /// </summary>
     public static class DBHelper
     {
-        public static string DBPath { get; } = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, "ShadowViewer.db");
+        public static string DBPath { get; } = System.IO.Path.Combine(ApplicationData.Current.LocalFolder.Path, "ShadowViewer.sqlite");
         /// <summary>
         /// DB
         /// </summary>
@@ -36,7 +37,7 @@ namespace ShadowViewer.Helpers
             InitTable(nameof(LocalComic)   ,typeof(LocalComic)     );
             InitTable(nameof(LocalEpisode) ,typeof(LocalEpisode)   );
             InitTable(nameof(LocalPicture) ,typeof(LocalPicture)   );
-            InitTable(nameof(ShadowTag)    ,typeof(ShadowTag)      );
+            InitTable(nameof(LocalTag)    ,typeof(LocalTag)      );
             InitTable(nameof(CacheImg)     ,typeof(CacheImg)       );
             InitTable(nameof(CacheZip)     ,typeof(CacheZip)       );
         }

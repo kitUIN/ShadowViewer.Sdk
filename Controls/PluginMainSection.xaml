@@ -1,0 +1,26 @@
+<UserControl
+    x:Class="ShadowViewer.Controls.PluginMainSection"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
+    xmlns:local="using:ShadowViewer.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <labs:SettingsCard x:Name="ThemeSettingCard" x:Uid="Xaml/SettingCard/Theme">
+        <labs:SettingsCard.Header>
+            <StackPanel Orientation="Horizontal" Spacing="15">
+                <ContentPresenter />
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{x:Bind Header}" />
+                    <TextBlock
+                        FontSize="12"
+                        Text="{x:Bind Description}"
+                        Visibility="{x:Bind IsShowDescription}" />
+                </StackPanel>
+            </StackPanel>
+        </labs:SettingsCard.Header>
+        <ToggleSwitch x:Uid="Xaml/ToggleSwitch/Show" IsOn="{x:Bind IsEnable, Mode=TwoWay}" />
+    </labs:SettingsCard>
+</UserControl>

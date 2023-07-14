@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.Helpers
+﻿using ShadowViewer.Extensions;
+
+namespace ShadowViewer.Helpers
 {
     /// <summary>
     /// 本地漫画的一些帮助函数
@@ -11,7 +13,7 @@
         /// </summary>
         public static LocalComic CreateFolder(string name, string parent)
         {
-            string defaultName = I18nHelper.GetString("Shadow.String.CreateFolder.Title");
+            string defaultName = CoreResourcesHelper.GetString(CoreResourceKey.CreateFolder);
             if (name == "") name = defaultName;
             int i = 1;
             while (LocalComic.Query().Any(x => x.Name == name))
@@ -23,10 +25,10 @@
         /// <summary>
         /// 从文件夹导入漫画
         /// </summary>
-        public static async Task<LocalComic> ImportComicsFromFolder(StorageFolder folder,string parent,string comicId=null,string comicName=null)
+        public static LocalComic ImportComicsFromFolder(StorageFolder folder, string parent, string comicId = null, string comicName = null)
         {
             string img;
-            ShadowFile root = await ShadowFile.Create(folder);
+            ShadowFile root = new ShadowFile(folder);
             if (CacheImg.Query().ToList().FirstOrDefault(x => x.ComicId.Contains(comicId)) is CacheImg cacheImg)
             {
                 img = cacheImg.Path;
@@ -38,7 +40,7 @@
                     ShadowFile imgEntry = null;
                     foreach (ShadowFile item in entries)
                     {
-                        imgEntry = item.Children.FirstOrDefault(x => x.Self is StorageFile f && f.IsPic());
+                        imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory);
                         if (imgEntry != null) return imgEntry;
                     }
                     return null;
@@ -54,9 +56,9 @@
                 {
                     throw new Exception("无效文件夹");
                 }
-                img = imgEntry?.Self.Path;
+                img = imgEntry?.Path;
             }
-            LocalComic comic = LocalComic.Create(comicName ?? ((StorageFolder)root.Self).DisplayName, root.Self.Path, img: img, parent: parent, size: root.Size,id:comicId);
+            LocalComic comic = LocalComic.Create(comicName ?? root.Name, root.Path, img: img, parent: parent, size: root.Size, id: comicId);
             comic.Add();
             ShadowFile.ToLocalComic(root, comic.Id);
             root.Dispose();
@@ -91,19 +93,33 @@
             return Path.Combine(dir, imgEntry.Path);
         }
         /// <summary>
-        /// 解压密码
+        /// 检查重复导入
         /// </summary>
-        public static async Task<bool> ImportAgainDialog(XamlRoot xamlRoot, string zip=null, string path=null)
+        public static async Task<bool> CheckImportAgain(XamlRoot xamlRoot, string zip=null, string path=null)
         {
-            ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot, I18nHelper.GetString("Shadow.String.ImportAgainTitle"), I18nHelper.GetString("Shadow.String.ImportAgainMessage"));
-            if (zip != null)
+            if (!Config.IsImportAgain)
             {
-                string md5=EncryptingHelper.CreateMd5(zip);
-                string sha1 = EncryptingHelper.CreateSha1(zip);
-                CacheZip cache = DBHelper.Db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
-                if(cache != null)
+                ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot,
+                CoreResourcesHelper.GetString(CoreResourceKey.ImportError),
+                CoreResourcesHelper.GetString(CoreResourceKey.DuplicateImport));
+                if (zip != null)
                 {
-                    LocalComic comic = LocalComic.Query().First(x => x.Id == cache.ComicId);
+                    string md5 = EncryptingHelper.CreateMd5(zip);
+                    string sha1 = EncryptingHelper.CreateSha1(zip);
+                    CacheZip cache = DBHelper.Db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+                    if (cache != null)
+                    {
+                        LocalComic comic = LocalComic.Query().First(x => x.Id == cache.ComicId);
+                        if (comic != null)
+                        {
+                            await dialog.ShowAsync();
+                            return true;
+                        }
+                    }
+                }
+                else if (path != null)
+                {
+                    LocalComic comic = LocalComic.Query().First(x => x.Link == path);
                     if (comic != null)
                     {
                         await dialog.ShowAsync();
@@ -111,40 +127,8 @@
                     }
                 }
             }
-            else if(path != null)
-            {
-                LocalComic comic = LocalComic.Query().First(x => x.Link == path);
-                if (comic != null)
-                {
-                    await dialog.ShowAsync();
-                    return true;
-                }
-            }
             return false;
-        }
-        /// <summary>
-        /// Long 大小 转换成 字符串型 大小
-        /// </summary>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        public static string ShowSize(long size)
-        {
-            long KB = 1024;
-            long MB = KB * 1024;
-            long GB = MB * 1024;
-            if (size / GB >= 1)
-            {
-                return $"{Math.Round(size / (float)GB, 2)} GB";
-            }
-            else if (size / MB >= 1)
-            {
-                return $"{Math.Round(size / (float)MB, 2)} MB";
-            }
-            else if (size / KB >= 1)
-            {
-                return $"{Math.Round(size / (float)KB, 2)} KB";
-            }
-            return $"{size} B";
+
         }
         /// <summary>
         /// 字母顺序A-Z

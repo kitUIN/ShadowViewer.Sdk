@@ -3,12 +3,18 @@ using SharpCompress.Common;
 using SharpCompress.IO;
 using ReaderOptions = SharpCompress.Readers.ReaderOptions;
 using System.Threading;
+using ShadowViewer.Extensions;
 
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.ToolKits
 {
-    public class CompressHelper
+    public class CompressToolKit
     {
-        public static ILogger Logger { get; } = Log.ForContext<CompressHelper>();
+        private static ILogger Logger { get; } = Log.ForContext<CompressToolKit>();
+        private ICallableToolKit caller;
+        public CompressToolKit(ICallableToolKit callableToolKit)
+        {
+            caller = callableToolKit;
+        }
         /// <summary>
         /// 检测压缩包密码是否正确
         /// </summary>
@@ -49,9 +55,18 @@ namespace ShadowViewer.Helpers
                 return false;
             }
         }
-        public static async Task<object> DeCompressAsync(string zip, string destinationDirectory,
-            string comicId, IProgress<MemoryStream> imgAction, IProgress<double> progress,
-            Action beginAction, CancellationToken token ,ReaderOptions readerOptions = null)
+        /// <summary>
+        /// 解压流程
+        /// </summary>
+        /// <param name="zip"></param>
+        /// <param name="destinationDirectory"></param>
+        /// <param name="comicId"></param>
+        /// <param name="token"></param>
+        /// <param name="readerOptions"></param>
+        /// <returns></returns>
+        /// <exception cref="TaskCanceledException"></exception>
+        public async Task<object> DeCompressAsync(string zip, string destinationDirectory,
+            string comicId, CancellationToken token, ReaderOptions readerOptions = null)
         {
             Logger.Information("进入解压流程");
             string path = Path.Combine(destinationDirectory, comicId);
@@ -95,9 +110,8 @@ namespace ShadowViewer.Helpers
                     }
                     byte[] bytes = ms.ToArray();
                     CacheImg.CreateImage(destinationDirectory, bytes, comicId);
-                    imgAction.Report(new MemoryStream(bytes));
+                    caller.ImportComicThumb(new MemoryStream(bytes));
                 }
-                beginAction.Invoke();
                 Logger.Information("开始解压:{Zip}", zip);
                 start = DateTime.Now;
                 int i = 0;
@@ -108,7 +122,7 @@ namespace ShadowViewer.Helpers
                     entry.WriteToDirectory(path, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
                     i++;
                     double result = (double)i / (double)totalCount;
-                    progress.Report(Math.Round(result * 100, 2));
+                    caller.ImportComicProgress(Math.Round(result * 100, 2));
                     ShadowEntry.LoadEntry(entry, root);
                 }
                 root.LoadChildren();

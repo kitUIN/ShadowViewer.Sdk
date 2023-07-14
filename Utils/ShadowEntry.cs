@@ -1,4 +1,5 @@
-﻿using SharpCompress.Archives;
+﻿using ShadowViewer.Extensions;
+using SharpCompress.Archives;
 namespace ShadowViewer.Utils
 {
     public class ShadowEntry: IDisposable

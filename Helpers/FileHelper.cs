@@ -57,5 +57,24 @@
             }
             return null;
         }
+        public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(Window window, PickerLocationId id, PickerViewMode mode, params string[] filter)
+        {
+            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+            FileOpenPicker openPicker = new FileOpenPicker();
+            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+            openPicker.SuggestedStartLocation = id;
+            openPicker.ViewMode = mode;
+            foreach (string filterItem in filter) openPicker.FileTypeFilter.Add(filterItem);
+            IReadOnlyList<IStorageItem> files = await openPicker.PickMultipleFilesAsync();
+            if (files != null)
+            {
+                return files;
+            }
+            return null;
+        }
+        public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(UIElement element, params string[] filter)
+        {
+            return await SelectMultipleFileAsync(WindowHelper.GetWindowForElement(element), PickerLocationId.Desktop, PickerViewMode.List, filter);
+        }
     }
 }

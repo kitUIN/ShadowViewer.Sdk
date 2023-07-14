@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Core.Enums
+﻿namespace ShadowViewer.Enums
 {
     public enum ShadowSorts
     {
