@@ -11,7 +11,7 @@
         /// </summary>
         public static LocalComic CreateFolder(string name, string parent)
         {
-            string defaultName = AppResourcesToolKit.GetString("Shadow.String.CreateFolder.Title");
+            string defaultName = CoreResourcesHelper.GetString(CoreResourceKey.CreateFolder);
             if (name == "") name = defaultName;
             int i = 1;
             while (LocalComic.Query().Any(x => x.Name == name))
@@ -95,7 +95,7 @@
         /// </summary>
         public static async Task<bool> ImportAgainDialog(XamlRoot xamlRoot, string zip=null, string path=null)
         {
-            ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot, AppResourcesToolKit.GetString("Shadow.String.ImportAgainTitle"), AppResourcesToolKit.GetString("Shadow.String.ImportAgainMessage"));
+            ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot, "密码错误", "密码错误");
             if (zip != null)
             {
                 string md5=EncryptingHelper.CreateMd5(zip);

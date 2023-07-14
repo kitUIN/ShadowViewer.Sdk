@@ -53,7 +53,7 @@
             RefreshLocalComic();
             if(Path == "local")
             {
-                CurrentName = AppResourcesToolKit.GetString("Shadow.Tag.Local");
+                CurrentName = "本地";
             }
             else
             {

@@ -92,7 +92,7 @@ namespace ShadowViewer.ToolKits
         {
             if(id == "Local")
             {
-                return new LocalTag(AppResourcesToolKit.GetString("Shadow.Tag.Local"), "#000000", "#ffd657");
+                return new LocalTag("本地", "#000000", "#ffd657");
             }
             return plugins.FirstOrDefault(x => x.MetaData.ID == id).AffiliationTag;
         }

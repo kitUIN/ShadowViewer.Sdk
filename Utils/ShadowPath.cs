@@ -25,7 +25,7 @@
         }
         public ShadowPath(IEnumerable<string> black)
         {
-            this.comic = LocalComic.Create(AppResourcesToolKit.GetString("Shadow.Tag.Local"), "",id:"local",isFolder:true, parent:"",img: LocalComic.DefaultFolderImg);
+            this.comic = LocalComic.Create(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "",id:"local",isFolder:true, parent:"",img: LocalComic.DefaultFolderImg);
             List<LocalComic> comics = DBHelper.Db.Queryable<LocalComic>().Where(x => x.IsFolder).ToList();
             if(comics.Count > 0)
             {

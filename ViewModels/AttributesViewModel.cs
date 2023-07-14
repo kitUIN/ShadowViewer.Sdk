@@ -55,13 +55,13 @@
             {
                 shadow.IsEnable = false;
                 shadow.Icon = "\uE23F";
-                shadow.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Affiliation") + ": " + shadow.Name;
+                shadow.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Affiliation) + ": " + shadow.Name;
                 Tags.Add(shadow);
             }
             foreach (LocalTag item in CurrentComic.Tags)
             {
                 item.Icon = "\uEEDB";
-                item.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Tag") + ": " + item.Name;
+                item.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Tag) + ": " + item.Name;
                 Tags.Add(item);
             }
             Tags.Add(new LocalTag
@@ -70,8 +70,8 @@
                 // Background = (SolidColorBrush)Application.Current.Resources["SystemControlBackgroundBaseMediumLowBrush"],
                 Foreground = new SolidColorBrush((ThemeHelper.IsDarkTheme() ? "#FFFFFFFF" : "#FF000000").ToColor()),
                 IsEnable = true,
-                Name = AppResourcesToolKit.GetString("Xaml.ToolTip.AddTag.Content"),
-                ToolTip = AppResourcesToolKit.GetString("Xaml.ToolTip.AddTag.Content"),
+                Name = CoreResourcesHelper.GetString(CoreResourceKey.AddTag),
+                ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.AddTag),
             });
         }
         /// <summary>
@@ -83,7 +83,7 @@
             {
                 tag.ComicId = localTag.ComicId;
                 tag.Icon = "\uEEDB";
-                tag.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Tag") + ": " + localTag.Name;
+                tag.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Tag) + ": " + localTag.Name;
                 tag.Update();
                 if(Tags.FirstOrDefault(x => x.Id == tag.Id) is LocalTag lo)
                 {
@@ -95,7 +95,7 @@
                 tag.Id = LocalTag.RandomId();
                 tag.ComicId = CurrentComic.Id;
                 tag.Icon = "\uEEDB";
-                tag.ToolTip = AppResourcesToolKit.GetString("Shadow.String.Tag") + ": " + tag.Name;
+                tag.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Tag) + ": " + tag.Name;
                 tag.Add();
                 Tags.Insert(Math.Max(0, Tags.Count - 1), tag);
             }
