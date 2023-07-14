@@ -5,7 +5,7 @@
     /// </summary>
     public class PluginMetaData
     {
-        public string ID { get; }
+        public string Id { get; }
         public string Name { get; }
         public string Description { get; set; }
         public string Author { get; set; }
@@ -15,7 +15,7 @@
         public int MinVersion { get; set; }
         public PluginMetaData(string id, string name, string description, string author, string version, Uri webUri,Uri logo, int requireVersion)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Description = description;
             Author = author;

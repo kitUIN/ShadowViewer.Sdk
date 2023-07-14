@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ShadowViewer.Helpers
+﻿namespace ShadowViewer.Helpers
 {
     public static class CoreResourcesHelper
     {
@@ -12,7 +6,7 @@ namespace ShadowViewer.Helpers
         private static readonly string prefix = "ShadowViewer.Core/Resources/";
         public static string GetString(string key)
         {
-            return resourceManager.MainResourceMap.GetValue(prefix + key.Replace(".", "/")).ValueAsString;
+            return resourceManager.MainResourceMap.GetValue(prefix + key).ValueAsString;
         }
         public static string GetString(CoreResourceKey key)
         {

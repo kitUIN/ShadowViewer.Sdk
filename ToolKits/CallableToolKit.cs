@@ -1,7 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using ShadowViewer.Utils.Args;
-using System.IO;
-using System.Security.Policy;
+﻿
+
+
 
 namespace ShadowViewer.ToolKits
 {
@@ -36,6 +35,18 @@ namespace ShadowViewer.ToolKits
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler ImportComicCompletedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler DebugEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler SettingsBackEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler<MainBackEventArgs> MainBackEvent;
 
         /// <summary>
         /// <inheritdoc/>
@@ -45,11 +56,11 @@ namespace ShadowViewer.ToolKits
             ImportComicEventArgs args = new ImportComicEventArgs(items, passwords, index);
             if (ImportComicEvent is null)
             {
-                Logger.Debug("事件ImportComicEvent不存在");
+                Logger.Information("事件ImportComicEvent不存在");
                 return;
             }
             ImportComicEvent?.Invoke(this, args);
-            Logger.Debug("触发事件ImportComicEvent");
+            Logger.Information("触发事件ImportComicEvent");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -59,11 +70,11 @@ namespace ShadowViewer.ToolKits
             ImportComicThumbEventArgs args = new ImportComicThumbEventArgs(stream);
             if (ImportComicThumbEvent is null)
             {
-                Logger.Debug("事件ImportComicThumbEvent不存在");
+                Logger.Information("事件ImportComicThumbEvent不存在");
                 return;
             }
             ImportComicThumbEvent?.Invoke(this, args);
-            Logger.Debug("触发事件ImportComicThumbEvent");
+            Logger.Information("触发事件ImportComicThumbEvent");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -73,11 +84,11 @@ namespace ShadowViewer.ToolKits
             ImportComicErrorEventArgs args = new ImportComicErrorEventArgs(error,message,items,index, password);
             if (ImportComicErrorEvent is null)
             {
-                Logger.Debug("事件ImportComicErrorEvent不存在");
+                Logger.Information("事件ImportComicErrorEvent不存在");
                 return;
             }
             ImportComicErrorEvent?.Invoke(this, args);
-            Logger.Debug("触发事件ImportComicErrorEvent");
+            Logger.Information("触发事件ImportComicErrorEvent");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -87,11 +98,11 @@ namespace ShadowViewer.ToolKits
             ImportComicProgressEventArgs args = new ImportComicProgressEventArgs(progress);
             if (ImportComicProgressEvent is null)
             {
-                Logger.Debug("事件ImportComicProgressEvent不存在");
+                Logger.Information("事件ImportComicProgressEvent不存在");
                 return;
             }
             ImportComicProgressEvent?.Invoke(this, args);
-            Logger.Debug("触发事件ImportComicProgressEvent");
+            Logger.Information("触发事件ImportComicProgressEvent");
         }
 
         /// <summary>
@@ -102,11 +113,11 @@ namespace ShadowViewer.ToolKits
             NavigateToEventArgs args = new NavigateToEventArgs(mode, page, id, url);
             if(NavigateToEvent is null)
             {
-                Logger.Debug("事件NavigateTo不存在");
+                Logger.Information("事件NavigateTo不存在");
                 return;
             }
             NavigateToEvent?.Invoke(this, args);
-            Logger.Debug("触发事件NavigateTo{a}", args.ToString());
+            Logger.Information("触发事件NavigateTo{a}", args.ToString());
         }
         /// <summary>
         /// <inheritdoc/>
@@ -115,11 +126,11 @@ namespace ShadowViewer.ToolKits
         {
             if (RefreshBookEvent is null)
             {
-                Logger.Debug("事件RefreshBook不存在");
+                Logger.Information("事件RefreshBook不存在");
                 return;
             }
             RefreshBookEvent?.Invoke(this, null);
-            Logger.Debug("触发事件RefreshBook");
+            Logger.Information("触发事件RefreshBook");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -128,11 +139,50 @@ namespace ShadowViewer.ToolKits
         {
             if (ImportComicCompletedEvent is null)
             {
-                Logger.Debug("事件ImportComicCompletedEvent不存在");
+                Logger.Information("事件ImportComicCompletedEvent不存在");
                 return;
             }
             ImportComicCompletedEvent?.Invoke(this, null);
-            Logger.Debug("触发事件ImportComicCompletedEvent");
+            Logger.Information("触发事件ImportComicCompletedEvent");
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Debug()
+        {
+            if (DebugEvent is null)
+            {
+                Logger.Information("事件DebugEvent不存在");
+                return;
+            }
+            DebugEvent?.Invoke(this, null);
+            Logger.Information("触发事件DebugEvent");
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void SettingsBack()
+        {
+            if (SettingsBackEvent is null)
+            {
+                Logger.Information("事件SettingsBackEvent不存在");
+                return;
+            }
+            SettingsBackEvent?.Invoke(this, null);
+            Logger.Information("触发事件SettingsBackEvent");
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void MainBack(bool force)
+        {
+            if (MainBackEvent is null)
+            {
+                Logger.Information("事件MainBackEvent不存在");
+                return;
+            }
+            MainBackEvent?.Invoke(this, new MainBackEventArgs(force));
+            Logger.Information("触发事件MainBackEvent");
         }
     }
 }

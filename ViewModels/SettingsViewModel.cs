@@ -7,6 +7,7 @@ namespace ShadowViewer.ViewModels
     /// </summary>
     public partial class SettingsViewModel : ObservableObject
     {
+        public ICallableToolKit caller;
         public string Version { get => "0.6.5.0"; }
         [ObservableProperty]
         private bool isDebug = Config.IsDebug;
@@ -36,6 +37,7 @@ namespace ShadowViewer.ViewModels
             if (oldValue != newValue)
             {
                 Config.IsDebug = IsDebug;
+                caller.SettingsBack();
             }
         }
         partial void OnTempPathChanged(string oldValue, string newValue)
@@ -81,6 +83,10 @@ namespace ShadowViewer.ViewModels
                 Config.IsRememberDeleteFilesWithComicDelete = !IsRememberDeleteFilesWithComicDelete;
             }
         }
-        public SettingsViewModel() { }
+        public ObservableCollection<BreadcrumbItem> Pages { get; set; } = new ObservableCollection<BreadcrumbItem> ();
+        public SettingsViewModel(ICallableToolKit callableToolKit) 
+        {
+            caller = callableToolKit;
+        }
     }
 }

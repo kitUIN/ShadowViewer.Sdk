@@ -36,6 +36,18 @@ namespace ShadowViewer.Interfaces
         /// </summary>
         public event EventHandler<ImportComicProgressEventArgs> ImportComicProgressEvent;
         /// <summary>
+        /// 调试事件
+        /// </summary>
+        public event EventHandler DebugEvent;
+        /// <summary>
+        /// 设置页面后退
+        /// </summary>
+        public event EventHandler SettingsBackEvent;
+        /// <summary>
+        /// 设置主页面后退
+        /// </summary>
+        public event EventHandler<MainBackEventArgs> MainBackEvent;
+        /// <summary>
         /// 控制页面跳转
         /// </summary>
         void NavigateTo(NavigateMode mode,Type page, string id, Uri url);
@@ -63,5 +75,17 @@ namespace ShadowViewer.Interfaces
         /// 导入漫画完成
         /// </summary>
         void ImportComicCompleted();
+        /// <summary>
+        /// 调试
+        /// </summary>
+        void Debug();
+        /// <summary>
+        /// 设置界面后退
+        /// </summary>
+        void SettingsBack();
+        /// <summary>
+        /// 设置主界面后退
+        /// </summary>
+        void MainBack(bool force);
     }
 }
