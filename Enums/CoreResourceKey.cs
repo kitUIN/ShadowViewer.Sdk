@@ -21,5 +21,7 @@ namespace ShadowViewer.Enums
         Group,
         FileName,
         Author,
+        ImportError,
+        DuplicateImport,
     }
 }

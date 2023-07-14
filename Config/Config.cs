@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.Configs
+﻿using ShadowViewer.Extensions;
+
+namespace ShadowViewer.Configs
 {
     public class Config
     {
@@ -78,7 +80,7 @@
             set => ConfigHelper.Set("IsBookShelfInfoBar", value);
         }
         /// <summary>
-        /// 相同文件夹导入
+        /// 允许相同文件夹导入
         /// </summary>
         public static bool IsImportAgain
         {

@@ -33,14 +33,14 @@
         /// </summary>
         public ObservableCollection<LocalComic> LocalComics { get; } = new ObservableCollection<LocalComic>();
         public static ILogger Logger { get; } = Log.ForContext<BookShelfViewModel>();
-        private ICallableToolKit _callableToolKit;
+        private ICallableToolKit caller;
         public BookShelfViewModel(ICallableToolKit callableToolKit)
         {
-            _callableToolKit = callableToolKit;
-            _callableToolKit.RefreshBookEvent += _callableToolKit_RefreshBookEvent;
+            caller = callableToolKit;
+            caller.RefreshBookEvent += Caller_RefreshBookEvent;
             Logger.Debug("加载RefreshBook事件");
         }
-        private void _callableToolKit_RefreshBookEvent(object sender, EventArgs e)
+        private void Caller_RefreshBookEvent(object sender, EventArgs e)
         {
             RefreshLocalComic();
         }

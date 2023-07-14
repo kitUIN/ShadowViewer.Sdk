@@ -138,11 +138,17 @@
   <data name="CreateFolder" xml:space="preserve">
     <value>新建文件夹</value>
   </data>
+  <data name="DuplicateImport" xml:space="preserve">
+    <value>相同漫画已经存在</value>
+  </data>
   <data name="FileName" xml:space="preserve">
     <value>文件名</value>
   </data>
   <data name="Group" xml:space="preserve">
     <value>汉化组</value>
+  </data>
+  <data name="ImportError" xml:space="preserve">
+    <value>导入错误</value>
   </data>
   <data name="LocalTag" xml:space="preserve">
     <value>本地</value>

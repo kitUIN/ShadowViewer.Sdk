@@ -1,11 +1,54 @@
-﻿namespace ShadowViewer.Helpers
+﻿namespace ShadowViewer.Extensions
 {
-    /// <summary>
-    /// Shadow拓展方法类
-    /// </summary>
-    public static class ShadowExtension
+    public static class UriExtension
     {
         private static ILogger Logger { get; } = Log.ForContext<FileHelper>();
+        /// <summary>
+        /// 从浏览器打开
+        /// </summary>
+        public static async void LaunchUriAsync(this Uri uri)
+        {
+            if (uri != null)
+            {
+                await Launcher.LaunchUriAsync(uri);
+            }
+        }
+        /// <summary>
+        /// 从资源管理器打开
+        /// </summary>
+        public static async void LaunchFolderAsync(this StorageFolder folder)
+        {
+            if (folder != null)
+            {
+                await Launcher.LaunchFolderAsync(folder);
+            }
+        }
+        /// <summary>
+        /// Join
+        /// </summary> 
+        public static string JoinToString(this ObservableCollection<string> tags,string separator = ",")
+        {
+            return string.Join(separator, tags);
+        }
+        /// <summary>
+        /// 获取文件
+        /// </summary>
+        public static async Task<StorageFile> GetFile(this Uri uri)
+        {
+            return await StorageFile.GetFileFromPathAsync(uri.DecodePath());
+        }
+        public static string DecodePath(this StorageFile file)
+        {
+            return HttpUtility.UrlDecode(file.Path);
+        }
+        public static string DecodePath(this Uri uri)
+        {
+            return HttpUtility.UrlDecode(uri.AbsolutePath);
+        }
+        public static string DecodeUri(this Uri uri)
+        {
+            return HttpUtility.UrlDecode(uri.AbsoluteUri);
+        }
         /// <summary>
         /// 是否是图片
         /// </summary> 
@@ -82,7 +125,7 @@
             }
             foreach (string subDir in Directory.GetDirectories(targetDir))
             {
-                DeleteDirectory(subDir);
+                subDir.DeleteDirectory();
             }
             Directory.Delete(targetDir, false);
             Logger.Information("删除文件夹{Dir}", targetDir);
@@ -111,6 +154,15 @@
                 File.Create(path);
                 Logger.Information("文件{Dir}不存在,新建", path);
             }
+        }
+        public static bool IsFile(this string path)
+        {
+            return File.Exists(path);
+        }
+
+        public static bool IsFolder(this string path)
+        {
+            return Directory.Exists(path);
         }
         /// <summary>
         /// 从url获取StorageFile,若没有则创建文件
