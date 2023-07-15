@@ -167,7 +167,7 @@ namespace ShadowViewer.ToolKits
             {
                 Logger.Information("事件SettingsBackEvent不存在");
                 return;
-            }
+            } 
             SettingsBackEvent?.Invoke(this, null);
             Logger.Information("触发事件SettingsBackEvent");
         }
@@ -183,6 +183,13 @@ namespace ShadowViewer.ToolKits
             }
             MainBackEvent?.Invoke(this, new MainBackEventArgs(force));
             Logger.Information("触发事件MainBackEvent");
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void ClearSettingsBackEvent()
+        {
+            SettingsBackEvent = null;
         }
     }
 }

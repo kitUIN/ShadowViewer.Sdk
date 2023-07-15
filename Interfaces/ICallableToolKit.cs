@@ -83,6 +83,7 @@ namespace ShadowViewer.Interfaces
         /// 设置界面后退
         /// </summary>
         void SettingsBack();
+        void ClearSettingsBackEvent();
         /// <summary>
         /// 设置主界面后退
         /// </summary>

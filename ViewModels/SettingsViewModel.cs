@@ -37,7 +37,7 @@ namespace ShadowViewer.ViewModels
             if (oldValue != newValue)
             {
                 Config.IsDebug = IsDebug;
-                caller.SettingsBack();
+                caller.Debug();
             }
         }
         partial void OnTempPathChanged(string oldValue, string newValue)
