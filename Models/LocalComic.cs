@@ -339,9 +339,9 @@ namespace ShadowViewer.Models
         public static void Remove(string id)
         {
             DBHelper.Remove(new LocalComic { Id = id });
-            if (CacheImg.Query().ToList().FirstOrDefault(x => x.ComicId.Contains(id)) is CacheImg cacheImg)
+            if (CacheImg.Query().First(x => x.ComicId == id) is CacheImg cacheImg)
             {
-                cacheImg.ComicId.Remove(id);
+                cacheImg.Remove();
             }
             Logger.Information("删除Comic:{ComicId}", id);
         }

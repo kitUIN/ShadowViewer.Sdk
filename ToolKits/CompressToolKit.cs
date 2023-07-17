@@ -109,7 +109,7 @@ namespace ShadowViewer.ToolKits
                         // ms.Seek(0, SeekOrigin.Begin);
                     }
                     byte[] bytes = ms.ToArray();
-                    CacheImg.CreateImage(destinationDirectory, bytes, comicId);
+                    CacheImg.CreateImage(Config.TempPath, bytes, comicId);
                     caller.ImportComicThumb(new MemoryStream(bytes));
                 }
                 Logger.Information("开始解压:{Zip}", zip);

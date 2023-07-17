@@ -8,30 +8,19 @@ namespace ShadowViewer.Cache
     public class CacheImg: IDataBaseItem
     {
         public CacheImg() { }
-        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable = false)]
-        public string Id { get; set; }
+
+        [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
+        public int Id { get; set; }
+        [SugarColumn(ColumnDataType = "Nchar(32)",  IsNullable = false)]
+        public string Md5 { get; set; }
         [SugarColumn(ColumnDataType = "Ntext")]
         public string Path { get; set; }
-        private ObservableCollection<string> comicIds = new ObservableCollection<string>();
         /// <summary>
         /// 标签
         /// </summary>
-        [SugarColumn(IsJson = true, ColumnDataType = "Ntext")]
-        public ObservableCollection<string> ComicId
-        {
-            get => comicIds;
-            set
-            {
-                comicIds = value;
-                if (comicIds != null)
-                {
-                    comicIds.CollectionChanged += (object sender, NotifyCollectionChangedEventArgs e) =>
-                    {
-                        Update();
-                    };
-                }
-            }
-        }
+        [SugarColumn(ColumnDataType = "Nchar(32)")]
+        public string ComicId { get; set; }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -65,7 +54,7 @@ namespace ShadowViewer.Cache
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public static void Remove(string id)
+        public static void Remove(int id)
         {
             DBHelper.Remove(new CacheImg { Id = id });
             Logger.Information("删除CacheImg:{Id}", id);
@@ -79,19 +68,23 @@ namespace ShadowViewer.Cache
         {
             string md5 = EncryptingHelper.CreateMd5(bytes);
             string path = System.IO.Path.Combine(dir, md5 + ".png");
-            if (CacheImg.Query().First(x => x.Id == md5) is CacheImg cache)
+            if (CacheImg.Query().First(x => x.Md5 == md5) is CacheImg cache)
             {
-                cache.ComicId.Add(comicId);
+                DBHelper.Add(new CacheImg
+                {
+                    ComicId = cache.ComicId,
+                    Path = cache.Path,
+                });
             }
             else
             {
-                CacheImg img = new CacheImg
+                DBHelper.Add(new CacheImg
                 {
-                    Id = md5,
+                    Md5 = md5,
                     Path = path,
-                    ComicId = new ObservableCollection<string> { comicId, },
-                };
-                img.Add();
+                    ComicId = comicId,
+                });
+
                 System.IO.File.WriteAllBytes(path, bytes);
             }
         }

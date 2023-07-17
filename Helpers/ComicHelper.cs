@@ -29,7 +29,7 @@ namespace ShadowViewer.Helpers
         {
             string img;
             ShadowFile root = new ShadowFile(folder);
-            if (CacheImg.Query().ToList().FirstOrDefault(x => x.ComicId.Contains(comicId)) is CacheImg cacheImg)
+            if (CacheImg.Query().First(x => x.ComicId==comicId) is CacheImg cacheImg)
             {
                 img = cacheImg.Path;
             }
@@ -69,7 +69,7 @@ namespace ShadowViewer.Helpers
         /// </summary>
         public static string LoadImgFromEntry(ShadowEntry root, string dir, string comicId)
         {
-            if(CacheImg.Query().ToList().FirstOrDefault(x => x.ComicId.Contains(comicId)) is CacheImg cacheImg)
+            if(CacheImg.Query().First(x => x.ComicId==comicId) is CacheImg cacheImg)
             {
                 return cacheImg.Path;
             }
