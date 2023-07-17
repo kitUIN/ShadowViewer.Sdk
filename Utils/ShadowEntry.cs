@@ -121,13 +121,16 @@ namespace ShadowViewer.Utils
             int order = 1;
             foreach(ShadowEntry child in one)
             {
-                LocalEpisode ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
-                ep.Add();
-                order++;
-                foreach (ShadowEntry item in child.Children)
+                if(child.Children.Count>0)
                 {
-                    LocalPicture pic = LocalPicture.Create(item.Name, ep.Id, comicId, System.IO.Path.Combine(initPath, item.Path), item.Size);
-                    pic.Add();
+                    LocalEpisode ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
+                    ep.Add();
+                    order++;
+                    foreach (ShadowEntry item in child.Children)
+                    {
+                        LocalPicture pic = LocalPicture.Create(item.Name, ep.Id, comicId, System.IO.Path.Combine(initPath, item.Path), item.Size);
+                        pic.Add();
+                    }
                 }
             }
             // 销毁资源

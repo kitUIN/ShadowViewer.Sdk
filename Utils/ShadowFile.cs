@@ -97,14 +97,18 @@ namespace ShadowViewer.Utils
             int order = 1;
             foreach (ShadowFile child in one)
             {
-                LocalEpisode ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
-                ep.Add();
-                order++;
-                foreach (ShadowFile item in child.Children)
+                if(child.Children.Count > 0)
                 {
-                    LocalPicture pic = LocalPicture.Create(child.Name, ep.Id, comicId, item.Path, item.Size);
-                    pic.Add();
+                    LocalEpisode ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
+                    ep.Add();
+                    order++;
+                    foreach (ShadowFile item in child.Children)
+                    {
+                        LocalPicture pic = LocalPicture.Create(child.Name, ep.Id, comicId, item.Path, item.Size);
+                        pic.Add();
+                    }
                 }
+                
             }
             if (DBHelper.Db.Queryable<LocalComic>().First(x => x.Id == comicId) is LocalComic comic)
             {
