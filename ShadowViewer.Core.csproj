@@ -11,6 +11,7 @@
     <Compile Remove="Helpers\TagsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Controls\StatusBlock.xaml" />
     <None Remove="Themes\Generic.xaml" />
   </ItemGroup>
 
@@ -30,6 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Controls\StatusBlock.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
     <Page Update="Themes\Generic.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

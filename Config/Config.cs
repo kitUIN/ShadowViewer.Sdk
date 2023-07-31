@@ -22,6 +22,10 @@ namespace ShadowViewer.Configs
             {
                 IsBookShelfInfoBar = true;
             }
+            if (!ConfigHelper.Contains("PluginsUri"))
+            {
+                PluginsUri = "https://blog.kituin.fun/";
+            }
             IsDebugEvent();
             ComicsPath.CreateDirectory();
             TempPath.CreateDirectory();
