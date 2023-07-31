@@ -15,7 +15,7 @@
         /// <summary>
         /// 当前文件夹名称
         /// </summary>
-        public string CurrentName { get; set; }
+        public string CurrentName { get; private set; }
         /// <summary>
         /// 当前文件夹ID
         /// </summary>
@@ -32,8 +32,9 @@
         /// 该文件夹下的漫画
         /// </summary>
         public ObservableCollection<LocalComic> LocalComics { get; } = new ObservableCollection<LocalComic>();
-        public static ILogger Logger { get; } = Log.ForContext<BookShelfViewModel>();
-        private ICallableToolKit caller;
+
+        private static ILogger Logger { get; } = Log.ForContext<BookShelfViewModel>();
+        private readonly ICallableToolKit caller;
         public BookShelfViewModel(ICallableToolKit callableToolKit)
         {
             caller = callableToolKit;
@@ -49,7 +50,7 @@
             LocalComics.CollectionChanged += LocalComics_CollectionChanged;
             OriginPath = parameter;
             Path = parameter.AbsolutePath.Split(new char[] { '/', }, StringSplitOptions.RemoveEmptyEntries).LastOrDefault() ?? parameter.Host;
-            Logger.Information("导航到{path},Path={p}", OriginPath, Path);
+            Logger.Information("导航到{Path},Path={P}", OriginPath, Path);
             RefreshLocalComic();
             if(Path == "local")
             {
@@ -63,22 +64,31 @@
 
         private void LocalComics_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(e.Action == NotifyCollectionChangedAction.Remove)
+            switch (e.Action)
             {
-                foreach(LocalComic item in e.OldItems) 
+                case NotifyCollectionChangedAction.Remove:
                 {
-                    item.Remove();
+                    if (e.OldItems != null)
+                        foreach (LocalComic item in e.OldItems)
+                        {
+                            item.Remove();
+                        }
+
+                    break;
                 }
-            }
-            else if(e.Action== NotifyCollectionChangedAction.Add)
-            {
-                foreach (LocalComic item in e.NewItems)
+                case NotifyCollectionChangedAction.Add:
                 {
-                    if (item.Id is null) continue;
-                    if (!DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == item.Id ))
-                    {
-                        item.Add();
-                    }
+                    if (e.NewItems != null)
+                        foreach (LocalComic item in e.NewItems)
+                        {
+                            if (item.Id is null) continue;
+                            if (!DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == item.Id))
+                            {
+                                item.Add();
+                            }
+                        }
+
+                    break;
                 }
             }
             IsEmpty = LocalComics.Count == 0;
@@ -109,8 +119,10 @@
                     comics.Sort(ComicHelper.PASort); break;
                 case ShadowSorts.PZ:
                     comics.Sort(ComicHelper.PZSort); break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            foreach (LocalComic item in comics)
+            foreach (var item in comics)
             {
                 LocalComics.Add(item);
             }

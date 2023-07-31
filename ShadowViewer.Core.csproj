@@ -11,7 +11,7 @@
     <Compile Remove="Helpers\TagsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Controls\PluginMainSection.xaml" />
+    <None Remove="Themes\Generic.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,8 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Controls\PluginMainSection.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Update="Themes\Generic.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 </Project>
