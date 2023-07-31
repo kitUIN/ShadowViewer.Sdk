@@ -1,12 +1,16 @@
-﻿namespace ShadowViewer.ViewModels
+﻿using ShadowViewer.ToolKits;
+
+namespace ShadowViewer.ViewModels
 {
     public class NavigationViewModel: ObservableObject
     {
         public static ILogger Logger { get; } = Log.ForContext<NavigationViewModel>();
         private ICallableToolKit _callableToolKit;
-        public NavigationViewModel(ICallableToolKit callableToolKit)
+        private IPluginsToolKit _pluginsToolKit;
+        public NavigationViewModel(ICallableToolKit callableToolKit,IPluginsToolKit pluginsToolKit)
         {
             _callableToolKit = callableToolKit;
+            _pluginsToolKit = pluginsToolKit;
         }
         /// <summary>
         /// 导航栏插件栏注入
@@ -17,12 +21,12 @@
             //this.pluginItem = pluginItem;
             pluginItem.MenuItems.Clear();
             // TODO
-           /* foreach (string name in PluginHelper.EnabledPlugins)
+            foreach (var plugin in _pluginsToolKit.EnabledPlugins)
             {
-                PluginHelper.PluginInstances[name].NavigationViewItemsHandler(pluginItem);
+                plugin.NavigationViewItemsHandler(pluginItem);
                 Log.ForContext<NavigationViewModel>().Information("[{name}]插件导航栏注入成功",
-                    PluginHelper.PluginInstances[name].MetaData().Name);
-            }*/
+                    plugin.MetaData.Name);
+            }
         }
     }
 }

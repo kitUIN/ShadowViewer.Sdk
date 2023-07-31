@@ -2,6 +2,7 @@
 {
     public interface IPluginsToolKit
     {
+        public Task InitAsync();
         /// <summary>
         /// 启用插件
         /// </summary>
@@ -21,11 +22,11 @@
         /// <summary>
         /// 获取已启动的所有插件
         /// </summary>
-        public IEnumerable<IPlugin> GetEnabledPlugins();
+        public IEnumerable<IPlugin> EnabledPlugins { get; }
         /// <summary>
         /// 获取所有插件
         /// </summary>
-        public ObservableCollection<IPlugin> GetPlugins();
+        public ObservableCollection<IPlugin> Plugins { get; }
         /// <summary>
         /// 获取归属标签
         /// </summary>

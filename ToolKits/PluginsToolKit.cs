@@ -1,4 +1,8 @@
-﻿namespace ShadowViewer.ToolKits
+﻿using CustomExtensions.WinUI;
+using ShadowViewer.Plugins;
+using System.Diagnostics;
+
+namespace ShadowViewer.ToolKits
 {
     public class PluginsToolKit: IPluginsToolKit
     {
@@ -11,13 +15,23 @@
         /// <summary>
         /// 所有插件
         /// </summary>
-        private ObservableCollection<IPlugin> Plugins { get; }
-        public PluginsToolKit(IEnumerable<IPlugin> plugins)
+        private ObservableCollection<IPlugin> Instances { get; } = new ObservableCollection<IPlugin>();
+        public PluginsToolKit() { }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public async Task InitAsync()
         {
-            this.Plugins = new ObservableCollection<IPlugin>(plugins);
-            foreach (IPlugin plugin in plugins)
-            { 
-                AllPlugins.Add(plugin.MetaData.Id);
+            var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(@"D:\VsProjects\WASDK\plugins\ShadowViewer.Plugin.Bika.dll");
+
+            foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
+                .Where(type => type.IsAssignableTo(typeof(IPlugin)))
+                .Select(type => Activator.CreateInstance(type) as IPlugin))
+            {
+                Instances.Add(instance);
+                AllPlugins.Add(instance.MetaData.Id);
+                Log.Information("[插件控制器]加载{name}插件成功", instance.MetaData.Name);
+                Log.Information(instance.AffiliationTag.Name);
             }
         }
         /// <summary>
@@ -25,7 +39,7 @@
         /// </summary>
         public void PluginEnabled(string id)
         {
-            if(Plugins.FirstOrDefault(x => x.MetaData.Id == id) is IPlugin plugin)
+            if(Instances.FirstOrDefault(x => x.MetaData.Id == id) is IPlugin plugin)
             {
                 if (!plugin.IsEnabled)
                 {
@@ -39,7 +53,7 @@
         /// </summary>
         public void PluginDisabled(string id)
         {
-            if (Plugins.FirstOrDefault(x => x.MetaData.Id == id) is IPlugin plugin)
+            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is IPlugin plugin)
             {
                 if (!plugin.IsEnabled)
                 {
@@ -53,14 +67,14 @@
         /// </summary>
         public IPlugin GetPlugin(string id)
         {
-            return Plugins.FirstOrDefault(x => x.MetaData.Id == id);
+            return Instances.FirstOrDefault(x => x.MetaData.Id == id);
         }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public IEnumerable<IPlugin> GetEnabledPlugins()
+        public IEnumerable<IPlugin> EnabledPlugins
         {
-            return Plugins.Where(x => x.IsEnabled);
+            get => Instances.Where(x => x.IsEnabled);
         }
         /// <summary>
         /// <inheritdoc/>
@@ -71,21 +85,21 @@
             {
                 return new LocalTag(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "#000000", "#ffd657");
             }
-            return Plugins.FirstOrDefault(x => x.MetaData.Id == id).AffiliationTag;
+            return Instances.FirstOrDefault(x => x.MetaData.Id == id).AffiliationTag;
         }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public ObservableCollection<IPlugin> GetPlugins()
+        public ObservableCollection<IPlugin> Plugins
         {
-            return Plugins;
+            get => Instances;
         }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public IPlugin GetEnabledPlugin(string id)
         {
-            return Plugins.FirstOrDefault(x => x.MetaData.Id == id && x.IsEnabled);
+            return Instances.FirstOrDefault(x => x.MetaData.Id == id && x.IsEnabled);
         }
     }
 }
