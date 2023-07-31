@@ -14,6 +14,10 @@ namespace ShadowViewer.Configs
             {
                 TempPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Temps");
             }
+            if (!ConfigHelper.Contains("PluginsPath"))
+            {
+                PluginsPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Plugins");
+            }
             if (!ConfigHelper.Contains("IsBookShelfInfoBar"))
             {
                 IsBookShelfInfoBar = true;
@@ -21,6 +25,7 @@ namespace ShadowViewer.Configs
             IsDebugEvent();
             ComicsPath.CreateDirectory();
             TempPath.CreateDirectory();
+            PluginsPath.CreateDirectory();
             // EnabledPlugins.CollectionChanged += EnabledPlugins_CollectionChanged;
         }
         #region 主程序设置
@@ -31,6 +36,22 @@ namespace ShadowViewer.Configs
         {
             get => ConfigHelper.GetString("ComicsPath");
             set => ConfigHelper.Set("ComicsPath", value);
+        }
+        /// <summary>
+        /// 插件文件夹地址
+        /// </summary>
+        public static string PluginsPath
+        {
+            get => ConfigHelper.GetString("PluginsPath");
+            set => ConfigHelper.Set("PluginsPath", value);
+        }
+        /// <summary>
+        /// 插件列表网址
+        /// </summary>
+        public static string PluginsUri
+        {
+            get => ConfigHelper.GetString("PluginsUri");
+            set => ConfigHelper.Set("PluginsUri", value);
         }
         /// <summary>
         /// 临时文件夹地址
