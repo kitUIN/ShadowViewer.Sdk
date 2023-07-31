@@ -17,6 +17,8 @@ namespace ShadowViewer.ViewModels
         [ObservableProperty] private bool isDebug = Config.IsDebug;
         [ObservableProperty] private string comicsPath = Config.ComicsPath;
         [ObservableProperty] private string tempPath = Config.TempPath;
+        [ObservableProperty] private string pluginsPath = Config.PluginsPath;
+        [ObservableProperty] private string pluginsUri = Config.PluginsUri;
 
         [ObservableProperty]
         private bool isRememberDeleteFilesWithComicDelete = !Config.IsRememberDeleteFilesWithComicDelete;
@@ -25,6 +27,20 @@ namespace ShadowViewer.ViewModels
         [ObservableProperty] private bool isBookShelfInfoBar = Config.IsBookShelfInfoBar;
         [ObservableProperty] private bool isImportAgain = Config.IsImportAgain;
 
+        partial void OnPluginsUriChanged(string oldValue, string newValue)
+        {
+            if (oldValue != newValue)
+            {
+                Config.PluginsUri = PluginsUri;
+            }
+        }
+        partial void OnPluginsPathChanged(string oldValue, string newValue)
+        {
+            if (oldValue != newValue)
+            {
+                Config.PluginsPath = PluginsPath;
+            }
+        }
         partial void OnComicsPathChanged(string oldValue, string newValue)
         {
             if (oldValue != newValue)
