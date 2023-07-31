@@ -86,15 +86,7 @@ namespace ShadowViewer.Configs
         {
             get => ConfigHelper.GetBoolean("IsImportAgain");
             set => ConfigHelper.Set("IsImportAgain", value);
-        }
-        /// <summary>
-        /// 书架顶部信息栏详细
-        /// </summary>
-        public static bool IsTopBarDetail
-        {
-            get => ConfigHelper.GetBoolean("IsTopBarDetail");
-            set => ConfigHelper.Set("IsTopBarDetail", value);
-        }
+        } 
         /// <summary>
         /// 书架-样式-详细/简约
         /// </summary>

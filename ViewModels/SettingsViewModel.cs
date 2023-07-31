@@ -24,7 +24,6 @@ namespace ShadowViewer.ViewModels
         [ObservableProperty] private bool isDeleteFilesWithComicDelete = Config.IsDeleteFilesWithComicDelete;
         [ObservableProperty] private bool isBookShelfInfoBar = Config.IsBookShelfInfoBar;
         [ObservableProperty] private bool isImportAgain = Config.IsImportAgain;
-        [ObservableProperty] private bool isTopBarDetail = Config.IsTopBarDetail;
 
         partial void OnComicsPathChanged(string oldValue, string newValue)
         {
@@ -49,13 +48,6 @@ namespace ShadowViewer.ViewModels
             }
         }
 
-        partial void OnIsTopBarDetailChanged(bool oldValue, bool newValue)
-        {
-            if (oldValue != newValue)
-            {
-                Config.IsTopBarDetail = IsTopBarDetail;
-            }
-        }
 
         partial void OnIsImportAgainChanged(bool oldValue, bool newValue)
         {
