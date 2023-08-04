@@ -1,6 +1,6 @@
 ﻿namespace ShadowViewer.Helpers
 {
-    public class ConfigHelper
+    public partial class ConfigHelper
     {
         private static string container = "ShadowViewer";
         public static bool Contains(string container, string key)
@@ -52,6 +52,10 @@
         {
             return GetBoolean(container, key);
         }
+        public static int GetInt32(string key)
+        {
+            return GetInt32(container, key);
+        }
         public static ApplicationDataCompositeValue GetDict(string key)
         {
             return GetDict(container, key);
@@ -68,6 +72,15 @@
                 return false;
             }
             return (bool)res;
+        }
+        public static int GetInt32(string container, string key)
+        {
+            object res = Get(container, key);
+            if (res == null)
+            {
+                return 0;
+            }
+            return (int)res;
         }
     }
 }

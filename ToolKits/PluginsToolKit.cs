@@ -22,7 +22,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public async Task InitAsync()
         {
-            var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(@"D:\VsProjects\WASDK\plugins\ShadowViewer.Plugin.Bika.dll");
+            var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(@"D:\VsProjects\WASDK\ShadowViewer.Plugin.Bika\bin\Debug\net6.0-windows10.0.19041.0\ShadowViewer.Plugin.Bika.dll");
 
             foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
                 .Where(type => type.IsAssignableTo(typeof(IPlugin)))
