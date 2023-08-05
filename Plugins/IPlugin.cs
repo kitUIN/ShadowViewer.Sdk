@@ -19,31 +19,16 @@
         /// <summary>
         /// 是否启用
         /// </summary>
-        bool IsEnabled { get; }
-        /// <summary>
-        /// 启用插件
-        /// </summary>
-        void Enabled();
-        /// <summary>
-        /// 禁用插件
-        /// </summary>
-        void Disabled();
-        /// <summary>
-        /// 构造函数结束后响应
-        /// </summary>
-        void Started();
-        
+        bool IsEnabled { get; set; }
+
         /// <summary>
         /// 导航插件栏注入
         /// </summary>
-        /// <param name="nav">插件栏</param>
-        void NavigationViewItemsHandler(NavigationViewItem navItem);
+        void NavigationViewItemsHandler(ref NavigationViewItem navItem);
         /// <summary>
         /// 导航点击事件注入
         /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <returns></returns>
-        void NavigationViewItemInvokedHandler(string tag,out Type _page,out object parameter);
+        void NavigationViewItemInvokedHandler(string tag,out Type page,out object parameter);
         
     }
 }

@@ -1,6 +1,4 @@
-﻿using CustomExtensions.WinUI;
-using ShadowViewer.Plugins;
-using System.Diagnostics;
+﻿
 
 namespace ShadowViewer.ToolKits
 {
@@ -8,10 +6,6 @@ namespace ShadowViewer.ToolKits
     {
         private ILogger Logger { get; } = Log.ForContext<PluginsToolKit>();
         private ICallableToolKit Caller { get; }
-        /// <summary>
-        /// 插件ID列表
-        /// </summary>
-        private ObservableCollection<string> AllPlugins { get; } = new ObservableCollection<string>();
         /// <summary>
         /// 所有插件
         /// </summary>
@@ -31,9 +25,9 @@ namespace ShadowViewer.ToolKits
                 .Where(type => type.IsAssignableTo(typeof(IPlugin)))
                 .Select(type => Activator.CreateInstance(type) as IPlugin))
             {
+                if(instance is null) continue;
                 Instances.Add(instance);
-                AllPlugins.Add(instance.MetaData.Id);
-                Log.Information("[插件控制器]加载{name}插件成功", instance.MetaData.Name);
+                Log.Information("[插件控制器]加载{Name}插件成功", instance.MetaData.Name);
             }
         }
         /// <summary>
@@ -41,30 +35,18 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void PluginEnabled(string id)
         {
-            if(Instances.FirstOrDefault(x => x.MetaData.Id == id) is IPlugin plugin)
-            {
-                if (!plugin.IsEnabled)
-                {
-                    plugin.Enabled();
-                    Caller.PluginEnabled(this, id, true);
-                    Logger.Information("插件{id}启动成功", id);
-                }
-            }
+            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: true } plugin) return;
+            plugin.IsEnabled = true;
+            Logger.Information("插件{Id}启动成功", id);
         }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public void PluginDisabled(string id)
         {
-            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is IPlugin plugin)
-            {
-                if (!plugin.IsEnabled)
-                {
-                    plugin.Disabled();
-                    Caller.PluginDisabled(this, id,false);
-                    Logger.Information("插件{id}禁用成功", id);
-                }
-            }
+            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: false } plugin) return;
+            plugin.IsEnabled = false;
+            Logger.Information("插件{Id}禁用成功", id);
         }
         /// <summary>
         /// <inheritdoc/>
@@ -76,28 +58,20 @@ namespace ShadowViewer.ToolKits
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public IEnumerable<IPlugin> EnabledPlugins
-        {
-            get => Instances.Where(x => x.IsEnabled);
-        }
+        public IEnumerable<IPlugin> EnabledPlugins => Instances.Where(x => x.IsEnabled);
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public LocalTag GetAffiliationTag(string id)
         {
-            if(id == "Local")
-            {
-                return new LocalTag(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "#000000", "#ffd657");
-            }
-            return Instances.FirstOrDefault(x => x.MetaData.Id == id).AffiliationTag;
+            return id == "Local" ? new LocalTag(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "#000000", "#ffd657") : Instances.FirstOrDefault(x => x.MetaData.Id == id)?.AffiliationTag;
         }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public ObservableCollection<IPlugin> Plugins
-        {
-            get => Instances;
-        }
+        public ObservableCollection<IPlugin> Plugins => Instances;
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

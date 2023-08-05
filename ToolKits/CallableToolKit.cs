@@ -42,14 +42,6 @@ namespace ShadowViewer.ToolKits
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public event EventHandler SettingsBackEvent;
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public event EventHandler<MainBackEventArgs> MainBackEvent;
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
         public event EventHandler<PluginEventArg> PluginEnabledEvent;
         /// <summary>
         /// <inheritdoc/>
@@ -75,7 +67,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void ImportComicThumb(MemoryStream stream)
         {
-            ImportComicThumbEventArgs args = new ImportComicThumbEventArgs(stream);
+            var args = new ImportComicThumbEventArgs(stream);
             if (ImportComicThumbEvent is null)
             {
                 Logger.Information("事件ImportComicThumbEvent不存在");
@@ -89,7 +81,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void ImportComicError(ImportComicError error, string message, IReadOnlyList<IStorageItem> items, int index, string[] password)
         {
-            ImportComicErrorEventArgs args = new ImportComicErrorEventArgs(error,message,items,index, password);
+            var args = new ImportComicErrorEventArgs(error,message,items,index, password);
             if (ImportComicErrorEvent is null)
             {
                 Logger.Information("事件ImportComicErrorEvent不存在");
@@ -103,7 +95,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void ImportComicProgress(double progress)
         {
-            ImportComicProgressEventArgs args = new ImportComicProgressEventArgs(progress);
+            var args = new ImportComicProgressEventArgs(progress);
             if (ImportComicProgressEvent is null)
             {
                 Logger.Information("事件ImportComicProgressEvent不存在");
@@ -118,14 +110,14 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void NavigateTo(NavigateMode mode,Type page, string id, Uri url)
         {
-            NavigateToEventArgs args = new NavigateToEventArgs(mode, page, id, url);
+            var args = new NavigateToEventArgs(mode, page, id, url);
             if(NavigateToEvent is null)
             {
                 Logger.Information("事件NavigateTo不存在");
                 return;
             }
             NavigateToEvent?.Invoke(this, args);
-            Logger.Information("触发事件NavigateTo{a}", args.ToString());
+            Logger.Information("触发事件NavigateTo{A}", args.ToString());
         }
         /// <summary>
         /// <inheritdoc/>
@@ -137,7 +129,7 @@ namespace ShadowViewer.ToolKits
                 Logger.Information("事件RefreshBook不存在");
                 return;
             }
-            RefreshBookEvent?.Invoke(this, null);
+            RefreshBookEvent?.Invoke(this, EventArgs.Empty);
             Logger.Information("触发事件RefreshBook");
         }
         /// <summary>
@@ -150,7 +142,7 @@ namespace ShadowViewer.ToolKits
                 Logger.Information("事件ImportComicCompletedEvent不存在");
                 return;
             }
-            ImportComicCompletedEvent?.Invoke(this, null);
+            ImportComicCompletedEvent?.Invoke(this, EventArgs.Empty);
             Logger.Information("触发事件ImportComicCompletedEvent");
         }
         /// <summary>
@@ -163,41 +155,8 @@ namespace ShadowViewer.ToolKits
                 Logger.Information("事件DebugEvent不存在");
                 return;
             }
-            DebugEvent?.Invoke(this, null);
+            DebugEvent?.Invoke(this, EventArgs.Empty);
             Logger.Information("触发事件DebugEvent");
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void SettingsBack()
-        {
-            if (SettingsBackEvent is null)
-            {
-                Logger.Information("事件SettingsBackEvent不存在");
-                return;
-            } 
-            SettingsBackEvent?.Invoke(this, null);
-            Logger.Information("触发事件SettingsBackEvent");
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void MainBack(bool force)
-        {
-            if (MainBackEvent is null)
-            {
-                Logger.Information("事件MainBackEvent不存在");
-                return;
-            }
-            MainBackEvent?.Invoke(this, new MainBackEventArgs(force));
-            Logger.Information("触发事件MainBackEvent");
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void ClearSettingsBackEvent()
-        {
-            SettingsBackEvent = null;
         }
 
         public void PluginEnabled(object sender, string id, bool enabled)

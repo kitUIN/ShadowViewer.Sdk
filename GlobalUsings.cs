@@ -41,3 +41,4 @@ global using System.Web;
 global using CommunityToolkit.WinUI.UI.Controls;
 global using CommunityToolkit.WinUI.Helpers;
 global using System.IO;
+global using CustomExtensions.WinUI;

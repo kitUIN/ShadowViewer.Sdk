@@ -15,17 +15,12 @@ namespace ShadowViewer.ViewModels
         /// <summary>
         /// 导航栏插件栏注入
         /// </summary>
-        /// <param name="pluginItem">The plugin item.</param>
         public void LoadPluginItems(NavigationViewItem pluginItem)
         {
-            //this.pluginItem = pluginItem;
             pluginItem.MenuItems.Clear();
-            // TODO
             foreach (var plugin in pluginsToolKit.EnabledPlugins)
             {
-                plugin.NavigationViewItemsHandler(pluginItem);
-                Logger.Information("[{Name}]插件导航栏注入成功",
-                    plugin.MetaData.Name);
+                plugin.NavigationViewItemsHandler(ref pluginItem);
             }
         }
     }

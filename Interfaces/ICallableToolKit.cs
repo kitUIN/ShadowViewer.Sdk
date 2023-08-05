@@ -40,14 +40,6 @@ namespace ShadowViewer.Interfaces
         /// </summary>
         public event EventHandler DebugEvent;
         /// <summary>
-        /// 设置页面后退
-        /// </summary>
-        public event EventHandler SettingsBackEvent;
-        /// <summary>
-        /// 设置主页面后退
-        /// </summary>
-        public event EventHandler<MainBackEventArgs> MainBackEvent;
-        /// <summary>
         /// 插件启用事件
         /// </summary>
         public event EventHandler<PluginEventArg> PluginEnabledEvent;
@@ -87,16 +79,6 @@ namespace ShadowViewer.Interfaces
         /// 调试
         /// </summary>
         void Debug();
-        /// <summary>
-        /// 设置界面后退
-        /// </summary>
-        void SettingsBack();
-        void ClearSettingsBackEvent();
-        /// <summary>
-        /// 设置主界面后退
-        /// </summary>
-        void MainBack(bool force);
-
         void PluginEnabled(object sender,string id,bool enabled);
         void PluginDisabled(object sender,string id,bool enabled);
     }
