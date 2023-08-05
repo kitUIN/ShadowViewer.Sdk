@@ -44,6 +44,7 @@ namespace ShadowViewer.ToolKits
             {
                 if(instance is null) continue;
                 Instances.Add(instance);
+                instance.Loaded();
                 Log.Information("[插件控制器]加载{Name}插件成功", instance.MetaData.Name);
             }
         }

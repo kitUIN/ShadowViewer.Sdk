@@ -2,11 +2,13 @@
 {
     public interface IPlugin
     {
-
+        /// <summary>
+        /// 加载完成
+        /// </summary>
+        void Loaded();
         /// <summary>
         /// 元数据(包含相关数据)
         /// </summary>
-        /// <returns></returns>
         PluginMetaData MetaData { get; }
         /// <summary>
         /// 插件所属标签注入
@@ -22,13 +24,21 @@
         bool IsEnabled { get; set; }
 
         /// <summary>
-        /// 导航插件栏注入
+        /// 导航插件栏
         /// </summary>
-        void NavigationViewItemsHandler(ref NavigationViewItem navItem);
+        NavigationViewItem PluginNavigationViewItem();
+        /// <summary>
+        /// 注入导航栏
+        /// </summary>
+        void NavigationViewMenuItemsHandler(ObservableCollection<NavigationViewItem> menus);
+        /// <summary>
+        /// 注入导航栏尾部
+        /// </summary>
+        void NavigationViewFooterItemsHandler(ObservableCollection<NavigationViewItem> menus);
         /// <summary>
         /// 导航点击事件注入
         /// </summary>
-        void NavigationViewItemInvokedHandler(string tag,out Type page,out object parameter);
+        void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter);
         
     }
 }

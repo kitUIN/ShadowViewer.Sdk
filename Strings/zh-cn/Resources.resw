@@ -162,4 +162,16 @@
   <data name="Update" xml:space="preserve">
     <value>更新</value>
   </data>
+  <data name="User" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="Plugin" xml:space="preserve">
+    <value>插件</value>
+  </data>
+  <data name="BookShelf" xml:space="preserve">
+    <value>书架</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>下载</value>
+  </data>
 </root>

@@ -23,5 +23,9 @@ namespace ShadowViewer.Enums
         Author,
         ImportError,
         DuplicateImport,
+        Download,
+        BookShelf,
+        Plugin,
+        User,
     }
 }
