@@ -1,0 +1,83 @@
+﻿<UserControl
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d"
+    x:Class="ShadowViewer.Controls.TipPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:icons="using:FluentIcon"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid
+        HorizontalAlignment="Center"
+        VerticalAlignment="Top"
+        x:Name="PopupContainer">
+        <animations:Implicit.ShowAnimations>
+            <animations:TranslationAnimation
+                Duration="0:0:0.5"
+                From="0, 12, 0"
+                To="0,52,0" />
+            <animations:OpacityAnimation
+                Duration="0:0:0.5"
+                From="0"
+                To="1.0" />
+        </animations:Implicit.ShowAnimations>
+        <animations:Implicit.HideAnimations>
+            <animations:TranslationAnimation
+                Duration="0:0:0.5"
+                From="0, 52, 0"
+                To="0,12,0" />
+            <animations:OpacityAnimation
+                Duration="0:0:0.5"
+                From="1"
+                To="0" />
+        </animations:Implicit.HideAnimations>
+        <Grid
+            BorderBrush="{ThemeResource SubtleFillColorSecondaryBrush}"
+            BorderThickness="1"
+            ColumnSpacing="12"
+            CornerRadius="10"
+            Padding="12,8,12,12"
+            x:Name="PopupRootGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Margin="0,4,0,0" VerticalAlignment="Center">
+                <icons:FluentIcon
+                    FontSize="18"
+                    Foreground="{ThemeResource InfoBarInformationalSeverityIconBackground}"
+                    Symbol="InfoFilled"
+                    Visibility="Collapsed"
+                    x:Name="InformationIcon" />
+                <icons:FluentIcon
+                    FontSize="18"
+                    Foreground="{ThemeResource InfoBarWarningSeverityIconBackground}"
+                    Symbol="WarningFilled"
+                    Visibility="Collapsed"
+                    x:Name="WarningIcon" />
+                <icons:FluentIcon
+                    FontSize="18"
+                    Foreground="{ThemeResource InfoBarSuccessSeverityIconBackground}"
+                    Symbol="CheckmarkCircleFilled"
+                    Visibility="Collapsed"
+                    x:Name="SuccessIcon" />
+                <icons:FluentIcon
+                    FontSize="18"
+                    Foreground="{ThemeResource InfoBarErrorSeverityIconBackground}"
+                    Symbol="DismissCircleFilled"
+                    Visibility="Collapsed"
+                    x:Name="ErrorIcon" />
+            </Grid>
+            <TextBlock
+                Grid.Column="1"
+                MaxWidth="300"
+                Text="{x:Bind Text, Mode=OneWay}"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap"
+                VerticalAlignment="Center" />
+        </Grid>
+    </Grid>
+</UserControl>
