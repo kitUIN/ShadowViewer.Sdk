@@ -1,4 +1,4 @@
-﻿using ShadowViewer.Utils.Args;
+﻿using ShadowViewer.Args;
 
 namespace ShadowViewer.Interfaces
 {
@@ -49,6 +49,7 @@ namespace ShadowViewer.Interfaces
         public event EventHandler<PluginEventArg> PluginDisabledEvent;
         
         public event EventHandler<TopGridEventArg> TopGridEvent;
+        public event EventHandler<ImportPluginEventArgs> ImportPluginEvent;
         /// <summary>
         /// 控制页面跳转
         /// </summary>
@@ -84,5 +85,6 @@ namespace ShadowViewer.Interfaces
         void PluginEnabled(object sender,string id,bool enabled);
         void PluginDisabled(object sender,string id,bool enabled);
         void TopGrid(object sender, UIElement element, TopGridMode mode);
+        void ImportPlugin(object sender,  IReadOnlyList<IStorageItem> items);
     }
 }

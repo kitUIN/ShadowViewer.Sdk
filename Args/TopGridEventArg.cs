@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Utils.Args;
+﻿namespace ShadowViewer.Args;
 
 public class TopGridEventArg
 {

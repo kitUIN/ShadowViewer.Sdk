@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShadowViewer.Utils.Args
+namespace ShadowViewer.Args
 {
     /// <summary>
     /// 导入漫画发生错误事件参数

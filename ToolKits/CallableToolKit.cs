@@ -1,8 +1,4 @@
-﻿
-
-
-
-namespace ShadowViewer.ToolKits
+﻿namespace ShadowViewer.ToolKits
 {
     public class CallableToolKit : ICallableToolKit
     {
@@ -48,19 +44,14 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public event EventHandler<PluginEventArg> PluginDisabledEvent;
         public event EventHandler<TopGridEventArg> TopGridEvent;
+        public event EventHandler<ImportPluginEventArgs> ImportPluginEvent;
 
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public void ImportComic(IReadOnlyList<IStorageItem> items, string[] passwords, int index)
         {
-            ImportComicEventArgs args = new ImportComicEventArgs(items, passwords, index);
-            if (ImportComicEvent is null)
-            {
-                Logger.Information("事件ImportComicEvent不存在");
-                return;
-            }
-            ImportComicEvent?.Invoke(this, args);
+            ImportComicEvent?.Invoke(this, new ImportComicEventArgs(items, passwords, index));
             Logger.Information("触发事件ImportComicEvent");
         }
         /// <summary>
@@ -68,13 +59,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void ImportComicThumb(MemoryStream stream)
         {
-            var args = new ImportComicThumbEventArgs(stream);
-            if (ImportComicThumbEvent is null)
-            {
-                Logger.Information("事件ImportComicThumbEvent不存在");
-                return;
-            }
-            ImportComicThumbEvent?.Invoke(this, args);
+            ImportComicThumbEvent?.Invoke(this, new ImportComicThumbEventArgs(stream));
             Logger.Information("触发事件ImportComicThumbEvent");
         }
         /// <summary>
@@ -82,13 +67,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void ImportComicError(ImportComicError error, string message, IReadOnlyList<IStorageItem> items, int index, string[] password)
         {
-            var args = new ImportComicErrorEventArgs(error,message,items,index, password);
-            if (ImportComicErrorEvent is null)
-            {
-                Logger.Information("事件ImportComicErrorEvent不存在");
-                return;
-            }
-            ImportComicErrorEvent?.Invoke(this, args);
+            ImportComicErrorEvent?.Invoke(this, new ImportComicErrorEventArgs(error,message,items,index, password));
             Logger.Information("触发事件ImportComicErrorEvent");
         }
         /// <summary>
@@ -96,13 +75,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void ImportComicProgress(double progress)
         {
-            var args = new ImportComicProgressEventArgs(progress);
-            if (ImportComicProgressEvent is null)
-            {
-                Logger.Information("事件ImportComicProgressEvent不存在");
-                return;
-            }
-            ImportComicProgressEvent?.Invoke(this, args);
+            ImportComicProgressEvent?.Invoke(this, new ImportComicProgressEventArgs(progress));
             Logger.Information("触发事件ImportComicProgressEvent");
         }
 
@@ -112,11 +85,6 @@ namespace ShadowViewer.ToolKits
         public void NavigateTo(NavigateMode mode,Type page, string id, Uri url)
         {
             var args = new NavigateToEventArgs(mode, page, id, url);
-            if(NavigateToEvent is null)
-            {
-                Logger.Information("事件NavigateTo不存在");
-                return;
-            }
             NavigateToEvent?.Invoke(this, args);
             Logger.Information("触发事件NavigateTo{A}", args.ToString());
         }
@@ -125,11 +93,6 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void RefreshBook()
         {
-            if (RefreshBookEvent is null)
-            {
-                Logger.Information("事件RefreshBook不存在");
-                return;
-            }
             RefreshBookEvent?.Invoke(this, EventArgs.Empty);
             Logger.Information("触发事件RefreshBook");
         }
@@ -138,11 +101,6 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void ImportComicCompleted()
         {
-            if (ImportComicCompletedEvent is null)
-            {
-                Logger.Information("事件ImportComicCompletedEvent不存在");
-                return;
-            }
             ImportComicCompletedEvent?.Invoke(this, EventArgs.Empty);
             Logger.Information("触发事件ImportComicCompletedEvent");
         }
@@ -151,47 +109,32 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void Debug()
         {
-            if (DebugEvent is null)
-            {
-                Logger.Information("事件DebugEvent不存在");
-                return;
-            }
             DebugEvent?.Invoke(this, EventArgs.Empty);
             Logger.Information("触发事件DebugEvent");
         }
 
         public void PluginEnabled(object sender, string id, bool enabled)
         {
-            if (PluginEnabledEvent is null)
-            {
-                Logger.Information("事件PluginEnabledEvent不存在");
-                return;
-            }
             PluginEnabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
             Logger.Information("触发事件PluginEnabledEvent");
         }
 
         public void PluginDisabled(object sender, string id, bool enabled)
         {
-            if (PluginDisabledEvent is null)
-            {
-                Logger.Information("事件PluginDisabledEvent不存在");
-                return;
-            }
             PluginDisabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
-            Logger.Information("触发事件PluginDisabledEvent");
+            Logger.Information("触发事件{Event}",nameof(PluginDisabledEvent));
         }
 
         public void TopGrid(object sender, UIElement element, TopGridMode mode)
         {
-            Logger.Information("事件TopGridEvent");
-            if (TopGridEvent is null)
-            {
-                Logger.Information("事件TopGridEvent不存在");
-                return;
-            }
             TopGridEvent?.Invoke(sender, new TopGridEventArg(element, mode));
-            Logger.Information("触发事件TopGridEvent");
+            Logger.Information("触发事件{Event}",nameof(TopGridEvent));
+        }
+
+        public void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items)
+        {
+            ImportPluginEvent?.Invoke(sender, new ImportPluginEventArgs(items));
+            Logger.Information("触发事件{Event}",nameof(ImportPluginEvent));
         }
     }
 }

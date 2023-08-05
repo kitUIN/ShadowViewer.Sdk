@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace ShadowViewer.Utils
+namespace ShadowViewer.Models
 {
     /// <summary>
     /// 路径树

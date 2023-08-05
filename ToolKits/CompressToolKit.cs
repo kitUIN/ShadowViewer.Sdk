@@ -11,7 +11,7 @@ namespace ShadowViewer.ToolKits
     public class CompressToolKit
     {
         private static ILogger Logger { get; } = Log.ForContext<CompressToolKit>();
-        private ICallableToolKit caller;
+        private readonly ICallableToolKit caller;
         public CompressToolKit(ICallableToolKit callableToolKit)
         {
             caller = callableToolKit;
@@ -21,26 +21,26 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public static bool CheckPassword(string zip, ref ReaderOptions readerOptions)
         {
-            string md5 = EncryptingHelper.CreateMd5(zip);
-            string sha1 = EncryptingHelper.CreateSha1(zip);
+            var md5 = EncryptingHelper.CreateMd5(zip);
+            var sha1 = EncryptingHelper.CreateSha1(zip);
             var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
-            CacheZip cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
-            if (cacheZip != null && cacheZip.Password != null && cacheZip.Password != "")  
+            var cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+            if (cacheZip is { Password: not null } && cacheZip.Password != "")  
             {
                 readerOptions = new ReaderOptions() { Password = cacheZip.Password };
-                Logger.Information("自动填充密码:{pwd}", cacheZip.Password);
+                Logger.Information("自动填充密码:{Pwd}", cacheZip.Password);
             }
             try
             {
-                using FileStream fStream = File.OpenRead(zip);
-                using NonDisposingStream stream = NonDisposingStream.Create(fStream);
-                using IArchive archive = ArchiveFactory.Open(stream, readerOptions);
-                foreach (IArchiveEntry entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                using var fStream = File.OpenRead(zip);
+                using var stream = NonDisposingStream.Create(fStream);
+                using var archive = ArchiveFactory.Open(stream, readerOptions);
+                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
                 {
-                    using Stream entryStream = entry.OpenEntryStream();
+                    using var entryStream = entry.OpenEntryStream();
                     // 密码正确添加压缩包密码存档
                     // 能正常打开一个entry就代表正确,所以这个循环只走了一次
-                    if (cacheZip == null && readerOptions?.Password != null || cacheZip != null && cacheZip.Password == null && readerOptions?.Password != null)
+                    if (cacheZip == null && readerOptions?.Password != null || cacheZip is { Password: null } && readerOptions?.Password != null)
                     {
                         var cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
                         db.Storageable(cache).ExecuteCommand();
@@ -58,6 +58,29 @@ namespace ShadowViewer.ToolKits
             }
         }
         /// <summary>
+        /// 直接解压
+        /// </summary>
+        public void DeCompress(string zip, string destinationDirectory)
+        {
+            using (FileStream fStream = File.OpenRead(zip))
+            using (NonDisposingStream stream = NonDisposingStream.Create(fStream))
+            {
+                using var archive = ArchiveFactory.Open(stream);
+                var total = archive.Entries.Where(entry => !entry.IsDirectory);
+                var totalCount = total.Count();
+                var i = 0;
+                destinationDirectory.CreateDirectory();
+                foreach (var entry in total)
+                {
+                    entry.WriteToDirectory(destinationDirectory, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
+                    i++;
+                    double result = i / (double)totalCount;
+                    // caller.ImportComicProgress(Math.Round(result * 100, 2));
+                }
+            }
+        }
+
+        /// <summary>
         /// 解压流程
         /// </summary>
         /// <param name="zip"></param>
@@ -71,8 +94,7 @@ namespace ShadowViewer.ToolKits
             string comicId, CancellationToken token, ReaderOptions readerOptions = null)
         {
             Logger.Information("进入解压流程");
-            string path = Path.Combine(destinationDirectory, comicId);
-            DateTime start;
+            var path = Path.Combine(destinationDirectory, comicId);
             ShadowEntry root = new ShadowEntry()
             {
                 Name = zip.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last(),
@@ -80,7 +102,7 @@ namespace ShadowViewer.ToolKits
             string md5 = EncryptingHelper.CreateMd5(zip);
             string sha1 = EncryptingHelper.CreateSha1(zip);
             var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
-
+            var start = DateTime.Now;
             CacheZip cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
             cacheZip ??= CacheZip.Create(md5, sha1);
             if (cacheZip.ComicId != null)
@@ -99,26 +121,26 @@ namespace ShadowViewer.ToolKits
             using (NonDisposingStream stream = NonDisposingStream.Create(fStream))
             {
                 if (token.IsCancellationRequested) throw new TaskCanceledException();
-                using IArchive archive = ArchiveFactory.Open(stream, readerOptions);
+                using var archive = ArchiveFactory.Open(stream, readerOptions);
                 if (token.IsCancellationRequested) throw new TaskCanceledException();
-                IEnumerable<IArchiveEntry> total = archive.Entries.Where(entry => !entry.IsDirectory && entry.Key.IsPic()).OrderBy(x => x.Key);
+                var total = archive.Entries.Where(entry => !entry.IsDirectory && entry.Key.IsPic()).OrderBy(x => x.Key);
                 if (token.IsCancellationRequested) throw new TaskCanceledException();
-                int totalCount = total.Count();
-                MemoryStream ms = new MemoryStream();
+                var totalCount = total.Count();
+                var ms = new MemoryStream();
                 if (total.FirstOrDefault() is IArchiveEntry img)
                 {
-                    using (Stream entryStream = img.OpenEntryStream())
+                    await using (var entryStream = img.OpenEntryStream())
                     {
                         await entryStream.CopyToAsync(ms);
                         // ms.Seek(0, SeekOrigin.Begin);
                     }
-                    byte[] bytes = ms.ToArray();
+                    var bytes = ms.ToArray();
                     CacheImg.CreateImage(Config.TempPath, bytes, comicId);
                     caller.ImportComicThumb(new MemoryStream(bytes));
                 }
                 Logger.Information("开始解压:{Zip}", zip);
-                start = DateTime.Now;
-                int i = 0;
+                
+                var i = 0;
                 path.CreateDirectory();
                 foreach (IArchiveEntry entry in total)
                 {
@@ -130,7 +152,7 @@ namespace ShadowViewer.ToolKits
                     ShadowEntry.LoadEntry(entry, root);
                 }
                 root.LoadChildren();
-                DateTime stop = DateTime.Now;
+                var stop = DateTime.Now;
                 cacheZip.ComicId = comicId;
                 cacheZip.CachePath = path;
                 cacheZip.Name = Path.GetFileNameWithoutExtension(zip).Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last();
