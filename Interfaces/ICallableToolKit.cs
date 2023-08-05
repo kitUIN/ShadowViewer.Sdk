@@ -48,6 +48,14 @@ namespace ShadowViewer.Interfaces
         /// </summary>
         public event EventHandler<MainBackEventArgs> MainBackEvent;
         /// <summary>
+        /// 插件启用事件
+        /// </summary>
+        public event EventHandler<PluginEventArg> PluginEnabledEvent;
+        /// <summary>
+        /// 插件禁用事件
+        /// </summary>
+        public event EventHandler<PluginEventArg> PluginDisabledEvent;
+        /// <summary>
         /// 控制页面跳转
         /// </summary>
         void NavigateTo(NavigateMode mode,Type page, string id, Uri url);
@@ -88,5 +96,8 @@ namespace ShadowViewer.Interfaces
         /// 设置主界面后退
         /// </summary>
         void MainBack(bool force);
+
+        void PluginEnabled(object sender,string id,bool enabled);
+        void PluginDisabled(object sender,string id,bool enabled);
     }
 }

@@ -47,6 +47,14 @@ namespace ShadowViewer.ToolKits
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler<MainBackEventArgs> MainBackEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler<PluginEventArg> PluginEnabledEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler<PluginEventArg> PluginDisabledEvent;
 
         /// <summary>
         /// <inheritdoc/>
@@ -190,6 +198,28 @@ namespace ShadowViewer.ToolKits
         public void ClearSettingsBackEvent()
         {
             SettingsBackEvent = null;
+        }
+
+        public void PluginEnabled(object sender, string id, bool enabled)
+        {
+            if (PluginEnabledEvent is null)
+            {
+                Logger.Information("事件PluginEnabledEvent不存在");
+                return;
+            }
+            PluginEnabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
+            Logger.Information("触发事件PluginEnabledEvent");
+        }
+
+        public void PluginDisabled(object sender, string id, bool enabled)
+        {
+            if (PluginDisabledEvent is null)
+            {
+                Logger.Information("事件PluginDisabledEvent不存在");
+                return;
+            }
+            PluginDisabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
+            Logger.Information("触发事件PluginDisabledEvent");
         }
     }
 }

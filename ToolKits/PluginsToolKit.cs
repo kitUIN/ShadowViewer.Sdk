@@ -7,7 +7,7 @@ namespace ShadowViewer.ToolKits
     public class PluginsToolKit: IPluginsToolKit
     {
         private ILogger Logger { get; } = Log.ForContext<PluginsToolKit>();
-        
+        private ICallableToolKit Caller { get; }
         /// <summary>
         /// 插件ID列表
         /// </summary>
@@ -16,7 +16,10 @@ namespace ShadowViewer.ToolKits
         /// 所有插件
         /// </summary>
         private ObservableCollection<IPlugin> Instances { get; } = new ObservableCollection<IPlugin>();
-        public PluginsToolKit() { }
+        public PluginsToolKit(ICallableToolKit callableToolKit) 
+        {
+            Caller = callableToolKit;
+        }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -31,7 +34,6 @@ namespace ShadowViewer.ToolKits
                 Instances.Add(instance);
                 AllPlugins.Add(instance.MetaData.Id);
                 Log.Information("[插件控制器]加载{name}插件成功", instance.MetaData.Name);
-                Log.Information(instance.AffiliationTag.Name);
             }
         }
         /// <summary>
@@ -44,6 +46,7 @@ namespace ShadowViewer.ToolKits
                 if (!plugin.IsEnabled)
                 {
                     plugin.Enabled();
+                    Caller.PluginEnabled(this, id, true);
                     Logger.Information("插件{id}启动成功", id);
                 }
             }
@@ -58,6 +61,7 @@ namespace ShadowViewer.ToolKits
                 if (!plugin.IsEnabled)
                 {
                     plugin.Disabled();
+                    Caller.PluginDisabled(this, id,false);
                     Logger.Information("插件{id}禁用成功", id);
                 }
             }
