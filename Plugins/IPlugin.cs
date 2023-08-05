@@ -22,11 +22,7 @@
         /// 是否启用
         /// </summary>
         bool IsEnabled { get; set; }
-
-        /// <summary>
-        /// 导航插件栏
-        /// </summary>
-        NavigationViewItem PluginNavigationViewItem();
+        
         /// <summary>
         /// 注入导航栏
         /// </summary>

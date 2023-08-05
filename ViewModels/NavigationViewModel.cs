@@ -37,14 +37,6 @@
         {
             foreach (var plugin in pluginsToolKit.EnabledPlugins)
             {
-                var item = plugin.PluginNavigationViewItem();
-                if (!MenuItems.Contains(item))
-                {
-                    MenuItems.Add(item);
-                }
-            }
-            foreach (var plugin in pluginsToolKit.EnabledPlugins)
-            {
                 plugin.NavigationViewMenuItemsHandler(MenuItems);
             }
         }
