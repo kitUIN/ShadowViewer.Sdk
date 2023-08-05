@@ -35,23 +35,15 @@ namespace ShadowViewer.Controls
             {
                 case InfoBarSeverity.Informational:
                     InformationIcon.Visibility = Visibility.Visible;
-                    PopupRootGrid.Background =
-                        Application.Current.Resources["InfoBarInformationalSeverityBackgroundBrush"] as SolidColorBrush;
                     break;
                 case InfoBarSeverity.Success:
                     SuccessIcon.Visibility = Visibility.Visible;
-                    PopupRootGrid.Background =
-                        Application.Current.Resources["InfoBarSuccessSeverityBackgroundBrush"] as SolidColorBrush;
                     break;
                 case InfoBarSeverity.Warning:
                     WarningIcon.Visibility = Visibility.Visible;
-                    PopupRootGrid.Background =
-                        Application.Current.Resources["InfoBarWarningSeverityBackgroundBrush"] as SolidColorBrush;
                     break;
                 case InfoBarSeverity.Error:
                     ErrorIcon.Visibility = Visibility.Visible;
-                    PopupRootGrid.Background =
-                        Application.Current.Resources["InfoBarErrorSeverityBackgroundBrush"] as SolidColorBrush;
                     break;
                 default:
                     break;
