@@ -4,6 +4,7 @@ using SharpCompress.IO;
 using ReaderOptions = SharpCompress.Readers.ReaderOptions;
 using System.Threading;
 using ShadowViewer.Extensions;
+using SqlSugar;
 
 namespace ShadowViewer.ToolKits
 {
@@ -22,7 +23,8 @@ namespace ShadowViewer.ToolKits
         {
             string md5 = EncryptingHelper.CreateMd5(zip);
             string sha1 = EncryptingHelper.CreateSha1(zip);
-            CacheZip cacheZip = DBHelper.Db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            CacheZip cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
             if (cacheZip != null && cacheZip.Password != null && cacheZip.Password != "")  
             {
                 readerOptions = new ReaderOptions() { Password = cacheZip.Password };
@@ -40,8 +42,8 @@ namespace ShadowViewer.ToolKits
                     // 能正常打开一个entry就代表正确,所以这个循环只走了一次
                     if (cacheZip == null && readerOptions?.Password != null || cacheZip != null && cacheZip.Password == null && readerOptions?.Password != null)
                     {
-                        CacheZip cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
-                        cache.Add();
+                        var cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
+                        db.Storageable(cache).ExecuteCommand();
                     }
                     return true;
                 }
@@ -50,7 +52,7 @@ namespace ShadowViewer.ToolKits
             catch (Exception ex)
             {
                 // 密码错误就删除压缩包密码存档
-                cacheZip?.Remove();
+                db.Deleteable(cacheZip).ExecuteCommand();
                 Log.Error("解压出错:{Ex}", ex);
                 return false;
             }
@@ -77,7 +79,9 @@ namespace ShadowViewer.ToolKits
             };
             string md5 = EncryptingHelper.CreateMd5(zip);
             string sha1 = EncryptingHelper.CreateSha1(zip);
-            CacheZip cacheZip = DBHelper.Db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+
+            CacheZip cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
             cacheZip ??= CacheZip.Create(md5, sha1);
             if (cacheZip.ComicId != null)
             {
@@ -130,14 +134,7 @@ namespace ShadowViewer.ToolKits
                 cacheZip.ComicId = comicId;
                 cacheZip.CachePath = path;
                 cacheZip.Name = Path.GetFileNameWithoutExtension(zip).Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last();
-                if (DBHelper.Db.Queryable<CacheZip>().Any(x => x.Id == cacheZip.Id))
-                {
-                    cacheZip.Update();
-                }
-                else
-                {
-                    cacheZip.Add();
-                }
+                db.Storageable(cacheZip).ExecuteCommand();
                 Logger.Information("解压:{Zip} 页数:{Pages} 耗时: {Time} s", zip, totalCount, (stop - start).TotalSeconds);
             }
             return root;

@@ -47,6 +47,7 @@ namespace ShadowViewer.ToolKits
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler<PluginEventArg> PluginDisabledEvent;
+        public event EventHandler<TopGridEventArg> TopGridEvent;
 
         /// <summary>
         /// <inheritdoc/>
@@ -179,6 +180,18 @@ namespace ShadowViewer.ToolKits
             }
             PluginDisabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
             Logger.Information("触发事件PluginDisabledEvent");
+        }
+
+        public void TopGrid(object sender, UIElement element, TopGridMode mode)
+        {
+            Logger.Information("事件TopGridEvent");
+            if (TopGridEvent is null)
+            {
+                Logger.Information("事件TopGridEvent不存在");
+                return;
+            }
+            TopGridEvent?.Invoke(sender, new TopGridEventArg(element, mode));
+            Logger.Information("触发事件TopGridEvent");
         }
     }
 }

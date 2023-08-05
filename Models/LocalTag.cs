@@ -6,7 +6,7 @@ namespace ShadowViewer.Models
     /// <summary>
     /// 标签
     /// </summary>
-    public class LocalTag: IDataBaseItem
+    public class LocalTag
     {
         private string name;
         private string id;
@@ -92,7 +92,8 @@ namespace ShadowViewer.Models
         public static string RandomId()
         {
             string id = Guid.NewGuid().ToString("N");
-            while (DBHelper.Db.Queryable<LocalTag>().Any(x => x.Id == id))
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            while (db.Queryable<LocalTag>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
             }
@@ -114,48 +115,7 @@ namespace ShadowViewer.Models
         {
             return $"LocalTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
         }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Add()
-        {
-            if (!Query().Any(x => x.Name == Name))
-            {
-                DBHelper.Add(this);
-                Logger.Information("添加{Log}", ToString());
-            }
-            else
-            {
-                Update();
-            }
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Update()
-        {
-            DBHelper.Update(this);
-            Logger.Information("更新{Log}", ToString());
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Remove()
-        {
-            Remove(this.Id);
-        }
-        /// <summary>
-        /// 从数据库中删除
-        /// </summary>
-        public static void Remove(string id)
-        {
-            DBHelper.Remove(new LocalTag { Id = id });
-            Logger.Information("删除LocalTag:{Name}", id);
-        }
-        public static ISugarQueryable<LocalTag> Query()
-        {
-            return DBHelper.Db.Queryable<LocalTag>();
-        }
+        
         [SugarColumn(IsIgnore = true)]
         public static ILogger Logger { get; } = Serilog.Log.ForContext<LocalTag>();
     }

@@ -1,11 +1,12 @@
-﻿using SqlSugar;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SqlSugar;
 
 namespace ShadowViewer.Models
 {
     /// <summary>
     /// 本地漫画-话
     /// </summary>
-    public class LocalEpisode: IDataBaseItem
+    public class LocalEpisode
     {
         public LocalEpisode() { }
         /// <summary>
@@ -39,49 +40,12 @@ namespace ShadowViewer.Models
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
-        public static ISugarQueryable<LocalEpisode> Query()
-        {
-            return DBHelper.Db.Queryable<LocalEpisode>();
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Update()
-        {
-            DBHelper.Update(this);
-            Logger.Information("更新[{C}]Episode:{Episode}",ComicId, Id);
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Add()
-        {
-            if (!Query().Any(x => x.Id == Id))
-            {
-                DBHelper.Add(this);
-                Logger.Information("添加[{C}]Episode:{Episode}", ComicId, Id);
-            }
-            else
-            {
-                Update();
-            }
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Remove()
-        {
-            Remove(Id);
-        }
-        public static void Remove(string id)
-        {
-            DBHelper.Remove(new LocalEpisode { Id = id });
-            Logger.Information("删除Episode:{Episode}", id);
-        }
+        
         public static LocalEpisode Create(string name, int order, string comicId, int counts, long size)
         {
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
             string id = Guid.NewGuid().ToString("N");
-            while (DBHelper.Db.Queryable<LocalEpisode>().Any(x => x.Id == id))
+            while (db.Queryable<LocalEpisode>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
             }

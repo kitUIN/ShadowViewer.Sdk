@@ -47,6 +47,8 @@ namespace ShadowViewer.Interfaces
         /// 插件禁用事件
         /// </summary>
         public event EventHandler<PluginEventArg> PluginDisabledEvent;
+        
+        public event EventHandler<TopGridEventArg> TopGridEvent;
         /// <summary>
         /// 控制页面跳转
         /// </summary>
@@ -81,5 +83,6 @@ namespace ShadowViewer.Interfaces
         void Debug();
         void PluginEnabled(object sender,string id,bool enabled);
         void PluginDisabled(object sender,string id,bool enabled);
+        void TopGrid(object sender, UIElement element, TopGridMode mode);
     }
 }

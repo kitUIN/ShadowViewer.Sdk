@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.ViewModels
+﻿using SqlSugar;
+
+namespace ShadowViewer.ViewModels
 {
     public partial class BookShelfViewModel: ObservableObject
     {
@@ -32,11 +34,12 @@
         /// 该文件夹下的漫画
         /// </summary>
         public ObservableCollection<LocalComic> LocalComics { get; } = new ObservableCollection<LocalComic>();
-
+        private ISqlSugarClient Db { get; }
         private static ILogger Logger { get; } = Log.ForContext<BookShelfViewModel>();
         private readonly ICallableToolKit caller;
-        public BookShelfViewModel(ICallableToolKit callableToolKit)
+        public BookShelfViewModel(ICallableToolKit callableToolKit,ISqlSugarClient sqlSugarClient)
         {
+            Db = sqlSugarClient;
             caller = callableToolKit;
             caller.RefreshBookEvent += Caller_RefreshBookEvent;
             Logger.Debug("加载RefreshBook事件");
@@ -58,7 +61,7 @@
             }
             else
             {
-                CurrentName = DBHelper.Db.Queryable<LocalComic>().First(x => x.Id == Path).Name;
+                CurrentName = Db.Queryable<LocalComic>().First(x => x.Id == Path).Name;
             }
         }
 
@@ -71,9 +74,8 @@
                     if (e.OldItems != null)
                         foreach (LocalComic item in e.OldItems)
                         {
-                            item.Remove();
+                            Db.Deleteable(item).ExecuteCommand();
                         }
-
                     break;
                 }
                 case NotifyCollectionChangedAction.Add:
@@ -82,9 +84,9 @@
                         foreach (LocalComic item in e.NewItems)
                         {
                             if (item.Id is null) continue;
-                            if (!DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == item.Id))
+                            if (!Db.Queryable<LocalComic>().Any(x => x.Id == item.Id))
                             {
-                                item.Add();
+                                Db.Insertable(item).ExecuteCommand();
                             }
                         }
 
@@ -100,7 +102,7 @@
         public void RefreshLocalComic()
         {
             LocalComics.Clear();
-            var comics = DBHelper.Db.Queryable<LocalComic>().Where(x => x.Parent == Path).ToList();
+            var comics = Db.Queryable<LocalComic>().Where(x => x.Parent == Path).ToList();
             switch (Sorts)
             {
                 case ShadowSorts.AZ:

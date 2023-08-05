@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.ViewModels
+﻿using SqlSugar;
+
+namespace ShadowViewer.ViewModels
 {
     public partial class AttributesViewModel : ObservableObject
     {
@@ -28,17 +30,18 @@
         public bool IsHaveEpisodes => Episodes.Count != 0;
 
         private readonly IPluginsToolKit pluginsToolKit;
-
+        private ISqlSugarClient Db { get; }
         public void Init(string comicId)
         {
-            CurrentComic = LocalComic.Query().First(x => x.Id == comicId);
+            CurrentComic = Db.Queryable<LocalComic>().First(x => x.Id == comicId);
             ReLoadTags();
             ReLoadEps();
         }
 
-        public AttributesViewModel(IPluginsToolKit pluginsToolKit)
+        public AttributesViewModel(IPluginsToolKit pluginsToolKit,ISqlSugarClient sqlSugarClient)
         {
             this.pluginsToolKit = pluginsToolKit;
+            Db = sqlSugarClient;
         }
 
         /// <summary>
@@ -47,7 +50,7 @@
         public void ReLoadEps()
         {
             Episodes.Clear();
-            foreach (var item in LocalEpisode.Query().Where(x => x.ComicId == CurrentComic.Id).ToList())
+            foreach (var item in Db.Queryable<LocalEpisode>().Where(x => x.ComicId == CurrentComic.Id).ToList())
             {
                 Episodes.Add(item);
             }
@@ -90,12 +93,12 @@
         /// </summary>
         public void AddNewTag(LocalTag tag)
         {
-            if (LocalTag.Query().First(x => x.Id == tag.Id) is LocalTag localTag)
+            if ( Db.Queryable<LocalTag>().First(x => x.Id == tag.Id) is LocalTag localTag)
             {
                 tag.ComicId = localTag.ComicId;
                 tag.Icon = "\uEEDB";
                 tag.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Tag) + ": " + localTag.Name;
-                tag.Update();
+                Db.Updateable(tag).ExecuteCommand();
                 if (Tags.FirstOrDefault(x => x.Id == tag.Id) is LocalTag lo)
                 {
                     Tags[Tags.IndexOf(lo)] = tag;
@@ -107,7 +110,7 @@
                 tag.ComicId = CurrentComic.Id;
                 tag.Icon = "\uEEDB";
                 tag.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Tag) + ": " + tag.Name;
-                tag.Add();
+                Db.Insertable(tag).ExecuteCommand();
                 Tags.Insert(Math.Max(0, Tags.Count - 1), tag);
             }
         }
@@ -120,7 +123,7 @@
             if (Tags.FirstOrDefault(x => x.Id == id) is LocalTag tag)
             {
                 Tags.Remove(tag);
-                LocalTag.Remove(id);
+                Db.Deleteable(tag).ExecuteCommand();
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using ColorCode.Compilation.Languages;
+using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 namespace ShadowViewer.Models
 {
@@ -46,15 +47,16 @@ namespace ShadowViewer.Models
             get => name;
             set
             {   string oldValue = name;
-                SetProperty(ref name, value, propertyName: nameof(Name));
+                SetProperty(ref name, value);
                 if(oldValue != null && oldValue != value)
                 {
                     Update();
-                    CacheZip cache = DBHelper.Db.Queryable<CacheZip>().First(x => x.ComicId == Id);
+                    var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+                    var cache = db.Queryable<CacheZip>().First(x => x.ComicId == Id);
                     if(cache != null)
                     {
                         cache.Name = value;
-                        cache.Update();
+                        db.Updateable<CacheZip>(cache).ExecuteCommand();
                     }
                     Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Name), oldValue, Name);
                 }
@@ -281,7 +283,8 @@ namespace ShadowViewer.Models
          public static string RandomId()
         {
             string id = Guid.NewGuid().ToString("N");
-            while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            while (db.Queryable<LocalComic>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
             }
@@ -293,7 +296,8 @@ namespace ShadowViewer.Models
             if(id==null)
             {
                 id = Guid.NewGuid().ToString("N");
-                while (DBHelper.Db.Queryable<LocalComic>().Any(x => x.Id == id))
+                var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+                while (db.Queryable<LocalComic>().Any(x => x.Id == id))
                 {
                     id = Guid.NewGuid().ToString("N");
                 }
@@ -318,37 +322,13 @@ namespace ShadowViewer.Models
             };
         }
         public LocalComic() {  }
-        private void Tags_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-           Update();
-        }
+ 
         public void Update()
         {
-            DBHelper.Update(this);
-            Logger.Information("更新Comic:{ComicId}", Id);
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            db.Updateable(this).ExecuteCommand();
         }
-        public void Add()
-        {
-            DBHelper.Add(this);
-            Logger.Information("添加Comic:{ComicId}", Id);
-        }
-        public void Remove()
-        {
-            Remove(this.Id);
-        }
-        public static void Remove(string id)
-        {
-            DBHelper.Remove(new LocalComic { Id = id });
-            if (CacheImg.Query().First(x => x.ComicId == id) is CacheImg cacheImg)
-            {
-                cacheImg.Remove();
-            }
-            Logger.Information("删除Comic:{ComicId}", id);
-        }
-        public static ISugarQueryable<LocalComic> Query()
-        {
-            return DBHelper.Db.Queryable<LocalComic>().Includes(x => x.Tags);
-        }
+         
 
         [SugarColumn(IsIgnore = true)]
         public string Path 

@@ -5,7 +5,7 @@ namespace ShadowViewer.Models
     /// <summary>
     /// 本地漫画-页
     /// </summary>
-    public class LocalPicture: IDataBaseItem
+    public class LocalPicture
     {
         public LocalPicture() { }
         // <summary>
@@ -41,45 +41,12 @@ namespace ShadowViewer.Models
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Update()
-        {
-            DBHelper.Update(this);
-            Logger.Information("更新[{C}][{E}]Picture:{P}", ComicId, EpisodeId, Id);
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Add()
-        {
-            if (!Query().Any(x => x.Id == Id))
-            {
-                DBHelper.Add(this);
-                Logger.Information("添加[{C}][{E}]Picture:{P}", ComicId, EpisodeId, Id);
-            }
-            else
-            {
-                Update();
-            }
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Remove()
-        {
-            Remove(Id);
-        }
-        public static void Remove(string id)
-        {
-            DBHelper.Remove(new LocalEpisode { Id = id });
-            Logger.Information("删除Picture:{P}", id);
-        }
+        
         public static LocalPicture Create(string name, string episodeId, string comicId, string img, long size)
         {
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
             string id = Guid.NewGuid().ToString("N");
-            while (DBHelper.Db.Queryable<LocalPicture>().Any(x => x.Id == id))
+            while (db.Queryable<LocalPicture>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
             }
@@ -94,11 +61,6 @@ namespace ShadowViewer.Models
                 Size = size,
                 CreateTime = time,
             };
-        }
-
-        public static ISugarQueryable<LocalPicture> Query()
-        {
-            return DBHelper.Db.Queryable<LocalPicture>();
         }
         [SugarColumn(IsIgnore = true)]
         public static ILogger Logger { get; } = Log.ForContext<LocalPicture>();

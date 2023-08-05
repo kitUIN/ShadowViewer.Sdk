@@ -1,4 +1,6 @@
-﻿using ShadowViewer.Extensions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ShadowViewer.Extensions;
+using SqlSugar;
 
 namespace ShadowViewer.Helpers
 {
@@ -16,7 +18,8 @@ namespace ShadowViewer.Helpers
             string defaultName = CoreResourcesHelper.GetString(CoreResourceKey.CreateFolder);
             if (name == "") name = defaultName;
             int i = 1;
-            while (LocalComic.Query().Any(x => x.Name == name))
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            while (db.Queryable<LocalComic>().Any(x => x.Name == name))
             {
                 name = $"{defaultName}({i++})";
             }
@@ -29,7 +32,8 @@ namespace ShadowViewer.Helpers
         {
             string img;
             ShadowFile root = new ShadowFile(folder);
-            if (CacheImg.Query().First(x => x.ComicId==comicId) is CacheImg cacheImg)
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            if (db.Queryable<CacheImg>().First(x => x.ComicId==comicId) is CacheImg cacheImg)
             {
                 img = cacheImg.Path;
             }
@@ -58,8 +62,8 @@ namespace ShadowViewer.Helpers
                 }
                 img = imgEntry?.Path;
             }
-            LocalComic comic = LocalComic.Create(comicName ?? root.Name, root.Path, img: img, parent: parent, size: root.Size, id: comicId);
-            comic.Add();
+            var comic = LocalComic.Create(comicName ?? root.Name, root.Path, img: img, parent: parent, size: root.Size, id: comicId);
+            db.Insertable(comic).ExecuteCommand();
             ShadowFile.ToLocalComic(root, comic.Id);
             root.Dispose();
             return comic;
@@ -69,7 +73,8 @@ namespace ShadowViewer.Helpers
         /// </summary>
         public static string LoadImgFromEntry(ShadowEntry root, string dir, string comicId)
         {
-            if(CacheImg.Query().First(x => x.ComicId==comicId) is CacheImg cacheImg)
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            if (db.Queryable<CacheImg>().First(x => x.ComicId==comicId) is CacheImg cacheImg)
             {
                 return cacheImg.Path;
             }
@@ -102,14 +107,15 @@ namespace ShadowViewer.Helpers
                 ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot,
                 CoreResourcesHelper.GetString(CoreResourceKey.ImportError),
                 CoreResourcesHelper.GetString(CoreResourceKey.DuplicateImport));
+                var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
                 if (zip != null)
                 {
                     string md5 = EncryptingHelper.CreateMd5(zip);
                     string sha1 = EncryptingHelper.CreateSha1(zip);
-                    CacheZip cache = DBHelper.Db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+                    var cache = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
                     if (cache != null)
                     {
-                        LocalComic comic = LocalComic.Query().First(x => x.Id == cache.ComicId);
+                        var comic = db.Queryable<LocalComic>().First(x => x.Id == cache.ComicId);
                         if (comic != null)
                         {
                             await dialog.ShowAsync();
@@ -119,7 +125,7 @@ namespace ShadowViewer.Helpers
                 }
                 else if (path != null)
                 {
-                    LocalComic comic = LocalComic.Query().First(x => x.Link == path);
+                    LocalComic comic = db.Queryable<LocalComic>().First(x => x.Link == path);
                     if (comic != null)
                     {
                         await dialog.ShowAsync();

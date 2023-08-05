@@ -8,25 +8,41 @@ using System;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Diagnostics;
+using SqlSugar;
 
 namespace ShadowViewer
 {
-    public class DIFactory
+    public class DiFactory
     {
-        public DIFactory()
+        public DiFactory()
         {
             Services = ConfigureServices();
         }
-        public static DIFactory Current;
-        public IServiceProvider Services { get; set; }
+        public static DiFactory Current;
+        public IServiceProvider Services { get; }
 
         private static IServiceProvider ConfigureServices()
         {
             
-            ServiceCollection services = new ServiceCollection();
-            #region Plugin 
-
-            #endregion
+            var services = new ServiceCollection();
+            services.AddSingleton<ISqlSugarClient>(s =>
+            {
+                var sqlSugar = new SqlSugarScope(new ConnectionConfig()
+                    {
+                        DbType = SqlSugar.DbType.Sqlite,
+                        ConnectionString = $"DataSource={Path.Combine(ApplicationData.Current.LocalFolder.Path, "ShadowViewer.sqlite")}",
+                        IsAutoCloseConnection = true,
+                    },
+                    db =>
+                    {
+                        //单例参数配置，所有上下文生效
+                        db.Aop.OnLogExecuting = (sql, pars) =>
+                        {
+                            Log.Debug("{Sql}",sql);
+                        };
+                    });
+                return sqlSugar;
+            });
             #region ToolKit
             services.AddSingleton<IPluginsToolKit, PluginsToolKit>();
             services.AddSingleton<ICallableToolKit, CallableToolKit>();

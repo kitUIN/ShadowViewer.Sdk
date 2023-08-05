@@ -1,5 +1,7 @@
 ﻿using ShadowViewer.Extensions;
 using SharpCompress.Archives;
+using SqlSugar;
+
 namespace ShadowViewer.Utils
 {
     public class ShadowEntry: IDisposable
@@ -117,28 +119,29 @@ namespace ShadowViewer.Utils
         /// </summary>
         public static void ToLocalComic(ShadowEntry root, string initPath, string comicId)
         {
-            List<ShadowEntry> one = GetDepthEntries(root);
-            int order = 1;
-            foreach(ShadowEntry child in one)
+            var one = GetDepthEntries(root);
+            var order = 1;
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            foreach(var child in one)
             {
                 if(child.Children.Count>0)
                 {
-                    LocalEpisode ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
-                    ep.Add();
+                    var ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
+                    db.Insertable(ep).ExecuteCommand();
                     order++;
-                    foreach (ShadowEntry item in child.Children)
+                    foreach (var item in child.Children)
                     {
-                        LocalPicture pic = LocalPicture.Create(item.Name, ep.Id, comicId, System.IO.Path.Combine(initPath, item.Path), item.Size);
-                        pic.Add();
+                        var pic = LocalPicture.Create(item.Name, ep.Id, comicId, System.IO.Path.Combine(initPath, item.Path), item.Size);
+                        db.Insertable(pic).ExecuteCommand();
                     }
                 }
             }
             // 销毁资源
             root.Dispose();
-            if (DBHelper.Db.Queryable<LocalComic>().First(x => x.Id == comicId) is LocalComic comic)
+            if (db.Queryable<LocalComic>().First(x => x.Id == comicId) is LocalComic comic)
             {
-                comic.EpisodeCounts = DBHelper.Db.Queryable<LocalEpisode>().Where(x => x.ComicId == comicId).Count();
-                comic.Counts = DBHelper.Db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
+                comic.EpisodeCounts = db.Queryable<LocalEpisode>().Where(x => x.ComicId == comicId).Count();
+                comic.Counts = db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
                 comic.Update();
             }
         }

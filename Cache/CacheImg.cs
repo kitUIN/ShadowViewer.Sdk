@@ -1,11 +1,12 @@
-﻿using SqlSugar;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SqlSugar;
 
 namespace ShadowViewer.Cache
 {
     /// <summary>
     /// 缓存的临时缩略图
     /// </summary>
-    public class CacheImg: IDataBaseItem
+    public class CacheImg
     {
         public CacheImg() { }
 
@@ -21,70 +22,28 @@ namespace ShadowViewer.Cache
         [SugarColumn(ColumnDataType = "Nchar(32)")]
         public string ComicId { get; set; }
 
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Update()
-        {
-            DBHelper.Update(this);
-            Logger.Information("更新CacheImg:{Id}", Id);
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Add()
-        {
-            if (!Query().Any(x => x.Id == Id))
-            {
-                DBHelper.Add(this);
-                Logger.Information("添加CacheImg:{Id}", Id);
-            }
-            else
-            {
-                Update();
-            }
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Remove()
-        {
-            Remove(Id);
-        }
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public static void Remove(int id)
-        {
-            DBHelper.Remove(new CacheImg { Id = id });
-            Logger.Information("删除CacheImg:{Id}", id);
-        }
-        public static ISugarQueryable<CacheImg> Query()
-        {
-            return DBHelper.Db.Queryable<CacheImg>();
-        }
-
         public static void CreateImage(string dir,byte[] bytes,string comicId)
         {
-            string md5 = EncryptingHelper.CreateMd5(bytes);
-            string path = System.IO.Path.Combine(dir, md5 + ".png");
-            if (CacheImg.Query().First(x => x.Md5 == md5) is CacheImg cache)
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var md5 = EncryptingHelper.CreateMd5(bytes);
+            var path = System.IO.Path.Combine(dir, md5 + ".png");
+            if (db.Queryable<CacheImg>().First(x => x.Md5 == md5) is CacheImg cache)
             {
-                DBHelper.Add(new CacheImg
+                db.Insertable(new CacheImg
                 {
+                    Md5 = md5,
                     ComicId = cache.ComicId,
                     Path = cache.Path,
-                });
+                }).ExecuteReturnIdentity();
             }
             else
             {
-                DBHelper.Add(new CacheImg
+                db.Insertable(new CacheImg
                 {
                     Md5 = md5,
                     Path = path,
                     ComicId = comicId,
-                });
-
+                }).ExecuteReturnIdentity();
                 System.IO.File.WriteAllBytes(path, bytes);
             }
         }

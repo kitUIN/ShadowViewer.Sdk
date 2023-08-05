@@ -2,5 +2,7 @@
 
 public enum TopGridMode
 {
-    
+    Tip,
+    Dialog,
+    ContentDialog,
 }

@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.Utils
+﻿using SqlSugar;
+
+namespace ShadowViewer.Utils
 {
     /// <summary>
     /// 路径树
@@ -26,7 +28,8 @@
         public ShadowPath(IEnumerable<string> black)
         {
             this.comic = LocalComic.Create(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "",id:"local",isFolder:true, parent:"",img: LocalComic.DefaultFolderImg);
-            List<LocalComic> comics = DBHelper.Db.Queryable<LocalComic>().Where(x => x.IsFolder).ToList();
+            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            List<LocalComic> comics = db.Queryable<LocalComic>().Where(x => x.IsFolder).ToList();
             if(comics.Count > 0)
             {
                 Children = comics.Where(x => !black.Contains(x.Id)).Select(x=> new ShadowPath(x)).ToList();
