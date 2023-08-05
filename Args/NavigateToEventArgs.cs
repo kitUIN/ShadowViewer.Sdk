@@ -6,7 +6,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShadowViewer.Utils.Args
+namespace ShadowViewer.Args
 {
     /// <summary>
     /// 跳转页面事件

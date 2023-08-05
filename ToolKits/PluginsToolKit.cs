@@ -1,5 +1,7 @@
 ﻿
 
+using ShadowViewer.Extensions;
+
 namespace ShadowViewer.ToolKits
 {
     public class PluginsToolKit: IPluginsToolKit
@@ -17,19 +19,35 @@ namespace ShadowViewer.ToolKits
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public async Task InitAsync()
+        public async Task ImportAsync()
         {
-            var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(@"D:\VsProjects\WASDK\ShadowViewer.Plugin.Bika\bin\Debug\net6.0-windows10.0.19041.0\ShadowViewer.Plugin.Bika.dll");
-
+            var path = ConfigHelper.GetString("PluginsPath");
+            var dir = new DirectoryInfo(path);
+            foreach (var item in dir.GetDirectories())
+            {
+                foreach (var file in item.GetFiles("ShadowViewer.Plugin.*.dll"))
+                {
+                    await ImportAsync(file.FullName);
+                    break;
+                }
+            }
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public async Task ImportAsync(string path)
+        {
+            var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(path);
             foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
-                .Where(type => type.IsAssignableTo(typeof(IPlugin)))
-                .Select(type => Activator.CreateInstance(type) as IPlugin))
+                         .Where(type => type.IsAssignableTo(typeof(IPlugin)))
+                         .Select(type => Activator.CreateInstance(type) as IPlugin))
             {
                 if(instance is null) continue;
                 Instances.Add(instance);
                 Log.Information("[插件控制器]加载{Name}插件成功", instance.MetaData.Name);
             }
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

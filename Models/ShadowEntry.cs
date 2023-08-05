@@ -2,7 +2,7 @@
 using SharpCompress.Archives;
 using SqlSugar;
 
-namespace ShadowViewer.Utils
+namespace ShadowViewer.Models
 {
     public class ShadowEntry: IDisposable
     {

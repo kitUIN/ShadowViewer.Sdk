@@ -2,7 +2,14 @@
 {
     public interface IPluginsToolKit
     {
-        public Task InitAsync();
+        /// <summary>
+        /// 导入全部插件
+        /// </summary>
+        public Task ImportAsync();
+        /// <summary>
+        /// 导入单个插件
+        /// </summary>
+        public Task ImportAsync(string path);
         /// <summary>
         /// 启用插件
         /// </summary>

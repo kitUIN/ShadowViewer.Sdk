@@ -2,7 +2,7 @@
 using ShadowViewer.Extensions;
 using SqlSugar;
 
-namespace ShadowViewer.Utils
+namespace ShadowViewer.Models
 {
     public class ShadowFile : IDisposable
     {
