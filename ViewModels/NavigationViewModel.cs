@@ -10,24 +10,25 @@
         {
             this.callableToolKit = callableToolKit;
             this.pluginsToolKit = pluginsToolKit;
-            MenuItems.Add(new NavigationViewItem
+            MenuItems = new ObservableCollection<NavigationViewItem>
+            {
+                new NavigationViewItem
             {
                 Icon = new SymbolIcon(Symbol.Home),
                 Tag = "BookShelf",
                 Content = CoreResourcesHelper.GetString(CoreResourceKey.BookShelf)
-            });
-            MenuItems.Add(new NavigationViewItem
+            },new NavigationViewItem
             {
                 Icon = new FontIcon() { Glyph = "\uE835" },
                 Tag = "Plugins",
                 Content = CoreResourcesHelper.GetString(CoreResourceKey.Plugin)
-            });
-            MenuItems.Add(new NavigationViewItem
+            },new NavigationViewItem
             {
                 Icon = new SymbolIcon(Symbol.Download),
                 Tag = "Download",
                 Content = CoreResourcesHelper.GetString(CoreResourceKey.Download)
-            });
+            }
+            };
         }
 
         public ObservableCollection<NavigationViewItem> MenuItems { get; } =
@@ -35,10 +36,16 @@
 
         public void InitMenuItems()
         {
+            for (int i = MenuItems.Count - 1; i > 3; i--)
+            {
+                MenuItems.RemoveAt(i);
+            }
             foreach (var plugin in pluginsToolKit.EnabledPlugins)
             {
                 plugin.NavigationViewMenuItemsHandler(MenuItems);
             }
         }
+
+
     }
 }
