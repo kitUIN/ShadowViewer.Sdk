@@ -9,6 +9,14 @@ namespace ShadowViewer.Controls
     public sealed partial class TipPopup : UserControl
     {
         /// <summary>
+        /// 显示文本.
+        /// </summary>
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+        /// <summary>
         /// <see cref="Text"/>的依赖属性.
         /// </summary>
         public static readonly DependencyProperty TextProperty =
@@ -50,14 +58,7 @@ namespace ShadowViewer.Controls
             }
         }
 
-        /// <summary>
-        /// 显示文本.
-        /// </summary>
-        public string Text
-        {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
-        }
+        
         
     }
 }
