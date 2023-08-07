@@ -8,23 +8,19 @@ namespace ShadowViewer.Configs
         {
             if (!ConfigHelper.Contains("ComicsPath"))
             {
-                ComicsPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Comics");
+                ComicsPath = Path.Combine(System.Environment.CurrentDirectory, "Comics");
             }
             if (!ConfigHelper.Contains("TempPath"))
             {
-                TempPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Temps");
+                TempPath = Path.Combine(System.Environment.CurrentDirectory, "Temps");
             }
             if (!ConfigHelper.Contains("PluginsPath"))
             {
-                PluginsPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Plugins");
+                PluginsPath = Path.Combine(System.Environment.CurrentDirectory, "Plugins");
             }
             if (!ConfigHelper.Contains("IsBookShelfInfoBar"))
             {
                 IsBookShelfInfoBar = true;
-            }
-            if (!ConfigHelper.Contains("PluginsUri"))
-            {
-                PluginsUri = "https://blog.kituin.fun/";
             }
             IsDebugEvent();
             ComicsPath.CreateDirectory();
@@ -126,7 +122,7 @@ namespace ShadowViewer.Configs
             {
                 Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File(Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logs", "ShadowViewer.log"), outputTemplate: "{Timestamp:MM-dd HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}", rollingInterval: RollingInterval.Day, shared: true)
+                .WriteTo.File(Path.Combine(System.Environment.CurrentDirectory, "Logs", "ShadowViewer.log"), outputTemplate: "{Timestamp:MM-dd HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}", rollingInterval: RollingInterval.Day, shared: true)
                 .CreateLogger();
                 Log.ForContext<Config>().Debug("调试模式开启");
             }
@@ -135,7 +131,7 @@ namespace ShadowViewer.Configs
                 Log.ForContext<Config>().Debug("调试模式关闭");
                 Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.File(Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logs", "ShadowViewer.log"), outputTemplate: "{Timestamp:MM-dd HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}", rollingInterval: RollingInterval.Day, shared: true)
+                .WriteTo.File(Path.Combine(System.Environment.CurrentDirectory, "Logs", "ShadowViewer.log"), outputTemplate: "{Timestamp:MM-dd HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}", rollingInterval: RollingInterval.Day, shared: true)
                 .CreateLogger();
             }
         }

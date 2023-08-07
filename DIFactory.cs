@@ -30,7 +30,7 @@ namespace ShadowViewer
                 var sqlSugar = new SqlSugarScope(new ConnectionConfig()
                     {
                         DbType = SqlSugar.DbType.Sqlite,
-                        ConnectionString = $"DataSource={Path.Combine(ApplicationData.Current.LocalFolder.Path, "ShadowViewer.sqlite")}",
+                        ConnectionString = $"DataSource={Path.Combine(System.Environment.CurrentDirectory, "ShadowViewer.sqlite")}",
                         IsAutoCloseConnection = true,
                     },
                     db =>

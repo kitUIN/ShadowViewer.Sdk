@@ -100,8 +100,7 @@ namespace ShadowViewer.ViewModels
         public SettingsViewModel(ICallableToolKit callableToolKit)
         {
             caller = callableToolKit;
-            var version = Package.Current.Id.Version;
-            Version = $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+            Version = $"0.0.0.1";
         }
     }
 }
