@@ -21,6 +21,7 @@
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
       <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
       <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+      <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
       <PackageReference Include="CustomExtensions.WinUI" Version="0.1.10-beta" />
       <PackageReference Include="KitUIN.FluentIcon" Version="1.1.203" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
