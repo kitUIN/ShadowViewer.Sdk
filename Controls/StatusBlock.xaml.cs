@@ -7,16 +7,6 @@ namespace ShadowViewer.Controls
                 typeof(string),
                 typeof(StatusBlock),
                 new PropertyMetadata(null, new PropertyChangedCallback(OnTextSoureChanged)));
-
-        DependencyProperty TitleProperty = DependencyProperty.Register(
-                nameof(Title),
-                typeof(string),
-                typeof(StatusBlock),
-                new PropertyMetadata(null, new PropertyChangedCallback(OnTitleSoureChanged)));
-        public StatusBlock()
-        {
-            this.InitializeComponent();
-        }
         public string Text
         {
             get => (string)GetValue(TextProperty);
@@ -27,6 +17,16 @@ namespace ShadowViewer.Controls
             StatusBlock control = (StatusBlock)d;
             control.Text = (string)e.NewValue;
         }
+        DependencyProperty TitleProperty = DependencyProperty.Register(
+                nameof(Title),
+                typeof(string),
+                typeof(StatusBlock),
+                new PropertyMetadata(null, new PropertyChangedCallback(OnTitleSoureChanged)));
+        public StatusBlock()
+        {
+            this.InitializeComponent();
+        }
+        
         public string Title
         {
             get => (string)GetValue(TitleProperty);

@@ -11,6 +11,7 @@
     <Compile Remove="Helpers\TagsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Controls\Badge.xaml" />
     <None Remove="Controls\StatusBlock.xaml" />
     <None Remove="Themes\Generic.xaml" />
   </ItemGroup>
@@ -21,7 +22,8 @@
       <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
       <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
       <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
-      <PackageReference Include="CustomExtensions.WinUI" Version="0.1.10-beta" />
+      <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
+      <PackageReference Include="CustomExtensions.WinUI" Version="0.1.11-beta" />
       <PackageReference Include="KitUIN.FluentIcon" Version="1.1.203" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230724000" />
@@ -30,6 +32,12 @@
       <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
       <PackageReference Include="SharpCompress" Version="0.33.0" />
       <PackageReference Include="SqlSugarCore" Version="5.1.4.93" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\Badge.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
