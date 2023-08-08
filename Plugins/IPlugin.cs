@@ -24,13 +24,13 @@
         bool IsEnabled { get; set; }
         
         /// <summary>
-        /// 注入导航栏
+        /// 添加到导航栏
         /// </summary>
-        void NavigationViewMenuItemsHandler(ObservableCollection<NavigationViewItem> menus);
+        IList<ShadowNavigationItem> NavigationViewMenuItems { get; }
         /// <summary>
-        /// 注入导航栏尾部
+        /// 添加到导航栏尾部
         /// </summary>
-        void NavigationViewFooterItemsHandler(ObservableCollection<NavigationViewItem> menus);
+        IList<ShadowNavigationItem> NavigationViewFooterItems { get; }
         /// <summary>
         /// 导航点击事件注入
         /// </summary>

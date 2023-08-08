@@ -1,25 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using CustomExtensions.WinUI;
-using ShadowViewer.Interfaces;
-using ShadowViewer.Plugins;
-using ShadowViewer.ToolKits;
-using ShadowViewer.ViewModels;
-using System;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Diagnostics;
-using SqlSugar;
+﻿using SqlSugar;
 
 namespace ShadowViewer
 {
     public class DiFactory
     {
-        public DiFactory()
-        {
-            Services = ConfigureServices();
-        }
-        public static DiFactory Current;
-        public IServiceProvider Services { get; }
+        public static DiFactory Current{ get; set; }
+        public IServiceProvider Services { get; } = ConfigureServices();
 
         private static IServiceProvider ConfigureServices()
         {

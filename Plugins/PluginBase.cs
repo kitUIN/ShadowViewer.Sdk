@@ -4,17 +4,11 @@ namespace ShadowViewer.Plugins;
 
 public abstract class PluginBase: IPlugin
 {
-    protected ICallableToolKit Caller { get; }
-    protected ISqlSugarClient Db { get; }
-    protected CompressToolKit CompressToolKit { get; }
-    protected IPluginsToolKit PluginsToolKit { get; }
-    protected PluginBase()
-    {
-        Caller = DiFactory.Current.Services.GetService<ICallableToolKit>();
-        Db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
-        PluginsToolKit = DiFactory.Current.Services.GetService<IPluginsToolKit>();
-        CompressToolKit = DiFactory.Current.Services.GetService<CompressToolKit>();
-    }
+    protected ICallableToolKit Caller { get; } = DiFactory.Current.Services.GetService<ICallableToolKit>();
+    protected ISqlSugarClient Db { get; } = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+    protected CompressToolKit CompressToolKit { get; } = DiFactory.Current.Services.GetService<CompressToolKit>();
+    protected IPluginsToolKit PluginsToolKit { get; } = DiFactory.Current.Services.GetService<IPluginsToolKit>();
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -61,12 +55,13 @@ public abstract class PluginBase: IPlugin
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public abstract void NavigationViewMenuItemsHandler(ObservableCollection<NavigationViewItem> menus);
+    public virtual IList<ShadowNavigationItem> NavigationViewMenuItems => new List<ShadowNavigationItem>();
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public abstract void NavigationViewFooterItemsHandler(ObservableCollection<NavigationViewItem> menus);
+    public virtual IList<ShadowNavigationItem> NavigationViewFooterItems => new List<ShadowNavigationItem>();
+ 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
