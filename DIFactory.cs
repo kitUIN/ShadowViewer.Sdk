@@ -23,14 +23,14 @@ namespace ShadowViewer
 
         private static IServiceProvider ConfigureServices()
         {
-            
+            var defaultPath = ConfigHelper.IsPackaged ? ApplicationData.Current.LocalFolder.Path : System.Environment.CurrentDirectory;
             var services = new ServiceCollection();
             services.AddSingleton<ISqlSugarClient>(s =>
             {
                 var sqlSugar = new SqlSugarScope(new ConnectionConfig()
                     {
                         DbType = SqlSugar.DbType.Sqlite,
-                        ConnectionString = $"DataSource={Path.Combine(System.Environment.CurrentDirectory, "ShadowViewer.sqlite")}",
+                        ConnectionString = $"DataSource={Path.Combine(defaultPath, "ShadowViewer.sqlite")}",
                         IsAutoCloseConnection = true,
                     },
                     db =>

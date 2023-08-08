@@ -1,93 +1,122 @@
-﻿using System.Configuration;
+﻿using System.ComponentModel;
+using System.Configuration;
 
 namespace ShadowViewer.Helpers
 {
-    public partial class ConfigHelper
+    public class ConfigHelper
     {
-        static string Read(string key)
+        public static readonly bool IsPackaged = true;
+        const string Container = "ShadowViewer";
+       
+        public static bool Contains(string key, string container = Container)
         {
-            var appSettings = ConfigurationManager.AppSettings;
-            return appSettings[key];
-        }
-        static bool HasKey(string key)
-        {
-            var appSettings = ConfigurationManager.AppSettings;
-            return appSettings[key] != null;
-        }
-        static void Write(string key, string value)
-        {
-            var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var settings = configFile.AppSettings.Settings;
-            if (settings[key] == null)
+            if (IsPackaged)
             {
-                settings.Add(key, value);
+                var coreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
+                return coreSettings.Values.ContainsKey(key);
             }
             else
             {
-                settings[key].Value = value;
+                var appSettings = ConfigurationManager.AppSettings;
+                return appSettings[key] != null;
             }
-            configFile.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
         }
-        public static void Set(string key, string value)
+        private static object Get(string key, string container = Container)
         {
-            Write(key, value);
+            if (IsPackaged)
+            {
+                var coreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
+                return coreSettings.Values.TryGetValue(key, out var value) ? value : null;
+            }
+            else
+            {
+                var appSettings = ConfigurationManager.AppSettings;
+                return appSettings[key];
+            }
         }
-        public static void Set(string key, int value)
+        public static void Set(string key, object value, string container = Container)
         {
-            Set(key, Convert.ToString(value));
+            if (IsPackaged)
+            {
+                var coreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
+                coreSettings.Values[key] = value;
+                Log.ForContext<ConfigHelper>().Information("{Container}[{Key}]={Value}", container, key, value.ToString());
+            }
+            else
+            {
+                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                var settings = configFile.AppSettings.Settings;
+                if (settings[key] == null)
+                {
+                    settings.Add(key, Convert.ToString(value));
+                }
+                else
+                {
+                    settings[key].Value = Convert.ToString(value);
+                }
+                configFile.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
+                Log.ForContext<ConfigHelper>().Information("[{Key}]={Value}", key, value.ToString());
+            }
         }
-        public static void Set(string key, double value)
+
+        public static string GetString(string key, string container = Container)
         {
-            Set(key, Convert.ToString(value));
+            return (string)Get(key, container);
         }
-        public static void Set(string key, float value)
+        public static bool GetBoolean(string key, string container = Container)
         {
-            Set(key, Convert.ToString(value));
+            object res = Get(key, container);
+            if (res == null)
+            {
+                return false;
+            }
+            return (bool)res;
         }
-        public static void Set(string key, bool value)
+        public static int GetInt32(string key, string container = Container)
         {
-            Set(key, Convert.ToString(value));
+            object res = Get(key, container);
+            if (res == null)
+            {
+                return 0;
+            }
+            return (int)res;
         }
-        public static void Set(string key, long value)
+        public static long GetInt64(string key, string container = Container)
         {
-            Set(key, Convert.ToString(value));
+            object res = Get(key, container);
+            if (res == null)
+            {
+                return 0;
+            }
+            return (long)res;
         }
-        public static void Set(string key, DateTime value)
+        public static double GetDouble(string key, string container = Container)
         {
-            Set(key, Convert.ToString(value));
+            object res = Get(key, container);
+            if (res == null)
+            {
+                return 0;
+            }
+            return (double)res;
         }
-        public static bool Contains(string key)
+        public static float GetFloat(string key, string container = Container)
         {
-            return HasKey(key);
+            object res = Get(key, container);
+            if (res == null)
+            {
+                return 0;
+            }
+            return (float)res;
         }
-        public static string GetString(string key)
+        public static DateTime GetDateTime(string key, string container = Container)
         {
-            return Read(key);
-        }
-        public static bool GetBoolean(string key)
-        {
-            return Convert.ToBoolean(Read(key));
-        }
-        public static int GetInt32(string key)
-        {
-            return Convert.ToInt32(Read(key));
-        }
-        public static long GetInt64(string key)
-        {
-            return Convert.ToInt64(Read(key));
-        }
-        public static double GetDouble(string key)
-        {
-            return Convert.ToDouble(Read(key));
-        }
-        public static float GetFloat(string key)
-        {
-            return Convert.ToSingle(Read(key));
-        }
-        public static DateTime GetDateTime(string key)
-        {
-            return Convert.ToDateTime(Read(key));
+            object res = Get(key, container);
+            if (res == null)
+            {
+                return default;
+            }
+            return (DateTime)res;
         }
     }
 }
