@@ -36,16 +36,14 @@
 
         public void InitMenuItems()
         {
-            for (int i = MenuItems.Count - 1; i > 3; i--)
+            for (int i = MenuItems.Count; i > 3; i--)
             {
-                MenuItems.RemoveAt(i);
+                MenuItems.RemoveAt(i - 1);
             }
             foreach (var plugin in pluginsToolKit.EnabledPlugins)
             {
                 plugin.NavigationViewMenuItemsHandler(MenuItems);
             }
         }
-
-
     }
 }

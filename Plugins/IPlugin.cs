@@ -5,7 +5,7 @@
         /// <summary>
         /// 加载完成
         /// </summary>
-        void Loaded();
+        void Loaded(bool isEnabled);
         /// <summary>
         /// 元数据(包含相关数据)
         /// </summary>

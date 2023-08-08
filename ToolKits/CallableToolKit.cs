@@ -115,20 +115,23 @@
 
         public void PluginEnabled(object sender, string id, bool enabled)
         {
+            Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
+                nameof(PluginEnabledEvent));
             PluginEnabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
-            Logger.Information("触发事件PluginEnabledEvent");
         }
 
         public void PluginDisabled(object sender, string id, bool enabled)
         {
+            Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
+                nameof(PluginDisabledEvent));
             PluginDisabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
-            Logger.Information("触发事件{Event}",nameof(PluginDisabledEvent));
         }
 
         public void TopGrid(object sender, UIElement element, TopGridMode mode)
         {
+            Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
+                nameof(TopGridEvent));
             TopGridEvent?.Invoke(sender, new TopGridEventArg(element, mode));
-            Logger.Information("触发事件{Event}",nameof(TopGridEvent));
         }
 
         public void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items)

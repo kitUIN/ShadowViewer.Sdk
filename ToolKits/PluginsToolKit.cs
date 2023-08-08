@@ -7,6 +7,7 @@ namespace ShadowViewer.ToolKits
     public class PluginsToolKit: IPluginsToolKit
     {
         private ILogger Logger { get; } = Log.ForContext<PluginsToolKit>();
+        public int MinVersion = 20230808;
         private ICallableToolKit Caller { get; }
         /// <summary>
         /// 所有插件
@@ -43,8 +44,18 @@ namespace ShadowViewer.ToolKits
                          .Select(type => Activator.CreateInstance(type) as IPlugin))
             {
                 if(instance is null) continue;
+                if (MinVersion > instance.MetaData.MinVersion)
+                {
+                    Log.Information("[插件控制器]{Name}插件版本有误", instance.MetaData.Name);
+                    continue;
+                }
                 Instances.Add(instance);
-                instance.Loaded();
+                var isEnabled = true;
+                if (ConfigHelper.Contains(instance.MetaData.Id))
+                    isEnabled = ConfigHelper.GetBoolean(instance.MetaData.Id);
+                else
+                    ConfigHelper.Set(instance.MetaData.Id, true);
+                instance.Loaded(isEnabled);
                 Log.Information("[插件控制器]加载{Name}插件成功", instance.MetaData.Name);
             }
         }
@@ -54,7 +65,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void PluginEnabled(string id)
         {
-            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: true } plugin) return;
+            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: false } plugin) return;
             plugin.IsEnabled = true;
             Logger.Information("插件{Id}启动成功", id);
         }
@@ -63,7 +74,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void PluginDisabled(string id)
         {
-            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: false } plugin) return;
+            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: true } plugin) return;
             plugin.IsEnabled = false;
             Logger.Information("插件{Id}禁用成功", id);
         }
