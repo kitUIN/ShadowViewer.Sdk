@@ -10,40 +10,60 @@
         {
             this.callableToolKit = callableToolKit;
             this.pluginsToolKit = pluginsToolKit;
-            InitMainItems();
+            InitItems();
         }
-        
+        /// <summary>
+        /// 导航栏菜单
+        /// </summary>
         public ObservableCollection<ShadowNavigationItem> MenuItems= new ObservableCollection<ShadowNavigationItem>();
+        /// <summary>
+        /// 导航栏底部菜单
+        /// </summary>
         public ObservableCollection<ShadowNavigationItem> FooterMenuItems= new ObservableCollection<ShadowNavigationItem>();
-
-        void AddMenuItem(ShadowNavigationItem item)
+        /// <summary>
+        /// 添加导航栏个体
+        /// </summary>
+        private void AddMenuItem(ShadowNavigationItem item)
         {
             if (MenuItems.All(x => x.Id != item.Id))
             {
                 MenuItems.Add(item);
             }
-        }void DeleteMenuItem(ShadowNavigationItem item)
+        }
+        /// <summary>
+        /// 添加导航栏个体
+        /// </summary>
+        private void DeleteMenuItem(ShadowNavigationItem item)
         {
             if (MenuItems.FirstOrDefault(x => x.Id == item.Id) is ShadowNavigationItem i)
             {
                 MenuItems.Remove(i);
             }
         }
-        void AddFooterMenuItems(ShadowNavigationItem item)
+        /// <summary>
+        /// 添加底部导航栏个体
+        /// </summary>
+        private void AddFooterMenuItems(ShadowNavigationItem item)
         {
             if (FooterMenuItems.All(x => x.Id != item.Id))
             {
                 FooterMenuItems.Add(item);
             }
         }
-        void DeleteFooterMenuItems(ShadowNavigationItem item)
+        /// <summary>
+        /// 删除底部导航栏个体
+        /// </summary>
+        private void DeleteFooterMenuItems(ShadowNavigationItem item)
         {
             if (FooterMenuItems.FirstOrDefault(x => x.Id == item.Id) is ShadowNavigationItem i)
             {
                 FooterMenuItems.Remove(i);
             }
         }
-        private void InitMainItems()
+        /// <summary>
+        /// 初始化导航栏
+        /// </summary>
+        private void InitItems()
         {
             AddMenuItem(
                     new ShadowNavigationItem
@@ -82,7 +102,10 @@
                 }
                 );
         }
-        public void InitMenuItems()
+        /// <summary>
+        /// 重载导航栏
+        /// </summary>
+        public void ReloadItems()
         {
             foreach (var plugin in pluginsToolKit.Plugins)
             {
