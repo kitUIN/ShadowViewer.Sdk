@@ -37,17 +37,20 @@ public abstract class PluginBase: IPlugin
         get => enabled;
         set
         {
-            enabled = value;
-            ConfigHelper.Set(MetaData.Id, value);
-            if (IsEnabled)
+            if (enabled != value)
             {
-                PluginEnabled();
-                Caller.PluginEnabled(this,MetaData.Id,IsEnabled);
-            }
-            else
-            {
-                PluginDisabled();
-                Caller.PluginDisabled(this,MetaData.Id,IsEnabled);
+                enabled = value;
+                ConfigHelper.Set(MetaData.Id, value);
+                if (IsEnabled)
+                {
+                    PluginEnabled();
+                    Caller.PluginEnabled(this,MetaData.Id,IsEnabled);
+                }
+                else
+                {
+                    PluginDisabled();
+                    Caller.PluginDisabled(this,MetaData.Id,IsEnabled);
+                }
             }
         } 
     }

@@ -65,7 +65,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void PluginEnabled(string id)
         {
-            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: false } plugin) return;
+            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { } plugin) return;
             plugin.IsEnabled = true;
             Logger.Information("插件{Id}启动成功", id);
         }
@@ -74,7 +74,7 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public void PluginDisabled(string id)
         {
-            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { IsEnabled: true } plugin) return;
+            if (Instances.FirstOrDefault(x => x.MetaData.Id == id) is not { } plugin) return;
             plugin.IsEnabled = false;
             Logger.Information("插件{Id}禁用成功", id);
         }
