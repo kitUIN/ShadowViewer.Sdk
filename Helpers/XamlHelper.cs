@@ -41,11 +41,11 @@
         /// <returns></returns>
         public static StackPanel CreateOneLineTextBox(string header, string placeholder,string text, int width)
         {
-            StackPanel grid = new StackPanel()
+            var grid = new StackPanel()
             {
                 Orientation = Orientation.Horizontal,
             };
-            TextBlock headerBlock = new TextBlock
+            var headerBlock = new TextBlock
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -53,7 +53,7 @@
                 Text = header,
                 FontSize = 16,
             };
-            TextBox txt = new TextBox()
+            var txt = new TextBox()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
@@ -71,7 +71,7 @@
         /// </summary>
         public static ContentDialog CreateContentDialog(XamlRoot xamlRoot)
         {
-            ContentDialog dialog = new ContentDialog();
+            var dialog = new ContentDialog();
             dialog.XamlRoot = xamlRoot;
             dialog.Style = Microsoft.UI.Xaml.Application.Current.Resources["DefaultContentDialogStyle"] as Style;
             dialog.DefaultButton = ContentDialogButton.Primary;
@@ -82,13 +82,13 @@
             Action<ContentDialog, ContentDialogButtonClickEventArgs, string> primaryAction = null,
             Action<ContentDialog, ContentDialogButtonClickEventArgs, string> closeAction = null)
         {
-            TextBox textBox = new TextBox()
+            var textBox = new TextBox()
             {
                 Header = header,
                 Text = text,
                 PlaceholderText = placeholder,
             };
-            ContentDialog dialog = new ContentDialog()
+            var dialog = new ContentDialog()
             {
                 DefaultButton = ContentDialogButton.Primary,
                 Title = title,
