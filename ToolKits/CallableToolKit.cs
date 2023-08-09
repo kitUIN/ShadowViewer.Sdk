@@ -43,8 +43,22 @@
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler<PluginEventArg> PluginDisabledEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public event EventHandler<TopGridEventArg> TopGridEvent;
-        public event EventHandler<ImportPluginEventArgs> ImportPluginEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler<ImportPluginEventArg> ImportPluginEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler NavigationViewBackRequestedEvent;
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public event EventHandler NavigationViewPaneEvent;
 
         /// <summary>
         /// <inheritdoc/>
@@ -112,32 +126,56 @@
             DebugEvent?.Invoke(this, EventArgs.Empty);
             Logger.Information("触发事件DebugEvent");
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void PluginEnabled(object sender, string id, bool enabled)
         {
             Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
                 nameof(PluginEnabledEvent));
             PluginEnabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void PluginDisabled(object sender, string id, bool enabled)
         {
             Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
                 nameof(PluginDisabledEvent));
             PluginDisabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void TopGrid(object sender, UIElement element, TopGridMode mode)
         {
             Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
                 nameof(TopGridEvent));
             TopGridEvent?.Invoke(sender, new TopGridEventArg(element, mode));
         }
-
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
         public void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items)
         {
-            ImportPluginEvent?.Invoke(sender, new ImportPluginEventArgs(items));
+            ImportPluginEvent?.Invoke(sender, new ImportPluginEventArg(items));
             Logger.Information("触发事件{Event}",nameof(ImportPluginEvent));
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void NavigationViewPane(object sender)
+        {
+            NavigationViewPaneEvent?.Invoke(sender, EventArgs.Empty);
+            Logger.Information("触发事件{Event}", nameof(NavigationViewPaneEvent));
+        }
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void NavigationViewBackRequested(object sender)
+        {
+            NavigationViewBackRequestedEvent?.Invoke(sender, EventArgs.Empty);
+            Logger.Information("触发事件{Event}", nameof(NavigationViewBackRequestedEvent));
         }
     }
 }

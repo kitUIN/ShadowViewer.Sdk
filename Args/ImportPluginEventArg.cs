@@ -1,10 +1,10 @@
 ﻿namespace ShadowViewer.Args;
 
-public class ImportPluginEventArgs
+public class ImportPluginEventArg
 {
     public IReadOnlyList<IStorageItem> Items { get; }
 
-    public ImportPluginEventArgs(IReadOnlyList<IStorageItem> items)
+    public ImportPluginEventArg(IReadOnlyList<IStorageItem> items)
     {
         Items = items;
     }

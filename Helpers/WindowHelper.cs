@@ -11,6 +11,8 @@
         }
         static public void TrackWindow(Window window)
         {
+            window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+            window.AppWindow.TitleBar.ButtonForegroundColor = Microsoft.UI.Colors.Transparent;
             window.Closed += (sender, args) => {
                 _activeWindows.Remove(window);
             };
