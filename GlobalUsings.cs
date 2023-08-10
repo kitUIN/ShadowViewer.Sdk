@@ -38,8 +38,6 @@ global using ShadowViewer.ViewModels;
 global using Microsoft.UI;
 global using Windows.UI;
 global using System.Web;
-global using CommunityToolkit.WinUI.UI.Controls;
-global using CommunityToolkit.WinUI.Helpers;
 global using System.IO;
 global using CustomExtensions.WinUI;
 global using Microsoft.Extensions.DependencyInjection;

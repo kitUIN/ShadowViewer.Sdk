@@ -1,4 +1,5 @@
-﻿using Serilog.Core;
+﻿using CommunityToolkit.WinUI.Helpers;
+using Serilog.Core;
 using SqlSugar;
 
 namespace ShadowViewer.Models

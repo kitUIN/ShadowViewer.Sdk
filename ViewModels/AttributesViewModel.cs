@@ -1,4 +1,6 @@
-﻿using SqlSugar;
+﻿using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI.Helpers;
+using SqlSugar;
 
 namespace ShadowViewer.ViewModels
 {
@@ -62,7 +64,7 @@ namespace ShadowViewer.ViewModels
         public void ReLoadTags()
         {
             Tags.Clear();
-            if (pluginsToolKit.GetAffiliationTag(CurrentComic.Affiliation) is LocalTag shadow)
+            if (pluginsToolKit.GetAffiliationTag(CurrentComic.Affiliation) is { } shadow)
             {
                 shadow.IsEnable = false;
                 shadow.Icon = "\uE23F";
@@ -70,12 +72,16 @@ namespace ShadowViewer.ViewModels
                 Tags.Add(shadow);
             }
 
-            foreach (LocalTag item in CurrentComic.Tags)
+            if (CurrentComic.Tags != null)
             {
-                item.Icon = "\uEEDB";
-                item.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Tag) + ": " + item.Name;
-                Tags.Add(item);
+                foreach (var item in CurrentComic.Tags)
+                {
+                    item.Icon = "\uEEDB";
+                    item.ToolTip = CoreResourcesHelper.GetString(CoreResourceKey.Tag) + ": " + item.Name;
+                    Tags.Add(item);
+                }
             }
+            
 
             Tags.Add(new LocalTag
             {
