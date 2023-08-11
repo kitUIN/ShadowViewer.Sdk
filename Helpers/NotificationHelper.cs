@@ -17,7 +17,7 @@ public static class NotificationHelper
     /// </example>
     public static void Notify(object sender,string message,InfoBarSeverity level)
     {
-        DiFactory.Services.Resolve<CallableService>().TopGrid(sender, 
+        DiFactory.Services.Resolve<ICallableService>().TopGrid(sender, 
             new TipPopup(message,level), TopGridMode.Tip);
     }
 }
