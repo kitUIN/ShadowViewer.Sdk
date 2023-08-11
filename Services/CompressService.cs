@@ -6,15 +6,15 @@ using System.Threading;
 using ShadowViewer.Extensions;
 using SqlSugar;
 
-namespace ShadowViewer.ToolKits
+namespace ShadowViewer.Service
 {
-    public class CompressToolKit
+    public class CompressServices
     {
-        private static ILogger Logger { get; } = Log.ForContext<CompressToolKit>();
-        private readonly ICallableToolKit caller;
-        public CompressToolKit(ICallableToolKit callableToolKit)
+        private static ILogger Logger { get; } = Log.ForContext<CompressServices>();
+        private readonly ICallableService caller;
+        public CompressServices(ICallableService callableService)
         {
-            caller = callableToolKit;
+            caller = callableService;
         }
         /// <summary>
         /// 检测压缩包密码是否正确

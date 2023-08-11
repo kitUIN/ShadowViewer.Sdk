@@ -1,21 +1,19 @@
-﻿using ShadowViewer.Extensions;
-
-namespace ShadowViewer.ToolKits
+﻿namespace ShadowViewer.Services
 {
-    public class PluginsToolKit : IPluginsToolKit
+    public class PluginServices : IPluginServices
     {
-        private ILogger Logger { get; } = Log.ForContext<PluginsToolKit>();
+        private ILogger Logger { get; } = Log.ForContext<PluginServices>();
         public int MinVersion = 20230808;
-        private ICallableToolKit Caller { get; }
+        private ICallableService Caller { get; }
 
         /// <summary>
         /// 所有插件
         /// </summary>
         private ObservableCollection<IPlugin> Instances { get; } = new ObservableCollection<IPlugin>();
 
-        public PluginsToolKit(ICallableToolKit callableToolKit)
+        public PluginServices(ICallableService callableService)
         {
-            Caller = callableToolKit;
+            Caller = callableService;
         }
 
         /// <summary>
