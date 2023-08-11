@@ -43,7 +43,7 @@
                          .Where(type => type.IsAssignableTo(typeof(IPlugin)))
                     )
             {
-                DiFactory.Services.Register(typeof(IPlugin), instance,
+                DiFactory.Services.Register(typeof(IPlugin), instance, made: FactoryMethod.ConstructorWithResolvableArguments,
                     ifAlreadyRegistered: IfAlreadyRegistered.Replace, reuse: Reuse.Singleton);
             }
         }
@@ -59,6 +59,7 @@
                     continue;
                 }
                 Instances.Add(instance);
+                
                 var isEnabled = true;
                 if (ConfigHelper.Contains(instance.MetaData.Id))
                     isEnabled = ConfigHelper.GetBoolean(instance.MetaData.Id);

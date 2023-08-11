@@ -8,7 +8,7 @@ namespace ShadowViewer
         static DiFactory()
         {
             var defaultPath = ConfigHelper.IsPackaged ? ApplicationData.Current.LocalFolder.Path : System.Environment.CurrentDirectory;
-            Services = new Container();
+            Services = new Container(rules => rules.With(FactoryMethod.ConstructorWithResolvableArguments));
             var sqlSugar = new SqlSugarScope(new ConnectionConfig()
             {
                 DbType = SqlSugar.DbType.Sqlite,
