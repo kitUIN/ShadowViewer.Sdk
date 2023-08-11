@@ -23,7 +23,7 @@ namespace ShadowViewer.ToolKits
         {
             var md5 = EncryptingHelper.CreateMd5(zip);
             var sha1 = EncryptingHelper.CreateSha1(zip);
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
             if (cacheZip is { Password: not null } && cacheZip.Password != "")  
             {
@@ -101,7 +101,7 @@ namespace ShadowViewer.ToolKits
             };
             string md5 = EncryptingHelper.CreateMd5(zip);
             string sha1 = EncryptingHelper.CreateSha1(zip);
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var start = DateTime.Now;
             CacheZip cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
             cacheZip ??= CacheZip.Create(md5, sha1);

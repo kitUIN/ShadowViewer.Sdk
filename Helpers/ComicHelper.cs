@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DryIoc;
+using Microsoft.Extensions.DependencyInjection;
 using ShadowViewer.Extensions;
 using SqlSugar;
 
@@ -18,7 +19,7 @@ namespace ShadowViewer.Helpers
             string defaultName = CoreResourcesHelper.GetString(CoreResourceKey.CreateFolder);
             if (name == "") name = defaultName;
             int i = 1;
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             while (db.Queryable<LocalComic>().Any(x => x.Name == name))
             {
                 name = $"{defaultName}({i++})";
@@ -32,7 +33,7 @@ namespace ShadowViewer.Helpers
         {
             string img;
             ShadowFile root = new ShadowFile(folder);
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             if (db.Queryable<CacheImg>().First(x => x.ComicId==comicId) is CacheImg cacheImg)
             {
                 img = cacheImg.Path;
@@ -73,7 +74,7 @@ namespace ShadowViewer.Helpers
         /// </summary>
         public static string LoadImgFromEntry(ShadowEntry root, string dir, string comicId)
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             if (db.Queryable<CacheImg>().First(x => x.ComicId==comicId) is CacheImg cacheImg)
             {
                 return cacheImg.Path;
@@ -107,7 +108,7 @@ namespace ShadowViewer.Helpers
                 ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot,
                 CoreResourcesHelper.GetString(CoreResourceKey.ImportError),
                 CoreResourcesHelper.GetString(CoreResourceKey.DuplicateImport));
-                var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+                var db = DiFactory.Services.Resolve<ISqlSugarClient>();
                 if (zip != null)
                 {
                     string md5 = EncryptingHelper.CreateMd5(zip);

@@ -28,7 +28,7 @@ namespace ShadowViewer.Models
         public ShadowPath(IEnumerable<string> black)
         {
             this.comic = LocalComic.Create(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "",id:"local",isFolder:true, parent:"",img: LocalComic.DefaultFolderImg);
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             List<LocalComic> comics = db.Queryable<LocalComic>().Where(x => x.IsFolder).ToList();
             if(comics.Count > 0)
             {

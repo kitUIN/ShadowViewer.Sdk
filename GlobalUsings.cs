@@ -40,4 +40,4 @@ global using Windows.UI;
 global using System.Web;
 global using System.IO;
 global using CustomExtensions.WinUI;
-global using Microsoft.Extensions.DependencyInjection;
+global using DryIoc;

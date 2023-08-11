@@ -94,7 +94,7 @@ namespace ShadowViewer.Models
         /// <param name="comicId"></param>
         public static void ToLocalComic(ShadowFile root, string comicId)
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             
             List<ShadowFile> one = GetDepthFiles(root);
             int order = 1;

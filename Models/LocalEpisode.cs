@@ -43,7 +43,7 @@ namespace ShadowViewer.Models
         
         public static LocalEpisode Create(string name, int order, string comicId, int counts, long size)
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             string id = Guid.NewGuid().ToString("N");
             while (db.Queryable<LocalEpisode>().Any(x => x.Id == id))
             {
