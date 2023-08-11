@@ -1,6 +1,6 @@
 ﻿namespace ShadowViewer.Interfaces
 {
-    public interface IPluginServices
+    public interface IPluginService
     {
         /// <summary>
         /// 导入全部插件

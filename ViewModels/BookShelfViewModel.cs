@@ -36,11 +36,11 @@ namespace ShadowViewer.ViewModels
         public ObservableCollection<LocalComic> LocalComics { get; } = new ObservableCollection<LocalComic>();
         private ISqlSugarClient Db { get; }
         private static ILogger Logger { get; } = Log.ForContext<BookShelfViewModel>();
-        private readonly ICallableToolKit caller;
-        public BookShelfViewModel(ICallableToolKit callableToolKit,ISqlSugarClient sqlSugarClient)
+        private readonly ICallableService caller;
+        public BookShelfViewModel(ICallableService callableService,ISqlSugarClient sqlSugarClient)
         {
             Db = sqlSugarClient;
-            caller = callableToolKit;
+            caller = callableService;
             caller.RefreshBookEvent += Caller_RefreshBookEvent;
             Logger.Debug("加载RefreshBook事件");
         }

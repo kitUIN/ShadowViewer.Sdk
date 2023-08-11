@@ -6,13 +6,13 @@ using System.Threading;
 using ShadowViewer.Extensions;
 using SqlSugar;
 
-namespace ShadowViewer.Service
+namespace ShadowViewer.Services
 {
-    public class CompressServices
+    public class CompressService
     {
-        private static ILogger Logger { get; } = Log.ForContext<CompressServices>();
+        private static ILogger Logger { get; } = Log.ForContext<CompressService>();
         private readonly ICallableService caller;
-        public CompressServices(ICallableService callableService)
+        public CompressService(ICallableService callableService)
         {
             caller = callableService;
         }

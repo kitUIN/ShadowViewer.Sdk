@@ -25,9 +25,9 @@ namespace ShadowViewer
                     });
             Services.RegisterInstance<ISqlSugarClient>(sqlSugar);
             Services.RegisterPlaceholder<IPlugin>();
-            Services.Register<IPluginsToolKit, PluginsToolKit>(Reuse.Singleton);
-            Services.Register<ICallableToolKit, CallableToolKit>(Reuse.Singleton);
-            Services.Register<CompressToolKit>(Reuse.Singleton);
+            Services.Register<IPluginService, PluginService>(Reuse.Singleton);
+            Services.Register<ICallableService, CallableService>(Reuse.Singleton);
+            Services.Register<CompressService>(Reuse.Singleton);
             Services.Register<SettingsViewModel>(Reuse.Singleton);
             Services.Register<NavigationViewModel>(Reuse.Singleton);
             Services.Register<BookShelfViewModel>(Reuse.Transient);

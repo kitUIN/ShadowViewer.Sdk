@@ -29,7 +29,7 @@ global using Microsoft.UI.Xaml.Media;
 global using ShadowViewer.Models;
 global using ShadowViewer.Cache;
 global using ShadowViewer.Configs;
-global using ShadowViewer.ToolKits;
+global using ShadowViewer.Services;
 global using ShadowViewer.Enums;
 global using ShadowViewer.Interfaces;
 global using ShadowViewer.Helpers;

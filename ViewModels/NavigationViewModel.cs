@@ -3,13 +3,13 @@
     public partial class NavigationViewModel : ObservableObject
     {
         private static ILogger Logger { get; } = Log.ForContext<NavigationViewModel>();
-        private ICallableToolKit callableToolKit;
-        private readonly IPluginsToolKit pluginsToolKit;
+        private ICallableService callableService;
+        private readonly IPluginService pluginService;
 
-        public NavigationViewModel(ICallableToolKit callableToolKit, IPluginsToolKit pluginsToolKit)
+        public NavigationViewModel(ICallableService callableService, IPluginService pluginService)
         {
-            this.callableToolKit = callableToolKit;
-            this.pluginsToolKit = pluginsToolKit;
+            this.callableService = callableService;
+            this.pluginService = pluginService;
             InitItems();
         }
         /// <summary>
@@ -107,7 +107,7 @@
         /// </summary>
         public void ReloadItems()
         {
-            foreach (var plugin in pluginsToolKit.Plugins)
+            foreach (var plugin in pluginService.Plugins)
             {
                 foreach (var item2 in plugin.NavigationViewMenuItems)
                 {

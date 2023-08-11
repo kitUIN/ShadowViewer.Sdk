@@ -8,7 +8,7 @@ namespace ShadowViewer.ViewModels
     /// </summary>
     public partial class SettingsViewModel : ObservableObject
     {
-        private readonly ICallableToolKit caller;
+        private readonly ICallableService caller;
         /// <summary>
         /// 当前版本号
         /// </summary>
@@ -97,9 +97,9 @@ namespace ShadowViewer.ViewModels
             }
         }
 
-        public SettingsViewModel(ICallableToolKit callableToolKit)
+        public SettingsViewModel(ICallableService callableService)
         {
-            caller = callableToolKit;
+            caller = callableService;
             Version = $"0.0.0.1";
         }
     }

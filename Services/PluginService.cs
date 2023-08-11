@@ -1,8 +1,8 @@
 ﻿namespace ShadowViewer.Services
 {
-    public class PluginServices : IPluginServices
+    public class PluginService : IPluginService
     {
-        private ILogger Logger { get; } = Log.ForContext<PluginServices>();
+        private ILogger Logger { get; } = Log.ForContext<PluginService>();
         public int MinVersion = 20230808;
         private ICallableService Caller { get; }
 
@@ -11,7 +11,7 @@
         /// </summary>
         private ObservableCollection<IPlugin> Instances { get; } = new ObservableCollection<IPlugin>();
 
-        public PluginServices(ICallableService callableService)
+        public PluginService(ICallableService callableService)
         {
             Caller = callableService;
         }

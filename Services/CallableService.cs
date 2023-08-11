@@ -1,8 +1,8 @@
-﻿namespace ShadowViewer.ToolKits
+﻿namespace ShadowViewer.Services
 {
-    public class CallableServices : ICallableServices
+    public class CallableService : ICallableService
     {
-        public static ILogger Logger { get; } = Log.ForContext<CallableServices>();
+        public static ILogger Logger { get; } = Log.ForContext<CallableService>();
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

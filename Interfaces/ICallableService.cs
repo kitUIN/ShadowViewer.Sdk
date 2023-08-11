@@ -5,7 +5,7 @@ namespace ShadowViewer.Interfaces
     /// <summary>
     /// 通知其他控件的工具类
     /// </summary>
-    public interface ICallableServices
+    public interface ICallableService
     {
         /// <summary>
         /// 控制页面跳转事件
