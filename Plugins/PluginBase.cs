@@ -4,11 +4,18 @@ namespace ShadowViewer.Plugins;
 
 public abstract class PluginBase: IPlugin
 {
-    protected ICallableToolKit Caller { get; } = DiFactory.Services.Resolve<ICallableToolKit>();
-    protected ISqlSugarClient Db { get; } = DiFactory.Services.Resolve<ISqlSugarClient>();
-    protected CompressToolKit CompressToolKit { get; } = DiFactory.Services.Resolve<CompressToolKit>();
-    protected IPluginsToolKit PluginsToolKit { get; } = DiFactory.Services.Resolve<IPluginsToolKit>();
-
+    protected ICallableToolKit Caller { get; }
+    protected ISqlSugarClient Db { get; } 
+    protected CompressToolKit CompressToolKit { get; }
+    protected IPluginsToolKit PluginsToolKit { get; } 
+    public PluginBase(ICallableToolKit callableToolKit, ISqlSugarClient sqlSugarClient,
+        CompressToolKit compressToolKit, IPluginsToolKit pluginsToolKit)
+    {
+        Caller= callableToolKit;
+        Db = sqlSugarClient;
+        CompressToolKit = compressToolKit;
+        PluginsToolKit = pluginsToolKit;
+    }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>

@@ -1,6 +1,4 @@
 ﻿using SqlSugar;
-using DryIoc; 
-using Windows.Media.Protection.PlayReady;
 
 namespace ShadowViewer
 {
@@ -26,6 +24,7 @@ namespace ShadowViewer
                         };
                     });
             Services.RegisterInstance<ISqlSugarClient>(sqlSugar);
+            Services.RegisterPlaceholder<IPlugin>();
             Services.Register<IPluginsToolKit, PluginsToolKit>(Reuse.Singleton);
             Services.Register<ICallableToolKit, CallableToolKit>(Reuse.Singleton);
             Services.Register<CompressToolKit>(Reuse.Singleton);
