@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DryIoc;
+using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 
 namespace ShadowViewer.Cache
@@ -26,7 +27,7 @@ namespace ShadowViewer.Cache
 
         public static string RandomId()
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var id = Guid.NewGuid().ToString("N");
             while (db.Queryable<CacheZip>().Any(x => x.Id == id))
             {
@@ -37,7 +38,7 @@ namespace ShadowViewer.Cache
         }
         public static CacheZip Create(string md5, string sha1,string password=null,string cachePath= null)
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var id = RandomId();
             return new CacheZip()
             {

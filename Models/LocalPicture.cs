@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using DryIoc;
+using SqlSugar;
 
 namespace ShadowViewer.Models
 {
@@ -44,7 +45,7 @@ namespace ShadowViewer.Models
         
         public static LocalPicture Create(string name, string episodeId, string comicId, string img, long size)
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             string id = Guid.NewGuid().ToString("N");
             while (db.Queryable<LocalPicture>().Any(x => x.Id == id))
             {

@@ -1,6 +1,6 @@
 ﻿namespace ShadowViewer.Interfaces
 {
-    public interface IPluginsToolKit
+    public interface IPluginService
     {
         /// <summary>
         /// 导入全部插件
@@ -10,6 +10,10 @@
         /// 导入单个插件
         /// </summary>
         public Task ImportAsync(string path);
+        /// <summary>
+        /// 初始化所有插件
+        /// </summary>
+        public void InitAllPlugins();
         /// <summary>
         /// 启用插件
         /// </summary>

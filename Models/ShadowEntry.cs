@@ -121,7 +121,7 @@ namespace ShadowViewer.Models
         {
             var one = GetDepthEntries(root);
             var order = 1;
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             foreach(var child in one)
             {
                 if(child.Children.Count>0)

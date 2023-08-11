@@ -1,4 +1,5 @@
 ﻿using ColorCode.Compilation.Languages;
+using DryIoc;
 using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 namespace ShadowViewer.Models
@@ -51,7 +52,7 @@ namespace ShadowViewer.Models
                 if(oldValue != null && oldValue != value)
                 {
                     Update();
-                    var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+                    var db = DiFactory.Services.Resolve<ISqlSugarClient>();
                     var cache = db.Queryable<CacheZip>().First(x => x.ComicId == Id);
                     if(cache != null)
                     {
@@ -283,7 +284,7 @@ namespace ShadowViewer.Models
          public static string RandomId()
         {
             string id = Guid.NewGuid().ToString("N");
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             while (db.Queryable<LocalComic>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");
@@ -296,7 +297,7 @@ namespace ShadowViewer.Models
             if(id==null)
             {
                 id = Guid.NewGuid().ToString("N");
-                var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+                var db = DiFactory.Services.Resolve<ISqlSugarClient>();
                 while (db.Queryable<LocalComic>().Any(x => x.Id == id))
                 {
                     id = Guid.NewGuid().ToString("N");
@@ -325,7 +326,7 @@ namespace ShadowViewer.Models
  
         public void Update()
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             db.Updateable(this).ExecuteCommand();
         }
          

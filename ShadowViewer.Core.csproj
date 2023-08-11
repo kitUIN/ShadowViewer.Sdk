@@ -26,6 +26,7 @@
       <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
       <PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
       <PackageReference Include="CustomExtensions.WinUI" Version="0.1.11-beta" />
+      <PackageReference Include="DryIoc.dll" Version="5.4.1" />
       <PackageReference Include="KitUIN.FluentIcon" Version="1.1.203" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
       <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.3.230724000" />

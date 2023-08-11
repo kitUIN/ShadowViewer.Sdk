@@ -93,7 +93,7 @@ namespace ShadowViewer.Models
         public static string RandomId()
         {
             string id = Guid.NewGuid().ToString("N");
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             while (db.Queryable<LocalTag>().Any(x => x.Id == id))
             {
                 id = Guid.NewGuid().ToString("N");

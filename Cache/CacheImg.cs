@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DryIoc;
 using SqlSugar;
 
 namespace ShadowViewer.Cache
@@ -24,7 +24,7 @@ namespace ShadowViewer.Cache
 
         public static void CreateImage(string dir,byte[] bytes,string comicId)
         {
-            var db = DiFactory.Current.Services.GetService<ISqlSugarClient>();
+            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var md5 = EncryptingHelper.CreateMd5(bytes);
             var path = System.IO.Path.Combine(dir, md5 + ".png");
             if (db.Queryable<CacheImg>().First(x => x.Md5 == md5) is CacheImg cache)

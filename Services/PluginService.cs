@@ -1,22 +1,21 @@
-﻿
-
-using ShadowViewer.Extensions;
-
-namespace ShadowViewer.ToolKits
+﻿namespace ShadowViewer.Services
 {
-    public class PluginsToolKit: IPluginsToolKit
+    public class PluginService : IPluginService
     {
-        private ILogger Logger { get; } = Log.ForContext<PluginsToolKit>();
+        private ILogger Logger { get; } = Log.ForContext<PluginService>();
         public int MinVersion = 20230808;
-        private ICallableToolKit Caller { get; }
+        private ICallableService Caller { get; }
+
         /// <summary>
         /// 所有插件
         /// </summary>
         private ObservableCollection<IPlugin> Instances { get; } = new ObservableCollection<IPlugin>();
-        public PluginsToolKit(ICallableToolKit callableToolKit) 
+
+        public PluginService(ICallableService callableService)
         {
-            Caller = callableToolKit;
+            Caller = callableService;
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -33,6 +32,7 @@ namespace ShadowViewer.ToolKits
                 }
             }
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -41,15 +41,25 @@ namespace ShadowViewer.ToolKits
             var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(path);
             foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
                          .Where(type => type.IsAssignableTo(typeof(IPlugin)))
-                         .Select(type => Activator.CreateInstance(type) as IPlugin))
+                    )
             {
-                if(instance is null) continue;
+                DiFactory.Services.Register(typeof(IPlugin), instance, made: FactoryMethod.ConstructorWithResolvableArguments,
+                    ifAlreadyRegistered: IfAlreadyRegistered.Replace, reuse: Reuse.Singleton);
+            }
+        }
+
+        public void InitAllPlugins()
+        {
+            foreach (var instance in DiFactory.Services.ResolveMany<IPlugin>())
+            {
+                if (instance is null) continue;
                 if (MinVersion > instance.MetaData.MinVersion)
                 {
                     Log.Information("[插件控制器]{Name}插件版本有误", instance.MetaData.Name);
                     continue;
                 }
                 Instances.Add(instance);
+                
                 var isEnabled = true;
                 if (ConfigHelper.Contains(instance.MetaData.Id))
                     isEnabled = ConfigHelper.GetBoolean(instance.MetaData.Id);
@@ -58,6 +68,7 @@ namespace ShadowViewer.ToolKits
                 instance.Loaded(isEnabled);
                 Log.Information("[插件控制器]加载{Name}插件成功", instance.MetaData.Name);
             }
+            
         }
 
         /// <summary>
@@ -69,6 +80,7 @@ namespace ShadowViewer.ToolKits
             plugin.IsEnabled = true;
             Logger.Information("插件{Id}启动成功", id);
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -78,6 +90,7 @@ namespace ShadowViewer.ToolKits
             plugin.IsEnabled = false;
             Logger.Information("插件{Id}禁用成功", id);
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -85,6 +98,7 @@ namespace ShadowViewer.ToolKits
         {
             return Instances.FirstOrDefault(x => x.MetaData.Id == id);
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -95,8 +109,11 @@ namespace ShadowViewer.ToolKits
         /// </summary>
         public LocalTag GetAffiliationTag(string id)
         {
-            return id == "Local" ? new LocalTag(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "#000000", "#ffd657") : Instances.FirstOrDefault(x => x.MetaData.Id == id)?.AffiliationTag;
+            return id == "Local"
+                ? new LocalTag(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "#000000", "#ffd657")
+                : Instances.FirstOrDefault(x => x.MetaData.Id == id)?.AffiliationTag;
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

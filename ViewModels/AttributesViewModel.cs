@@ -31,7 +31,7 @@ namespace ShadowViewer.ViewModels
         /// </summary>
         public bool IsHaveEpisodes => Episodes.Count != 0;
 
-        private readonly IPluginsToolKit pluginsToolKit;
+        private readonly IPluginService pluginService;
         private ISqlSugarClient Db { get; }
         public void Init(string comicId)
         {
@@ -40,9 +40,9 @@ namespace ShadowViewer.ViewModels
             ReLoadEps();
         }
 
-        public AttributesViewModel(IPluginsToolKit pluginsToolKit,ISqlSugarClient sqlSugarClient)
+        public AttributesViewModel(IPluginService pluginService,ISqlSugarClient sqlSugarClient)
         {
-            this.pluginsToolKit = pluginsToolKit;
+            this.pluginService = pluginService;
             Db = sqlSugarClient;
         }
 
@@ -64,7 +64,7 @@ namespace ShadowViewer.ViewModels
         public void ReLoadTags()
         {
             Tags.Clear();
-            if (pluginsToolKit.GetAffiliationTag(CurrentComic.Affiliation) is { } shadow)
+            if (pluginService.GetAffiliationTag(CurrentComic.Affiliation) is { } shadow)
             {
                 shadow.IsEnable = false;
                 shadow.Icon = "\uE23F";
