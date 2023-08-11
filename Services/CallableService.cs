@@ -2,7 +2,11 @@
 {
     public class CallableService : ICallableService
     {
-        public static ILogger Logger { get; } = Log.ForContext<CallableService>();
+        private ILogger Logger { get; } 
+        public CallableService(ILogger logger)
+        {
+            Logger = logger;
+        }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

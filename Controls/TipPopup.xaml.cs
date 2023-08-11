@@ -4,7 +4,7 @@
 namespace ShadowViewer.Controls
 {
     /// <summary>
-    /// 消息提醒.
+    /// 消息提醒.<see cref=""/>>
     /// </summary>
     public sealed partial class TipPopup : UserControl
     {

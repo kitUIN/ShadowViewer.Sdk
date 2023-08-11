@@ -13,7 +13,8 @@ namespace ShadowViewer.ViewModels
         /// 当前版本号
         /// </summary>
         public string Version { get; }
-
+        
+        private ILogger Logger { get; } 
         [ObservableProperty] private bool isDebug = Config.IsDebug;
         [ObservableProperty] private string comicsPath = Config.ComicsPath;
         [ObservableProperty] private string tempPath = Config.TempPath;
@@ -97,10 +98,11 @@ namespace ShadowViewer.ViewModels
             }
         }
 
-        public SettingsViewModel(ICallableService callableService)
+        public SettingsViewModel(ICallableService callableService,ILogger logger)
         {
             caller = callableService;
-            Version = $"0.0.0.1";
+            Version = "0.0.0.1";
+            Logger = logger;
         }
     }
 }

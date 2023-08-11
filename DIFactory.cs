@@ -20,11 +20,14 @@ namespace ShadowViewer
                         //单例参数配置，所有上下文生效
                         db.Aop.OnLogExecuting = (sql, pars) =>
                         {
-                            Log.Debug("{Sql}", sql);
+                            Log.ForContext<ISqlSugarClient>().Debug("{Sql}", sql);
                         };
                     });
             Services.RegisterInstance<ISqlSugarClient>(sqlSugar);
             Services.RegisterPlaceholder<IPlugin>();
+            Services.Register(
+                Made.Of(() => Serilog.Log.ForContext(Arg.Index<Type>(0)), r => r.Parent.ImplementationType),
+                setup: Setup.With(condition: r => r.Parent.ImplementationType != null));
             Services.Register<IPluginService, PluginService>(Reuse.Singleton);
             Services.Register<ICallableService, CallableService>(Reuse.Singleton);
             Services.Register<CompressService>(Reuse.Singleton);

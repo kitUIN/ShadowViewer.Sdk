@@ -10,11 +10,12 @@ namespace ShadowViewer.Services
 {
     public class CompressService
     {
-        private static ILogger Logger { get; } = Log.ForContext<CompressService>();
+        private ILogger Logger { get; } 
         private readonly ICallableService caller;
-        public CompressService(ICallableService callableService)
+        public CompressService(ICallableService callableService,ILogger logger)
         {
             caller = callableService;
+            Logger = logger;
         }
         /// <summary>
         /// 检测压缩包密码是否正确
@@ -28,7 +29,7 @@ namespace ShadowViewer.Services
             if (cacheZip is { Password: not null } && cacheZip.Password != "")  
             {
                 readerOptions = new ReaderOptions() { Password = cacheZip.Password };
-                Logger.Information("自动填充密码:{Pwd}", cacheZip.Password);
+                Log.Information("自动填充密码:{Pwd}", cacheZip.Password);
             }
             try
             {

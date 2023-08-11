@@ -2,12 +2,14 @@
 {
     public partial class NavigationViewModel : ObservableObject
     {
-        private static ILogger Logger { get; } = Log.ForContext<NavigationViewModel>();
+        
+        private ILogger Logger { get; } 
         private ICallableService callableService;
         private readonly IPluginService pluginService;
 
-        public NavigationViewModel(ICallableService callableService, IPluginService pluginService)
+        public NavigationViewModel(ICallableService callableService, IPluginService pluginService,ILogger logger)
         {
+            Logger = logger;
             this.callableService = callableService;
             this.pluginService = pluginService;
             InitItems();

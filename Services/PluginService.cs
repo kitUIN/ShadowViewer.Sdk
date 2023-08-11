@@ -6,17 +6,18 @@ namespace ShadowViewer.Services
 {
     public class PluginService : IPluginService
     {
-        private ILogger Logger { get; } = Log.ForContext<PluginService>();
-        public int MinVersion = 20230808;
+        private ILogger Logger { get; }
+        public const int MinVersion = 20230808;
         private ICallableService Caller { get; }
 
         /// <summary>
         /// 所有插件
         /// </summary>
-        private ObservableCollection<IPlugin> Instances { get; } = new ObservableCollection<IPlugin>();
+        private ObservableCollection<IPlugin> Instances { get; } = new();
 
-        public PluginService(ICallableService callableService)
+        public PluginService(ICallableService callableService,ILogger logger)
         {
+            Logger = logger;
             Caller = callableService;
         }
 
@@ -42,10 +43,6 @@ namespace ShadowViewer.Services
         /// </summary>
         public async Task ImportAsync(string path)
         {
-            StackTrace trace = new StackTrace();
-
-            MethodBase methodName = trace.GetFrame(1).GetMethod();
-            Log.Information(methodName.Name);
             var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(path);
             foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
                          .Where(type => type.IsAssignableTo(typeof(IPlugin))) )
@@ -53,7 +50,7 @@ namespace ShadowViewer.Services
                 var meta = instance.GetPluginMetaData();
                 if (meta.MinVersion < MinVersion)
                 {
-                    Log.Information("[插件控制器]{Name}插件版本有误(所需>={MinVersion},当前:{Meta})",meta.Name,MinVersion,meta.MinVersion  );
+                    Logger.Information("[插件控制器]{Name}插件版本有误(所需>={MinVersion},当前:{Meta})",meta.Name,MinVersion,meta.MinVersion  );
                     continue;
                 }
                 DiFactory.Services.Register(typeof(IPlugin), instance, made: FactoryMethod.ConstructorWithResolvableArguments,
@@ -67,7 +64,7 @@ namespace ShadowViewer.Services
                 else
                     ConfigHelper.Set(plugin.MetaData.Id, true);
                 plugin.Loaded(isEnabled);
-                Log.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
+                Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
             }
         }
         

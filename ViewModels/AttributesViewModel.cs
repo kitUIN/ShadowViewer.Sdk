@@ -33,6 +33,8 @@ namespace ShadowViewer.ViewModels
 
         private readonly IPluginService pluginService;
         private ISqlSugarClient Db { get; }
+        private ILogger Logger { get; }
+
         public void Init(string comicId)
         {
             CurrentComic = Db.Queryable<LocalComic>().First(x => x.Id == comicId);
@@ -40,10 +42,11 @@ namespace ShadowViewer.ViewModels
             ReLoadEps();
         }
 
-        public AttributesViewModel(IPluginService pluginService,ISqlSugarClient sqlSugarClient)
+        public AttributesViewModel(IPluginService pluginService, ISqlSugarClient sqlSugarClient, ILogger logger)
         {
             this.pluginService = pluginService;
             Db = sqlSugarClient;
+            Logger = logger;
         }
 
         /// <summary>
@@ -81,7 +84,7 @@ namespace ShadowViewer.ViewModels
                     Tags.Add(item);
                 }
             }
-            
+
 
             Tags.Add(new LocalTag
             {
@@ -99,7 +102,7 @@ namespace ShadowViewer.ViewModels
         /// </summary>
         public void AddNewTag(LocalTag tag)
         {
-            if ( Db.Queryable<LocalTag>().First(x => x.Id == tag.Id) is LocalTag localTag)
+            if (Db.Queryable<LocalTag>().First(x => x.Id == tag.Id) is LocalTag localTag)
             {
                 tag.ComicId = localTag.ComicId;
                 tag.Icon = "\uEEDB";
