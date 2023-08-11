@@ -1,5 +1,6 @@
 ﻿using DryIoc;
 using ShadowViewer.Extensions;
+using System.Diagnostics;
 
 namespace ShadowViewer.Services
 {
@@ -41,10 +42,14 @@ namespace ShadowViewer.Services
         /// </summary>
         public async Task ImportAsync(string path)
         {
+            StackTrace trace = new StackTrace();
+
+            MethodBase methodName = trace.GetFrame(1).GetMethod();
+            Log.Information(methodName.Name);
             var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(path);
             foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
                          .Where(type => type.IsAssignableTo(typeof(IPlugin))) )
-            {
+            { 
                 var meta = instance.GetPluginMetaData();
                 if (meta.MinVersion < MinVersion)
                 {
