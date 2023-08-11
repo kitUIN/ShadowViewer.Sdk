@@ -1,4 +1,7 @@
-﻿namespace ShadowViewer.Services
+﻿using DryIoc;
+using ShadowViewer.Extensions;
+
+namespace ShadowViewer.Services
 {
     public class PluginService : IPluginService
     {
@@ -40,37 +43,29 @@
         {
             var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(path);
             foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
-                         .Where(type => type.IsAssignableTo(typeof(IPlugin)))
-                    )
+                         .Where(type => type.IsAssignableTo(typeof(IPlugin))) )
             {
-                DiFactory.Services.Register(typeof(IPlugin), instance, made: FactoryMethod.ConstructorWithResolvableArguments,
-                    ifAlreadyRegistered: IfAlreadyRegistered.Replace, reuse: Reuse.Singleton);
-            }
-        }
-
-        public void InitAllPlugins()
-        {
-            foreach (var instance in DiFactory.Services.ResolveMany<IPlugin>())
-            {
-                if (instance is null) continue;
-                if (MinVersion > instance.MetaData.MinVersion)
+                var meta = instance.GetPluginMetaData();
+                if (meta.MinVersion < MinVersion)
                 {
-                    Log.Information("[插件控制器]{Name}插件版本有误", instance.MetaData.Name);
+                    Log.Information("[插件控制器]{Name}插件版本有误(所需>={MinVersion},当前:{Meta})",meta.Name,MinVersion,meta.MinVersion  );
                     continue;
                 }
-                Instances.Add(instance);
-                
+                DiFactory.Services.Register(typeof(IPlugin), instance, made: FactoryMethod.ConstructorWithResolvableArguments,
+                    ifAlreadyRegistered: IfAlreadyRegistered.Replace, reuse: Reuse.Singleton);
+                var plugin = DiFactory.Services.Resolve<IEnumerable<IPlugin>>().FirstOrDefault(x => x.MetaData.Id == meta.Id);
+                if (plugin is null) continue;
+                Instances.Add(plugin);
                 var isEnabled = true;
-                if (ConfigHelper.Contains(instance.MetaData.Id))
-                    isEnabled = ConfigHelper.GetBoolean(instance.MetaData.Id);
+                if (ConfigHelper.Contains(plugin.MetaData.Id))
+                    isEnabled = ConfigHelper.GetBoolean(meta.Id);
                 else
-                    ConfigHelper.Set(instance.MetaData.Id, true);
-                instance.Loaded(isEnabled);
-                Log.Information("[插件控制器]加载{Name}插件成功", instance.MetaData.Name);
+                    ConfigHelper.Set(plugin.MetaData.Id, true);
+                plugin.Loaded(isEnabled);
+                Log.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
             }
-            
         }
-
+        
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

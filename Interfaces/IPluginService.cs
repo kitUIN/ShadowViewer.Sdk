@@ -11,10 +11,6 @@
         /// </summary>
         public Task ImportAsync(string path);
         /// <summary>
-        /// 初始化所有插件
-        /// </summary>
-        public void InitAllPlugins();
-        /// <summary>
         /// 启用插件
         /// </summary>
         public void PluginEnabled(string id);

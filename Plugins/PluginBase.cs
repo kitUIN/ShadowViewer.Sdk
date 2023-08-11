@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using ShadowViewer.Extensions;
+using SqlSugar;
 
 namespace ShadowViewer.Plugins;
 
@@ -7,10 +8,12 @@ public abstract class PluginBase: IPlugin
     protected ICallableService Caller { get; }
     protected ISqlSugarClient Db { get; } 
     protected CompressService CompressServices { get; }
-    protected IPluginService PluginService { get; } 
+    protected IPluginService PluginService { get; }
+    public PluginMetaData MetaData { get; } 
     public PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, IPluginService pluginService)
     {
+        MetaData = this.GetPluginMetaData();
         Caller= callableService;
         Db = sqlSugarClient;
         CompressServices = compressServices;
@@ -23,10 +26,6 @@ public abstract class PluginBase: IPlugin
     {
         IsEnabled = isEnabled;
     }
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public abstract PluginMetaData MetaData { get; }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
