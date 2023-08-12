@@ -20,4 +20,8 @@ public static class NotificationHelper
         DiFactory.Services.Resolve<ICallableService>().TopGrid(sender, 
             new TipPopup(message,level), TopGridMode.Tip);
     }
+    public static void Dialog(object sender,ContentDialog dialog)
+    {
+        DiFactory.Services.Resolve<ICallableService>().TopGrid(sender, dialog, TopGridMode.ContentDialog);
+    }
 }
