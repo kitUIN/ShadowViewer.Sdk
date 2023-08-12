@@ -1,6 +1,5 @@
 ﻿using ColorCode.Compilation.Languages;
 using DryIoc;
-using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 namespace ShadowViewer.Models
 {
@@ -329,7 +328,6 @@ namespace ShadowViewer.Models
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             db.Updateable(this).ExecuteCommand();
         }
-         
 
         [SugarColumn(IsIgnore = true)]
         public string Path 

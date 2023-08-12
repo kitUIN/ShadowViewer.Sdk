@@ -1,5 +1,4 @@
 ﻿using DryIoc;
-using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 
 namespace ShadowViewer.Cache
