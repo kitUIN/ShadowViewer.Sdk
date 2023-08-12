@@ -1,140 +1,44 @@
 ﻿<UserControl
-    d:DesignHeight="300"
-    d:DesignWidth="400"
-    mc:Ignorable="d"
     x:Class="ShadowViewer.Controls.TipPopup"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:CommunityToolkit.WinUI.UI.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
 
-    <Grid FlowDirection="LeftToRight"
+    <Grid
+        x:Name="PopupContainer"
         HorizontalAlignment="Center"
         VerticalAlignment="Top"
-        x:Name="PopupContainer">
+        FlowDirection="LeftToRight">
         <animations:Implicit.ShowAnimations>
             <animations:TranslationAnimation
-                Duration="0:0:0.5"
                 From="0, -12, 0"
-                To="0,-52,0" />
+                To="0,-52,0"
+                Duration="0:0:0.5" />
             <animations:OpacityAnimation
-                Duration="0:0:0.5"
                 From="0"
-                To="1.0" />
+                To="1.0"
+                Duration="0:0:0.5" />
         </animations:Implicit.ShowAnimations>
         <animations:Implicit.HideAnimations>
             <animations:TranslationAnimation
-                Duration="0:0:0.5"
                 From="0, -52, 0"
-                To="0,-12,0" />
+                To="0,-12,0"
+                Duration="0:0:0.5" />
             <animations:OpacityAnimation
-                Duration="0:0:0.5"
                 From="1"
-                To="0" />
+                To="0"
+                Duration="0:0:0.5" />
         </animations:Implicit.HideAnimations>
-        <Grid
-            Background="{ThemeResource InfoBarInformationalSeverityBackgroundBrush}"
-            BorderBrush="{ThemeResource SubtleFillColorSecondaryBrush}"
-            BorderThickness="1"
-            ColumnSpacing="12"
-            CornerRadius="10"
-            Padding="12,8,12,12"
-            Visibility="Collapsed"
-            x:Name="InformationIcon">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid Margin="0,4,0,0" VerticalAlignment="Center">
-                <FontIcon Glyph="{ThemeResource InfoBarIconBackgroundGlyph}" FontSize="{ThemeResource InfoBarIconFontSize}"  Foreground="{ThemeResource InfoBarInformationalSeverityIconBackground}"  />
-                <FontIcon Glyph="{ThemeResource InfoBarInformationalIconGlyph}" FontSize="{ThemeResource InfoBarIconFontSize}"  Foreground="{ThemeResource InfoBarInformationalSeverityIconForeground}" />
-            </Grid>
-            <TextBlock
-                Foreground="{ThemeResource InfoBarInformationalSeverityIconForeground}"
-                Grid.Column="1"
-                MaxWidth="300"
-                Text="{x:Bind Text, Mode=OneWay}"
-                TextTrimming="CharacterEllipsis"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center" />
-        </Grid>
-        <Grid
-            Background="{ThemeResource InfoBarWarningSeverityBackgroundBrush}"
-            BorderBrush="{ThemeResource SubtleFillColorSecondaryBrush}"
-            BorderThickness="1"
-            ColumnSpacing="12"
-            CornerRadius="10"
-            Padding="12,8,12,12"
-            Visibility="Collapsed"
-            x:Name="WarningIcon">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid Margin="0,4,0,0" VerticalAlignment="Center">
-                <FontIcon Glyph="{ThemeResource InfoBarIconBackgroundGlyph}" FontSize="{ThemeResource InfoBarIconFontSize}"  Foreground="{ThemeResource InfoBarWarningSeverityIconBackground}"  />
-                <FontIcon Glyph="{ThemeResource InfoBarWarningIconGlyph}"  FontSize="{ThemeResource InfoBarIconFontSize}" Foreground="{ThemeResource InfoBarWarningSeverityIconForeground}" />
-            </Grid>
-            <TextBlock
-                Foreground="{ThemeResource InfoBarWarningSeverityIconForeground}"
-                Grid.Column="1"
-                MaxWidth="300"
-                Text="{x:Bind Text, Mode=OneWay}"
-                TextTrimming="CharacterEllipsis"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center" />
-        </Grid>
-        <Grid
-            Background="{ThemeResource InfoBarSuccessSeverityBackgroundBrush}"
-            BorderBrush="{ThemeResource SubtleFillColorSecondaryBrush}"
-            BorderThickness="1"
-            ColumnSpacing="12"
-            CornerRadius="10"
-            Padding="12,8,12,12"
-            Visibility="Collapsed"
-            x:Name="SuccessIcon">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid  Margin="0,4,0,0" VerticalAlignment="Center">
-                <FontIcon Glyph="{ThemeResource InfoBarIconBackgroundGlyph}" FontSize="{ThemeResource InfoBarIconFontSize}"  Foreground="{ThemeResource InfoBarSuccessSeverityIconBackground}"  />
-                <FontIcon Glyph="{ThemeResource InfoBarSuccessIconGlyph}" FontSize="{ThemeResource InfoBarIconFontSize}"  Foreground="{ThemeResource InfoBarSuccessSeverityIconForeground}" />
-            </Grid>
-            <TextBlock 
-                Grid.Column="1"
-                MaxWidth="300"
-                Text="{x:Bind Text, Mode=OneWay}"
-                TextTrimming="CharacterEllipsis"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center" />
-        </Grid>
-        <Grid
-            Background="{ThemeResource InfoBarErrorSeverityBackgroundBrush}"
-            BorderBrush="{ThemeResource SubtleFillColorSecondaryBrush}"
-            BorderThickness="1"
-            ColumnSpacing="12"
-            CornerRadius="10"
-            Padding="12,8,12,12"
-            Visibility="Collapsed"
-            x:Name="ErrorIcon">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid Margin="0,4,0,0" VerticalAlignment="Center">
-                <FontIcon Glyph="{ThemeResource InfoBarIconBackgroundGlyph}" FontSize="{ThemeResource InfoBarIconFontSize}"  Foreground="{ThemeResource InfoBarErrorSeverityIconBackground}"  />
-                <FontIcon Glyph="{ThemeResource InfoBarErrorIconGlyph}" FontSize="{ThemeResource InfoBarIconFontSize}"  Foreground="{ThemeResource InfoBarErrorSeverityIconForeground}" />
-            </Grid>
-            <TextBlock
-                Foreground="{ThemeResource InfoBarErrorSeverityIconForeground}"
-                Grid.Column="1"
-                MaxWidth="300"
-                Text="{x:Bind Text, Mode=OneWay}"
-                TextTrimming="CharacterEllipsis"
-                TextWrapping="Wrap"
-                VerticalAlignment="Center" />
-        </Grid>
+        <InfoBar
+            IsClosable="False"
+            IsIconVisible="True"
+            IsOpen="True"
+            Message="{x:Bind Text}"
+            Severity="{x:Bind Severity}" />
     </Grid>
 </UserControl>

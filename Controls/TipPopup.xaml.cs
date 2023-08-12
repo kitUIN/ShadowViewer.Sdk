@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Richasy. All rights reserved.
 
- 
 namespace ShadowViewer.Controls
 {
     /// <summary>
@@ -22,6 +21,20 @@ namespace ShadowViewer.Controls
         /// </summary>
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(TipPopup), new PropertyMetadata(string.Empty));
+        
+        /// <summary>
+        /// 显示文本.
+        /// </summary>
+        public InfoBarSeverity Severity
+        {
+            get { return (InfoBarSeverity)GetValue(SeverityProperty); }
+            set { SetValue(SeverityProperty, value); }
+        }
+        /// <summary>
+        /// <see cref="Text"/>的依赖属性.
+        /// </summary>
+        public static readonly DependencyProperty SeverityProperty =
+            DependencyProperty.Register(nameof(Severity), typeof(InfoBarSeverity), typeof(TipPopup), new PropertyMetadata(string.Empty));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TipPopup"/> class.
@@ -40,26 +53,8 @@ namespace ShadowViewer.Controls
         {
             Text = text;
             DisplaySeconds = displaySeconds;
-            switch (type)
-            {
-                case InfoBarSeverity.Informational:
-                    InformationIcon.Visibility = Visibility.Visible;
-                    break;
-                case InfoBarSeverity.Success:
-                    SuccessIcon.Visibility = Visibility.Visible;
-                    break;
-                case InfoBarSeverity.Warning:
-                    WarningIcon.Visibility = Visibility.Visible;
-                    break;
-                case InfoBarSeverity.Error:
-                    ErrorIcon.Visibility = Visibility.Visible;
-                    break;
-                default:
-                    break;
-            }
+            Severity = type;
         }
 
-        
-        
     }
 }
