@@ -3,7 +3,7 @@
 namespace ShadowViewer.Converters
 {
     /// <summary>
-    /// 文件大小转换器: long <-> string(B/KB/MB/GB)
+    /// 文件大小转换器: long to string(B/KB/MB/GB)
     /// </summary>
     public class SizeToFormatConverter : IValueConverter
     {

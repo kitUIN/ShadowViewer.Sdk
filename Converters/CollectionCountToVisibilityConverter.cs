@@ -6,15 +6,14 @@ using Microsoft.VisualBasic;
 
 namespace ShadowViewer.Converters;
 
-public class CollectionToVisibilityConverter: EmptyObjectToObjectConverter
+public class CollectionCountToVisibilityConverter: EmptyObjectToObjectConverter
 {
     protected override bool CheckValueIsEmpty(object value)
     {
         var isEmpty = true;
-        if (value is ICollection collection)
+        if (value is int i)
         {
-            isEmpty = collection.Count == 0;
-            Log.Information("{r}11",isEmpty);
+            isEmpty = i == 0;
         }
         return isEmpty;
     }
