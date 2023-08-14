@@ -75,9 +75,24 @@ public abstract class PluginBase: IPlugin
     /// <inheritdoc/>
     /// </summary>
     public virtual void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter){ }
-
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public virtual bool CanSwitch { get; } = true;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public virtual bool CanDelete { get; } = true;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public virtual IEnumerable<IShadowSearchItem> SearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args) => new List<IShadowSearchItem>();
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public virtual void SearchSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args) { }
+
+    public virtual void SearchQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args) { }
 
     /// <summary>
     /// 插件启动后触发

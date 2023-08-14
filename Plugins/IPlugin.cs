@@ -43,5 +43,19 @@
         /// 允许删除
         /// </summary>
         bool CanDelete { get;}
+        
+        /// <summary>
+        /// 搜索输入框内文字变化
+        /// </summary>
+        IEnumerable<IShadowSearchItem>
+            SearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args);
+        /// <summary>
+        /// 搜索选择
+        /// </summary>
+        void SearchSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args);
+        /// <summary>
+        /// 搜索提交
+        /// </summary>
+        void SearchQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args);
     }
 }

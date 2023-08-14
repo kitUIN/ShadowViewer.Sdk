@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Controls\Badge.xaml" />
+    <None Remove="Controls\ShadowSearchBar.xaml" />
     <None Remove="Controls\StatusBlock.xaml" />
     <None Remove="Themes\Generic.xaml" />
   </ItemGroup>
@@ -57,5 +58,11 @@
 
   <ItemGroup>
     <Folder Include="Config\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Controls\ShadowSearchBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>
