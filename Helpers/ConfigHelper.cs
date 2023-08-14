@@ -1,122 +1,112 @@
-﻿using System.ComponentModel;
-using System.Configuration;
+﻿using System.Configuration;
 
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.Helpers;
+
+public class ConfigHelper
 {
-    public class ConfigHelper
-    {
-        public static readonly bool IsPackaged = true;
-        const string Container = "ShadowViewer";
-       
-        public static bool Contains(string key, string container = Container)
-        {
-            if (IsPackaged)
-            {
-                var coreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
-                return coreSettings.Values.ContainsKey(key);
-            }
-            else
-            {
-                var appSettings = ConfigurationManager.AppSettings;
-                return appSettings[key] != null;
-            }
-        }
-        private static object Get(string key, string container = Container)
-        {
-            if (IsPackaged)
-            {
-                var coreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
-                return coreSettings.Values.TryGetValue(key, out var value) ? value : null;
-            }
-            else
-            {
-                var appSettings = ConfigurationManager.AppSettings;
-                return appSettings[key];
-            }
-        }
-        public static void Set(string key, object value, string container = Container)
-        {
-            if (IsPackaged)
-            {
-                var coreSettings = ApplicationData.Current.LocalSettings.CreateContainer(container, ApplicationDataCreateDisposition.Always);
-                coreSettings.Values[key] = value;
-                Log.ForContext<ConfigHelper>().Information("{Container}[{Key}]={Value}", container, key, value.ToString());
-            }
-            else
-            {
-                var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                var settings = configFile.AppSettings.Settings;
-                if (settings[key] == null)
-                {
-                    settings.Add(key, Convert.ToString(value));
-                }
-                else
-                {
-                    settings[key].Value = Convert.ToString(value);
-                }
-                configFile.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
-                Log.ForContext<ConfigHelper>().Information("[{Key}]={Value}", key, value.ToString());
-            }
-        }
+    public static readonly bool IsPackaged = true;
+    private const string Container = "ShadowViewer";
 
-        public static string GetString(string key, string container = Container)
+    public static bool Contains(string key, string container = Container)
+    {
+        if (IsPackaged)
         {
-            return (string)Get(key, container);
+            var coreSettings =
+                ApplicationData.Current.LocalSettings.CreateContainer(container,
+                    ApplicationDataCreateDisposition.Always);
+            return coreSettings.Values.ContainsKey(key);
         }
-        public static bool GetBoolean(string key, string container = Container)
+        else
         {
-            object res = Get(key, container);
-            if (res == null)
-            {
-                return false;
-            }
-            return (bool)res;
+            var appSettings = ConfigurationManager.AppSettings;
+            return appSettings[key] != null;
         }
-        public static int GetInt32(string key, string container = Container)
+    }
+
+    private static object Get(string key, string container = Container)
+    {
+        if (IsPackaged)
         {
-            object res = Get(key, container);
-            if (res == null)
-            {
-                return 0;
-            }
-            return (int)res;
+            var coreSettings =
+                ApplicationData.Current.LocalSettings.CreateContainer(container,
+                    ApplicationDataCreateDisposition.Always);
+            return coreSettings.Values.TryGetValue(key, out var value) ? value : null;
         }
-        public static long GetInt64(string key, string container = Container)
+        else
         {
-            object res = Get(key, container);
-            if (res == null)
-            {
-                return 0;
-            }
-            return (long)res;
+            var appSettings = ConfigurationManager.AppSettings;
+            return appSettings[key];
         }
-        public static double GetDouble(string key, string container = Container)
+    }
+
+    public static void Set(string key, object value, string container = Container)
+    {
+        if (IsPackaged)
         {
-            object res = Get(key, container);
-            if (res == null)
-            {
-                return 0;
-            }
-            return (double)res;
+            var coreSettings =
+                ApplicationData.Current.LocalSettings.CreateContainer(container,
+                    ApplicationDataCreateDisposition.Always);
+            coreSettings.Values[key] = value;
+            Log.ForContext<ConfigHelper>().Debug("{Container}[{Key}]={Value}", container, key, value.ToString());
         }
-        public static float GetFloat(string key, string container = Container)
+        else
         {
-            object res = Get(key, container);
-            if (res == null)
-            {
-                return 0;
-            }
-            return (float)res;
+            var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var settings = configFile.AppSettings.Settings;
+            if (settings[key] == null)
+                settings.Add(key, Convert.ToString(value));
+            else
+                settings[key].Value = Convert.ToString(value);
+            configFile.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
+            Log.ForContext<ConfigHelper>().Debug("[{Key}]={Value}", key, value.ToString());
         }
-        public static DateTime GetDateTime(string key, string container = Container)
-        {
-            object res = Get(key, container);
-            if (res == null)
-            {
-                return default;
-            }
-            return (DateTime)res;
-        }
+    }
+
+    public static string GetString(string key, string container = Container)
+    {
+        return (string)Get(key, container);
+    }
+
+    public static bool GetBoolean(string key, string container = Container)
+    {
+        var res = Get(key, container);
+        if (res == null) return false;
+        return (bool)res;
+    }
+
+    public static int GetInt32(string key, string container = Container)
+    {
+        var res = Get(key, container);
+        if (res == null) return 0;
+        return (int)res;
+    }
+
+    public static long GetInt64(string key, string container = Container)
+    {
+        var res = Get(key, container);
+        if (res == null) return 0;
+        return (long)res;
+    }
+
+    public static double GetDouble(string key, string container = Container)
+    {
+        var res = Get(key, container);
+        if (res == null) return 0;
+        return (double)res;
+    }
+
+    public static float GetFloat(string key, string container = Container)
+    {
+        var res = Get(key, container);
+        if (res == null) return 0;
+        return (float)res;
+    }
+
+    public static DateTime GetDateTime(string key, string container = Container)
+    {
+        var res = Get(key, container);
+        if (res == null) return default;
+        return (DateTime)res;
     }
 }

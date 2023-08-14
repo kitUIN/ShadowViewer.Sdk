@@ -101,7 +101,8 @@ namespace ShadowViewer.ViewModels
         public SettingsViewModel(ICallableService callableService,ILogger logger)
         {
             caller = callableService;
-            Version = "0.0.0.1";
+            var v = Package.Current.Id.Version;
+            Version = $"v{v.Major}.{v.Minor}.{v.Build}.{v.Revision}";
             Logger = logger;
         }
     }
