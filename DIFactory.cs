@@ -35,6 +35,7 @@ namespace ShadowViewer
             Services.Register<NavigationViewModel>(Reuse.Singleton);
             Services.Register<BookShelfViewModel>(Reuse.Transient);
             Services.Register<AttributesViewModel>(Reuse.Transient);
+            Services.Register<PicViewModel>(Reuse.Transient);
         }
 
     }

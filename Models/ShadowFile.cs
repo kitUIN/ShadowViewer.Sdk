@@ -97,7 +97,7 @@ namespace ShadowViewer.Models
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             
             List<ShadowFile> one = GetDepthFiles(root);
-            int order = 1;
+            int order = 0;
             foreach (ShadowFile child in one)
             {
                 if(child.Children.Count > 0)

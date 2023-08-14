@@ -120,7 +120,7 @@ namespace ShadowViewer.Models
         public static void ToLocalComic(ShadowEntry root, string initPath, string comicId)
         {
             var one = GetDepthEntries(root);
-            var order = 1;
+            var order = 0;
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             foreach(var child in one)
             {
