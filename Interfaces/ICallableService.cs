@@ -69,7 +69,7 @@ namespace ShadowViewer.Interfaces
         /// <summary>
         /// 控制页面跳转
         /// </summary>
-        void NavigateTo(NavigateMode mode,Type page, string id, Uri url);
+        void NavigateTo(Type page, object parameter);
         /// <summary>
         /// 刷新书架
         /// </summary>

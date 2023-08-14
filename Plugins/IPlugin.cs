@@ -80,5 +80,5 @@ public interface IPlugin
     /// <summary>
     /// 导航
     /// </summary>
-    void Navigate(object sender, string uri);
+    void Navigate(Uri uri,string[] urls);
 }

@@ -22,7 +22,7 @@ public abstract partial class PluginBase
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public virtual void Navigate(object sender, string uri)
+    public virtual void Navigate(Uri uri,string[] urls)
     {
     }
 }

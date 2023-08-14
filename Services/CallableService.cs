@@ -122,9 +122,9 @@ public partial class CallableService : ICallableService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public void NavigateTo(NavigateMode mode, Type page, string id, Uri url)
+    public void NavigateTo(Type page, object parameter)
     {
-        var args = new NavigateToEventArgs(mode, page, id, url);
+        var args = new NavigateToEventArgs(page, parameter);
         NavigateToEvent?.Invoke(this, args);
         Logger.Debug("触发事件NavigateTo{A}", args.ToString());
     }

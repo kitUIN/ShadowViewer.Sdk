@@ -13,30 +13,17 @@ namespace ShadowViewer.Args
     /// </summary>
     public class NavigateToEventArgs : EventArgs
     {
-        /// <summary>
-        /// 跳转格式
-        /// </summary>
-        public NavigateMode Mode { get; }
-        public string Id { get; }
+        public object Parameter { get; }
         public Uri Url { get; }
         public Type Page { get; }
-        public NavigateToEventArgs(NavigateMode mode, Type page, string id, Uri url)
+        public NavigateToEventArgs(Type page, object parameter)
         {
-            Mode = mode;
-            if (Mode == NavigateMode.URL)
-            {
-                Id = id;
-                Url = url;
-            }
-            else
-            {
-                Page = page;
-                Url = url;
-            }
+            Page = page;
+            Parameter = parameter;
         }
         public new string ToString()
         {
-            return $"[NavigateToEventArgs,Mode={Mode},Page={Page},Id={Id},Url={Url}]";
+            return $"[NavigateToEventArgs,Page={Page},Url={Url}]";
         }
     }
 }
