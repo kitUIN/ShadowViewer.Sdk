@@ -40,6 +40,9 @@
     <Page Update="Controls\Badge.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Update="Pages\PicPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

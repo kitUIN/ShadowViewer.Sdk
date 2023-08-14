@@ -10,8 +10,4 @@ public interface IShadowPicture
     /// 图片
     /// </summary>
     ImageSource Source{ get; set; }
-    /// <summary>
-    /// 其他备注
-    /// </summary>
-    object Tag{ get; set; }
 }
