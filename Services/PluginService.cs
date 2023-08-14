@@ -43,31 +43,38 @@ namespace ShadowViewer.Services
         /// </summary>
         public async Task ImportAsync(string path)
         {
+            
             var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(path);
             foreach (var instance in asm.ForeignAssembly.GetExportedTypes()
                          .Where(type => type.IsAssignableTo(typeof(IPlugin))) )
-            { 
-                var meta = instance.GetPluginMetaData();
-                if (meta.MinVersion < MinVersion)
-                {
-                    Logger.Information("[插件控制器]{Name}插件版本有误(所需>={MinVersion},当前:{Meta})",meta.Name,MinVersion,meta.MinVersion  );
-                    continue;
-                }
-                DiFactory.Services.Register(typeof(IPlugin), instance, made: FactoryMethod.ConstructorWithResolvableArguments,
-                    ifAlreadyRegistered: IfAlreadyRegistered.Replace, reuse: Reuse.Singleton);
-                var plugin = DiFactory.Services.Resolve<IEnumerable<IPlugin>>().FirstOrDefault(x => x.MetaData.Id == meta.Id);
-                if (plugin is null) continue;
-                Instances.Add(plugin);
-                var isEnabled = true;
-                if (ConfigHelper.Contains(plugin.MetaData.Id))
-                    isEnabled = ConfigHelper.GetBoolean(meta.Id);
-                else
-                    ConfigHelper.Set(plugin.MetaData.Id, true);
-                plugin.Loaded(isEnabled);
-                Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
+            {
+                Import(instance);
             }
         }
-        
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Import(Type type)
+        {
+            if (!type.IsAssignableTo(typeof(IPlugin))) return;
+            var meta = type.GetPluginMetaData();
+            if (meta.MinVersion < MinVersion)
+            {
+                Logger.Information("[插件控制器]{Name}插件版本有误(所需>={MinVersion},当前:{Meta})",meta.Name,MinVersion,meta.MinVersion  );
+                return;
+            }
+            DiFactory.Services.Register(typeof(IPlugin), type, reuse: Reuse.Singleton);
+            var plugin = DiFactory.Services.ResolveMany<IPlugin>().FirstOrDefault(x => x.MetaData.Id == meta.Id);
+            if (plugin is null) return;
+            Instances.Add(plugin);
+            var isEnabled = true;
+            if (ConfigHelper.Contains(plugin.MetaData.Id))
+                isEnabled = ConfigHelper.GetBoolean(meta.Id);
+            else
+                ConfigHelper.Set(plugin.MetaData.Id, true);
+            plugin.Loaded(isEnabled);
+            Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
+        }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

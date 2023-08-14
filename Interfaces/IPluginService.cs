@@ -10,6 +10,11 @@
         /// 导入单个插件
         /// </summary>
         public Task ImportAsync(string path);
+
+        /// <summary>
+        /// 导入单个插件
+        /// </summary>
+        public void Import(Type type);
         /// <summary>
         /// 启用插件
         /// </summary>

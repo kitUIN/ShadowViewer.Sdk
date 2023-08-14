@@ -24,7 +24,7 @@ namespace ShadowViewer
                         };
                     });
             Services.RegisterInstance<ISqlSugarClient>(sqlSugar);
-            Services.RegisterPlaceholder<IPlugin>();
+            //Services.RegisterPlaceholder<IPlugin>();
             Services.Register(
                 Made.Of(() => Serilog.Log.ForContext(Arg.Index<Type>(0)), r => r.Parent.ImplementationType),
                 setup: Setup.With(condition: r => r.Parent.ImplementationType != null));

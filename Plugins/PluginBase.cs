@@ -64,12 +64,12 @@ public abstract class PluginBase: IPlugin
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public virtual IList<ShadowNavigationItem> NavigationViewMenuItems => new List<ShadowNavigationItem>();
+    public virtual IEnumerable<ShadowNavigationItem> NavigationViewMenuItems => new List<ShadowNavigationItem>();
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public virtual IList<ShadowNavigationItem> NavigationViewFooterItems => new List<ShadowNavigationItem>();
+    public virtual IEnumerable<ShadowNavigationItem> NavigationViewFooterItems => new List<ShadowNavigationItem>();
  
     /// <summary>
     /// <inheritdoc/>

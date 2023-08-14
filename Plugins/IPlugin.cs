@@ -26,15 +26,15 @@
         /// <summary>
         /// 添加到导航栏
         /// </summary>
-        IList<ShadowNavigationItem> NavigationViewMenuItems { get; }
+        IEnumerable<ShadowNavigationItem> NavigationViewMenuItems { get; }
         /// <summary>
         /// 添加到导航栏尾部
         /// </summary>
-        IList<ShadowNavigationItem> NavigationViewFooterItems { get; }
+        IEnumerable<ShadowNavigationItem> NavigationViewFooterItems { get; }
         /// <summary>
         /// 导航点击事件注入
         /// </summary>
         void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter);
-        
+
     }
 }

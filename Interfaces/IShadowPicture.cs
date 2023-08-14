@@ -1,16 +1,15 @@
 ﻿namespace ShadowViewer.Interfaces;
 
-public interface IShadowEpisode
+public interface IShadowPicture
 {
     /// <summary>
-    /// 用于处理的本体,建议为索引号
+    /// 序号(请从1开始)
     /// </summary>
-    object Source { get; set; }
-
+    int Index{ get; set; }
     /// <summary>
-    /// 显示名称
+    /// 图片
     /// </summary>
-    string Title { get; set; }
+    ImageSource Source{ get; set; }
     /// <summary>
     /// 其他备注
     /// </summary>

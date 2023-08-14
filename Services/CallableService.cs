@@ -55,6 +55,10 @@
         /// <inheritdoc/>
         /// </summary>
         public event EventHandler<ImportPluginEventArg> ImportPluginEvent;
+
+        public event EventHandler<CurrentEpisodeIndexChangedEventArg> CurrentEpisodeIndexChangedEvent;
+        public event EventHandler<PicViewArg> PicturesLoadStartingEvent;
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -70,7 +74,7 @@
         public void ImportComic(IReadOnlyList<IStorageItem> items, string[] passwords, int index)
         {
             ImportComicEvent?.Invoke(this, new ImportComicEventArgs(items, passwords, index));
-            Logger.Information("触发事件ImportComicEvent");
+            Logger.Debug("触发事件ImportComicEvent");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -78,7 +82,7 @@
         public void ImportComicThumb(MemoryStream stream)
         {
             ImportComicThumbEvent?.Invoke(this, new ImportComicThumbEventArgs(stream));
-            Logger.Information("触发事件ImportComicThumbEvent");
+            Logger.Debug("触发事件ImportComicThumbEvent");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -86,7 +90,7 @@
         public void ImportComicError(ImportComicError error, string message, IReadOnlyList<IStorageItem> items, int index, string[] password)
         {
             ImportComicErrorEvent?.Invoke(this, new ImportComicErrorEventArgs(error,message,items,index, password));
-            Logger.Information("触发事件ImportComicErrorEvent");
+            Logger.Debug("触发事件ImportComicErrorEvent");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -94,7 +98,7 @@
         public void ImportComicProgress(double progress)
         {
             ImportComicProgressEvent?.Invoke(this, new ImportComicProgressEventArgs(progress));
-            Logger.Information("触发事件ImportComicProgressEvent");
+            Logger.Debug("触发事件ImportComicProgressEvent");
         }
 
         /// <summary>
@@ -104,7 +108,7 @@
         {
             var args = new NavigateToEventArgs(mode, page, id, url);
             NavigateToEvent?.Invoke(this, args);
-            Logger.Information("触发事件NavigateTo{A}", args.ToString());
+            Logger.Debug("触发事件NavigateTo{A}", args.ToString());
         }
         /// <summary>
         /// <inheritdoc/>
@@ -112,7 +116,7 @@
         public void RefreshBook()
         {
             RefreshBookEvent?.Invoke(this, EventArgs.Empty);
-            Logger.Information("触发事件RefreshBook");
+            Logger.Debug("触发事件RefreshBook");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -120,7 +124,7 @@
         public void ImportComicCompleted()
         {
             ImportComicCompletedEvent?.Invoke(this, EventArgs.Empty);
-            Logger.Information("触发事件ImportComicCompletedEvent");
+            Logger.Debug("触发事件ImportComicCompletedEvent");
         }
         /// <summary>
         /// <inheritdoc/>
@@ -128,14 +132,14 @@
         public void Debug()
         {
             DebugEvent?.Invoke(this, EventArgs.Empty);
-            Logger.Information("触发事件DebugEvent");
+            Logger.Debug("触发事件DebugEvent");
         }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
         public void PluginEnabled(object sender, string id, bool enabled)
         {
-            Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
+            Logger.Debug("{Sender}触发事件{Event}", sender.GetType().FullName,
                 nameof(PluginEnabledEvent));
             PluginEnabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
         }
@@ -144,7 +148,7 @@
         /// </summary>
         public void PluginDisabled(object sender, string id, bool enabled)
         {
-            Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
+            Logger.Debug("{Sender}触发事件{Event}", sender.GetType().FullName,
                 nameof(PluginDisabledEvent));
             PluginDisabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
         }
@@ -153,7 +157,7 @@
         /// </summary>
         public void TopGrid(object sender, UIElement element, TopGridMode mode)
         {
-            Logger.Information("{Sender}触发事件{Event}", sender.GetType().FullName,
+            Logger.Debug("{Sender}触发事件{Event}", sender.GetType().FullName,
                 nameof(TopGridEvent));
             TopGridEvent?.Invoke(sender, new TopGridEventArg(element, mode));
         }
@@ -163,7 +167,7 @@
         public void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items)
         {
             ImportPluginEvent?.Invoke(sender, new ImportPluginEventArg(items));
-            Logger.Information("触发事件{Event}",nameof(ImportPluginEvent));
+            Logger.Debug("触发事件{Event}",nameof(ImportPluginEvent));
         }
         /// <summary>
         /// <inheritdoc/>
@@ -171,7 +175,7 @@
         public void NavigationViewPane(object sender)
         {
             NavigationViewPaneEvent?.Invoke(sender, EventArgs.Empty);
-            Logger.Information("触发事件{Event}", nameof(NavigationViewPaneEvent));
+            Logger.Debug("触发事件{Event}", nameof(NavigationViewPaneEvent));
         }
         /// <summary>
         /// <inheritdoc/>
@@ -179,7 +183,19 @@
         public void NavigationViewBackRequested(object sender)
         {
             NavigationViewBackRequestedEvent?.Invoke(sender, EventArgs.Empty);
-            Logger.Information("触发事件{Event}", nameof(NavigationViewBackRequestedEvent));
+            Logger.Debug("触发事件{Event}", nameof(NavigationViewBackRequestedEvent));
+        }
+
+        public void CurrentEpisodeIndexChanged(PicViewModel sender,string affiliation, int oldValue, int newValue)
+        {
+            CurrentEpisodeIndexChangedEvent?.Invoke(sender, new CurrentEpisodeIndexChangedEventArg(affiliation,oldValue,newValue));
+            Logger.Debug("触发事件{Event}", nameof(CurrentEpisodeIndexChangedEvent));
+        }
+
+        public void PicturesLoadStarting(PicViewModel sender, PicViewArg arg)
+        {
+            PicturesLoadStartingEvent?.Invoke(sender,  arg);
+            Logger.Debug("触发事件{Event}", nameof(PicturesLoadStartingEvent));
         }
     }
 }
