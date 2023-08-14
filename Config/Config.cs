@@ -23,11 +23,15 @@ namespace ShadowViewer.Configs
             {
                 IsBookShelfInfoBar = true;
             }
+#if DEBUG
+            IsDebug = true;
+#endif
             IsDebugEvent();
             ComicsPath.CreateDirectory();
             TempPath.CreateDirectory();
             PluginsPath.CreateDirectory();
             // EnabledPlugins.CollectionChanged += EnabledPlugins_CollectionChanged;
+
         }
         #region 主程序设置
         /// <summary>
