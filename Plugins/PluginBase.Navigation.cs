@@ -18,4 +18,11 @@ public abstract partial class PluginBase
     public virtual void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter)
     {
     }
+
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public virtual void Navigate(object sender, string uri)
+    {
+    }
 }

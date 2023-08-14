@@ -77,4 +77,8 @@ public interface IPlugin
     /// 搜索框失焦
     /// </summary>
     void SearchLostFocus(object sender, RoutedEventArgs args);
+    /// <summary>
+    /// 导航
+    /// </summary>
+    void Navigate(object sender, string uri);
 }
