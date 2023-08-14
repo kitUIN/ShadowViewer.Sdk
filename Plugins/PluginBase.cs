@@ -74,7 +74,11 @@ public abstract class PluginBase: IPlugin
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public abstract void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter);
+    public virtual void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter){ }
+
+    public virtual bool CanSwitch { get; } = true;
+    public virtual bool CanDelete { get; } = true;
+
     /// <summary>
     /// 插件启动后触发
     /// </summary>

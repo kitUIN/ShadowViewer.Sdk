@@ -75,6 +75,10 @@ namespace ShadowViewer.Services
             plugin.Loaded(isEnabled);
             Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
         }
+        public void Import<T>() where T:IPlugin 
+        {
+            Import(typeof(T));
+        }
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

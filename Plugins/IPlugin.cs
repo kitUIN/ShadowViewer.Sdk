@@ -35,6 +35,13 @@
         /// 导航点击事件注入
         /// </summary>
         void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter);
-
+        /// <summary>
+        /// 可以开启/关闭
+        /// </summary>
+        bool CanSwitch { get; }
+        /// <summary>
+        /// 允许删除
+        /// </summary>
+        bool CanDelete { get;}
     }
 }

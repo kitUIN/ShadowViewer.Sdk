@@ -10,11 +10,14 @@
         /// 导入单个插件
         /// </summary>
         public Task ImportAsync(string path);
-
         /// <summary>
         /// 导入单个插件
         /// </summary>
         public void Import(Type type);
+        /// <summary>
+        /// 导入单个插件
+        /// </summary>
+        public void Import<T>() where T : IPlugin;
         /// <summary>
         /// 启用插件
         /// </summary>
