@@ -50,36 +50,41 @@ public class PluginService : IPluginService
     /// </summary>
     public void Import(Type type)
     {
-        if (!type.IsAssignableTo(typeof(IPlugin))) return;
-        var meta = type.GetPluginMetaData();
-        if (meta.MinVersion < MinVersion)
+        try
         {
-            Logger.Error("[插件控制器]{Name}插件版本有误(所需>={MinVersion},当前:{Meta})", meta.Name, MinVersion,
-                meta.MinVersion);
-            return;
-        }
+            if (!type.IsAssignableTo(typeof(IPlugin))) return;
+            var meta = type.GetPluginMetaData();
+            if (meta.MinVersion < MinVersion)
+            {
+                Logger.Error("[插件控制器]{Name}插件版本有误(所需>={MinVersion},当前:{Meta})", meta.Name, MinVersion,
+                    meta.MinVersion);
+                return;
+            }
 
-        if (DiFactory.Services.ResolveMany<IPlugin>()
-                .FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase)) is IPlugin p)
-        {
-            Logger.Information(p.MetaData.Id);
-            Logger.Error("[插件控制器]{Name}插件重复加载", meta.Name);
-        }
-        else
-        {
-            DiFactory.Services.Register(typeof(IPlugin), type, Reuse.Singleton);
-            var plugin = DiFactory.Services.ResolveMany<IPlugin>().FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id,StringComparison.OrdinalIgnoreCase));
-            if (plugin is null) return;
-            Instances.Add(plugin);
-            var isEnabled = true;
-            if (ConfigHelper.Contains(plugin.MetaData.Id))
-                isEnabled = ConfigHelper.GetBoolean(meta.Id);
+            if (DiFactory.Services.ResolveMany<IPlugin>()
+                    .FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase)) is IPlugin p)
+            {
+                Logger.Information(p.MetaData.Id);
+                Logger.Warning("[插件控制器]{Name}插件重复加载", meta.Name);
+            }
             else
-                ConfigHelper.Set(plugin.MetaData.Id, true);
-            plugin.Loaded(isEnabled);
-            Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
+            {
+                DiFactory.Services.Register(typeof(IPlugin), type, Reuse.Singleton);
+                var plugin = DiFactory.Services.ResolveMany<IPlugin>().FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase));
+                if (plugin is null) return;
+                Instances.Add(plugin);
+                var isEnabled = true;
+                if (ConfigHelper.Contains(plugin.MetaData.Id))
+                    isEnabled = ConfigHelper.GetBoolean(meta.Id);
+                else
+                    ConfigHelper.Set(plugin.MetaData.Id, true);
+                plugin.Loaded(isEnabled);
+                Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
+            }
+        }catch(Exception ex)
+        {
+            Logger.Error("[插件控制器]插件加载出错:{E}", ex);
         }
-        
     }
 
     public void Import<T>() where T : IPlugin
