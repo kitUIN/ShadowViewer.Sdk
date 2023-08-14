@@ -9,15 +9,11 @@ namespace ShadowViewer.ViewModels
     {
         
         private ILogger Logger { get; }
-        public ObservableCollection<ShadowPicture> Images { get; set; } = new ObservableCollection<ShadowPicture>();
+        public ObservableCollection<IShadowPicture> Images { get; set; } = new ObservableCollection<IShadowPicture>();
         public LocalComic Comic { get; private set; }
         [ObservableProperty]
         private int currentEpisodeIndex=-1;
         public ObservableCollection<IShadowEpisode> Episodes { get;   } = new ObservableCollection<IShadowEpisode>();
-        [ObservableProperty]
-        private int maximumColumns = 1;
-        [ObservableProperty]
-        private int imageWidth = 800;
         [ObservableProperty]
         private int currentPage = 1;
         [ObservableProperty]
