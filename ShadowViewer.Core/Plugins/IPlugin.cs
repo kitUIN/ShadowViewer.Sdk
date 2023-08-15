@@ -57,6 +57,10 @@ public interface IPlugin
     /// </summary>
     IEnumerable<IShadowSearchItem>
         SearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args);
+    /// <summary>
+    /// 合并的资源
+    /// </summary>
+    IEnumerable<ResourceDictionary> ResourceDictionaries { get; }
 
     /// <summary>
     /// 搜索选择

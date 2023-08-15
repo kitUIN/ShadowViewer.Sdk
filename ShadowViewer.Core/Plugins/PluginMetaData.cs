@@ -40,8 +40,9 @@ public class PluginMetaData : Attribute
     /// </summary>
     public int MinVersion { get; }
 
+    public string[] Lang { get; }
     public PluginMetaData(string id, string name, string description, string author, string version, string webUri,
-        string logo, int requireVersion)
+        string logo, int requireVersion,params string[] langs)
     {
         Id = id;
         Name = name;
@@ -52,5 +53,6 @@ public class PluginMetaData : Attribute
         if(!string.IsNullOrEmpty(logo))
             Logo = logo;
         MinVersion = requireVersion;
+        Lang = langs;
     }
 }

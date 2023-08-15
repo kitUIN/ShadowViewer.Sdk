@@ -15,6 +15,10 @@ public class CollectionCountToVisibilityConverter: EmptyObjectToObjectConverter
         {
             isEmpty = i == 0;
         }
+        else if (value is IList j)
+        {
+            isEmpty = j.Count == 0;
+        }
         return isEmpty;
     }
 }

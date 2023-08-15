@@ -14,10 +14,14 @@ public abstract partial class PluginBase : IPlugin
     public PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, IPluginService pluginService)
     {
+        foreach (var item in ResourceDictionaries)
+        {
+            Application.Current.Resources.MergedDictionaries.Add(item);
+        }
         Caller = callableService;
         Db = sqlSugarClient;
         CompressServices = compressServices;
-        PluginService = pluginService;
+        PluginService = pluginService; 
     }
 
     /// <summary>
@@ -75,6 +79,10 @@ public abstract partial class PluginBase : IPlugin
     /// <inheritdoc/>
     /// </summary>
     public virtual bool CanDelete { get; } = true;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public virtual IEnumerable<ResourceDictionary> ResourceDictionaries => new List<ResourceDictionary>();
 
     /// <summary>
     /// 插件启动后触发
