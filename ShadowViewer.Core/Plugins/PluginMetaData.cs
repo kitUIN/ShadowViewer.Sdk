@@ -34,7 +34,7 @@ public class PluginMetaData : Attribute
     /// <summary>
     /// 图标
     /// </summary>
-    public string Logo { get; } = "/";
+    public string Logo { get; set; } = "/";
     /// <summary>
     /// 支持的插件管理器版本,该版本即为ShadowViewer.Core的发行版
     /// </summary>

@@ -9,12 +9,11 @@ public abstract partial class PluginBase : IPlugin
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
     protected IPluginService PluginService { get; }
-    public PluginMetaData MetaData { get; }
+    public abstract PluginMetaData MetaData { get; }
 
     public PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, IPluginService pluginService)
     {
-        MetaData = this.GetPluginMetaData();
         Caller = callableService;
         Db = sqlSugarClient;
         CompressServices = compressServices;
@@ -67,7 +66,6 @@ public abstract partial class PluginBase : IPlugin
         }
     }
 
-
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -77,7 +75,6 @@ public abstract partial class PluginBase : IPlugin
     /// <inheritdoc/>
     /// </summary>
     public virtual bool CanDelete { get; } = true;
-
 
     /// <summary>
     /// 插件启动后触发
