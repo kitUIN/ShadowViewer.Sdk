@@ -16,10 +16,12 @@ namespace ShadowViewer.Args
         public object Parameter { get; }
         public Uri Url { get; }
         public Type Page { get; }
-        public NavigateToEventArgs(Type page, object parameter)
+        public bool Force { get; }
+        public NavigateToEventArgs(Type page, object parameter, bool force)
         {
             Page = page;
             Parameter = parameter;
+            Force = force;
         }
         public new string ToString()
         {
