@@ -53,7 +53,7 @@ namespace ShadowViewer.Services
             catch (Exception ex)
             {
                 // 密码错误就删除压缩包密码存档
-                db.Deleteable(cacheZip).ExecuteCommand();
+                db.DeleteableByObject(cacheZip).ExecuteCommand();
                 Log.Error("解压出错:{Ex}", ex);
                 return false;
             }
