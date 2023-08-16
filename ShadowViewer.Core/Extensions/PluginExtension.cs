@@ -2,16 +2,26 @@
 
 public static class PluginExtension
 {
-    public static PluginMetaData GetPluginMetaData<T>(this T plugin) where T : IPlugin
+    public static PluginMetaData GetPluginMetaData<T>() where T:IPlugin
     {
-        return plugin.GetType().GetTypeInfo().GetCustomAttribute<PluginMetaData>();
+        return typeof(T).GetPluginMetaData();
     }
     public static PluginMetaData GetPluginMetaData(this Type plugin)  
     {
         var meta = plugin.GetTypeInfo().GetCustomAttribute<PluginMetaData>();
-        if (meta.Logo.StartsWith("/") && meta.Logo != "/")
+        if (meta == null) return null;
+        if (!string.IsNullOrEmpty(meta.Logo))
         {
-            meta.Logo = meta.Logo.AssetPath(plugin);
+            if (meta.Logo.StartsWith("/") && meta.Logo != "/")
+            {
+                meta.Logo = meta.Logo.AssetPath(plugin);
+            }else if (meta.Logo.StartsWith("ms-appx:///"))
+            {
+                meta.Logo = meta.Logo.Replace("ms-appx://","").AssetPath(plugin);
+            }else if (meta.Logo.StartsWith("ms-appx://"))
+            {
+                meta.Logo = meta.Logo.Replace("ms-appx://","/").AssetPath(plugin);
+            }
         }
         return meta;
     }
