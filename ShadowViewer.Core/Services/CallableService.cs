@@ -67,10 +67,7 @@ public partial class CallableService : ICallableService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<ImportPluginEventArg> ImportPluginEvent;
-
-    public event EventHandler<CurrentEpisodeIndexChangedEventArg> CurrentEpisodeIndexChangedEvent;
-    public event EventHandler<PicViewArg> PicturesLoadStartingEvent;
+    public event EventHandler<ImportPluginEventArg> ImportPluginEvent; 
 
     /// <summary>
     /// <inheritdoc/>
@@ -213,16 +210,5 @@ public partial class CallableService : ICallableService
         Logger.Debug("触发事件{Event}", nameof(NavigationViewBackRequestedEvent));
     }
 
-    public void CurrentEpisodeIndexChanged(PicViewModel sender, string affiliation, int oldValue, int newValue)
-    {
-        Logger.Debug("触发事件{Event}", nameof(CurrentEpisodeIndexChangedEvent));
-        CurrentEpisodeIndexChangedEvent?.Invoke(sender,
-            new CurrentEpisodeIndexChangedEventArg(affiliation, oldValue, newValue));
-    }
-
-    public void PicturesLoadStarting(PicViewModel sender, PicViewArg arg)
-    {
-        Logger.Debug("触发事件{Event}", nameof(PicturesLoadStartingEvent));
-        PicturesLoadStartingEvent?.Invoke(sender, arg);
-    }
+    
 }

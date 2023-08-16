@@ -58,14 +58,7 @@ namespace ShadowViewer.Interfaces
         
         public event EventHandler<TopGridEventArg> TopGridEvent;
         public event EventHandler<ImportPluginEventArg> ImportPluginEvent;
-        /// <summary>
-        /// 图片界面章节改变事件
-        /// </summary>
-        public event EventHandler<CurrentEpisodeIndexChangedEventArg> CurrentEpisodeIndexChangedEvent;
-        /// <summary>
-        /// 图片页面加载图片事件
-        /// </summary>
-        public event EventHandler<PicViewArg> PicturesLoadStartingEvent;
+        
         /// <summary>
         /// 控制页面跳转
         /// </summary>
@@ -104,8 +97,7 @@ namespace ShadowViewer.Interfaces
         void ImportPlugin(object sender,  IReadOnlyList<IStorageItem> items);
         void NavigationViewPane(object sender);
         void NavigationViewBackRequested(object sender);
-        void CurrentEpisodeIndexChanged(PicViewModel sender,string affiliation, int oldValue, int newValue);
-        void PicturesLoadStarting(PicViewModel sender,PicViewArg arg);
+        
     }
 
 }
