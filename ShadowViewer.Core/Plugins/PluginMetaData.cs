@@ -51,7 +51,11 @@ public class PluginMetaData : Attribute
     /// <summary>
     /// 支持的语言
     /// </summary>
-    public string[] Lang { get; }
+    public string[] Lang { get; }    
+    /// <summary>
+    /// 依赖的插件ID
+    /// </summary>
+    public string[] Require { get; }
     /// <summary>
     /// 插件元数据
     /// </summary>
@@ -71,9 +75,10 @@ public class PluginMetaData : Attribute
     /// logo: 3.fluent://\uE714
     /// </example></param>
     /// <param name="requireVersion">支持的插件管理器版本,该版本即为ShadowViewer.Core的发行版</param>
+    /// <param name="require">依赖的插件ID</param>
     /// <param name="lang">支持的语言</param>
     public PluginMetaData(string id, string name, string description, string author, string version, string webUri,
-        string logo, int requireVersion,params string[] lang)
+        string logo, int requireVersion, string[] require, string[] lang)
     {
         Id = id;
         Name = name;
@@ -85,6 +90,7 @@ public class PluginMetaData : Attribute
             Logo = logo;
         MinVersion = requireVersion;
         Lang = lang ;
+        Require = require;
     }
 
     public PluginMetaData()

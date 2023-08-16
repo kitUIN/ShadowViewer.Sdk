@@ -7,6 +7,7 @@ public class PluginService : IPluginService
     private ILogger Logger { get; }
     public const int MinVersion = 20230808;
     private ICallableService Caller { get; }
+    private Queue<string> PluginQueue { get; } = new Queue<string>();
 
     /// <summary>
     /// 所有插件
@@ -29,8 +30,13 @@ public class PluginService : IPluginService
         foreach (var item in dir.GetDirectories())
         foreach (var file in item.GetFiles("ShadowViewer.Plugin.*.dll"))
         {
-            await ImportAsync(file.FullName);
-            break;
+            PluginQueue.Enqueue(file.FullName);
+        }
+
+        while (PluginQueue.Count != 0)
+        {
+            var p = PluginQueue.Dequeue();
+            await ImportAsync(p);
         }
     }
 
@@ -60,31 +66,39 @@ public class PluginService : IPluginService
                     meta.MinVersion);
                 return;
             }
-
-            if (DiFactory.Services.ResolveMany<IPlugin>()
-                    .FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase)) is IPlugin p)
+            var plugins = DiFactory.Services.ResolveMany<IPlugin>();
+            if (meta.Require == null || meta.Require.Length == 0 || meta.Require != null && meta.Require.All(x=>plugins.Any(y=>y.MetaData.Id.Equals(x,StringComparison.OrdinalIgnoreCase))))
             {
-                Logger.Information(p.MetaData.Id);
-                Logger.Warning("[插件控制器]{Name}插件重复加载", meta.Name);
+                if (plugins.FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase)) is IPlugin p)
+                {
+                    Logger.Warning("[插件控制器]{Name}插件重复加载", meta.Name);
+                }
+                else
+                {
+                    DiFactory.Services.Register(typeof(IPlugin), type, Reuse.Singleton);
+                    var plugin = DiFactory.Services.ResolveMany<IPlugin>().FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase));
+                    if (plugin is null) return;
+                    Instances.Add(plugin);
+                    var isEnabled = true;
+                    if (ConfigHelper.Contains(plugin.MetaData.Id))
+                        isEnabled = ConfigHelper.GetBoolean(meta.Id);
+                    else
+                        ConfigHelper.Set(plugin.MetaData.Id, true);
+                    plugin.Loaded(isEnabled);
+                    Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
+                }
             }
             else
             {
-                DiFactory.Services.Register(typeof(IPlugin), type, Reuse.Singleton);
-                var plugin = DiFactory.Services.ResolveMany<IPlugin>().FirstOrDefault(x => meta.Id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase));
-                if (plugin is null) return;
-                Instances.Add(plugin);
-                var isEnabled = true;
-                if (ConfigHelper.Contains(plugin.MetaData.Id))
-                    isEnabled = ConfigHelper.GetBoolean(meta.Id);
-                else
-                    ConfigHelper.Set(plugin.MetaData.Id, true);
-                plugin.Loaded(isEnabled);
-                Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
+                var lost = meta.Require.Where(require => !plugins.Any(y => y.MetaData.Id.Equals(require, StringComparison.OrdinalIgnoreCase)));
+                Logger.Warning("[插件控制器]{Name}插件缺少依赖{Lost}", meta.Name,string.Join(",",lost));
             }
+            
         }catch(Exception ex)
         {
             Logger.Error("[插件控制器]插件加载出错:{E}", ex);
         }
+        
     }
 
     public void Import<T>() where T : IPlugin
