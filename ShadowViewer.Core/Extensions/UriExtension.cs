@@ -14,7 +14,7 @@
             }
         }
         /// <summary>
-        /// 从资源管理器打开
+        /// 从资源管理器打开文件夹
         /// </summary>
         public static async void LaunchFolderAsync(this StorageFolder folder)
         {
@@ -22,6 +22,51 @@
             {
                 await Launcher.LaunchFolderAsync(folder);
             }
+        }
+        /// <summary>
+        /// 从资源管理器打开文件夹
+        /// </summary>
+        public static async void LaunchFolderAsync(this string path)
+        {
+            var folder = await ToStorageFolder(path);
+            LaunchFolderAsync(folder); 
+        }
+
+        /// <summary>
+        /// 从资源管理器打开文件
+        /// </summary>
+        public static async void LaunchFolderAsync(this Uri uri)
+        {
+
+            var folder = await ToStorageFolder(uri.DecodePath());
+            LaunchFolderAsync(folder); 
+        }
+
+        /// <summary>
+        /// 从资源管理器打开文件
+        /// </summary>
+        public static async void LaunchFileAsync(this StorageFile folder)
+        {
+            if (folder != null)
+            {
+                await Launcher.LaunchFileAsync(folder);
+            }
+        }
+        /// <summary>
+        /// 从资源管理器打开文件
+        /// </summary>
+        public static async void LaunchFileAsync(this Uri uri)
+        {
+            var file = await GetFile(uri);
+            LaunchFileAsync(file);
+        }
+        /// <summary>
+        /// 从资源管理器打开文件
+        /// </summary>
+        public static async void LaunchFileAsync(this string uri)
+        {
+            var file = await GetFile(uri);
+            LaunchFileAsync(file);
         }
         /// <summary>
         /// Join
@@ -35,7 +80,14 @@
         /// </summary>
         public static async Task<StorageFile> GetFile(this Uri uri)
         {
-            return await StorageFile.GetFileFromPathAsync(uri.DecodePath());
+            return await GetFile(uri.DecodePath());
+        }
+        /// <summary>
+        /// 获取文件
+        /// </summary>
+        public static async Task<StorageFile> GetFile(this string path)
+        {
+            return await StorageFile.GetFileFromPathAsync(path);
         }
         public static string DecodePath(this StorageFile file)
         {
