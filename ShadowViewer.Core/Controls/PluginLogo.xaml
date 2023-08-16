@@ -1,0 +1,31 @@
+<UserControl
+    x:Class="ShadowViewer.Controls.PluginLogo"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fluentIcon="using:FluentIcon"
+    xmlns:local="using:ShadowViewer.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Top"
+    mc:Ignorable="d">
+
+    <Grid>
+        <BitmapIcon
+            x:Name="BitmapIcon"
+            Width="{Binding ElementName=Top, Path=ActualWidth}"
+            Height="{Binding ElementName=Top, Path=ActualHeight}"
+            ShowAsMonochrome="False"
+            Visibility="Collapsed" />
+        <FontIcon
+            x:Name="FontIcon" FontSize="{x:Bind FontIconSize}"
+            Width="{Binding ElementName=Top, Path=ActualWidth}"
+            Height="{Binding ElementName=Top, Path=ActualHeight}"
+            Visibility="Collapsed" />
+        <fluentIcon:FluentIcon
+            x:Name="FluentIcon"
+            Width="{Binding ElementName=Top, Path=ActualWidth}"
+            Height="{Binding ElementName=Top, Path=ActualHeight}"
+            FontSize="{Binding ElementName=Top, Path=FontSize}"
+            Visibility="Collapsed" />
+    </Grid>
+</UserControl>

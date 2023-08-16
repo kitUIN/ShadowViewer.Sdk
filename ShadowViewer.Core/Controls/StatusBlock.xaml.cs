@@ -2,7 +2,7 @@ namespace ShadowViewer.Controls
 {
     public sealed partial class StatusBlock : UserControl
     {
-        DependencyProperty TextProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
                 nameof(Text),
                 typeof(string),
                 typeof(StatusBlock),
@@ -17,7 +17,7 @@ namespace ShadowViewer.Controls
             StatusBlock control = (StatusBlock)d;
             control.Text = (string)e.NewValue;
         }
-        DependencyProperty TitleProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
                 nameof(Title),
                 typeof(string),
                 typeof(StatusBlock),
