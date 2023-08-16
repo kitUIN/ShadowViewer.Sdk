@@ -1,6 +1,6 @@
 ﻿namespace ShadowViewer.Helpers
 {
-    public static class CoreResourcesHelper
+    internal static class CoreResourcesHelper
     {
         private static readonly ResourceManager resourceManager = new ResourceManager();
         private static readonly string prefix = "ShadowViewer.Core/Resources/";
