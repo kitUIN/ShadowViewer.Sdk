@@ -82,6 +82,15 @@ public abstract partial class PluginBase : IPlugin
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
+    public virtual bool CanOpenFolder { get; } = true;
+    
+    /// <summary>
+    ///  <inheritdoc/>
+    /// </summary>
+    public abstract void PluginDeleting();
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public virtual IEnumerable<ResourceDictionary> ResourceDictionaries => new List<ResourceDictionary>();
 
     /// <summary>

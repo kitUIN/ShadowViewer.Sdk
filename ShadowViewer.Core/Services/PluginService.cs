@@ -161,4 +161,26 @@ public class PluginService : IPluginService
     {
         return Instances.FirstOrDefault(x => id.Equals(x.MetaData.Id,StringComparison.OrdinalIgnoreCase) && x.IsEnabled);
     }
+
+    public async Task<bool> DeleteAsync(string id)
+    {
+        try
+        {
+            if (GetPlugin(id) is IPlugin plugin)
+            {
+                var file = await plugin.GetType().Assembly.Location.GetFile();
+                var folder = await file.GetParentAsync();
+                plugin.IsEnabled = false;
+                plugin.PluginDeleting();
+                Instances.Remove(plugin);
+                //ApplicationExtensionHost.Current.
+                await folder.DeleteAsync();
+                return true;
+            }
+        }catch(Exception ex)
+        {
+            Logger.Error("删除插件错误:{E}", ex);
+        }
+        return false;
+    }
 }

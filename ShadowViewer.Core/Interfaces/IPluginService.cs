@@ -46,5 +46,7 @@
         /// 获取归属标签
         /// </summary>
         public LocalTag GetAffiliationTag(string id);
+
+        public Task<bool> DeleteAsync(string id);
     }
 }

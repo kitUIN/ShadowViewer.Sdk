@@ -85,4 +85,12 @@ public interface IPlugin
     /// 导航
     /// </summary>
     void Navigate(Uri uri,string[] urls);
+    /// <summary>
+    /// 能否打开插件位置
+    /// </summary>
+    bool CanOpenFolder { get; }
+    /// <summary>
+    /// 插件删除
+    /// </summary>
+    void PluginDeleting();
 }
