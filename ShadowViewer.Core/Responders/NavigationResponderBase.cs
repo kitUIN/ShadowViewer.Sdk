@@ -19,18 +19,18 @@ public abstract class NavigationResponderBase: INavigationResponder
         
     }
 
-    protected ICallableService callerService;
-    protected ISqlSugarClient db;
-    protected CompressService compressServices;
-    protected PluginService pluginService;
+    protected ICallableService Caller { get; }
+    protected ISqlSugarClient Db { get; }
+    protected CompressService CompressServices { get; }
+    protected PluginService PluginService { get; }
     protected NavigationResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginService pluginService,string id)
     {
-        this.callerService = callableService;
-        this.db = sqlSugarClient;
-        this.compressServices = compressServices;
-        this.pluginService = pluginService;
-        this.Id = id;
+        Caller = callableService;
+        Db = sqlSugarClient;
+        CompressServices = compressServices;
+        PluginService = pluginService;
+        Id = id;
     }
     
 }

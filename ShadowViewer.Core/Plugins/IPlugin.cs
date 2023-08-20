@@ -26,22 +26,7 @@ public interface IPlugin
     /// 是否启用
     /// </summary>
     bool IsEnabled { get; set; }
-
-    /// <summary>
-    /// 添加到导航栏
-    /// </summary>
-    IEnumerable<IShadowNavigationItem> NavigationViewMenuItems { get; }
-
-    /// <summary>
-    /// 添加到导航栏尾部
-    /// </summary>
-    IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; }
-
-    /// <summary>
-    /// 导航点击事件注入
-    /// </summary>
-    void NavigationViewItemInvokedHandler(object tag, ref Type page, ref object parameter);
-
+    
     /// <summary>
     /// 可以开启/关闭
     /// </summary>
@@ -81,10 +66,6 @@ public interface IPlugin
     /// 搜索框失焦
     /// </summary>
     void SearchLostFocus(object sender, RoutedEventArgs args);
-    /// <summary>
-    /// 导航
-    /// </summary>
-    void Navigate(Uri uri, string[] urls);
     /// <summary>
     /// 能否打开插件位置
     /// </summary>
