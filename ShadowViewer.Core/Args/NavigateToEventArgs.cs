@@ -13,11 +13,10 @@ namespace ShadowViewer.Args
     /// </summary>
     public class NavigateToEventArgs : EventArgs
     {
-        public object Parameter { get; }
-        public Uri Url { get; }
+        public object? Parameter { get; }
         public Type Page { get; }
         public bool Force { get; }
-        public NavigateToEventArgs(Type page, object parameter, bool force)
+        public NavigateToEventArgs(Type page, object? parameter, bool force)
         {
             Page = page;
             Parameter = parameter;
@@ -25,7 +24,7 @@ namespace ShadowViewer.Args
         }
         public new string ToString()
         {
-            return $"[NavigateToEventArgs,Page={Page},Url={Url}]";
+            return $"[NavigateToEventArgs,Page={Page}]";
         }
     }
 }

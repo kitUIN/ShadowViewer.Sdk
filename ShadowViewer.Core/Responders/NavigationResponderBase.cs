@@ -1,8 +1,10 @@
-﻿namespace ShadowViewer.Responders;
+﻿using SqlSugar;
+
+namespace ShadowViewer.Responders;
 
 public abstract class NavigationResponderBase: INavigationResponder
 {
-    public string Id { get; set; } = "";
+    public string Id { get; set; }
     public virtual IEnumerable<IShadowNavigationItem> NavigationViewMenuItems { get; } = new List<IShadowNavigationItem>();
     public virtual IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; } = new List<IShadowNavigationItem>();
 
@@ -17,9 +19,18 @@ public abstract class NavigationResponderBase: INavigationResponder
         
     }
 
-    protected NavigationResponderBase(string id)
+    protected ICallableService callerService;
+    protected ISqlSugarClient db;
+    protected CompressService compressServices;
+    protected PluginService pluginService;
+    protected NavigationResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
+        CompressService compressServices, PluginService pluginService,string id)
     {
-        Id = id;
+        this.callerService = callableService;
+        this.db = sqlSugarClient;
+        this.compressServices = compressServices;
+        this.pluginService = pluginService;
+        this.Id = id;
     }
     
 }

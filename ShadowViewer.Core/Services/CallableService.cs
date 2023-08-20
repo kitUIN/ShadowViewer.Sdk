@@ -119,7 +119,7 @@ public partial class CallableService : ICallableService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public void NavigateTo(Type page, object parameter,bool force=false)
+    public void NavigateTo(Type page, object? parameter,bool force=false)
     {
         var args = new NavigateToEventArgs(page, parameter, force);
         NavigateToEvent?.Invoke(this, args);

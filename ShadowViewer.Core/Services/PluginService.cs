@@ -124,7 +124,7 @@ public class PluginService
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 启用插件
     /// </summary>
     public void PluginEnabled(string id)
     {
@@ -134,7 +134,7 @@ public class PluginService
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 禁用插件
     /// </summary>
     public void PluginDisabled(string id)
     {
@@ -144,7 +144,7 @@ public class PluginService
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 使用ID获取插件
     /// </summary>
     public IPlugin? GetPlugin(string id)
     {
@@ -152,7 +152,7 @@ public class PluginService
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 获取所有启用的插件
     /// </summary>
     public IEnumerable<IPlugin> EnabledPlugins => Instances.Where(x => x.IsEnabled);
 
@@ -167,7 +167,7 @@ public class PluginService
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 获取所有插件
     /// </summary>
     public ObservableCollection<IPlugin> Plugins => Instances;
 
@@ -179,7 +179,17 @@ public class PluginService
         return Instances.FirstOrDefault(
             x => id.Equals(x.MetaData.Id, StringComparison.OrdinalIgnoreCase) && x.IsEnabled);
     }
-
+    /// <summary>
+    /// 插件是否启用
+    /// </summary>
+    public bool IsEnabled(string id)
+    {
+        return GetPlugin(id)?.IsEnabled ?? false;
+    }
+    
+    /// <summary>
+    /// 删除插件
+    /// </summary>
     public async Task<bool> DeleteAsync(string id)
     {
         try

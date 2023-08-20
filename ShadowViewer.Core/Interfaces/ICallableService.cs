@@ -62,7 +62,7 @@ namespace ShadowViewer.Interfaces
         /// <summary>
         /// 控制页面跳转
         /// </summary>
-        void NavigateTo(Type page, object parameter, bool force = false);
+        void NavigateTo(Type page, object? parameter, bool force = false);
         /// <summary>
         /// 刷新书架
         /// </summary>
