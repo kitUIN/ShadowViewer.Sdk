@@ -55,7 +55,7 @@ public class PluginMetaData : Attribute
     /// <summary>
     /// 依赖的插件ID
     /// </summary>
-    public string[] Require { get; }
+    public string[]? Require { get; }
     /// <summary>
     /// 插件元数据
     /// </summary>
@@ -86,8 +86,7 @@ public class PluginMetaData : Attribute
         Author = author;
         Version = version;
         WebUri = webUri;
-        if(!string.IsNullOrEmpty(logo))
-            Logo = logo;
+        Logo = logo;
         MinVersion = requireVersion;
         Lang = lang ;
         Require = require;

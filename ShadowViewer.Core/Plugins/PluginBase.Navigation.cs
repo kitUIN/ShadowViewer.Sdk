@@ -5,12 +5,12 @@ public abstract partial class PluginBase
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public virtual IEnumerable<ShadowNavigationItem> NavigationViewMenuItems => new List<ShadowNavigationItem>();
+    public virtual IEnumerable<IShadowNavigationItem> NavigationViewMenuItems => new List<IShadowNavigationItem>();
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public virtual IEnumerable<ShadowNavigationItem> NavigationViewFooterItems => new List<ShadowNavigationItem>();
+    public virtual IEnumerable<IShadowNavigationItem> NavigationViewFooterItems => new List<IShadowNavigationItem>();
 
     /// <summary>
     /// <inheritdoc/>

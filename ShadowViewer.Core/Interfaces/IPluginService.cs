@@ -33,7 +33,7 @@
         /// <summary>
         /// 获取已启动的插件
         /// </summary>
-        public IPlugin GetEnabledPlugin(string id);
+        public IPlugin? GetEnabledPlugin(string id);
         /// <summary>
         /// 获取已启动的所有插件
         /// </summary>

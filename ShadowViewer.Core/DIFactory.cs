@@ -31,10 +31,10 @@ namespace ShadowViewer
             Services.Register<IPluginService, PluginService>(Reuse.Singleton);
             Services.Register<ICallableService, CallableService>(Reuse.Singleton);
             Services.Register<CompressService>(Reuse.Singleton);
+            Services.Register<ResponderService>(Reuse.Singleton);
             Services.Register<SettingsViewModel>(Reuse.Singleton);
             Services.Register<NavigationViewModel>(Reuse.Singleton);
             Services.Register<BookShelfViewModel>(Reuse.Transient);
-            
         }
 
     }

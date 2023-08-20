@@ -30,12 +30,12 @@ public interface IPlugin
     /// <summary>
     /// 添加到导航栏
     /// </summary>
-    IEnumerable<ShadowNavigationItem> NavigationViewMenuItems { get; }
+    IEnumerable<IShadowNavigationItem> NavigationViewMenuItems { get; }
 
     /// <summary>
     /// 添加到导航栏尾部
     /// </summary>
-    IEnumerable<ShadowNavigationItem> NavigationViewFooterItems { get; }
+    IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; }
 
     /// <summary>
     /// 导航点击事件注入

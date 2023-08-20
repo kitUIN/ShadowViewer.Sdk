@@ -88,7 +88,7 @@ public class PluginService : IPluginService
                     Logger.Information("[插件控制器]加载{Name}插件成功", plugin.MetaData.Name);
                 }
             }
-            else
+            else if(meta.Require != null)
             {
                 var lost = meta.Require.Where(require => !plugins.Any(y => y.MetaData.Id.Equals(require, StringComparison.OrdinalIgnoreCase)));
                 Logger.Warning("[插件控制器]{Name}插件缺少依赖{Lost}", meta.Name,string.Join(",",lost));
@@ -157,7 +157,7 @@ public class PluginService : IPluginService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public IPlugin GetEnabledPlugin(string id)
+    public IPlugin? GetEnabledPlugin(string id)
     {
         return Instances.FirstOrDefault(x => id.Equals(x.MetaData.Id,StringComparison.OrdinalIgnoreCase) && x.IsEnabled);
     }
@@ -166,7 +166,7 @@ public class PluginService : IPluginService
     {
         try
         {
-            if (GetPlugin(id) is IPlugin plugin)
+            if (GetPlugin(id) is { } plugin)
             {
                 var file = await plugin.GetType().Assembly.Location.GetFile();
                 var folder = await file.GetParentAsync();

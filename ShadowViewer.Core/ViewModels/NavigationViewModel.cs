@@ -3,29 +3,30 @@
     public partial class NavigationViewModel : ObservableObject
     {
         
-        private ILogger Logger { get; } 
+        private ILogger Logger { get; }
+        private ResponderService responderService;
         private ICallableService callableService;
-        private readonly IPluginService pluginService;
+        private IPluginService pluginService;
 
-        public NavigationViewModel(ICallableService callableService, IPluginService pluginService,ILogger logger)
+        public NavigationViewModel(ICallableService callableService, IPluginService pluginService, ILogger logger,ResponderService responderService)
         {
             Logger = logger;
             this.callableService = callableService;
             this.pluginService = pluginService;
-            InitItems();
+            this.responderService = responderService;
         }
         /// <summary>
         /// 导航栏菜单
         /// </summary>
-        public ObservableCollection<ShadowNavigationItem> MenuItems= new ObservableCollection<ShadowNavigationItem>();
+        public readonly ObservableCollection<IShadowNavigationItem> MenuItems = new();
         /// <summary>
         /// 导航栏底部菜单
         /// </summary>
-        public ObservableCollection<ShadowNavigationItem> FooterMenuItems= new ObservableCollection<ShadowNavigationItem>();
+        public readonly ObservableCollection<IShadowNavigationItem> FooterMenuItems = new();
         /// <summary>
         /// 添加导航栏个体
         /// </summary>
-        private void AddMenuItem(ShadowNavigationItem item)
+        private void AddMenuItem(IShadowNavigationItem item)
         {
             if (MenuItems.All(x => x.Id != item.Id))
             {
@@ -35,9 +36,9 @@
         /// <summary>
         /// 添加导航栏个体
         /// </summary>
-        private void DeleteMenuItem(ShadowNavigationItem item)
+        private void DeleteMenuItem(IShadowNavigationItem item)
         {
-            if (MenuItems.FirstOrDefault(x => x.Id == item.Id) is ShadowNavigationItem i)
+            if (MenuItems.FirstOrDefault(x => x.Id == item.Id) is { } i)
             {
                 MenuItems.Remove(i);
             }
@@ -45,7 +46,7 @@
         /// <summary>
         /// 添加底部导航栏个体
         /// </summary>
-        private void AddFooterMenuItems(ShadowNavigationItem item)
+        private void AddFooterMenuItems(IShadowNavigationItem item)
         {
             if (FooterMenuItems.All(x => x.Id != item.Id))
             {
@@ -55,9 +56,9 @@
         /// <summary>
         /// 删除底部导航栏个体
         /// </summary>
-        private void DeleteFooterMenuItems(ShadowNavigationItem item)
+        private void DeleteFooterMenuItems(IShadowNavigationItem item)
         {
-            if (FooterMenuItems.FirstOrDefault(x => x.Id == item.Id) is ShadowNavigationItem i)
+            if (FooterMenuItems.FirstOrDefault(x => x.Id == item.Id) is { } i)
             {
                 FooterMenuItems.Remove(i);
             }
@@ -67,10 +68,10 @@
         /// </summary>
         private void InitItems()
         {
-            AddMenuItem(
+            
+            /*AddMenuItem(
                     new ShadowNavigationItem
                     {
-                        IsDefault = true,
                         Icon = new SymbolIcon(Symbol.Home),
                         Id = "BookShelf",
                         Content = CoreResourcesHelper.GetString(CoreResourceKey.BookShelf)
@@ -79,7 +80,6 @@
             AddMenuItem(
                 new ShadowNavigationItem
                 {
-                    IsDefault = true,
                     Icon = new FontIcon() { Glyph = "\uE835" },
                     Id = "Plugins",
                     Content = CoreResourcesHelper.GetString(CoreResourceKey.Plugin)
@@ -88,43 +88,34 @@
             AddMenuItem(
                 new ShadowNavigationItem
                 {
-                    IsDefault = true,
                     Icon = new SymbolIcon(Symbol.Download),
                     Id = "Download",
                     Content = CoreResourcesHelper.GetString(CoreResourceKey.Download)
                 }
-            );
-            AddFooterMenuItems(
-                new ShadowNavigationItem()
-                {
-                    IsDefault = true,
-                    Icon =  new FontIcon(){Glyph = "\uE77B"},
-                    Id = "User",
-                    Content = CoreResourcesHelper.GetString(CoreResourceKey.User)
-                }
-                );
+            );*/
         }
         /// <summary>
         /// 重载导航栏
         /// </summary>
         public void ReloadItems()
         {
-            foreach (var plugin in pluginService.Plugins)
+            foreach (var responder in responderService.NavigationViewResponders)
             {
-                foreach (var item2 in plugin.NavigationViewMenuItems)
+                if (pluginService.GetPlugin(responder.Id) is not { } plugin) continue;
+                foreach (var item2 in responder.NavigationViewMenuItems)
                 {
                     if (plugin.IsEnabled)
                         AddMenuItem(item2);
                     else
                         DeleteMenuItem(item2);
                 } 
-                foreach (var item1 in plugin.NavigationViewFooterItems)
+                foreach (var item1 in responder.NavigationViewFooterItems)
                 {
                     if (plugin.IsEnabled)
                         AddFooterMenuItems(item1);
                     else
                         DeleteFooterMenuItems(item1);
-                } 
+                }
             }
         }
     }
