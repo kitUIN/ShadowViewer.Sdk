@@ -20,7 +20,7 @@ public interface IPlugin
     /// <summary>
     /// 插件设置界面
     /// </summary>
-    Type SettingsPage { get; }
+    Type? SettingsPage { get; }
 
     /// <summary>
     /// 是否启用

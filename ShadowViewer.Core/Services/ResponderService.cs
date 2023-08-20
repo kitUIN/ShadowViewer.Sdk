@@ -4,30 +4,30 @@ namespace ShadowViewer.Services;
 
 public class ResponderService
 {
-    private PluginService pluginService;
+    private PluginService PluginService { get; }
 
     public ResponderService(PluginService pluginService)
     {
-        this.pluginService = pluginService;
+        PluginService = pluginService;
     }
 
-    public IEnumerable<INavigationResponder> GetNavigationViewResponders()
+    public IEnumerable<TResponder> GetResponders<TResponder>() where TResponder: IResponder
     {
-        return DiFactory.Services.ResolveMany<INavigationResponder>();
+        return DiFactory.Services.ResolveMany<TResponder>();
     }
 
     /// <summary>
     /// 获取启用的导航响应类
     /// </summary>
-    public IEnumerable<INavigationResponder> GetEnabledNavigationViewResponders()
+    public IEnumerable<TResponder> GetEnabledResponders<TResponder>() where TResponder: IResponder
     {
-        return DiFactory.Services.ResolveMany<INavigationResponder>().Where(x => pluginService.IsEnabled(x.Id));
+        return DiFactory.Services.ResolveMany<TResponder>().Where(x => PluginService.IsEnabled(x.Id));
     }
 
-    public INavigationResponder? GetEnabledNavigationViewResponder(string id)
+    public TResponder? GetEnabledResponder<TResponder>(string id)where TResponder: IResponder
     {
-        if (DiFactory.Services.ResolveMany<INavigationResponder>().FirstOrDefault(x => id.Equals(x.Id, StringComparison.OrdinalIgnoreCase)) is { } responder &&
-            pluginService.IsEnabled(id)) return responder;
-        return null;
+        if (DiFactory.Services.ResolveMany<TResponder>().FirstOrDefault(x => id.Equals(x.Id, StringComparison.OrdinalIgnoreCase)) is { } responder &&
+            PluginService.IsEnabled(id)) return responder;
+        return default;
     }
 }

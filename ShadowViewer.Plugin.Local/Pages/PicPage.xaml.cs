@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using ShadowViewer.Args;
 using ShadowViewer.Extensions;
-using ShadowViewer.ViewModels;
+using ShadowViewer.Plugin.Local.ViewModels;
 
 namespace ShadowViewer.Plugin.Local.Pages
 {

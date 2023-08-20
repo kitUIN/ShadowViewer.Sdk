@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DryIoc;
 using Microsoft.UI.Xaml.Controls;
 using ShadowViewer.Extensions;
 using ShadowViewer.Interfaces;
 using ShadowViewer.Models;
 using ShadowViewer.Plugin.Local.Enums;
 using ShadowViewer.Plugin.Local.Models;
+using ShadowViewer.Plugin.Local.Pages;
+using ShadowViewer.Plugin.Local.ViewModels;
 using ShadowViewer.Plugins;
 using ShadowViewer.Services;
 using SqlSugar;
@@ -28,7 +31,8 @@ public class LocalPlugin : PluginBase
         CompressService compressServices, PluginService pluginService) : base(callableService, sqlSugarClient,
         compressServices, pluginService)
     {
-        // DiFactory.Services.Register<PicViewService>(Reuse.Singleton);
+        DiFactory.Services.Register<AttributesViewModel>(Reuse.Transient);
+        DiFactory.Services.Register<PicViewModel>(Reuse.Transient);
     }
 
     /// <summary>
@@ -44,30 +48,28 @@ public class LocalPlugin : PluginBase
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public override Type SettingsPage { get; }
+    public override Type? SettingsPage => typeof(BookShelfSettingsPage);
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public override bool CanSwitch { get; } = false;
+    public override bool CanSwitch => false;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public override bool CanDelete { get; } = false;
+    public override bool CanDelete => false;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public override bool CanOpenFolder { get; } = false;
+    public override bool CanOpenFolder => false;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
     protected override void PluginEnabled()
     {
-        /*var picViewService = DiFactory.Services.Resolve<PicViewService>();
-        picViewService.CurrentEpisodeIndexChangedEvent += LoadLocalImage;
-        picViewService.PicturesLoadStartingEvent += LoadImageFormLocalComic;*/
     }
 
     /// <summary>
@@ -75,46 +77,7 @@ public class LocalPlugin : PluginBase
     /// </summary>
     protected override void PluginDisabled()
     {
-        /*var picViewService = DiFactory.Services.Resolve<PicViewService>();
-        picViewService.CurrentEpisodeIndexChangedEvent -= LoadLocalImage;
-        picViewService.PicturesLoadStartingEvent -= LoadImageFormLocalComic;*/
     }
-
-    /*
-    /// <summary>
-    /// Episode变化响应
-    /// </summary>
-    private void LoadLocalImage(object sender, CurrentEpisodeIndexChangedEventArg arg)
-    {
-        if (sender is not PicViewModel viewModel) return;
-        if (arg.OldValue == arg.NewValue) return;
-        if (viewModel.Affiliation != MetaData.Id) return;
-        viewModel.Images.Clear();
-        var index = 0;
-        if (viewModel.Episodes.Count > 0 && viewModel.Episodes[arg.NewValue] is ShadowEpisode episode)
-            foreach (var item in Db.Queryable<LocalPicture>().Where(x => x.EpisodeId == episode.Source.Id)
-                         .OrderBy(x => x.Name)
-                         .ToList())
-                viewModel.Images.Add(new ShadowPicture(++index, item.Img));
-    }
-
-    /// <summary>
-    /// 从本地漫画加载Episode
-    /// </summary>
-    private void LoadImageFormLocalComic(object sender, PicViewArg arg)
-    {
-        if (sender is not PicViewModel viewModel) return;
-        if (arg.Affiliation != MetaData.Id || arg.Parameter is not LocalComic comic) return;
-
-        var orders = new List<int>();
-        Db.Queryable<LocalEpisode>().Where(x => x.ComicId == comic.Id).OrderBy(x => x.Order).ForEach(x =>
-        {
-            orders.Add(x.Order);
-            viewModel.Episodes.Add(new ShadowEpisode(x));
-        });
-        if (viewModel.CurrentEpisodeIndex == -1 && orders.Count > 0)
-            viewModel.CurrentEpisodeIndex = orders[0];
-    }*/
 
     /// <summary>
     /// <inheritdoc/>

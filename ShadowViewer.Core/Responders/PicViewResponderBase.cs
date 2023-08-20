@@ -2,30 +2,33 @@
 
 namespace ShadowViewer.Responders;
 
-public abstract class NavigationResponderBase: INavigationResponder
+public abstract class PicViewResponderBase:IPicViewResponder
 {
+    /// <summary>
+    /// <inheritdoc />
+    /// </summary>
     public string Id { get; }
-    public virtual IEnumerable<IShadowNavigationItem> NavigationViewMenuItems { get; } = new List<IShadowNavigationItem>();
-    public virtual IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; } = new List<IShadowNavigationItem>();
-
-    public virtual void NavigationViewItemInvokedHandler(IShadowNavigationItem item, ref Type? page,
-        ref object? parameter)
+    /// <summary>
+    /// <inheritdoc />
+    /// </summary>
+    public virtual void CurrentEpisodeIndexChanged(object sender, string affiliation, int oldValue, int newValue)
     {
         
     }
-
-    public virtual void Navigate(Uri uri, string[] urls)
+    /// <summary>
+    /// <inheritdoc />
+    /// </summary>
+    public virtual void PicturesLoadStarting(object sender, PicViewArg arg)
     {
         
     }
-
     protected ICallableService Caller { get; }
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
     protected PluginService PluginService { get; }
     
     protected IPlugin? Plugin { get; }
-    protected NavigationResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
+    protected PicViewResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginService pluginService,string id)
     {
         Caller = callableService;
@@ -35,5 +38,4 @@ public abstract class NavigationResponderBase: INavigationResponder
         Id = id;
         Plugin = PluginService.GetPlugin(Id);
     }
-    
 }

@@ -30,66 +30,60 @@ namespace ShadowViewer.Plugin.Local.Pages
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as HyperlinkButton;
-            if(button!=null&& button.Tag is string tag &&PluginService.GetPlugin(tag) is IPlugin { SettingsPage: not null } plugin)
+            if(button!=null&& button.Tag is string tag &&PluginService.GetPlugin(tag) is { SettingsPage: not null } plugin)
             {
-                this.Frame.Navigate(plugin.SettingsPage, null,
-                    new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
+                Frame.Navigate(plugin.SettingsPage, null,
+                    new SlideNavigationTransitionInfo { Effect = SlideNavigationTransitionEffect.FromRight });
             }
         }
 
         private async void Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement { Tag: IPlugin plugin })
+            if (sender is not FrameworkElement { Tag: IPlugin plugin }) return;
+            var contentDialog= XamlHelper.CreateMessageDialog(XamlRoot,
+                LocalResourcesHelper.GetString(LocalResourceKey.DeletePlugin) + plugin.MetaData.Name,
+                LocalResourcesHelper.GetString(LocalResourceKey.DeletePluginMessage));
+            contentDialog.IsPrimaryButtonEnabled = true;
+            contentDialog.DefaultButton = ContentDialogButton.Close;
+            contentDialog.PrimaryButtonText = LocalResourcesHelper.GetString(LocalResourceKey.Confirm) ;
+            contentDialog.PrimaryButtonClick += async (dialog, args) =>
             {
-                var contentDialog= XamlHelper.CreateMessageDialog(XamlRoot,
-                    LocalResourcesHelper.GetString(LocalResourceKey.DeletePlugin) + plugin.MetaData.Name,
-                    LocalResourcesHelper.GetString(LocalResourceKey.DeletePluginMessage));
-                contentDialog.IsPrimaryButtonEnabled = true;
-                contentDialog.DefaultButton = ContentDialogButton.Close;
-                contentDialog.PrimaryButtonText = LocalResourcesHelper.GetString(LocalResourceKey.Confirm) ;
-                contentDialog.PrimaryButtonClick += async (dialog, args) =>
-                {
-                    var flag = await PluginService.DeleteAsync(plugin.MetaData.Id);
+                var flag = await PluginService.DeleteAsync(plugin.MetaData.Id);
                     
-                };
-                await contentDialog.ShowAsync();
-            }
+            };
+            await contentDialog.ShowAsync();
 
-            
+
         }
 
         private void More_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not FrameworkElement source) return;
-            if (sender is FrameworkElement { Tag: IPlugin plugin }   && !plugin.CanOpenFolder && !plugin.CanDelete)return;
+            if (sender is FrameworkElement { Tag: IPlugin { CanOpenFolder: false, CanDelete: false } })return;
             var flyout = FlyoutBase.GetAttachedFlyout(source);
             flyout?.ShowAt(source);
-
         }
 
         private async void OpenFolder_Click(object sender, RoutedEventArgs e)
         {
-            if(sender is FrameworkElement { Tag: IPlugin plgin})
+            if (sender is not FrameworkElement { Tag: IPlugin plugin }) return;
+            try
             {
-                try
-                {
-                    var file = await plgin.GetType().Assembly.Location.GetFile();
-                    var folder = await file.GetParentAsync();
-                    folder.LaunchFolderAsync();
-                }
-                catch(Exception ex)
-                {
-                    Log.Error("打开文件夹错误{Ex}", ex);
-                }
+                var file = await plugin.GetType().Assembly.Location.GetFile();
+                var folder = await file.GetParentAsync();
+                folder.LaunchFolderAsync();
+            }
+            catch(Exception ex)
+            {
+                Log.Error("打开文件夹错误{Ex}", ex);
             }
         }
 
         private void More_Loaded(object sender, RoutedEventArgs e)
         {
-            if (sender is FrameworkElement { Tag: IPlugin plugin } source && !plugin.CanOpenFolder && !plugin.CanDelete)
+            if (sender is FrameworkElement { Tag: IPlugin { CanOpenFolder: false, CanDelete: false } } source)
             {
                 source.Visibility = Visibility.Collapsed;
-                return;
             }
         }
     }

@@ -49,10 +49,6 @@ namespace ShadowViewer.Plugin.Local.Pages
         /// <summary>
         /// 显示悬浮菜单
         /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="sender">The sender.</param>
-        /// <param name="isComicBook">if set to <c>true</c> [is comic book].</param>
-        /// <param name="isSingle">if set to <c>true</c> [is single].</param>
         private void ShowMenu(UIElement sender, Point? position = null)
         {
             bool isComicBook = ContentGridView.SelectedItems.Count > 0;

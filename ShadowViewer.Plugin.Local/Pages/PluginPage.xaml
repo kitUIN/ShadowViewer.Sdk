@@ -8,7 +8,11 @@
     xmlns:local2="using:ShadowViewer.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:plugins="using:ShadowViewer.Plugins"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     mc:Ignorable="d">
+    <Page.Resources>
+        <converters:EmptyObjectToObjectConverter x:Key="EmptyObjectToVisibilityConverter" EmptyValue="Collapsed" NotEmptyValue="Visible"/>
+    </Page.Resources>
     <Grid
         Background="{ThemeResource LayerFillColorDefaultBrush}"
         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -120,10 +124,8 @@
                                 <ToggleSwitch
                                     Grid.Column="1"
                                     VerticalAlignment="Bottom"
-                                    IsEnabled="{x:Bind CanSwitch, Mode=OneWay}"
+                                    Visibility="{x:Bind CanSwitch, Mode=OneWay}"
                                     IsOn="{x:Bind IsEnabled, Mode=TwoWay}" />
-
-
                             </Grid>
                         </Grid>
                         <Grid Grid.Column="1">
@@ -178,7 +180,8 @@
                                 Width="37"
                                 Height="37"
                                 Padding="5"
-                                Click="Settings_Click"
+                                Click="Settings_Click" 
+                                Visibility="{x:Bind SettingsPage ,Converter={StaticResource EmptyObjectToVisibilityConverter}}"
                                 Tag="{x:Bind MetaData.Id}">
                                 <icons:FluentIcon FontSize="25" Symbol="SettingsRegular" />
                             </HyperlinkButton>

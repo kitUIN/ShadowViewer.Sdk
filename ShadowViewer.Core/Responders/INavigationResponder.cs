@@ -1,11 +1,8 @@
 ﻿namespace ShadowViewer.Responders;
 
-public interface INavigationResponder
+public interface INavigationResponder:IResponder
 {
-    /// <summary>
-    /// 插件ID
-    /// </summary>
-    string Id { get; set; }
+    
     /// <summary>
     /// 添加到导航栏
     /// </summary>

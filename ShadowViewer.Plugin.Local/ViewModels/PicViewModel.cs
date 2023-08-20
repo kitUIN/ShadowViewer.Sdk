@@ -4,10 +4,11 @@ using Serilog;
 using ShadowViewer.Args;
 using ShadowViewer.Interfaces;
 using ShadowViewer.Models;
-using ShadowViewer.Plugin.Local.Services;
+using ShadowViewer.Responders;
+using ShadowViewer.Services;
 using SqlSugar;
 
-namespace ShadowViewer.ViewModels;
+namespace ShadowViewer.Plugin.Local.ViewModels;
 
 public partial class PicViewModel : ObservableObject
 {
@@ -20,13 +21,14 @@ public partial class PicViewModel : ObservableObject
     [ObservableProperty] private bool isMenu;
     public string Affiliation { get; set; }
     private ISqlSugarClient Db { get; }
-    private PicViewService PicViewService { get; }
+    private ResponderService ResponderService { get; }
 
-    public PicViewModel(ILogger logger, ISqlSugarClient sqlSugarClient, PicViewService picViewService)
+    public PicViewModel(ILogger logger, ISqlSugarClient sqlSugarClient,
+        ResponderService responderService)
     {
-        PicViewService = picViewService;
         Logger = logger;
         Db = sqlSugarClient;
+        ResponderService = responderService;
     }
 
     public void Init(PicViewArg arg)
@@ -34,12 +36,13 @@ public partial class PicViewModel : ObservableObject
         Affiliation = arg.Affiliation;
         Images.Clear();
         Episodes.Clear();
-        //PicViewService.PicturesLoadStarting(this, arg);
+        ResponderService.GetEnabledResponder<IPicViewResponder>(Affiliation)
+            ?.PicturesLoadStarting(this, arg);
     }
-
 
     partial void OnCurrentEpisodeIndexChanged(int oldValue, int newValue)
     {
-        //PicViewService.CurrentEpisodeIndexChanged(this, Affiliation, oldValue, newValue);
+        ResponderService.GetEnabledResponder<IPicViewResponder>(Affiliation)
+            ?.CurrentEpisodeIndexChanged(this, Affiliation, oldValue, newValue);
     }
 }

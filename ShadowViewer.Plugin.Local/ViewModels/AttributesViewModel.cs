@@ -5,16 +5,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Media;
 using Serilog;
-using ShadowViewer.Enums;
 using ShadowViewer.Helpers;
-using ShadowViewer.Interfaces;
 using ShadowViewer.Models;
 using ShadowViewer.Plugin.Local.Enums;
 using ShadowViewer.Plugin.Local.Helpers;
 using ShadowViewer.Services;
 using SqlSugar;
 
-namespace ShadowViewer.ViewModels;
+namespace ShadowViewer.Plugin.Local.ViewModels;
 
 public partial class AttributesViewModel : ObservableObject
 {

@@ -40,7 +40,7 @@ public abstract partial class PluginBase : IPlugin
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public abstract Type SettingsPage { get; }
+    public virtual Type? SettingsPage => null;
 
     private bool enabled;
 

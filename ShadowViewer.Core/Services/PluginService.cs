@@ -57,10 +57,12 @@ public class PluginService
     {
         Type? pluginType = null;
         Type? navigationViewResponder = null;
+        Type? picViewResponder = null;
         foreach (var type in types)
             if (type.IsAssignableTo(typeof(IPlugin)))
                 pluginType = type;
             else if (type.IsAssignableTo(typeof(INavigationResponder))) navigationViewResponder = type;
+            else if (type.IsAssignableTo(typeof(IPicViewResponder))) picViewResponder = type;
         if (pluginType is null) return;
         try
         {
@@ -93,6 +95,10 @@ public class PluginService
                     Instances.Add(plugin);
                     if (navigationViewResponder is not null)
                         DiFactory.Services.Register(typeof(INavigationResponder), navigationViewResponder,
+                            Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+
+                    if (picViewResponder is not null)
+                        DiFactory.Services.Register(typeof(IPicViewResponder), picViewResponder,
                             Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
 
 
