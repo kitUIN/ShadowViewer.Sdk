@@ -129,7 +129,7 @@ public class PluginService : IPluginService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public IPlugin GetPlugin(string id)
+    public IPlugin? GetPlugin(string id)
     {
         return Instances.FirstOrDefault(x => id.Equals(x.MetaData.Id,StringComparison.OrdinalIgnoreCase));
     }

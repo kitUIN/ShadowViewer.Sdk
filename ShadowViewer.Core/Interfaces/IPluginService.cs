@@ -29,7 +29,7 @@
         /// <summary>
         /// 获取插件(无论是否启动)
         /// </summary>
-        public IPlugin GetPlugin(string id);
+        public IPlugin? GetPlugin(string id);
         /// <summary>
         /// 获取已启动的插件
         /// </summary>
