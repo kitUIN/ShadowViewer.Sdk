@@ -1,6 +1,6 @@
 ﻿namespace ShadowViewer.Responders;
 
-public interface INavigationViewResponder
+public interface INavigationResponder
 {
     /// <summary>
     /// 插件ID
@@ -19,6 +19,9 @@ public interface INavigationViewResponder
     /// <summary>
     /// 导航点击事件注入
     /// </summary>
-    void NavigationViewItemInvokedHandler(IShadowNavigationItem item, ref Type page, ref object parameter);
-    
+    void NavigationViewItemInvokedHandler(IShadowNavigationItem item, ref Type? page, ref object? parameter);
+    /// <summary>
+    /// 导航
+    /// </summary>
+    void Navigate(Uri uri, string[] urls);
 }

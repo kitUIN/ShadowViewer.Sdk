@@ -84,7 +84,7 @@ public interface IPlugin
     /// <summary>
     /// 导航
     /// </summary>
-    void Navigate(Uri uri,string[] urls);
+    void Navigate(Uri uri, string[] urls);
     /// <summary>
     /// 能否打开插件位置
     /// </summary>

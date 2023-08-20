@@ -8,11 +8,11 @@ public abstract partial class PluginBase : IPlugin
     protected ICallableService Caller { get; }
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
-    protected IPluginService PluginService { get; }
+    protected PluginService PluginService { get; }
     public abstract PluginMetaData MetaData { get; }
 
-    public PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, IPluginService pluginService)
+    protected PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
+        CompressService compressServices, PluginService pluginService)
     {
         foreach (var item in ResourceDictionaries)
         {
