@@ -8,7 +8,7 @@ public class PluginService
 {
     private ILogger Logger { get; }
     
-    public const int MinVersion = 20230808;
+    public int MinVersion => 20230821;
     private ICallableService Caller { get; }
     private ISqlSugarClient Db { get; }
     private Queue<string> PluginQueue { get; } = new();

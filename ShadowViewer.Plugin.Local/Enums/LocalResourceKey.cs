@@ -83,5 +83,6 @@ internal enum LocalResourceKey
     Remember,
     IsDelete,
     Cancel,
-    DeleteComicFiles
+    DeleteComicFiles,
+    MinVersion,
 }

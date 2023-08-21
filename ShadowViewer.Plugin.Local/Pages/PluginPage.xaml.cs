@@ -37,9 +37,9 @@ namespace ShadowViewer.Plugin.Local.Pages
             }
         }
 
-        private async void Delete_Click(object sender, RoutedEventArgs e)
+        private   void Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is not FrameworkElement { Tag: IPlugin plugin }) return;
+            /*if (sender is not FrameworkElement { Tag: IPlugin plugin }) return;
             var contentDialog= XamlHelper.CreateMessageDialog(XamlRoot,
                 LocalResourcesHelper.GetString(LocalResourceKey.DeletePlugin) + plugin.MetaData.Name,
                 LocalResourcesHelper.GetString(LocalResourceKey.DeletePluginMessage));
@@ -52,8 +52,7 @@ namespace ShadowViewer.Plugin.Local.Pages
                     
             };
             await contentDialog.ShowAsync();
-
-
+            */
         }
 
         private void More_Click(object sender, RoutedEventArgs e)

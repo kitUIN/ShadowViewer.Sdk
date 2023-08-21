@@ -279,4 +279,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
+  <data name="MinVersion" xml:space="preserve">
+    <value>最低支持</value>
+  </data>
 </root>

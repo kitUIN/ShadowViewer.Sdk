@@ -19,10 +19,10 @@ namespace ShadowViewer.Plugin.Local;
 [PluginMetaData("Local",
     "阅读器应用核心",
     "阅读器核心功能插件",
-    "kitUIN", "0.1.0",
+    "kitUIN", "0.2.0",
     "https://github.com/kitUIN/ShadowViewer/",
     "fluent://\uEA4E",
-    20230808,
+    20230821,
     null,
     new []{"zh-CN"})]
 public class LocalPlugin : PluginBase
