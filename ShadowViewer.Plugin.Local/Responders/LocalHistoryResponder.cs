@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DryIoc;
 using ShadowViewer.Enums;
 using ShadowViewer.Interfaces;
 using ShadowViewer.Plugin.Local.Models;
@@ -33,6 +34,13 @@ public class LocalHistoryResponder:HistoryResponderBase
     public override void ClickHistoryHandler(IHistory history)
     {
         Caller.NavigateTo(typeof(AttributesPage),  history.Id);
+        DiFactory.Services.Resolve<ISqlSugarClient>().Storageable(new LocalHistory()
+        {
+            Id = history.Id,
+            Time = DateTime.Now,
+            Icon = history.Icon,
+            Title = history.Title,
+        }).ExecuteCommand();
     }
 
     public override void DeleteHistoryHandler(IHistory history)
