@@ -36,6 +36,7 @@ public sealed partial class AttributesPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         if (e.Parameter is LocalComic comic) ViewModel.Init(comic.Id);
+        else if (e.Parameter is string id) ViewModel.Init(id);
     }
 
     /// <summary>

@@ -31,7 +31,6 @@ public class LocalPlugin : PluginBase
         CompressService compressServices, PluginService pluginService) : base(callableService, sqlSugarClient,
         compressServices, pluginService)
     {
-        Db.CodeFirst.InitTables<LocalHistory>();
         DiFactory.Services.Register<AttributesViewModel>(Reuse.Transient);
         DiFactory.Services.Register<PicViewModel>(Reuse.Transient);
     }

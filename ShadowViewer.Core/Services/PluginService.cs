@@ -1,13 +1,16 @@
 ﻿using ShadowViewer.Extensions;
 using ShadowViewer.Responders;
+using SqlSugar;
 
 namespace ShadowViewer.Services;
 
 public class PluginService
 {
     private ILogger Logger { get; }
+    
     public const int MinVersion = 20230808;
     private ICallableService Caller { get; }
+    private ISqlSugarClient Db { get; }
     private Queue<string> PluginQueue { get; } = new();
 
     /// <summary>
@@ -15,10 +18,11 @@ public class PluginService
     /// </summary>
     private ObservableCollection<IPlugin> Instances { get; } = new();
 
-    public PluginService(ICallableService callableService, ILogger logger)
+    public PluginService(ICallableService callableService, ILogger logger,ISqlSugarClient sqlSugarClient)
     {
         Logger = logger;
         Caller = callableService;
+        Db = sqlSugarClient;
     }
 
     /// <summary>
@@ -58,11 +62,13 @@ public class PluginService
         Type? pluginType = null;
         Type? navigationViewResponder = null;
         Type? picViewResponder = null;
+        Type? historyResponder = null;
         foreach (var type in types)
             if (type.IsAssignableTo(typeof(IPlugin)))
                 pluginType = type;
-            else if (type.IsAssignableTo(typeof(INavigationResponder))) navigationViewResponder = type;
-            else if (type.IsAssignableTo(typeof(IPicViewResponder))) picViewResponder = type;
+            else if (type.IsAssignableTo(typeof(NavigationResponderBase))) navigationViewResponder = type;
+            else if (type.IsAssignableTo(typeof(PicViewResponderBase))) picViewResponder = type;
+            else if (type.IsAssignableTo(typeof(HistoryResponderBase))) historyResponder = type;
         if (pluginType is null) return;
         try
         {
@@ -100,6 +106,12 @@ public class PluginService
                     if (picViewResponder is not null)
                         DiFactory.Services.Register(typeof(IPicViewResponder), picViewResponder,
                             Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+                    if (historyResponder is not null)
+                    {
+                        Db.CodeFirst.InitTables(historyResponder);
+                        DiFactory.Services.Register(typeof(IHistoryResponder), historyResponder,
+                            Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+                    }
 
 
                     var isEnabled = true;

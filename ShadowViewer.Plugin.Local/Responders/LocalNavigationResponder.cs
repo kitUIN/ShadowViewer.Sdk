@@ -56,8 +56,13 @@ public class LocalNavigationResponder : NavigationResponderBase
     public override void Navigate(Uri uri, string[] urls)
     {
         for (var i = 0; i < urls.Length; i++)
-            if (!Db.Queryable<LocalComic>().Any(x => x.Id == urls[i]))
+            if (!Db.Queryable<LocalComic>().Any(x => x.Id == urls[i] && x.IsFolder))
             {
+                if (!Db.Queryable<LocalComic>().Any(x => x.Id == urls[i] && !x.IsFolder))
+                {
+                    Caller.NavigateTo(typeof(AttributesPage),  urls[i]);
+                    return;
+                }
                 var s = "shadow://local/" + string.Join("/", urls.Take(i + 1));
                 Caller.NavigateTo(typeof(BookShelfPage), new Uri(s));
                 return;
