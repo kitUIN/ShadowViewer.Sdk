@@ -69,6 +69,10 @@ public class PluginService
             else if (type.IsAssignableTo(typeof(NavigationResponderBase))) navigationViewResponder = type;
             else if (type.IsAssignableTo(typeof(PicViewResponderBase))) picViewResponder = type;
             else if (type.IsAssignableTo(typeof(HistoryResponderBase))) historyResponder = type;
+            else if (type.IsAssignableTo(typeof(IHistory)))
+            {
+                Db.CodeFirst.InitTables(type);
+            }
         if (pluginType is null) return;
         try
         {
@@ -108,7 +112,6 @@ public class PluginService
                             Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
                     if (historyResponder is not null)
                     {
-                        Db.CodeFirst.InitTables(historyResponder);
                         DiFactory.Services.Register(typeof(IHistoryResponder), historyResponder,
                             Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
                     }
