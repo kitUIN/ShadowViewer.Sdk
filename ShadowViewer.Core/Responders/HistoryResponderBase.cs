@@ -7,7 +7,10 @@ public abstract class HistoryResponderBase:IHistoryResponder
     public string Id { get; }
     public abstract IEnumerable<IHistory> GetHistories(HistoryMode mode = HistoryMode.Day);
 
-    public abstract void HistoryHandler(IHistory history);
+    public abstract void ClickHistoryHandler(IHistory history);
+    
+    public abstract void DeleteHistoryHandler(IHistory history);
+
     protected ICallableService Caller { get; }
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }

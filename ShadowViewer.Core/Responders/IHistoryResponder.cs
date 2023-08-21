@@ -10,5 +10,9 @@ public interface IHistoryResponder:IResponder
     /// <summary>
     /// 点击历史记录的响应
     /// </summary>
-    void HistoryHandler(IHistory history);
+    void ClickHistoryHandler(IHistory history);
+    /// <summary>
+    /// 删除历史记录
+    /// </summary>
+    void DeleteHistoryHandler(IHistory history);
 }

@@ -30,9 +30,14 @@ public class LocalHistoryResponder:HistoryResponderBase
         };
     }
 
-    public override void HistoryHandler(IHistory history)
+    public override void ClickHistoryHandler(IHistory history)
     {
         Caller.NavigateTo(typeof(AttributesPage),  history.Id);
+    }
+
+    public override void DeleteHistoryHandler(IHistory history)
+    {
+        Db.Deleteable(new LocalHistory { Id = history.Id }).ExecuteCommand();
     }
 
     public LocalHistoryResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient, CompressService compressServices, PluginService pluginService, string id) : base(callableService, sqlSugarClient, compressServices, pluginService, id)

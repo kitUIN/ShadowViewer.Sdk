@@ -1,5 +1,7 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using DryIoc;
 using ShadowViewer.Interfaces;
 using SqlSugar;
 
@@ -13,4 +15,5 @@ public partial class LocalHistory: ObservableObject,IHistory
     [ObservableProperty] private DateTime time;
     [SugarColumn(IsIgnore = true)]
     public string Plugin => "Local";
+    
 }

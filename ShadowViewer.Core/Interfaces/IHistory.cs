@@ -1,4 +1,8 @@
-﻿namespace ShadowViewer.Interfaces;
+﻿using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using SqlSugar;
+
+namespace ShadowViewer.Interfaces;
 
 public interface IHistory
 {
@@ -21,5 +25,6 @@ public interface IHistory
     /// <summary>
     /// 来源插件
     /// </summary>
+    [SugarColumn(IsIgnore = true)]
     string Plugin { get; }
 }
