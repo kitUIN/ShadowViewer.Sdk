@@ -2,16 +2,19 @@
     x:Class="ShadowViewer.Plugin.Local.Pages.PluginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ex="using:ShadowViewer.Plugin.Local.Extensions"
     xmlns:icons="using:FluentIcon"
     xmlns:local2="using:ShadowViewer.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:plugins="using:ShadowViewer.Plugins"
-    xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     mc:Ignorable="d">
     <Page.Resources>
-        <converters:EmptyObjectToObjectConverter x:Key="EmptyObjectToVisibilityConverter" EmptyValue="Collapsed" NotEmptyValue="Visible"/>
+        <converters:EmptyObjectToObjectConverter
+            x:Key="EmptyObjectToVisibilityConverter"
+            EmptyValue="Collapsed"
+            NotEmptyValue="Visible" />
     </Page.Resources>
     <Grid
         Background="{ThemeResource LayerFillColorDefaultBrush}"
@@ -37,17 +40,22 @@
                 Grid.Column="0"
                 FontSize="25"
                 Text="{ex:LocalLocale Key=PluginManager}" />
-            <HyperlinkButton
+            <Button
                 Grid.Column="1"
+                VerticalAlignment="Top"
+                Style="{ThemeResource PointerOverButtonStyle}">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <icons:FluentIcon FontSize="25" Symbol="TargetArrowRegular" />
+                    <TextBlock VerticalAlignment="Center" Text="{x:Bind PluginService.MinVersion, Mode=OneWay}" />
+                </StackPanel>
+            </Button>
+            <HyperlinkButton
+                Grid.Column="2"
                 Margin="0,0,0,10"
+                VerticalAlignment="Top"
                 Content="{ex:LocalLocale Key=GoPluginTip}"
                 NavigateUri="https://github.com/kitUIN/ShadowViewer#%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8" />
-            
-            <local2:Badge Grid.Column="3" VerticalAlignment="Top"
-                          LeftBackground="#FF5e5e5e"  FontSize="14"
-                          LeftTitle="{ex:LocalLocale Key=MinVersion}"
-                          RightBackground="#FFf0932b" HorizontalAlignment="Right"
-                          RightTitle="{x:Bind PluginService.MinVersion}" />
+
         </Grid>
 
         <GridView
@@ -130,8 +138,8 @@
                                 <ToggleSwitch
                                     Grid.Column="1"
                                     VerticalAlignment="Bottom"
-                                    Visibility="{x:Bind CanSwitch, Mode=OneWay}"
-                                    IsOn="{x:Bind IsEnabled, Mode=TwoWay}" />
+                                    IsOn="{x:Bind IsEnabled, Mode=TwoWay}"
+                                    Visibility="{x:Bind CanSwitch, Mode=OneWay}" />
                             </Grid>
                         </Grid>
                         <Grid Grid.Column="1">
@@ -186,9 +194,9 @@
                                 Width="37"
                                 Height="37"
                                 Padding="5"
-                                Click="Settings_Click" 
-                                Visibility="{x:Bind SettingsPage ,Converter={StaticResource EmptyObjectToVisibilityConverter}}"
-                                Tag="{x:Bind MetaData.Id}">
+                                Click="Settings_Click"
+                                Tag="{x:Bind MetaData.Id}"
+                                Visibility="{x:Bind SettingsPage, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
                                 <icons:FluentIcon FontSize="25" Symbol="SettingsRegular" />
                             </HyperlinkButton>
                         </Grid>
