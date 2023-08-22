@@ -1,4 +1,7 @@
-﻿namespace ShadowViewer.Services;
+﻿using Microsoft.UI.Windowing;
+using Windows.Foundation;
+
+namespace ShadowViewer.Services;
 
 public partial class CallableService : ICallableService
 {
@@ -12,72 +15,76 @@ public partial class CallableService : ICallableService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<NavigateToEventArgs> NavigateToEvent;
+    public event EventHandler<NavigateToEventArgs>? NavigateToEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler RefreshBookEvent;
+    public event EventHandler? RefreshBookEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<ImportComicEventArgs> ImportComicEvent;
+    public event EventHandler<ImportComicEventArgs>? ImportComicEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<ImportComicErrorEventArgs> ImportComicErrorEvent;
+    public event EventHandler<ImportComicErrorEventArgs>? ImportComicErrorEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<ImportComicThumbEventArgs> ImportComicThumbEvent;
+    public event EventHandler<ImportComicThumbEventArgs>? ImportComicThumbEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<ImportComicProgressEventArgs> ImportComicProgressEvent;
+    public event EventHandler<ImportComicProgressEventArgs>? ImportComicProgressEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler ImportComicCompletedEvent;
+    public event EventHandler? ImportComicCompletedEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler DebugEvent;
+    public event EventHandler? DebugEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<PluginEventArg> PluginEnabledEvent;
+    public event EventHandler<PluginEventArg>? PluginEnabledEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<PluginEventArg> PluginDisabledEvent;
+    public event EventHandler<PluginEventArg>? PluginDisabledEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<TopGridEventArg> TopGridEvent;
+    public event EventHandler<TopGridEventArg>? TopGridEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<ImportPluginEventArg> ImportPluginEvent; 
+    public event EventHandler<ImportPluginEventArg>? ImportPluginEvent; 
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler NavigationViewBackRequestedEvent;
+    public event EventHandler? NavigationViewBackRequestedEvent;
 
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler NavigationViewPaneEvent;
+    public event EventHandler? NavigationViewPaneEvent;
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public event TypedEventHandler<AppWindow, AppWindowChangedEventArgs>? OverlappedChangedEvent;
 
     /// <summary>
     /// <inheritdoc/>
@@ -209,6 +216,12 @@ public partial class CallableService : ICallableService
         NavigationViewBackRequestedEvent?.Invoke(sender, EventArgs.Empty);
         Logger.Debug("触发事件{Event}", nameof(NavigationViewBackRequestedEvent));
     }
-
-    
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public void ChangeOverlapped(AppWindow sender, AppWindowChangedEventArgs args)
+    {
+        OverlappedChangedEvent?.Invoke(sender, args);
+        Logger.Debug("触发事件{Event}", nameof(OverlappedChangedEvent));
+    }
 }

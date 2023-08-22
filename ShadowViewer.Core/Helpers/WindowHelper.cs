@@ -1,4 +1,8 @@
-﻿namespace ShadowViewer.Helpers
+﻿using Microsoft.UI.Windowing;
+using System.Diagnostics;
+using Windows.UI.WindowManagement;
+
+namespace ShadowViewer.Helpers
 {
     // Copy From WinUI 3 Gallery
     public static class WindowHelper
@@ -15,6 +19,28 @@
             window.AppWindow.TitleBar.ButtonForegroundColor = Microsoft.UI.Colors.Transparent;
             window.Closed += (sender, args) => {
                 _activeWindows.Remove(window);
+            };
+            if (window.AppWindow.Presenter is OverlappedPresenter overlappedPresenter)
+            {
+                _appWindowStates.Add(window.AppWindow.Id, overlappedPresenter.State);
+            }
+            window.AppWindow.Changed += (sender, args) =>
+            {
+                if (sender.Presenter is OverlappedPresenter overlappedPresenter)
+                {
+                    if(_appWindowStates.ContainsKey(sender.Id))
+                    {
+                        if(overlappedPresenter.State!= _appWindowStates[sender.Id])
+                        {
+                            DiFactory.Services.Resolve<ICallableService>().ChangeOverlapped(sender, args);
+                        }
+                        _appWindowStates[sender.Id] = overlappedPresenter.State;
+                    }
+                    else
+                    {
+                        _appWindowStates.Add(sender.Id, overlappedPresenter.State);
+                    }
+                }
             };
             _activeWindows.Add(window);
         }
@@ -36,7 +62,7 @@
                 }
             }
         }
-        static public Window GetWindowForTitle(string title)
+        static public Window? GetWindowForTitle(string title)
         {
             if (title != null)
             {
@@ -60,7 +86,7 @@
                 }
             }
         }
-        static public Window GetWindowForElement(UIElement element)
+        static public Window? GetWindowForElement(UIElement element)
         {
             if (element.XamlRoot != null)
             {
@@ -74,7 +100,7 @@
             }
             return null;
         }
-        static public Window GetWindowForXamlRoot(XamlRoot xamlRoot)
+        static public Window? GetWindowForXamlRoot(XamlRoot xamlRoot)
         {
             if (xamlRoot != null)
             {
@@ -88,9 +114,8 @@
             }
             return null;
         }
-
-        public static List<Window> ActiveWindows { get { return _activeWindows; } }
-
-        private static List<Window> _activeWindows = new List<Window>();
+        private static Dictionary<WindowId, OverlappedPresenterState> _appWindowStates = new ();
+        public static List<Window> ActiveWindows => _activeWindows;
+        private static readonly List<Window> _activeWindows = new();
     }
 }

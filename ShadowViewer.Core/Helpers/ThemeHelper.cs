@@ -8,8 +8,6 @@ namespace ShadowViewer.Helpers
     {
         private const string SelectedAppThemeKey = "SelectedAppTheme";
 
-        private static Window CurrentApplicationWindow;
-
         /// <summary>
         /// Gets the current actual theme of the app based on the requested theme of the
         /// root element, or if that value is Default, the requested theme of the Application.
@@ -65,7 +63,6 @@ namespace ShadowViewer.Helpers
 
         public static void Initialize(Window window)
         {
-            CurrentApplicationWindow = window;
             string savedTheme = ConfigHelper.GetString(SelectedAppThemeKey);
             if (savedTheme != null)
             {
