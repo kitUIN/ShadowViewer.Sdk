@@ -178,7 +178,7 @@ public class PluginService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public LocalTag GetAffiliationTag(string id)
+    public LocalTag? GetAffiliationTag(string id)
     {
         return id == "Local"
             ? new LocalTag(CoreResourcesHelper.GetString(CoreResourceKey.LocalTag), "#000000", "#ffd657")
