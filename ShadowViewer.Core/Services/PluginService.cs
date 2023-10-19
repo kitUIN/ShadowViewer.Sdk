@@ -35,7 +35,6 @@ public class PluginService
         foreach (var item in dir.GetDirectories())
         foreach (var file in item.GetFiles("ShadowViewer.Plugin.*.dll"))
             PluginQueue.Enqueue(file.FullName);
-
         while (PluginQueue.Count != 0)
         {
             var p = PluginQueue.Dequeue();
@@ -115,7 +114,6 @@ public class PluginService
                         DiFactory.Services.Register(typeof(IHistoryResponder), historyResponder,
                             Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
                     }
-
 
                     var isEnabled = true;
                     if (ConfigHelper.Contains(plugin.MetaData.Id))

@@ -85,4 +85,5 @@ internal enum LocalResourceKey
     Cancel,
     DeleteComicFiles,
     MinVersion,
+    AddPlugin,
 }

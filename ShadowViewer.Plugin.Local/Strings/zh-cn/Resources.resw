@@ -282,4 +282,7 @@
   <data name="MinVersion" xml:space="preserve">
     <value>最低支持</value>
   </data>
+  <data name="AddPlugin" xml:space="preserve">
+    <value>添加插件</value>
+  </data>
 </root>

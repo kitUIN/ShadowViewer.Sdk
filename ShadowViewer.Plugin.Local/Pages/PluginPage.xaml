@@ -11,6 +11,7 @@
     xmlns:plugins="using:ShadowViewer.Plugins"
     mc:Ignorable="d">
     <Page.Resources>
+        <x:Double x:Key="InfoIconSize">17</x:Double>
         <converters:EmptyObjectToObjectConverter
             x:Key="EmptyObjectToVisibilityConverter"
             EmptyValue="Collapsed"
@@ -31,31 +32,51 @@
             ColumnSpacing="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock
                 Grid.Column="0"
                 FontSize="25"
                 Text="{ex:LocalLocale Key=PluginManager}" />
-            <Button
-                Grid.Column="1"
-                VerticalAlignment="Top"
-                Style="{ThemeResource PointerOverButtonStyle}">
-                <StackPanel Orientation="Horizontal" Spacing="5">
-                    <icons:FluentIcon FontSize="25" Symbol="TargetArrowRegular" />
-                    <TextBlock VerticalAlignment="Center" Text="{x:Bind PluginService.MinVersion, Mode=OneWay}" />
-                </StackPanel>
-            </Button>
-            <HyperlinkButton
+            <CommandBar
+                x:Name="LeftCommandBar"
                 Grid.Column="2"
-                Margin="0,0,0,10"
-                VerticalAlignment="Top"
-                Content="{ex:LocalLocale Key=GoPluginTip}"
-                NavigateUri="https://github.com/kitUIN/ShadowViewer#%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8" />
-
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                DefaultLabelPosition="Right"
+                IsOpen="False">
+                <AppBarButton
+                    Click="AddPluginButton_Click"
+                    Label="{ex:LocalLocale Key=AddPlugin}"
+                    ToolTipService.ToolTip="{ex:LocalLocale Key=AddPlugin}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xECC8;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton Label="{x:Bind PluginService.MinVersion}">
+                    <ToolTipService.ToolTip>
+                        <ToolTip>
+                            <TextBlock>
+                                <Run Text="{ex:LocalLocale Key=MinVersion}" />
+                                <Run Text="{x:Bind PluginService.MinVersion}" />
+                            </TextBlock>
+                        </ToolTip>
+                    </ToolTipService.ToolTip>
+                    <AppBarButton.Icon>
+                        <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xE74C;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+                <AppBarButton
+                    Click="GoPluginTip_Click"
+                    Label="{ex:LocalLocale Key=GoPluginTip}"
+                    ToolTipService.ToolTip="{ex:LocalLocale Key=GoPluginTip}">
+                    <AppBarButton.Icon>
+                        <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xE71E;" />
+                    </AppBarButton.Icon>
+                </AppBarButton>
+            </CommandBar>
         </Grid>
 
         <GridView

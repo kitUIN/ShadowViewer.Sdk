@@ -11,17 +11,21 @@ using ShadowViewer.Plugin.Local.Enums;
 using ShadowViewer.Plugin.Local.Helpers;
 using ShadowViewer.Plugins;
 using ShadowViewer.Services;
+using Windows.Storage.Pickers;
+using System.Collections.Generic;
+using Windows.Storage;
+using ShadowViewer.Interfaces;
 
 namespace ShadowViewer.Plugin.Local.Pages
 {
     
     public sealed partial class PluginPage : Page
     {
-        public PluginService PluginService { get; }
+        public PluginService PluginService { get; } = DiFactory.Services.Resolve<PluginService>();
+        public ICallableService Caller { get; } = DiFactory.Services.Resolve<ICallableService>();
         public PluginPage()
         {
             this.InitializeComponent();
-            PluginService = DiFactory.Services.Resolve<PluginService>();
         }
         
         /// <summary>
@@ -84,6 +88,21 @@ namespace ShadowViewer.Plugin.Local.Pages
             {
                 source.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private async void AddPluginButton_Click(object sender, RoutedEventArgs e)
+        {
+            var file = await FileHelper.SelectFileAsync(XamlRoot, PickerLocationId.Downloads, PickerViewMode.List, ".zip", ".rar", ".7z", ".tar");
+            if (file != null)
+            {
+                Caller.ImportPlugin(this, new List<StorageFile>{ file });
+            }
+        }
+
+        private void GoPluginTip_Click(object sender, RoutedEventArgs e)
+        {
+            var url = new Uri("https://github.com/kitUIN/ShadowViewer/blob/master/README.md#%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8");
+            url.LaunchUriAsync();
         }
     }
 }

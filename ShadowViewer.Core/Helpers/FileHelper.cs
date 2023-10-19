@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.Helpers
+﻿using Microsoft.UI.Xaml;
+
+namespace ShadowViewer.Helpers
 {
     public class FileHelper
     {
@@ -11,7 +13,7 @@
         /// <param name="element"></param>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        public static async Task<StorageFolder> SelectFolderAsync(UIElement element, string accessToken = "")
+        public static async Task<StorageFolder?> SelectFolderAsync(UIElement element, string accessToken = "")
         {
             IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(WindowHelper.GetWindowForElement(element));
             FolderPicker openPicker = new FolderPicker(); 
@@ -33,15 +35,27 @@
         /// <summary>
         /// 选择文件
         /// </summary>
-        public static async Task<StorageFile> SelectFileAsync(UIElement element, params string[] filter)
+        public static async Task<StorageFile?> SelectFileAsync(UIElement element, PickerLocationId id, PickerViewMode mode, params string[] filter)
         {
-            return await SelectFileAsync(WindowHelper.GetWindowForElement(element), PickerLocationId.Desktop, PickerViewMode.List, filter);
+            if(WindowHelper.GetWindowForElement(element) is Window window)
+            {
+                return await SelectFileAsync(window, id, mode, filter);
+            }
+            return null;
         }
-        public static async Task<StorageFile> SelectPicFileAsync(XamlRoot xamlRoot)
+        public static async Task<StorageFile?> SelectFileAsync(XamlRoot xamlRoot, PickerLocationId id, PickerViewMode mode, params string[] filter)
         {
-            return await SelectFileAsync(WindowHelper.GetWindowForXamlRoot(xamlRoot), PickerLocationId.PicturesLibrary, PickerViewMode.Thumbnail, ".png", ".jpg", ".jpeg", ".bmp",".gif");
+            if (WindowHelper.GetWindowForXamlRoot(xamlRoot) is Window window)
+            {
+                return await SelectFileAsync(window, id, mode, filter);
+            }
+            return null;
         }
-        public static async Task<StorageFile> SelectFileAsync(Window window, PickerLocationId id, PickerViewMode mode, params string[] filter)
+        public static async Task<StorageFile?> SelectPicFileAsync(XamlRoot xamlRoot)
+        {
+            return await SelectFileAsync(xamlRoot, PickerLocationId.PicturesLibrary, PickerViewMode.Thumbnail, ".png", ".jpg", ".jpeg", ".bmp", ".gif");;
+        }
+        public static async Task<StorageFile?> SelectFileAsync(Window window, PickerLocationId id, PickerViewMode mode, params string[] filter)
         {
             IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
             FileOpenPicker openPicker = new FileOpenPicker();
