@@ -2,7 +2,6 @@ using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 using DryIoc;
-using FluntIcon;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -14,8 +13,8 @@ using ShadowViewer.Helpers;
 using ShadowViewer.Models;
 using ShadowViewer.Plugin.Local.Enums;
 using ShadowViewer.Plugin.Local.Helpers;
-using ShadowViewer.ViewModels;
 using AttributesViewModel = ShadowViewer.Plugin.Local.ViewModels.AttributesViewModel;
+using FluentIcon.WinUI;
 
 namespace ShadowViewer.Plugin.Local.Pages;
 
@@ -97,7 +96,7 @@ public sealed partial class AttributesPage : Page
         if (ViewModel.IsLastTag(tag))
         {
             TagName.Text = "";
-            YesIcon.Symbol = FluentIconSymbol.TagFilled;
+            YesIcon.Symbol =  FluentRegularIconSymbol.Tag24Regular;
             YesText.Text = LocalResourcesHelper.GetString(LocalResourceKey.AddNew);
             RemoveTagButton.Visibility = Visibility.Collapsed;
         }
@@ -106,7 +105,7 @@ public sealed partial class AttributesPage : Page
             BackgroundColorPicker.SelectedColor = ((SolidColorBrush)button.Background).Color;
             ForegroundColorPicker.SelectedColor = ((SolidColorBrush)button.Foreground).Color;
             TagName.Text = ((TextBlock)((StackPanel)button.Content).Children[1]).Text;
-            YesIcon.Symbol = FluentIconSymbol.TagResetFilled;
+            YesIcon.Symbol = FluentRegularIconSymbol.TagReset24Regular;
             YesText.Text = LocalResourcesHelper.GetString(LocalResourceKey.Update);
             RemoveTagButton.Visibility = Visibility.Visible;
         }

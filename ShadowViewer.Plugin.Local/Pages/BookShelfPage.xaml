@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dv="using:ShadowViewer.Models"
     xmlns:ex="using:ShadowViewer.Plugin.Local.Extensions"
-    xmlns:icons="using:FluentIcon"
+    xmlns:icons="using:FluentIcon.WinUI"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:ShadowViewer.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -141,11 +141,11 @@
                                         TextTrimming="CharacterEllipsis" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Visibility="{x:Bind IsEpsDetailShow}">
-                                    <icons:FluentIcon
+                                    <icons:FluentRegularIcon
                                         Margin="0,2,0,0"
                                         FontSize="15"
                                         Foreground="Gray"
-                                        Symbol="ArchiveRegular" />
+                                        Symbol="Archive24Regular" />
                                     <TextBlock
                                         Margin="3,0,0,0"
                                         FontSize="15"
@@ -155,11 +155,11 @@
                                         FontSize="15"
                                         Foreground="Gray"
                                         Text="E" />
-                                    <icons:FluentIcon
+                                    <icons:FluentRegularIcon
                                         Margin="5,2,0,0"
                                         FontSize="15"
                                         Foreground="Gray"
-                                        Symbol="DocumentOnePageRegular" />
+                                        Symbol="DocumentOnePage24Regular" />
                                     <TextBlock
                                         Margin="1,0,0,0"
                                         FontSize="15"

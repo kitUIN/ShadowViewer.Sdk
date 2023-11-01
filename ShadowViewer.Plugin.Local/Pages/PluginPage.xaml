@@ -5,7 +5,7 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ex="using:ShadowViewer.Plugin.Local.Extensions"
-    xmlns:icons="using:FluentIcon"
+    xmlns:icons="using:FluentIcon.WinUI"
     xmlns:local2="using:ShadowViewer.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:plugins="using:ShadowViewer.Plugins"
@@ -148,11 +148,11 @@
                                     Orientation="Vertical"
                                     Spacing="3">
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <icons:FluentIcon Symbol="PredictionsRegular" />
+                                        <icons:FluentRegularIcon Symbol="Predictions24Regular" />
                                         <TextBlock Text="{x:Bind MetaData.Id}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <icons:FluentIcon Symbol="TargetArrowRegular" />
+                                        <icons:FluentRegularIcon Symbol="TargetArrow24Regular" />
                                         <TextBlock Text="{x:Bind MetaData.Version}" />
                                     </StackPanel>
                                 </StackPanel>
@@ -192,7 +192,7 @@
                                 Click="More_Click"
                                 Loaded="More_Loaded"
                                 Tag="{x:Bind}">
-                                <icons:FluentIcon FontSize="25" Symbol="MoreHorizontalRegular" />
+                                <icons:FluentRegularIcon FontSize="25" Symbol="MoreHorizontal24Regular" />
                                 <FlyoutBase.AttachedFlyout>
                                     <MenuFlyout Placement="Right">
                                         <MenuFlyoutItem
@@ -218,7 +218,7 @@
                                 Click="Settings_Click"
                                 Tag="{x:Bind MetaData.Id}"
                                 Visibility="{x:Bind SettingsPage, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
-                                <icons:FluentIcon FontSize="25" Symbol="SettingsRegular" />
+                                <icons:FluentRegularIcon FontSize="25" Symbol="Settings24Regular" />
                             </HyperlinkButton>
                         </Grid>
                     </Grid>
