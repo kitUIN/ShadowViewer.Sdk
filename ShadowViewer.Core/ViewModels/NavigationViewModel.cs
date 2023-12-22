@@ -1,4 +1,5 @@
 ﻿using ShadowViewer.Responders;
+using ShadowViewer.Services.Interfaces;
 
 namespace ShadowViewer.ViewModels;
 
@@ -6,10 +7,10 @@ public partial class NavigationViewModel : ObservableObject
 {
     private ILogger Logger { get; }
     private ICallableService Caller { get; }
-    private PluginService PluginService { get; }
+    private IPluginService PluginService { get; }
     private ResponderService ResponderService { get; }
 
-    public NavigationViewModel(ICallableService callableService, PluginService pluginService, ILogger logger,
+    public NavigationViewModel(ICallableService callableService, IPluginService pluginService, ILogger logger,
         ResponderService responderService)
     {
         Logger = logger;

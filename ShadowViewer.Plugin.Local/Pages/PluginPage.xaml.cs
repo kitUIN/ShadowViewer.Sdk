@@ -15,13 +15,14 @@ using Windows.Storage.Pickers;
 using System.Collections.Generic;
 using Windows.Storage;
 using ShadowViewer.Interfaces;
+using ShadowViewer.Services.Interfaces;
 
 namespace ShadowViewer.Plugin.Local.Pages
 {
     
     public sealed partial class PluginPage : Page
     {
-        public PluginService PluginService { get; } = DiFactory.Services.Resolve<PluginService>();
+        public IPluginService PluginService { get; } = DiFactory.Services.Resolve<IPluginService>();
         public ICallableService Caller { get; } = DiFactory.Services.Resolve<ICallableService>();
         public PluginPage()
         {

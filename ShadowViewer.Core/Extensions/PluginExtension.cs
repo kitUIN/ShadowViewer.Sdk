@@ -2,14 +2,14 @@
 
 public static class PluginExtension
 {
-    public static PluginMetaData GetPluginMetaData<T>() where T:IPlugin
+    public static PluginMetaData? GetPluginMetaData<T>() where T:IPlugin
     {
         return typeof(T).GetPluginMetaData();
     }
     public static PluginMetaData GetPluginMetaData(this Type plugin)  
     {
         var meta = plugin.GetTypeInfo().GetCustomAttribute<PluginMetaData>();
-        if (meta == null) return null;
+        if (meta == null) throw new Exception(plugin.Name + "Can not get PluginMetaData");
         if (!string.IsNullOrEmpty(meta.Logo))
         {
             if (meta.Logo.StartsWith("/") && meta.Logo != "/")

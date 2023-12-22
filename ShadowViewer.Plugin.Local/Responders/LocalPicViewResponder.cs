@@ -5,6 +5,7 @@ using ShadowViewer.Models;
 using ShadowViewer.Plugin.Local.Models;
 using ShadowViewer.Responders;
 using ShadowViewer.Services;
+using ShadowViewer.Services.Interfaces;
 using ShadowViewer.ViewModels;
 using SqlSugar;
 using PicViewModel = ShadowViewer.Plugin.Local.ViewModels.PicViewModel;
@@ -48,7 +49,7 @@ public class LocalPicViewResponder : PicViewResponderBase
     }
 
     public LocalPicViewResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginService pluginService, string id) : base(callableService,
+        CompressService compressServices, IPluginService pluginService, string id) : base(callableService,
         sqlSugarClient, compressServices, pluginService, id)
     {
     }

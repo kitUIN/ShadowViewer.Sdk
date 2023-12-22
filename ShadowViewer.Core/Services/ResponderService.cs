@@ -1,19 +1,20 @@
 ﻿using ShadowViewer.Responders;
+using ShadowViewer.Services.Interfaces;
 
 namespace ShadowViewer.Services;
 
 public class ResponderService
 {
-    private PluginService PluginService { get; }
+    private IPluginService PluginService { get; }
 
-    public ResponderService(PluginService pluginService)
+    public ResponderService(IPluginService pluginService)
     {
         PluginService = pluginService;
     }
 
     public IEnumerable<TResponder> GetResponders<TResponder>() where TResponder: IResponder
     {
-        return DiFactory.Services.ResolveMany<TResponder>();
+        return DiFactory.Services.Resolve<IEnumerable<TResponder>>();
     }
 
     /// <summary>
@@ -21,13 +22,14 @@ public class ResponderService
     /// </summary>
     public IEnumerable<TResponder> GetEnabledResponders<TResponder>() where TResponder: IResponder
     {
-        return DiFactory.Services.ResolveMany<TResponder>().Where(x => PluginService.IsEnabled(x.Id));
+        return GetResponders<TResponder>().Where(x => PluginService.IsEnabled(x.Id) == true);
     }
 
     public TResponder? GetEnabledResponder<TResponder>(string id)where TResponder: IResponder
     {
-        if (DiFactory.Services.ResolveMany<TResponder>().FirstOrDefault(x => id.Equals(x.Id, StringComparison.OrdinalIgnoreCase)) is { } responder &&
-            PluginService.IsEnabled(id)) return responder;
+        if (GetResponders<TResponder>()
+            .FirstOrDefault(x => id == x.Id) is { } responder &&
+            PluginService.IsEnabled(id) == true) return responder;
         return default;
     }
 }

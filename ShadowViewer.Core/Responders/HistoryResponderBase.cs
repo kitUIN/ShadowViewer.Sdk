@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using ShadowViewer.Services.Interfaces;
+using SqlSugar;
 
 namespace ShadowViewer.Responders;
 
@@ -14,11 +15,11 @@ public abstract class HistoryResponderBase:IHistoryResponder
     protected ICallableService Caller { get; }
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
-    protected PluginService PluginService { get; }
+    protected IPluginService PluginService { get; }
     
     protected IPlugin? Plugin { get; }
     protected HistoryResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginService pluginService,string id)
+        CompressService compressServices, IPluginService pluginService,string id)
     {
         Caller = callableService;
         Db = sqlSugarClient;

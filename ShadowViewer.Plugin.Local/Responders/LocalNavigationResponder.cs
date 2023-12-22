@@ -10,6 +10,7 @@ using ShadowViewer.Plugin.Local.Models;
 using ShadowViewer.Plugin.Local.Pages;
 using ShadowViewer.Responders;
 using ShadowViewer.Services;
+using ShadowViewer.Services.Interfaces;
 using SqlSugar;
 
 namespace ShadowViewer.Plugin.Local.Responders;
@@ -71,7 +72,7 @@ public class LocalNavigationResponder : NavigationResponderBase
     }
 
     public LocalNavigationResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginService pluginService, string id) : base(callableService,
+        CompressService compressServices, IPluginService pluginService, string id) : base(callableService,
         sqlSugarClient, compressServices, pluginService, id)
     {
     }

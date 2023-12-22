@@ -9,7 +9,9 @@ using ShadowViewer.Helpers;
 using ShadowViewer.Models;
 using ShadowViewer.Plugin.Local.Enums;
 using ShadowViewer.Plugin.Local.Helpers;
+using ShadowViewer.Plugins;
 using ShadowViewer.Services;
+using ShadowViewer.Services.Interfaces;
 using SqlSugar;
 
 namespace ShadowViewer.Plugin.Local.ViewModels;
@@ -41,7 +43,7 @@ public partial class AttributesViewModel : ObservableObject
     /// </summary>
     public bool IsHaveEpisodes => Episodes.Count != 0;
 
-    private readonly PluginService pluginService;
+    private readonly IPluginService pluginService;
     private ISqlSugarClient Db { get; }
     private ILogger Logger { get; }
 
@@ -52,7 +54,7 @@ public partial class AttributesViewModel : ObservableObject
         ReLoadEps();
     }
 
-    public AttributesViewModel(PluginService pluginService, ISqlSugarClient sqlSugarClient, ILogger logger)
+    public AttributesViewModel(IPluginService pluginService, ISqlSugarClient sqlSugarClient, ILogger logger)
     {
         this.pluginService = pluginService;
         Db = sqlSugarClient;
@@ -75,7 +77,7 @@ public partial class AttributesViewModel : ObservableObject
     public void ReLoadTags()
     {
         Tags.Clear();
-        if (pluginService.GetAffiliationTag(CurrentComic.Affiliation) is { } shadow)
+        if (pluginService.GetPlugin(CurrentComic.Affiliation) is { } p && p.AffiliationTag is { } shadow)
         {
             shadow.IsEnable = false;
             shadow.Icon = "\uE23F";
@@ -90,7 +92,6 @@ public partial class AttributesViewModel : ObservableObject
                 item.ToolTip = LocalResourcesHelper.GetString(LocalResourceKey.Tag) + ": " + item.Name;
                 Tags.Add(item);
             }
-
 
         Tags.Add(new LocalTag
         {

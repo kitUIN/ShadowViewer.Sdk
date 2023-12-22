@@ -10,19 +10,19 @@ namespace ShadowViewer.Cache
     {
         public CacheZip() { }
         [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable = false)]
-        public string Id { get; private set; }
-        public string Md5 { get; private set; }
+        public string? Id { get; private set; }
+        public string? Md5 { get; private set; }
         [SugarColumn(ColumnDataType = "Nvarchar(1024)")]
-        public string Sha1 { get; private set; }
+        public string? Sha1 { get; private set; }
         [SugarColumn(ColumnDataType = "Nvarchar(2048)", IsNullable = true)]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [SugarColumn(ColumnDataType = "Nvarchar(2048)", IsNullable = true)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [SugarColumn(ColumnDataType = "Ntext", IsNullable = true)]
-        public string CachePath { get; set; }
+        public string? CachePath { get; set; }
         [SugarColumn(ColumnDataType = "Nchar(32)", IsNullable = true)]
-        public string ComicId { get;  set; }
+        public string? ComicId { get;  set; }
 
         public static string RandomId()
         {
@@ -35,9 +35,9 @@ namespace ShadowViewer.Cache
 
             return id;
         }
-        public static CacheZip Create(string md5, string sha1,string password=null,string cachePath= null)
+        public static CacheZip Create(string md5, string sha1,string? password=null,string? cachePath= null)
         {
-            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
+            // var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var id = RandomId();
             return new CacheZip()
             {

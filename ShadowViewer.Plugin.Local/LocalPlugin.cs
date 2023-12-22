@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DryIoc;
 using Microsoft.UI.Xaml.Controls;
+using ShadowViewer.Enums;
 using ShadowViewer.Extensions;
 using ShadowViewer.Interfaces;
 using ShadowViewer.Models;
@@ -12,6 +13,7 @@ using ShadowViewer.Plugin.Local.Pages;
 using ShadowViewer.Plugin.Local.ViewModels;
 using ShadowViewer.Plugins;
 using ShadowViewer.Services;
+using ShadowViewer.Services.Interfaces;
 using SqlSugar;
 
 namespace ShadowViewer.Plugin.Local;
@@ -28,7 +30,7 @@ namespace ShadowViewer.Plugin.Local;
 public class LocalPlugin : PluginBase
 {
     public LocalPlugin(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginService pluginService) : base(callableService, sqlSugarClient,
+        CompressService compressServices, IPluginService pluginService) : base(callableService, sqlSugarClient,
         compressServices, pluginService)
     {
         DiFactory.Services.Register<AttributesViewModel>(Reuse.Transient);
@@ -38,12 +40,7 @@ public class LocalPlugin : PluginBase
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public override PluginMetaData MetaData { get; } = typeof(LocalPlugin).GetPluginMetaData();
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public override LocalTag AffiliationTag { get; }
+    public override LocalTag AffiliationTag { get; } = new LocalTag("Local", "#000000", "#ffd657");
 
     /// <summary>
     /// <inheritdoc/>
@@ -88,7 +85,7 @@ public class LocalPlugin : PluginBase
         var res = new List<IShadowSearchItem>();
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput && !string.IsNullOrEmpty(sender.Text))
             res.AddRange(Db.Queryable<LocalComic>().Where(x => x.Name.Contains(sender.Text)).ToList().Select(item =>
-                new LocalSearchItem(item.Name, MetaData.Id, item.Id, LocalSearchMode.SearchComic)));
+                new LocalSearchItem(item.Name, MetaData!.Id, item.Id, LocalSearchMode.SearchComic)));
         return res;
     }
 

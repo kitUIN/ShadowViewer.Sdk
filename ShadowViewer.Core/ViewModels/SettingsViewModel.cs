@@ -65,7 +65,6 @@ namespace ShadowViewer.ViewModels
             }
         }
 
-
         partial void OnIsImportAgainChanged(bool oldValue, bool newValue)
         {
             if (oldValue != newValue)

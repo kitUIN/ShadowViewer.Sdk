@@ -5,7 +5,8 @@
     xmlns:converters="using:CommunityToolkit.WinUI.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ex="using:ShadowViewer.Plugin.Local.Extensions"
-    xmlns:icons="using:FluentIcon"
+    xmlns:icons="using:FluentIcon.WinUI"
+    xmlns:interfaces="using:ShadowViewer.Services.Interfaces"
     xmlns:local2="using:ShadowViewer.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:plugins="using:ShadowViewer.Plugins"
@@ -55,12 +56,12 @@
                         <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xECC8;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton Label="{x:Bind PluginService.MinVersion}">
+                <AppBarButton Label="{x:Bind interfaces:IPluginService.MinVersion}">
                     <ToolTipService.ToolTip>
                         <ToolTip>
                             <TextBlock>
                                 <Run Text="{ex:LocalLocale Key=MinVersion}" />
-                                <Run Text="{x:Bind PluginService.MinVersion}" />
+                                <Run Text="{x:Bind interfaces:IPluginService.MinVersion}" />
                             </TextBlock>
                         </ToolTip>
                     </ToolTipService.ToolTip>
@@ -82,7 +83,6 @@
         <GridView
             Grid.Row="1"
             Margin="20,10,0,0"
-            ItemsSource="{x:Bind PluginService.Plugins, Mode=OneWay}"
             SelectionMode="None">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="plugins:IPlugin">
@@ -148,11 +148,11 @@
                                     Orientation="Vertical"
                                     Spacing="3">
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <icons:FluentIcon Symbol="PredictionsRegular" />
+                                        <icons:FluentRegularIcon Symbol="Predictions20Regular" />
                                         <TextBlock Text="{x:Bind MetaData.Id}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Spacing="3">
-                                        <icons:FluentIcon Symbol="TargetArrowRegular" />
+                                        <icons:FluentRegularIcon Symbol="TargetArrow20Regular" />
                                         <TextBlock Text="{x:Bind MetaData.Version}" />
                                     </StackPanel>
                                 </StackPanel>
@@ -192,7 +192,7 @@
                                 Click="More_Click"
                                 Loaded="More_Loaded"
                                 Tag="{x:Bind}">
-                                <icons:FluentIcon FontSize="25" Symbol="MoreHorizontalRegular" />
+                                <icons:FluentRegularIcon FontSize="25" Symbol="MoreHorizontal20Regular" />
                                 <FlyoutBase.AttachedFlyout>
                                     <MenuFlyout Placement="Right">
                                         <MenuFlyoutItem
@@ -218,7 +218,7 @@
                                 Click="Settings_Click"
                                 Tag="{x:Bind MetaData.Id}"
                                 Visibility="{x:Bind SettingsPage, Converter={StaticResource EmptyObjectToVisibilityConverter}}">
-                                <icons:FluentIcon FontSize="25" Symbol="SettingsRegular" />
+                                <icons:FluentRegularIcon FontSize="25" Symbol="Settings20Regular" />
                             </HyperlinkButton>
                         </Grid>
                     </Grid>
