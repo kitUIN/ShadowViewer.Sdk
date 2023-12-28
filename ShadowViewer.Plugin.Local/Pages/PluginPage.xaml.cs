@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Windows.Storage;
 using ShadowViewer.Interfaces;
 using ShadowViewer.Services.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace ShadowViewer.Plugin.Local.Pages
 {
@@ -24,11 +25,20 @@ namespace ShadowViewer.Plugin.Local.Pages
     {
         public IPluginService PluginService { get; } = DiFactory.Services.Resolve<IPluginService>();
         public ICallableService Caller { get; } = DiFactory.Services.Resolve<ICallableService>();
+        public ObservableCollection<IPlugin> Plugins { get; } = new ObservableCollection<IPlugin>();
         public PluginPage()
         {
             this.InitializeComponent();
+            InitPlugins();
         }
-        
+        public void InitPlugins()
+        {
+            Plugins.Clear();
+            foreach(var plugin in PluginService.GetPlugins())
+            {
+                Plugins.Add(plugin);
+            }
+        }
         /// <summary>
         /// «∞Õ˘≤Âº˛…Ë÷√
         /// </summary>

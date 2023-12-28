@@ -102,7 +102,7 @@ namespace ShadowViewer.Helpers
         /// </summary>
         public static async Task<bool> CheckImportAgain(XamlRoot xamlRoot, string zip=null, string path=null)
         {
-            if (!Config.IsImportAgain)
+            if (!ConfigHelper.GetBoolean("LocalIsImportAgain"))
             {
                 ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot,
                 CoreResourcesHelper.GetString(CoreResourceKey.ImportError),

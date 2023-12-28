@@ -328,8 +328,8 @@ public sealed partial class BookShelfPage : Page
     private void Controls_Loaded(object sender, RoutedEventArgs e)
     {
         SelectionPanel.Visibility = Visibility.Collapsed;
-        ShelfInfo.Visibility = Config.IsBookShelfInfoBar.ToVisibility();
-        StyleSegmented.SelectedIndex = Config.BookStyleDetail ? 1 : 0;
+        ShelfInfo.Visibility = ConfigHelper.GetBoolean(LocalSettingKey.LocalIsBookShelfInfoBar).ToVisibility();
+        StyleSegmented.SelectedIndex = ConfigHelper.GetBoolean(LocalSettingKey.LocalBookStyleDetail) ? 1 : 0;
         ShadowCommandAddNewFolder.IsEnabled = ViewModel.Path == "local";
     }
 
@@ -340,12 +340,12 @@ public sealed partial class BookShelfPage : Page
     {
         void Remember_Checked(object sender, RoutedEventArgs e)
         {
-            Config.IsRememberDeleteFilesWithComicDelete = (sender as CheckBox)?.IsChecked ?? false;
+            ConfigHelper.Set(LocalSettingKey.LocalIsRememberDeleteFilesWithComicDelete,(sender as CheckBox)?.IsChecked ?? false);
         }
 
         void DeleteFiles_Checked(object sender, RoutedEventArgs e)
         {
-            Config.IsDeleteFilesWithComicDelete = (sender as CheckBox)?.IsChecked ?? false;
+            ConfigHelper.Set(LocalSettingKey.LocalIsDeleteFilesWithComicDelete, (sender as CheckBox)?.IsChecked ?? false);
         }
 
         var dialog = XamlHelper.CreateContentDialog(XamlRoot);
@@ -354,14 +354,14 @@ public sealed partial class BookShelfPage : Page
         var deleteFiles = new CheckBox()
         {
             Content = LocalResourcesHelper.GetString(LocalResourceKey.DeleteComicFiles),
-            IsChecked = Config.IsDeleteFilesWithComicDelete
+            IsChecked = ConfigHelper.GetBoolean(LocalSettingKey.LocalIsDeleteFilesWithComicDelete),
         };
         deleteFiles.Checked += DeleteFiles_Checked;
         deleteFiles.Unchecked += DeleteFiles_Checked;
         var remember = new CheckBox()
         {
             Content = LocalResourcesHelper.GetString(LocalResourceKey.Remember),
-            IsChecked = Config.IsRememberDeleteFilesWithComicDelete
+            IsChecked = ConfigHelper.GetBoolean(LocalSettingKey.LocalIsRememberDeleteFilesWithComicDelete),
         };
         remember.Checked += Remember_Checked;
         remember.Unchecked += Remember_Checked;
@@ -388,7 +388,7 @@ public sealed partial class BookShelfPage : Page
         }
         else
         {
-            if (Config.IsRememberDeleteFilesWithComicDelete)
+            if (ConfigHelper.GetBoolean(LocalSettingKey.LocalIsRememberDeleteFilesWithComicDelete))
                 DeleteComics();
             else
                 DeleteMessageDialog();
@@ -403,7 +403,7 @@ public sealed partial class BookShelfPage : Page
         var db = DiFactory.Services.Resolve<ISqlSugarClient>();
         foreach (var comic in ContentGridView.SelectedItems.ToList().Cast<LocalComic>())
         {
-            if (Config.IsDeleteFilesWithComicDelete && !comic.IsFolder &&
+            if (ConfigHelper.GetBoolean(LocalSettingKey.LocalIsDeleteFilesWithComicDelete) && !comic.IsFolder &&
                 db.Queryable<CacheZip>().Any(x => x.ComicId == comic.Id)) comic.Link.DeleteDirectory();
             ViewModel.LocalComics.Remove(comic);
         }
@@ -417,9 +417,9 @@ public sealed partial class BookShelfPage : Page
         var view = sender as GridView;
         if (e.Key == VirtualKey.A &&
             WindowHelper.GetWindowForXamlRoot(XamlRoot)
-                .CoreWindow.GetKeyState(VirtualKey.Shift)
+                !.CoreWindow.GetKeyState(VirtualKey.Shift)
                 .HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down))
-            foreach (var comic in view.ItemsSource as ObservableCollection<LocalComic>)
+            foreach (var comic in (ObservableCollection<LocalComic>)view!.ItemsSource)
                 view.SelectedItems.Add(comic);
         else if (e.Key == VirtualKey.Delete) Delete();
     }
@@ -462,10 +462,10 @@ public sealed partial class BookShelfPage : Page
     private void Segmented_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var se = sender as Segmented;
-        if (ContentGridView is null) return;
-        Config.BookStyleDetail = se.SelectedIndex == 1;
+        if (ContentGridView is null || se is null) return;
+        ConfigHelper.Set(LocalSettingKey.LocalBookStyleDetail, se!.SelectedIndex == 1);
         ContentGridView.ItemTemplate =
-            Resources[(Config.BookStyleDetail ? "Detail" : "Simple") + "LocalComicItem"] as DataTemplate;
+            Resources[(ConfigHelper.GetBoolean(LocalSettingKey.LocalBookStyleDetail) ? "Detail" : "Simple") + "LocalComicItem"] as DataTemplate;
     }
 
     /// <summary>

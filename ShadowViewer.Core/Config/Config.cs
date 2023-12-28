@@ -77,31 +77,7 @@ namespace ShadowViewer.Configs
                 }
             }
         }
-        
-        /// <summary>
-        /// 删除漫画同时删除漫画缓存
-        /// </summary>
-        public static bool IsDeleteFilesWithComicDelete
-        {
-            get => ConfigHelper.GetBoolean("IsDeleteFilesWithComicDelete");
-            set => ConfigHelper.Set("IsDeleteFilesWithComicDelete", value);
-        }
-        /// <summary>
-        /// 允许相同文件夹导入
-        /// </summary>
-        public static bool IsImportAgain
-        {
-            get => ConfigHelper.GetBoolean("IsImportAgain");
-            set => ConfigHelper.Set("IsImportAgain", value);
-        } 
-        /// <summary>
-        /// 书架-样式-详细/简约
-        /// </summary>
-        public static bool BookStyleDetail
-        {
-            get => ConfigHelper.GetBoolean("BookStyleDetail");
-            set => ConfigHelper.Set("BookStyleDetail", value);
-        }
+
         private static void IsDebugEvent()
         {
             var defaultPath = ConfigHelper.IsPackaged ? ApplicationData.Current.LocalFolder.Path : System.Environment.CurrentDirectory;

@@ -33,7 +33,6 @@ namespace ShadowViewer
             Services.Register<ICallableService, CallableService>(Reuse.Singleton);
             Services.Register<CompressService>(Reuse.Singleton);
             Services.Register<ResponderService>(Reuse.Singleton);
-            Services.Register<NavigationViewModel>(Reuse.Singleton);
             Services.Register<BookShelfViewModel>(Reuse.Transient);
         }
 
