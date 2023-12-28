@@ -25,9 +25,9 @@ public class PluginService : IPluginService
     /// <inheritdoc/>
     /// </summary>
 
-    private readonly Dictionary<string, IPlugin> plugins = new();
+    private readonly Dictionary<string, IPlugin> plugins = new(StringComparer.OrdinalIgnoreCase);
 
-    private readonly Dictionary<string, SortPluginData> tempSortPlugins = new();
+    private readonly Dictionary<string, SortPluginData> tempSortPlugins = new(StringComparer.OrdinalIgnoreCase);
     private readonly List<SortPluginData> sortLoader = new();
 
     /// <summary>
@@ -35,53 +35,72 @@ public class PluginService : IPluginService
     /// </summary>
     public async Task ImportFromPluginsPathAsync()
     {
-        await GetPathFromPluginsPathAsync(ConfigHelper.GetString("PluginsPath")); 
-        var sorted = PluginSortExtension.SortPlugin(sortLoader, x => x.Requires, tempSortPlugins);
-        LoadPlugins(sorted);
-        tempSortPlugins.Clear();
-        sortLoader.Clear();
+        await ImportFromPathAsync(ConfigHelper.GetString("PluginsPath"));
     }
     public void ImportOnePlugin<T>() where T:IPlugin
     {
         LoadPlugin(typeof(T));
     }
+
+    /// <summary>
+    /// 从路径导入
+    /// </summary>
+    /// <param name="path"></param>
+    public async Task ImportFromPathAsync(string directoryPath)
+    {
+        tempSortPlugins.Clear();
+        sortLoader.Clear();
+        var dir = new DirectoryInfo(directoryPath);
+        if (dir is null) return;
+        await GetPathFromPluginsPathAsync(dir);
+        var sorted = PluginSortExtension.SortPlugin(sortLoader, x => x.Requires, tempSortPlugins);
+        LoadPlugins(sorted);
+    }
     /// <summary>
     /// 从插件文件夹中获取所有插件路径
     /// </summary>
-    private async Task GetPathFromPluginsPathAsync(string path)
+    private async Task GetPathFromPluginsPathAsync(DirectoryInfo dir)
     {
-        var dir = new DirectoryInfo(path);
+        var pls = dir.GetFiles("ShadowViewer.Plugin.*.dll");
+        if (pls != null && pls.Length > 0)
+        {
+            foreach (var file in pls)
+            {
+                await LoadOnePluginAsync(file.FullName);
+            }
+        }
         foreach (var item in dir.GetDirectories())
         {
-            foreach (var file in item.GetFiles("ShadowViewer.Plugin.*.dll"))
-            {
-                var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(file.FullName);
-                var t = asm.ForeignAssembly.GetExportedTypes().FirstOrDefault(x => x.IsAssignableTo(typeof(IPlugin)));
-                if (t != null)
-                {
-                    var data = t.GetPluginMetaData();
-                    if (data != null)
-                    {
-                        var sortData = new SortPluginData
-                        {
-                            Requires = data.Require,
-                            Id = data.Id,
-                            PluginType = t,
-                        };
-                        if (!tempSortPlugins.ContainsKey(sortData.Id))
-                        {
-                            Logger.Warning("[插件管理器]插件{Path}[{ID}({Name})]重复加载",
-                            path, data.Id, data.Name);
-                            return;
-                        }
-                        sortLoader.Add(sortData);
-                        tempSortPlugins[sortData.Id] = sortData;
-                    }
-                }
-            }
+            await GetPathFromPluginsPathAsync(item);
         }
     }
 
+    private async Task LoadOnePluginAsync(string path)
+    {
+        var asm = await ApplicationExtensionHost.Current.LoadExtensionAsync(path);
+        var t = asm.ForeignAssembly.GetExportedTypes().FirstOrDefault(x => x.IsAssignableTo(typeof(IPlugin)));
+        if (t != null)
+        {
+            var data = t.GetPluginMetaData();
+            if (data != null)
+            {
+                var sortData = new SortPluginData
+                {
+                    Requires = data.Require,
+                    Id = data.Id,
+                    PluginType = t,
+                };
+                if (!tempSortPlugins.ContainsKey(data.Id) || plugins.ContainsKey(data.Id))
+                {
+                    Logger.Warning("[插件管理器]插件{Path}[{ID}({Name})]已存在,跳过",
+                    path, data.Id, data.Name);
+                    return;
+                }
+                sortLoader.Add(sortData);
+                tempSortPlugins[sortData.Id] = sortData;
+            }
+        }
+    }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -267,5 +286,13 @@ public class PluginService : IPluginService
     {
         if(GetPlugin(id)is IPlugin plugin && plugin.IsEnabled) return plugin;
         return null;
+    }
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <returns></returns>
+    public IList<IPlugin> GetPlugins()
+    {
+        return plugins.Values.ToList();
     }
 }

@@ -19,10 +19,6 @@ namespace ShadowViewer.Configs
             {
                 PluginsPath = Path.Combine(defaultPath, "Plugins");
             }
-            if (!ConfigHelper.Contains("IsBookShelfInfoBar"))
-            {
-                IsBookShelfInfoBar = true;
-            }
 #if DEBUG
             IsDebug = true;
 #endif
@@ -81,14 +77,7 @@ namespace ShadowViewer.Configs
                 }
             }
         }
-        /// <summary>
-        /// 删除二次确认
-        /// </summary>
-        public static bool IsRememberDeleteFilesWithComicDelete
-        {
-            get => ConfigHelper.GetBoolean("IsRememberDeleteFilesWithComicDelete");
-            set => ConfigHelper.Set("IsRememberDeleteFilesWithComicDelete", value);
-        }
+        
         /// <summary>
         /// 删除漫画同时删除漫画缓存
         /// </summary>
@@ -96,14 +85,6 @@ namespace ShadowViewer.Configs
         {
             get => ConfigHelper.GetBoolean("IsDeleteFilesWithComicDelete");
             set => ConfigHelper.Set("IsDeleteFilesWithComicDelete", value);
-        }
-        /// <summary>
-        /// 书架顶部左下信息栏
-        /// </summary>
-        public static bool IsBookShelfInfoBar
-        {
-            get => ConfigHelper.GetBoolean("IsBookShelfInfoBar");
-            set => ConfigHelper.Set("IsBookShelfInfoBar", value);
         }
         /// <summary>
         /// 允许相同文件夹导入

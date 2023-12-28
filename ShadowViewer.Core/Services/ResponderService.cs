@@ -28,7 +28,7 @@ public class ResponderService
     public TResponder? GetEnabledResponder<TResponder>(string id)where TResponder: IResponder
     {
         if (GetResponders<TResponder>()
-            .FirstOrDefault(x => id == x.Id) is { } responder &&
+            .FirstOrDefault(x => String.Equals(id , x.Id, StringComparison.CurrentCultureIgnoreCase)) is { } responder &&
             PluginService.IsEnabled(id) == true) return responder;
         return default;
     }
