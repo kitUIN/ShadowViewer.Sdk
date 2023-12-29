@@ -28,7 +28,7 @@ namespace ShadowViewer.Helpers
         /// <summary>
         /// 从文件夹导入漫画
         /// </summary>
-        public static LocalComic ImportComicsFromFolder(StorageFolder folder, string parent, string comicId = null, string comicName = null)
+        public static LocalComic ImportComicsFromFolder(StorageFolder folder, string parent, string? comicId = null, string? comicName = null)
         {
             string img;
             ShadowFile root = new ShadowFile(folder);
@@ -39,10 +39,10 @@ namespace ShadowViewer.Helpers
             }
             else
             {
-                static ShadowFile Cycle(List<ShadowFile> entries)
+                static ShadowFile? Cycle(List<ShadowFile> entries)
                 {
-                    ShadowFile imgEntry = null;
-                    foreach (ShadowFile item in entries)
+                    ShadowFile? imgEntry = null;
+                    foreach (var item in entries)
                     {
                         imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory);
                         if (imgEntry != null) return imgEntry;
@@ -50,7 +50,7 @@ namespace ShadowViewer.Helpers
                     return null;
                 }
                 List<ShadowFile> two = ShadowFile.GetDepthFiles(root, 2);
-                ShadowFile imgEntry = Cycle(two);
+                var imgEntry = Cycle(two);
                 if (imgEntry == null)
                 {
                     two = ShadowFile.GetDepthFiles(root, 1);
@@ -60,7 +60,7 @@ namespace ShadowViewer.Helpers
                 {
                     throw new Exception("无效文件夹");
                 }
-                img = imgEntry?.Path;
+                img = imgEntry!.Path;
             }
             var comic = LocalComic.Create(comicName ?? root.Name, root.Path, img: img, parent: parent, size: root.Size, id: comicId);
             db.Insertable(comic).ExecuteCommand();
@@ -78,9 +78,9 @@ namespace ShadowViewer.Helpers
             {
                 return cacheImg.Path;
             }
-            static ShadowEntry Cycle(List<ShadowEntry> entries)
+            static ShadowEntry? Cycle(List<ShadowEntry> entries)
             {
-                ShadowEntry imgEntry = null;
+                ShadowEntry? imgEntry = null;
                 foreach (ShadowEntry item in entries)
                 {
                     imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory);
@@ -89,18 +89,18 @@ namespace ShadowViewer.Helpers
                 return null;
             }
             List<ShadowEntry> two = ShadowEntry.GetDepthEntries(root, 2);
-            ShadowEntry imgEntry = Cycle(two);
+            var imgEntry = Cycle(two);
             if (imgEntry == null)
             {
                 two = ShadowEntry.GetDepthEntries(root, 1);
                 imgEntry = Cycle(two);
             }
-            return Path.Combine(dir, imgEntry.Path);
+            return Path.Combine(dir, imgEntry!.Path);
         }
         /// <summary>
         /// 检查重复导入
         /// </summary>
-        public static async Task<bool> CheckImportAgain(XamlRoot xamlRoot, string zip=null, string path=null)
+        public static async Task<bool> CheckImportAgain(XamlRoot xamlRoot, string? zip = null, string? path = null)
         {
             if (!ConfigHelper.GetBoolean("LocalIsImportAgain"))
             {

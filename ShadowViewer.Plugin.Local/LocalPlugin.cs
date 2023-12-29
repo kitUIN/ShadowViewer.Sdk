@@ -15,6 +15,7 @@ using ShadowViewer.Plugin.Local.ViewModels;
 using ShadowViewer.Plugins;
 using ShadowViewer.Services;
 using ShadowViewer.Services.Interfaces;
+using ShadowViewer.ViewModels;
 using SqlSugar;
 
 namespace ShadowViewer.Plugin.Local;
@@ -34,6 +35,7 @@ public class LocalPlugin : PluginBase
     {
         DiFactory.Services.Register<AttributesViewModel>(Reuse.Transient);
         DiFactory.Services.Register<PicViewModel>(Reuse.Transient);
+        DiFactory.Services.Register<BookShelfViewModel>(Reuse.Transient);
     }
 
     /// <summary>

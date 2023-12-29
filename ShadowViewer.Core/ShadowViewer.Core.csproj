@@ -5,8 +5,8 @@
     <RootNamespace>ShadowViewer</RootNamespace>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
-	  <Nullable>enable</Nullable>
-	  <EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
+	<Nullable>enable</Nullable>
+	<EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Helpers\TagsHelper.cs" />
@@ -17,7 +17,6 @@
     <None Remove="Controls\StatusBlock.xaml" />
     <None Remove="Themes\Generic.xaml" />
   </ItemGroup>
-
   <ItemGroup>
       <PackageReference Include="CommunityToolkit.Labs.WinUI.SegmentedControl" Version="0.0.3" />
       <PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />

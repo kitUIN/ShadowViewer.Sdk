@@ -35,7 +35,7 @@ namespace ShadowViewer.Configs
         /// </summary>
         public static string ComicsPath
         {
-            get => ConfigHelper.GetString("ComicsPath");
+            get => ConfigHelper.GetString("ComicsPath")!;
             set => ConfigHelper.Set("ComicsPath", value);
         }
         /// <summary>
@@ -43,7 +43,7 @@ namespace ShadowViewer.Configs
         /// </summary>
         public static string PluginsPath
         {
-            get => ConfigHelper.GetString("PluginsPath");
+            get => ConfigHelper.GetString("PluginsPath")!;
             set => ConfigHelper.Set("PluginsPath", value);
         }
         /// <summary>
@@ -51,7 +51,7 @@ namespace ShadowViewer.Configs
         /// </summary>
         public static string PluginsUri
         {
-            get => ConfigHelper.GetString("PluginsUri");
+            get => ConfigHelper.GetString("PluginsUri")!;
             set => ConfigHelper.Set("PluginsUri", value);
         }
         /// <summary>
@@ -59,7 +59,7 @@ namespace ShadowViewer.Configs
         /// </summary>
         public static string TempPath
         {
-            get => ConfigHelper.GetString("TempPath");
+            get => ConfigHelper.GetString("TempPath")!;
             set => ConfigHelper.Set("TempPath", value);
         }
         /// <summary>

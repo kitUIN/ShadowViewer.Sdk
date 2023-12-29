@@ -34,7 +34,6 @@ global using ShadowViewer.Enums;
 global using ShadowViewer.Interfaces;
 global using ShadowViewer.Helpers;
 global using ShadowViewer.Args;
-global using ShadowViewer.ViewModels;
 global using Microsoft.UI;
 global using Windows.UI;
 global using System.Web;

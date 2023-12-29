@@ -35,7 +35,7 @@ public class PluginService : IPluginService
     /// </summary>
     public async Task ImportFromPluginsPathAsync()
     {
-        await ImportFromPathAsync(ConfigHelper.GetString("PluginsPath"));
+        await ImportFromPathAsync(ConfigHelper.GetString("PluginsPath")!);
     }
     public void ImportOnePlugin<T>() where T:IPlugin
     {

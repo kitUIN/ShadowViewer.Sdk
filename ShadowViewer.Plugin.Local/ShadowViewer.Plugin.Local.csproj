@@ -11,10 +11,7 @@
   <ItemGroup>
 	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
 	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ShadowViewer.Core\ShadowViewer.Core.csproj" />
+	  <PackageReference Include="ShadowViewer.Core" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,4 +25,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="nuget pack .\ShadowViewer.Plugin.Local.nuspec" />
+	</Target>
 </Project>
