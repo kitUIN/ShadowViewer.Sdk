@@ -36,7 +36,7 @@ public class PluginMetaData : Attribute
     /// 1.本地文件,以ms-appx://开头<br/>
     /// 2.FontIcon,以font://开头<br/>
     /// 3.FluentIcon,以fluent://开头
-    /// <example>
+    /// <example><br/>
     /// 1.ms-appx:///Assets/Icons/Logo.png<br/>
     /// 2.font://\uE714<br/>
     /// 3.fluent://\uE714

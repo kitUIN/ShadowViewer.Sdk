@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DryIoc;
 using Microsoft.UI.Xaml.Controls;
+using Serilog;
 using ShadowViewer.Enums;
 using ShadowViewer.Extensions;
 using ShadowViewer.Interfaces;
@@ -29,9 +30,7 @@ namespace ShadowViewer.Plugin.Local;
     new []{"zh-CN"})]
 public class LocalPlugin : PluginBase
 {
-    public LocalPlugin(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, IPluginService pluginService) : base(callableService, sqlSugarClient,
-        compressServices, pluginService)
+    public LocalPlugin(ICallableService callableService, ISqlSugarClient sqlSugarClient, CompressService compressServices, IPluginService pluginService, ILogger logger) : base(callableService, sqlSugarClient, compressServices, pluginService, logger)
     {
         DiFactory.Services.Register<AttributesViewModel>(Reuse.Transient);
         DiFactory.Services.Register<PicViewModel>(Reuse.Transient);

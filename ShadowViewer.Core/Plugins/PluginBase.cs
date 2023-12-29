@@ -1,4 +1,5 @@
-﻿using ShadowViewer.Extensions;
+﻿using Serilog.Core;
+using ShadowViewer.Extensions;
 using ShadowViewer.Services.Interfaces;
 using SqlSugar;
 
@@ -6,6 +7,7 @@ namespace ShadowViewer.Plugins;
 
 public abstract partial class PluginBase : IPlugin
 {
+    protected ILogger Logger { get; }
     protected ICallableService Caller { get; }
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
@@ -13,7 +15,7 @@ public abstract partial class PluginBase : IPlugin
     public virtual PluginMetaData MetaData { get; }
 
     protected PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, IPluginService pluginService)
+        CompressService compressServices, IPluginService pluginService,ILogger logger)
     {
         MetaData = this.GetType().GetPluginMetaData();
         foreach (var item in ResourceDictionaries)
@@ -23,7 +25,8 @@ public abstract partial class PluginBase : IPlugin
         Caller = callableService;
         Db = sqlSugarClient;
         CompressServices = compressServices;
-        PluginService = pluginService; 
+        PluginService = pluginService;
+        Logger = logger;
     }
 
     /// <summary>
