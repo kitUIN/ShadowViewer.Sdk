@@ -161,7 +161,7 @@
                                     Grid.Column="1"
                                     VerticalAlignment="Bottom"
                                     IsOn="{x:Bind IsEnabled, Mode=TwoWay}"
-                                    Visibility="{x:Bind CanSwitch, Mode=OneWay}" />
+                                    Visibility="{x:Bind CanSwitch}" />
                             </Grid>
                         </Grid>
                         <Grid Grid.Column="1">
@@ -201,13 +201,13 @@
                                             Icon="Folder"
                                             Tag="{x:Bind}"
                                             Text="{ex:LocalLocale Key=OpenFolder}"
-                                            Visibility="{x:Bind CanOpenFolder, Mode=OneWay}" />
+                                            Visibility="{x:Bind CanOpenFolder}" />
                                         <MenuFlyoutItem
                                             Click="Delete_Click"
                                             Icon="Delete"
                                             Tag="{x:Bind}"
                                             Text="{ex:LocalLocale Key=Delete}"
-                                            Visibility="{x:Bind CanDelete, Mode=OneWay}" />
+                                            Visibility="{x:Bind CanDelete}" />
                                     </MenuFlyout>
                                 </FlyoutBase.AttachedFlyout>
                             </HyperlinkButton>

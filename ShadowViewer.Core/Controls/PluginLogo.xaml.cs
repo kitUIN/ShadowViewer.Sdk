@@ -1,3 +1,5 @@
+using FluentIcon.WinUI;
+
 namespace ShadowViewer.Controls;
 
 public sealed partial class PluginLogo : UserControl
@@ -11,20 +13,32 @@ public sealed partial class PluginLogo : UserControl
     {
         set
         {
-            if (value.StartsWith("ms-appx://"))
+            var url = new Uri(value);
+            if (url != null )
             {
-                BitmapIcon.Visibility = Visibility.Visible;
-                BitmapIcon.UriSource = new Uri(value);
-            }
-            else if (value.StartsWith("font://"))
-            {
-                FontIcon.Visibility = Visibility.Visible;
-                FontIcon.Glyph = value.Replace("font://", "");
-            }
-            else if (value.StartsWith("fluent://"))
-            {
-                FluentIcon.Visibility = Visibility.Visible;
-                FluentIcon.Glyph = value.Replace("fluent://", "");
+                switch(url.Scheme)
+                {
+                    case "ms-appx":
+                        BitmapIcon.Visibility = Visibility.Visible;
+                        BitmapIcon.UriSource = url;
+                        break;
+                    case "font":
+                        FontIcon.Visibility = Visibility.Visible;
+                        FontIcon.Glyph = value.Replace("font://", "");
+                        break;
+                    case "fluent":
+                        if(url.Host == "regular")
+                        {
+                            FluentRegularIcon.Visibility = Visibility.Visible;
+                            FluentRegularIcon.Glyph = value.Replace("fluent://regular/", "");
+                        }else if (url.Host == "filled")
+                        {
+                            FluentRegularIcon.Visibility = Visibility.Visible;
+                            FluentRegularIcon.Glyph = value.Replace("fluent://filled/", "");
+                        }
+                        
+                        break;
+                }
             }
         }
     }

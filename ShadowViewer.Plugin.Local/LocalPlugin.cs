@@ -24,7 +24,7 @@ namespace ShadowViewer.Plugin.Local;
     "阅读器核心功能插件",
     "kitUIN", "0.2.0",
     "https://github.com/kitUIN/ShadowViewer/",
-    "fluent://\uEA4E",
+    "fluent://regular/\uEA4E",
     20230821,
     null,
     new []{"zh-CN"})]

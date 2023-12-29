@@ -35,11 +35,13 @@ public class PluginMetaData : Attribute
     /// 图标<br/>
     /// 1.本地文件,以ms-appx://开头<br/>
     /// 2.FontIcon,以font://开头<br/>
-    /// 3.FluentIcon,以fluent://开头
+    /// 3.FluentRegularIcon,以fluent://regular开头
+    /// 4.FluentFilledIcon,以fluent://filled
     /// <example><br/>
     /// 1.ms-appx:///Assets/Icons/Logo.png<br/>
     /// 2.font://\uE714<br/>
-    /// 3.fluent://\uE714
+    /// 3.fluent://regular/\uE714
+    /// 4.fluent://filled/\uE714
     /// </example>
     /// </summary>
     public string Logo { get; set; }
@@ -68,11 +70,13 @@ public class PluginMetaData : Attribute
     /// <param name="logo">图标<br/>
     /// 1.本地文件,以ms-appx://开头<br/>
     /// 2.FontIcon,以font://开头<br/>
-    /// 3.FluentIcon,以fluent://开头
-    /// <example>
-    /// logo: 1.ms-appx:///Assets/Icons/Logo.png<br/>
-    /// logo: 2.font://\uE714<br/>
-    /// logo: 3.fluent://\uE714
+    /// 3.FluentRegularIcon,以fluent://regular开头
+    /// 4.FluentFilledIcon,以fluent://filled
+    /// <example><br/>
+    /// 1.ms-appx:///Assets/Icons/Logo.png<br/>
+    /// 2.font://\uE714<br/>
+    /// 3.fluent://regular/\uE714
+    /// 4.fluent://filled/\uE714
     /// </example></param>
     /// <param name="requireVersion">支持的插件管理器版本,该版本即为ShadowViewer.Core的发行版</param>
     /// <param name="require">依赖的插件ID</param>

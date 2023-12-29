@@ -12,7 +12,6 @@
     <Compile Remove="Helpers\TagsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Controls\Badge.xaml" />
     <None Remove="Controls\PluginLogo.xaml" />
     <None Remove="Controls\ShadowSearchBar.xaml" />
     <None Remove="Controls\StatusBlock.xaml" />
@@ -37,12 +36,6 @@
       <PackageReference Include="SharpCompress" Version="0.33.0" />
       <PackageReference Include="SqlSugarCore" Version="5.1.4.96" />
 	  <PackageReference Include="CustomExtensions.WinUI" Version="0.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Controls\Badge.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
 
   <ItemGroup>
