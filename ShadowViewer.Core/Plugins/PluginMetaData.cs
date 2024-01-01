@@ -49,7 +49,7 @@ public class PluginMetaData : Attribute
     /// <summary>
     /// 支持的插件管理器版本,该版本即为ShadowViewer.Core的发行版
     /// </summary>
-    public int MinVersion { get; } 
+    public string MinVersion { get; } 
     /// <summary>
     /// 支持的语言
     /// </summary>
@@ -82,7 +82,7 @@ public class PluginMetaData : Attribute
     /// <param name="require">依赖的插件ID</param>
     /// <param name="lang">支持的语言</param>
     public PluginMetaData(string id, string name, string description, string author, string version, string webUri,
-        string logo, int requireVersion, string[]? require, string[] lang)
+        string logo, string requireVersion, string[] require, string[] lang)
     {
         Id = id;
         Name = name;

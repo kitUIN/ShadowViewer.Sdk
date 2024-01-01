@@ -184,7 +184,7 @@ public class PluginService : IPluginService
                 Logger.Warning("[插件管理器]插件[{Namespace}]获取不到主类版本信息", plugin.Namespace);
                 return;
             }
-            if (meta.MinVersion < IPluginService.MinVersion)
+            if (IPluginService.MinVersion.CompareTo(meta.MinVersion) == 1 )
             {
                 Logger.Warning("[插件管理器]插件[{ID}({Name})]内核版本错误,需要{MinVersion},当前{Version}",
                     meta.Id, meta.Name, IPluginService.MinVersion, meta.MinVersion);

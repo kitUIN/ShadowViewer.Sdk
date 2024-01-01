@@ -20,16 +20,8 @@ using SqlSugar;
 
 namespace ShadowViewer.Plugin.Local;
 
-[PluginMetaData("Local",
-    "阅读器应用核心",
-    "阅读器核心功能插件",
-    "kitUIN", "0.2.0",
-    "https://github.com/kitUIN/ShadowViewer/",
-    "fluent://regular/\uEA4E",
-    20230821,
-    null,
-    new []{"zh-CN"})]
-public class LocalPlugin : PluginBase
+[AutoPluginMeta]
+public partial class LocalPlugin : PluginBase
 {
     public LocalPlugin(ICallableService callableService, ISqlSugarClient sqlSugarClient, CompressService compressServices, IPluginService pluginService, ILogger logger) : base(callableService, sqlSugarClient, compressServices, pluginService, logger)
     {

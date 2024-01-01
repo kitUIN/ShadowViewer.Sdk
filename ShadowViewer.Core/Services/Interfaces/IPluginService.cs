@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ShadowViewer.Services.Interfaces
 {
-    public interface IPluginService
+    [AutoCoreVersion]
+    public partial interface IPluginService
     {
-        public static int MinVersion => 20230821;
 
         /// <summary>
         /// 导入一个插件,从类型T中
