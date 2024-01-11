@@ -24,7 +24,7 @@ public class LocalNavigationResponder : NavigationResponderBase
             {
                 Icon = new SymbolIcon(Symbol.Home),
                 Id = "BookShelf",
-                Content = LocalResourcesHelper.GetString(LocalResourceKey.BookShelf)
+                Content = ResourcesHelper.GetString(ResourceKey.BookShelf)
             }
         };
 
@@ -35,7 +35,7 @@ public class LocalNavigationResponder : NavigationResponderBase
             {
                 Icon = new FontIcon { Glyph = "\uE74C" },
                 Id = "PluginManager",
-                Content = LocalResourcesHelper.GetString(LocalResourceKey.PluginManager)
+                Content = ResourcesHelper.GetString(ResourceKey.PluginManager)
             }
         };
 

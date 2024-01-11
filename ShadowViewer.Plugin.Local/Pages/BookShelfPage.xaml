@@ -186,19 +186,19 @@
                 x:Name="ShadowCommandRename"
                 Click="ShadowCommandRename_Click"
                 Icon="Rename"
-                Label="{ex:LocalLocale Key=Rename}"
-                ToolTipService.ToolTip="{ex:LocalLocale Key=Rename}" />
+                Label="{ex:Locale Key=Rename}"
+                ToolTipService.ToolTip="{ex:Locale Key=Rename}" />
             <AppBarButton
                 x:Name="ShadowCommandDelete"
                 Click="ShadowCommandDelete_Click"
                 Icon="Delete"
-                Label="{ex:LocalLocale Key=Delete}"
-                ToolTipService.ToolTip="{ex:LocalLocale Key=Delete}" />
+                Label="{ex:Locale Key=Delete}"
+                ToolTipService.ToolTip="{ex:Locale Key=Delete}" />
             <CommandBarFlyout.SecondaryCommands>
                 <AppBarButton
                     x:Name="ShadowCommandAdd"
-                    Label="{ex:LocalLocale Key=Add}"
-                    ToolTipService.ToolTip="{ex:LocalLocale Key=Add}">
+                    Label="{ex:Locale Key=Add}"
+                    ToolTipService.ToolTip="{ex:Locale Key=Add}">
                     <AppBarButton.Icon>
                         <FontIcon Glyph="&#xECC8;" />
                     </AppBarButton.Icon>
@@ -207,8 +207,8 @@
                             <MenuFlyoutItem
                                 x:Name="ShadowCommandAddFromFolder"
                                 Click="ShadowCommandAddFromFolder_Click"
-                                Text="{ex:LocalLocale Key=NewFolder}"
-                                ToolTipService.ToolTip="{ex:LocalLocale Key=NewFolder}">
+                                Text="{ex:Locale Key=NewFolder}"
+                                ToolTipService.ToolTip="{ex:Locale Key=NewFolder}">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xE82E;" />
                                 </MenuFlyoutItem.Icon>
@@ -216,8 +216,8 @@
                             <MenuFlyoutItem
                                 x:Name="ShadowCommandAddFromZip"
                                 Click="ShadowCommandAddFromZip_Click"
-                                Text="{ex:LocalLocale Key=ImportFromZip}"
-                                ToolTipService.ToolTip="{ex:LocalLocale Key=ImportFromZip}">
+                                Text="{ex:Locale Key=ImportFromZip}"
+                                ToolTipService.ToolTip="{ex:Locale Key=ImportFromZip}">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xF012;" />
                                 </MenuFlyoutItem.Icon>
@@ -230,14 +230,14 @@
                     x:Name="ShadowCommandMove"
                     Click="ShadowCommandMove_Click"
                     Icon="MoveToFolder"
-                    Label="{ex:LocalLocale Key=MoveTo}"
-                    ToolTipService.ToolTip="{ex:LocalLocale Key=MoveTo}" />
+                    Label="{ex:Locale Key=MoveTo}"
+                    ToolTipService.ToolTip="{ex:Locale Key=MoveTo}" />
                 <AppBarButton
                     x:Name="ShadowCommandStatus"
                     Click="ShadowCommandStatus_Click"
                     Icon="Repair"
-                    Label="{ex:LocalLocale Key=Status}"
-                    ToolTipService.ToolTip="{ex:LocalLocale Key=Status}" />
+                    Label="{ex:Locale Key=Status}"
+                    ToolTipService.ToolTip="{ex:Locale Key=Status}" />
             </CommandBarFlyout.SecondaryCommands>
         </CommandBarFlyout>
         <!--#endregion-->
@@ -245,7 +245,7 @@
         <!--#region Â·¾¶Ê÷-->
         <TeachingTip
             x:Name="MoveTeachingTip"
-            Title="{ex:LocalLocale Key=MoveTo}"
+            Title="{ex:Locale Key=MoveTo}"
             ActionButtonClick="MoveTeachingTip_ActionButtonClick"
             IsLightDismissEnabled="True"
             PlacementMargin="20"
@@ -301,9 +301,9 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right"
                 IsOpen="False">
-                <AppBarButton Label="{ex:LocalLocale Key=Add}">
+                <AppBarButton Label="{ex:Locale Key=Add}">
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{ex:LocalLocale Key=Add}" />
+                        <ToolTip Content="{ex:Locale Key=Add}" />
                     </ToolTipService.ToolTip>
                     <AppBarButton.Icon>
                         <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xECC8;" />
@@ -314,33 +314,33 @@
                                 x:Name="ShadowCommandAddNewFolder"
                                 Click="ShadowCommandAddNewFolder_Click"
                                 Icon="NewFolder"
-                                Text="{ex:LocalLocale Key=NewFolder}">
+                                Text="{ex:Locale Key=NewFolder}">
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{ex:LocalLocale Key=NewFolder}" />
+                                    <ToolTip Content="{ex:Locale Key=NewFolder}" />
                                 </ToolTipService.ToolTip>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Click="ShadowCommandAddFromFolder_Click" Text="{ex:LocalLocale Key=ImportFromFolder}">
+                            <MenuFlyoutItem Click="ShadowCommandAddFromFolder_Click" Text="{ex:Locale Key=ImportFromFolder}">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xE82E;" />
                                 </MenuFlyoutItem.Icon>
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{ex:LocalLocale Key=ImportFromFolder}" />
+                                    <ToolTip Content="{ex:Locale Key=ImportFromFolder}" />
                                 </ToolTipService.ToolTip>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Click="ShadowCommandAddFromZip_Click" Text="{ex:LocalLocale Key=ImportFromZip}">
+                            <MenuFlyoutItem Click="ShadowCommandAddFromZip_Click" Text="{ex:Locale Key=ImportFromZip}">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xF012;" />
                                 </MenuFlyoutItem.Icon>
                                 <ToolTipService.ToolTip>
-                                    <ToolTip Content="{ex:LocalLocale Key=ImportFromZip}" />
+                                    <ToolTip Content="{ex:Locale Key=ImportFromZip}" />
                                 </ToolTipService.ToolTip>
                             </MenuFlyoutItem>
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
-                <AppBarButton Click="ShadowCommandRefresh_Click" Label="{ex:LocalLocale Key=Refresh}">
+                <AppBarButton Click="ShadowCommandRefresh_Click" Label="{ex:Locale Key=Refresh}">
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{ex:LocalLocale Key=Refresh}" />
+                        <ToolTip Content="{ex:Locale Key=Refresh}" />
                     </ToolTipService.ToolTip>
                     <AppBarButton.Icon>
                         <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xE72C;" />
@@ -356,12 +356,12 @@
                 <labs:SegmentedItem
                     Width="60"
                     IsSelected="True"
-                    ToolTipService.ToolTip="{ex:LocalLocale Key=SimpleView}">
+                    ToolTipService.ToolTip="{ex:Locale Key=SimpleView}">
                     <labs:SegmentedItem.Icon>
                         <FontIcon Glyph="&#xE163;" />
                     </labs:SegmentedItem.Icon>
                 </labs:SegmentedItem>
-                <labs:SegmentedItem Width="60" ToolTipService.ToolTip="{ex:LocalLocale Key=DetailView}">
+                <labs:SegmentedItem Width="60" ToolTipService.ToolTip="{ex:Locale Key=DetailView}">
                     <labs:SegmentedItem.Icon>
                         <FontIcon Glyph="&#xE161;" />
                     </labs:SegmentedItem.Icon>
@@ -380,17 +380,17 @@
                 Background="Transparent"
                 DefaultLabelPosition="Right"
                 IsOpen="False">
-                <AppBarButton Label="{ex:LocalLocale Key=Filter}">
+                <AppBarButton Label="{ex:Locale Key=Filter}">
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{ex:LocalLocale Key=Filter}" />
+                        <ToolTip Content="{ex:Locale Key=Filter}" />
                     </ToolTipService.ToolTip>
                     <AppBarButton.Icon>
                         <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xE71C;" />
                     </AppBarButton.Icon>
                 </AppBarButton>
-                <AppBarButton x:Name="SortAppBarButton" Label="{ex:LocalLocale Key=Sort}">
+                <AppBarButton x:Name="SortAppBarButton" Label="{ex:Locale Key=Sort}">
                     <ToolTipService.ToolTip>
-                        <ToolTip Content="{ex:LocalLocale Key=Sort}" />
+                        <ToolTip Content="{ex:Locale Key=Sort}" />
                     </ToolTipService.ToolTip>
                     <AppBarButton.Icon>
                         <FontIcon FontSize="{StaticResource InfoIconSize}" Glyph="&#xE8CB;" />
@@ -400,27 +400,27 @@
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="PA"
-                                Text="{ex:LocalLocale Key=Pa}" />
+                                Text="{ex:Locale Key=Pa}" />
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="PZ"
-                                Text="{ex:LocalLocale Key=Pz}" />
+                                Text="{ex:Locale Key=Pz}" />
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="AZ"
-                                Text="{ex:LocalLocale Key=Az}" />
+                                Text="{ex:Locale Key=Az}" />
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="ZA"
-                                Text="{ex:LocalLocale Key=Za}" />
+                                Text="{ex:Locale Key=Za}" />
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="RA"
-                                Text="{ex:LocalLocale Key=Ra}" />
+                                Text="{ex:Locale Key=Ra}" />
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="RZ"
-                                Text="{ex:LocalLocale Key=Rz}">
+                                Text="{ex:Locale Key=Rz}">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xE7B3;" />
                                 </MenuFlyoutItem.Icon>
@@ -428,11 +428,11 @@
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="CA"
-                                Text="{ex:LocalLocale Key=Ca}" />
+                                Text="{ex:Locale Key=Ca}" />
                             <MenuFlyoutItem
                                 Click="MenuFlyoutItem_Click"
                                 Tag="CZ"
-                                Text="{ex:LocalLocale Key=Cz}" />
+                                Text="{ex:Locale Key=Cz}" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
@@ -480,7 +480,7 @@
                 MaxWidth="500"
                 FontSize="17"
                 FontWeight="Bold"
-                Text="{ex:LocalLocale Key=BookShelfEmpty}"
+                Text="{ex:Locale Key=BookShelfEmpty}"
                 TextWrapping="Wrap" />
         </Grid>
         <!--#endregion-->
@@ -500,7 +500,7 @@
                     Orientation="Horizontal"
                     Spacing="3">
                     <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{x:Bind ViewModel.FolderTotalCounts, Mode=OneWay}" />
-                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:LocalLocale Key=Object}" />
+                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:Locale Key=Object}" />
                 </StackPanel>
                 <TextBlock
                     Margin="10,0,0,0"
@@ -510,7 +510,7 @@
                     Margin="10,0,0,0"
                     Orientation="Horizontal"
                     Spacing="3">
-                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:LocalLocale Key=CurrentFolder}" />
+                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:Locale Key=CurrentFolder}" />
                     <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{x:Bind ViewModel.CurrentName, Mode=OneWay}" />
                 </StackPanel>
                 <TextBlock
@@ -522,9 +522,9 @@
                     Margin="10,0,0,0"
                     Orientation="Horizontal"
                     Spacing="5">
-                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:LocalLocale Key=SelectionHeader}" />
+                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:Locale Key=SelectionHeader}" />
                     <TextBlock x:Name="SelectionValue" FontSize="{StaticResource InfoTextSize}" />
-                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:LocalLocale Key=Object}" />
+                    <TextBlock FontSize="{StaticResource InfoTextSize}" Text="{ex:Locale Key=Object}" />
                     <TextBlock
                         x:Name="SizeValue"
                         Margin="5,0,0,0"

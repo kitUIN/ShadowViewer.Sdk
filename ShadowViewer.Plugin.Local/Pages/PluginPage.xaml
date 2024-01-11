@@ -39,7 +39,7 @@
             <TextBlock
                 Grid.Column="0"
                 FontSize="25"
-                Text="{ex:LocalLocale Key=PluginManager}" />
+                Text="{ex:Locale Key=PluginManager}" />
             <CommandBar
                 x:Name="LeftCommandBar"
                 Grid.Column="2"
@@ -50,8 +50,8 @@
                 IsOpen="False">
                 <AppBarButton
                     Click="AddPluginButton_Click"
-                    Label="{ex:LocalLocale Key=AddPlugin}"
-                    ToolTipService.ToolTip="{ex:LocalLocale Key=AddPlugin}">
+                    Label="{ex:Locale Key=AddPlugin}"
+                    ToolTipService.ToolTip="{ex:Locale Key=AddPlugin}">
                     <AppBarButton.Icon>
                         <icons:FluentRegularIcon Symbol="AddCircle32Regular" />
                     </AppBarButton.Icon>
@@ -60,7 +60,7 @@
                     <ToolTipService.ToolTip>
                         <ToolTip>
                             <TextBlock>
-                                <Run Text="{ex:LocalLocale Key=MinVersion}" />
+                                <Run Text="{ex:Locale Key=MinVersion}" />
                                 <Run Text="{x:Bind interfaces:IPluginService.MinVersion}" />
                             </TextBlock>
                         </ToolTip>
@@ -71,8 +71,8 @@
                 </AppBarButton>
                 <AppBarButton
                     Click="GoPluginTip_Click"
-                    Label="{ex:LocalLocale Key=GoPluginTip}"
-                    ToolTipService.ToolTip="{ex:LocalLocale Key=GoPluginTip}">
+                    Label="{ex:Locale Key=GoPluginTip}"
+                    ToolTipService.ToolTip="{ex:Locale Key=GoPluginTip}">
                     <AppBarButton.Icon>
                         <icons:FluentRegularIcon Symbol="Search32Regular" />
                     </AppBarButton.Icon>
@@ -200,13 +200,13 @@
                                             Click="OpenFolder_Click"
                                             Icon="Folder"
                                             Tag="{x:Bind}"
-                                            Text="{ex:LocalLocale Key=OpenFolder}"
+                                            Text="{ex:Locale Key=OpenFolder}"
                                             Visibility="{x:Bind CanOpenFolder}" />
                                         <MenuFlyoutItem
                                             Click="Delete_Click"
                                             Icon="Delete"
                                             Tag="{x:Bind}"
-                                            Text="{ex:LocalLocale Key=Delete}"
+                                            Text="{ex:Locale Key=Delete}"
                                             Visibility="{x:Bind CanDelete}" />
                                     </MenuFlyout>
                                 </FlyoutBase.AttachedFlyout>

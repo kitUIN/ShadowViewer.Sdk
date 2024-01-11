@@ -56,11 +56,11 @@ namespace ShadowViewer.Plugin.Local.Pages
         {
             /*if (sender is not FrameworkElement { Tag: IPlugin plugin }) return;
             var contentDialog= XamlHelper.CreateMessageDialog(XamlRoot,
-                LocalResourcesHelper.GetString(LocalResourceKey.DeletePlugin) + plugin.MetaData.Name,
-                LocalResourcesHelper.GetString(LocalResourceKey.DeletePluginMessage));
+                ResourcesHelper.GetString(ResourceKey.DeletePlugin) + plugin.MetaData.Name,
+                ResourcesHelper.GetString(ResourceKey.DeletePluginMessage));
             contentDialog.IsPrimaryButtonEnabled = true;
             contentDialog.DefaultButton = ContentDialogButton.Close;
-            contentDialog.PrimaryButtonText = LocalResourcesHelper.GetString(LocalResourceKey.Confirm) ;
+            contentDialog.PrimaryButtonText = ResourcesHelper.GetString(ResourceKey.Confirm) ;
             contentDialog.PrimaryButtonClick += async (dialog, args) =>
             {
                 var flag = await PluginService.DeleteAsync(plugin.MetaData.Id);

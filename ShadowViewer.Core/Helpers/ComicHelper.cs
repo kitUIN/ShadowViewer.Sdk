@@ -15,7 +15,7 @@ namespace ShadowViewer.Helpers
         /// </summary>
         public static LocalComic CreateFolder(string name, string parent)
         {
-            string defaultName = CoreResourcesHelper.GetString(CoreResourceKey.CreateFolder);
+            string defaultName = ResourcesHelper.GetString(ResourceKey.CreateFolder);
             if (name == "") name = defaultName;
             int i = 1;
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
@@ -105,8 +105,8 @@ namespace ShadowViewer.Helpers
             if (!ConfigHelper.GetBoolean("LocalIsImportAgain"))
             {
                 ContentDialog dialog = XamlHelper.CreateMessageDialog(xamlRoot,
-                CoreResourcesHelper.GetString(CoreResourceKey.ImportError),
-                CoreResourcesHelper.GetString(CoreResourceKey.DuplicateImport));
+                ResourcesHelper.GetString(ResourceKey.ImportError),
+                ResourcesHelper.GetString(ResourceKey.DuplicateImport));
                 var db = DiFactory.Services.Resolve<ISqlSugarClient>();
                 if (zip != null)
                 {

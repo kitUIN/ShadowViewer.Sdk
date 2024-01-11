@@ -115,7 +115,7 @@ public sealed partial class BookShelfPage : Page
     {
         HomeCommandBarFlyout.Hide();
         var comic = ContentGridView.SelectedItems[0] as LocalComic;
-        await CreateRenameDialog(LocalResourcesHelper.GetString(LocalResourceKey.Rename), XamlRoot, comic).ShowAsync();
+        await CreateRenameDialog(ResourcesHelper.GetString(ResourceKey.Rename), XamlRoot, comic).ShowAsync();
     }
 
     /// <summary>
@@ -194,7 +194,7 @@ public sealed partial class BookShelfPage : Page
     /// <returns></returns>
     public ContentDialog CreateFolderDialog(XamlRoot xamlRoot, string parent)
     {
-        var dialog = XamlHelper.CreateOneLineTextBoxDialog(LocalResourcesHelper.GetString(LocalResourceKey.NewFolder),
+        var dialog = XamlHelper.CreateOneLineTextBoxDialog(ResourcesHelper.GetString(ResourceKey.NewFolder),
             xamlRoot, "");
         dialog.PrimaryButtonClick += (s, e) =>
         {
@@ -271,7 +271,7 @@ public sealed partial class BookShelfPage : Page
         {
             if (frame.Tag is LocalComic comic && comic.IsFolder)
             {
-                e.DragUIOverride.Caption = LocalResourcesHelper.GetString(LocalResourceKey.MoveTo) + comic.Name;
+                e.DragUIOverride.Caption = ResourcesHelper.GetString(ResourceKey.MoveTo) + comic.Name;
                 e.AcceptedOperation = comic.IsFolder ? DataPackageOperation.Move : DataPackageOperation.None;
             }
             else
@@ -350,17 +350,17 @@ public sealed partial class BookShelfPage : Page
 
         var dialog = XamlHelper.CreateContentDialog(XamlRoot);
         var stackPanel = new StackPanel();
-        dialog.Title = LocalResourcesHelper.GetString(LocalResourceKey.IsDelete);
+        dialog.Title = ResourcesHelper.GetString(ResourceKey.IsDelete);
         var deleteFiles = new CheckBox()
         {
-            Content = LocalResourcesHelper.GetString(LocalResourceKey.DeleteComicFiles),
+            Content = ResourcesHelper.GetString(ResourceKey.DeleteComicFiles),
             IsChecked = ConfigHelper.GetBoolean(LocalSettingKey.LocalIsDeleteFilesWithComicDelete),
         };
         deleteFiles.Checked += DeleteFiles_Checked;
         deleteFiles.Unchecked += DeleteFiles_Checked;
         var remember = new CheckBox()
         {
-            Content = LocalResourcesHelper.GetString(LocalResourceKey.Remember),
+            Content = ResourcesHelper.GetString(ResourceKey.Remember),
             IsChecked = ConfigHelper.GetBoolean(LocalSettingKey.LocalIsRememberDeleteFilesWithComicDelete),
         };
         remember.Checked += Remember_Checked;
@@ -368,9 +368,9 @@ public sealed partial class BookShelfPage : Page
         stackPanel.Children.Add(deleteFiles);
         stackPanel.Children.Add(remember);
         dialog.IsPrimaryButtonEnabled = true;
-        dialog.PrimaryButtonText = LocalResourcesHelper.GetString(LocalResourceKey.Confirm);
+        dialog.PrimaryButtonText = ResourcesHelper.GetString(ResourceKey.Confirm);
         dialog.DefaultButton = ContentDialogButton.Close;
-        dialog.CloseButtonText = LocalResourcesHelper.GetString(LocalResourceKey.Cancel);
+        dialog.CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel);
         dialog.Content = stackPanel;
         dialog.PrimaryButtonClick += (ContentDialog s, ContentDialogButtonClickEventArgs e) => { DeleteComics(); };
         dialog.Focus(FocusState.Programmatic);

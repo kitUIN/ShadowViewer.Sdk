@@ -53,8 +53,8 @@ public sealed partial class AttributesPage : Page
     private async void AuthorButton_Click(object sender, RoutedEventArgs e)
     {
         var dialog = XamlHelper.CreateOneTextBoxDialog(XamlRoot,
-            LocalResourcesHelper.GetString(LocalResourceKey.Set),
-            LocalResourcesHelper.GetString(LocalResourceKey.Author),
+            ResourcesHelper.GetString(ResourceKey.Set),
+            ResourcesHelper.GetString(ResourceKey.Author),
             "", ViewModel.CurrentComic.Author,
             (s, e, t) => { ViewModel.CurrentComic.Author = t; });
         await dialog.ShowAsync();
@@ -66,8 +66,8 @@ public sealed partial class AttributesPage : Page
     private async void FileNameButton_Click(object sender, RoutedEventArgs e)
     {
         var dialog = XamlHelper.CreateOneTextBoxDialog(XamlRoot,
-            LocalResourcesHelper.GetString(LocalResourceKey.Set),
-            LocalResourcesHelper.GetString(LocalResourceKey.FileName),
+            ResourcesHelper.GetString(ResourceKey.Set),
+            ResourcesHelper.GetString(ResourceKey.FileName),
             "", ViewModel.CurrentComic.Name,
             (s, e, t) => { ViewModel.CurrentComic.Name = t; });
         await dialog.ShowAsync();
@@ -79,8 +79,8 @@ public sealed partial class AttributesPage : Page
     private async void GrouprButton_Click(object sender, RoutedEventArgs e)
     {
         var dialog = XamlHelper.CreateOneTextBoxDialog(XamlRoot,
-            LocalResourcesHelper.GetString(LocalResourceKey.Set),
-            LocalResourcesHelper.GetString(LocalResourceKey.Group),
+            ResourcesHelper.GetString(ResourceKey.Set),
+            ResourcesHelper.GetString(ResourceKey.Group),
             "", ViewModel.CurrentComic.Group,
             (s, e, t) => { ViewModel.CurrentComic.Group = t; });
         await dialog.ShowAsync();
@@ -97,7 +97,7 @@ public sealed partial class AttributesPage : Page
         {
             TagName.Text = "";
             YesIcon.Symbol = FluentFilledIconSymbol.Tag24Filled;
-            YesText.Text = LocalResourcesHelper.GetString(LocalResourceKey.AddNew);
+            YesText.Text = ResourcesHelper.GetString(ResourceKey.AddNew);
             RemoveTagButton.Visibility = Visibility.Collapsed;
         }
         else
@@ -106,7 +106,7 @@ public sealed partial class AttributesPage : Page
             ForegroundColorPicker.SelectedColor = ((SolidColorBrush)button.Foreground).Color;
             TagName.Text = ((TextBlock)((StackPanel)button.Content).Children[1]).Text;
             YesIcon.Symbol = FluentFilledIconSymbol.TagReset24Filled;
-            YesText.Text = LocalResourcesHelper.GetString(LocalResourceKey.Update);
+            YesText.Text = ResourcesHelper.GetString(ResourceKey.Update);
             RemoveTagButton.Visibility = Visibility.Visible;
         }
 

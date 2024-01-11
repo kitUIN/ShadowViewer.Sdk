@@ -5,6 +5,8 @@ using ReaderOptions = SharpCompress.Readers.ReaderOptions;
 using System.Threading;
 using ShadowViewer.Extensions;
 using SqlSugar;
+using System.Diagnostics;
+using ShadowViewer.Cache;
 
 namespace ShadowViewer.Services
 {
@@ -61,23 +63,43 @@ namespace ShadowViewer.Services
         /// <summary>
         /// 直接解压
         /// </summary>
-        public void DeCompress(string zip, string destinationDirectory)
+        public static async Task DeCompress(string zip, string destinationDirectory,
+            Action<double>? report=null, XamlRoot? root = null, string? pwd = null,
+            CancellationToken cancellationToken = default)
         {
-            using (FileStream fStream = File.OpenRead(zip))
-            using (NonDisposingStream stream = NonDisposingStream.Create(fStream))
+            var readerOptions = new ReaderOptions() { Password = pwd }; 
+            try
             {
-                using var archive = ArchiveFactory.Open(stream);
-                var total = archive.Entries.Where(entry => !entry.IsDirectory);
-                var totalCount = total.Count();
-                var i = 0;
-                destinationDirectory.CreateDirectory();
-                foreach (var entry in total)
+                using FileStream fStream = File.OpenRead(zip);
+                using NonDisposingStream stream = NonDisposingStream.Create(fStream);
+                using (IArchive archive = ArchiveFactory.Open(stream, readerOptions))
                 {
-                    entry.WriteToDirectory(destinationDirectory, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
-                    i++;
-                    double result = i / (double)totalCount;
-                    // caller.ImportComicProgress(Math.Round(result * 100, 2));
+                    archive.ExtractToDirectory(destinationDirectory, report, cancellationToken);
                 }
+            }
+            catch (SharpCompress.Common.CryptographicException ex)
+            {
+                if(root != null)
+                {
+                    var dialog = XamlHelper.CreateOneTextBoxDialog(root,
+                        ResourcesHelper.GetString(ResourceKey.PasswordError),
+                        "密码",
+                        "请输入压缩包密码", "",
+                    async (sender, args, text) =>
+                    {
+                        sender.Hide();
+                        await DeCompress(zip, destinationDirectory, report, root, text);
+                    });
+                    await dialog.ShowAsync();
+                }
+                else
+                {
+                    Log.Error("解压出错:{Ex}", ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("解压出错:{Ex}", ex);
             }
         }
 

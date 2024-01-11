@@ -79,8 +79,8 @@
         }
         public static ContentDialog CreateOneTextBoxDialog(XamlRoot xamlRoot,
             string title = "", string header = "", string placeholder = "", string text = "",
-            Action<ContentDialog, ContentDialogButtonClickEventArgs, string> primaryAction = null,
-            Action<ContentDialog, ContentDialogButtonClickEventArgs, string> closeAction = null)
+            Action<ContentDialog, ContentDialogButtonClickEventArgs, string>? primaryAction = null,
+            Action<ContentDialog, ContentDialogButtonClickEventArgs, string>? closeAction = null)
         {
             var textBox = new TextBox()
             {
@@ -92,8 +92,8 @@
             {
                 DefaultButton = ContentDialogButton.Primary,
                 Title = title,
-                PrimaryButtonText = CoreResourcesHelper.GetString(CoreResourceKey.Confirm),
-                CloseButtonText = CoreResourcesHelper.GetString(CoreResourceKey.Cancel),
+                PrimaryButtonText = ResourcesHelper.GetString(ResourceKey.Confirm),
+                CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel),
                 XamlRoot = xamlRoot,
                 IsPrimaryButtonEnabled = true,
                 Content = new Border()
@@ -125,7 +125,7 @@
             dialog.Title = title;
             dialog.Content = message;
             dialog.IsPrimaryButtonEnabled = false;
-            dialog.CloseButtonText = CoreResourcesHelper.GetString(CoreResourceKey.Cancel);
+            dialog.CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel);
             return dialog;
         }
         public static StackPanel CreateOneLineTextBlock(string title, string value)
@@ -164,8 +164,8 @@
         {
             ContentDialog dialog = CreateContentDialog(xamlRoot);
             dialog.Title = title;
-            dialog.PrimaryButtonText = CoreResourcesHelper.GetString(CoreResourceKey.Confirm);
-            dialog.CloseButtonText = CoreResourcesHelper.GetString(CoreResourceKey.Cancel);
+            dialog.PrimaryButtonText = ResourcesHelper.GetString(ResourceKey.Confirm);
+            dialog.CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel);
             StackPanel grid = new StackPanel()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,

@@ -143,8 +143,12 @@
   </data>
   <data name="BookShelf" xml:space="preserve">
     <value>书架</value>
+    <comment>1231</comment>
   </data>
   <data name="Download" xml:space="preserve">
     <value>下载</value>
+  </data>
+  <data name="PasswordError" xml:space="preserve">
+    <value>密码错误</value>
   </data>
 </root>
