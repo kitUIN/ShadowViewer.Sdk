@@ -7,7 +7,6 @@ using ShadowViewer.Extensions;
 using SqlSugar;
 using System.Diagnostics;
 using ShadowViewer.Cache;
-using ShadowViewer.Services.Interfaces;
 
 namespace ShadowViewer.Services
 {

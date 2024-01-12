@@ -1,6 +1,7 @@
 ﻿using Serilog.Core;
 using ShadowViewer.Extensions;
-using ShadowViewer.Services.Interfaces;
+using ShadowViewer.Services;
+using Serilog;
 using SqlSugar;
 
 namespace ShadowViewer.Plugins;

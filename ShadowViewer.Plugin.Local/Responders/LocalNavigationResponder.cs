@@ -10,7 +10,7 @@ using ShadowViewer.Plugin.Local.Models;
 using ShadowViewer.Plugin.Local.Pages;
 using ShadowViewer.Responders;
 using ShadowViewer.Services;
-using ShadowViewer.Services.Interfaces;
+
 using SqlSugar;
 
 namespace ShadowViewer.Plugin.Local.Responders;
@@ -24,18 +24,7 @@ public class LocalNavigationResponder : NavigationResponderBase
             {
                 Icon = new SymbolIcon(Symbol.Home),
                 Id = "BookShelf",
-                Content = ResourcesHelper.GetString(ResourceKey.BookShelf)
-            }
-        };
-
-    public override IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; } =
-        new List<IShadowNavigationItem>
-        {
-            new LocalNavigationItem
-            {
-                Icon = new FontIcon { Glyph = "\uE74C" },
-                Id = "PluginManager",
-                Content = ResourcesHelper.GetString(ResourceKey.PluginManager)
+                Content = I18N.BookShelf,
             }
         };
 
@@ -47,9 +36,6 @@ public class LocalNavigationResponder : NavigationResponderBase
             case "BookShelf":
                 page = typeof(BookShelfPage);
                 parameter = new Uri("shadow://local/");
-                break;
-            case "PluginManager":
-                page = typeof(PluginPage);
                 break;
         }
     }

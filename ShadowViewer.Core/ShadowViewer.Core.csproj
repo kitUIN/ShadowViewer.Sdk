@@ -7,7 +7,7 @@
 		<UseWinUI>true</UseWinUI>
 		<Nullable>enable</Nullable>
 		<EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
-		<Version>2023.12.31.33</Version>
+		<Version>2023.12.31.43</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
 		<Authors>kitUIN</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -17,8 +17,9 @@
 		<Description>✨ ShadowViewer Core | Development SDK✨</Description>
 		<Copyright>Copyright 2023</Copyright>
 		<PackageTags>kitUIN;wasdk;ShadowViewer;winui</PackageTags>
-		<PackageOutputPath>.</PackageOutputPath>
+		<PackageOutputPath>.\NugetPackages</PackageOutputPath>
 		<NoWarn>MSB3277</NoWarn>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Remove="Helpers\TagsHelper.cs" />
@@ -31,7 +32,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<AdditionalFiles Include="ShadowViewer.Core.csproj" CopyToOutputDirectory="PreserveNewest" />
-		<AdditionalFiles Include="Strings/**/*"   />
+		<AdditionalFiles Include="Strings/**/*" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Labs.WinUI.SegmentedControl" Version="0.0.3" />
@@ -51,7 +52,7 @@
 		<PackageReference Include="SharpCompress" Version="0.35.0" />
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.96" />
 		<PackageReference Include="CustomExtensions.WinUI" Version="0.2.3" />
-		<PackageReference Include="ShadowViewer.Analyzer" Version="1.0.20.17" />
+		<PackageReference Include="ShadowViewer.Analyzer" Version="1.0.20.34" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -66,7 +67,6 @@
 
 	<ItemGroup>
 		<Folder Include="Config\" />
-		<Folder Include="analyzers\" />
 		<Folder Include="Assets\" />
 	</ItemGroup>
 

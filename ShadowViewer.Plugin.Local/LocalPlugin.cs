@@ -5,6 +5,7 @@ using DryIoc;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Windows.ApplicationModel.Resources;
 using Serilog;
+using ShadowViewer.Analyzer.Attributes;
 using ShadowViewer.Enums;
 using ShadowViewer.Extensions;
 using ShadowViewer.Interfaces;
@@ -15,7 +16,7 @@ using ShadowViewer.Plugin.Local.Pages;
 using ShadowViewer.Plugin.Local.ViewModels;
 using ShadowViewer.Plugins;
 using ShadowViewer.Services;
-using ShadowViewer.Services.Interfaces;
+
 using ShadowViewer.ViewModels;
 using SqlSugar;
 

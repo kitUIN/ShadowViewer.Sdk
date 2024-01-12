@@ -1,10 +1,9 @@
 ﻿using Microsoft.UI.Windowing;
-using ShadowViewer.Services.Interfaces;
 using Windows.Foundation;
 
 namespace ShadowViewer.Services;
 
-public partial class CallableService : ICallableService
+internal partial class CallableService : ICallableService
 {
     private ILogger Logger { get; }
 

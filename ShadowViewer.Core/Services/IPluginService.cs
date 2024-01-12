@@ -1,13 +1,8 @@
-﻿using Serilog.Core;
-using ShadowViewer.Plugins;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ShadowViewer.Services.Interfaces
+﻿namespace ShadowViewer.Services
 {
+    /// <summary>
+    /// 插件管理服务类
+    /// </summary>
     [AutoCoreVersion]
     public partial interface IPluginService
     {

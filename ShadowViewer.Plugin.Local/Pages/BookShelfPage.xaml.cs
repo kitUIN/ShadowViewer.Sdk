@@ -17,7 +17,7 @@ using ShadowViewer.Models;
 using ShadowViewer.Plugin.Local.Enums;
 using ShadowViewer.Plugin.Local.Helpers;
 using ShadowViewer.Plugin.Local.Models;
-using ShadowViewer.Services.Interfaces;
+using ShadowViewer.Services;
 using ShadowViewer.ViewModels;
 using SqlSugar;
 using System;

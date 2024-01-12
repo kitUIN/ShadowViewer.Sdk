@@ -9,27 +9,27 @@ public class PluginMetaData : Attribute
     /// <summary>
     /// 标识符(大小写不敏感)
     /// </summary>
-    public string Id { get; }
+    public string Id { get; set; }
     /// <summary>
     /// 显示的名称
     /// </summary>
-    public string Name { get; }
+    public string Name { get; set; }
     /// <summary>
     /// 介绍
     /// </summary>
-    public string Description { get; }
+    public string Description { get; set; }
     /// <summary>
     /// 作者
     /// </summary>
-    public string Author { get; }
+    public string Author { get; set; }
     /// <summary>
     /// 版本号
     /// </summary>
-    public string Version { get; }
+    public string Version { get; set; }
     /// <summary>
     /// 项目地址
     /// </summary>
-    public string WebUri { get; }
+    public string WebUri { get; set; }
 
     /// <summary>
     /// 图标<br/>
@@ -49,15 +49,15 @@ public class PluginMetaData : Attribute
     /// <summary>
     /// 支持的插件管理器版本,该版本即为ShadowViewer.Core的发行版
     /// </summary>
-    public string MinVersion { get; } 
+    public string MinVersion { get; set; }
     /// <summary>
     /// 支持的语言
     /// </summary>
-    public string[] Lang { get; }    
+    public string[]? Lang { get; set; }
     /// <summary>
     /// 依赖的插件ID
     /// </summary>
-    public string[]? Require { get; }
+    public string[]? Require { get; set; }
     /// <summary>
     /// 插件元数据
     /// </summary>

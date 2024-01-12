@@ -1,5 +1,4 @@
 ﻿using Microsoft.UI.Windowing;
-using ShadowViewer.Services.Interfaces;
 using System.Diagnostics;
 using Windows.UI.WindowManagement;
 

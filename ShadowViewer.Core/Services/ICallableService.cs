@@ -2,7 +2,7 @@
 using ShadowViewer.Args;
 using Windows.Foundation;
 
-namespace ShadowViewer.Services.Interfaces
+namespace ShadowViewer.Services
 {
     /// <summary>
     /// 通知其他控件的工具类

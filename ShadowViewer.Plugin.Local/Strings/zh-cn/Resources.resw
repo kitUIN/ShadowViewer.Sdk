@@ -129,9 +129,6 @@
   <data name="ForegroundColor" xml:space="preserve">
     <value>字体颜色</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>删除</value>
-  </data>
   <data name="Thumb" xml:space="preserve">
     <value>缩略图:</value>
   </data>
@@ -174,9 +171,6 @@
   <data name="BookShelf" xml:space="preserve">
     <value>书架</value>
   </data>
-  <data name="PluginManager" xml:space="preserve">
-    <value>插件管理器</value>
-  </data>
   <data name="DeletePlugin" xml:space="preserve">
     <value>删除插件</value>
   </data>
@@ -185,12 +179,6 @@
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>确认</value>
-  </data>
-  <data name="GoPluginTip" xml:space="preserve">
-    <value>前往挑选插件</value>
-  </data>
-  <data name="OpenFolder" xml:space="preserve">
-    <value>打开文件夹</value>
   </data>
   <data name="Az" xml:space="preserve">
     <value>字母顺序A-Z</value>
@@ -279,10 +267,7 @@
   <data name="Cancel" xml:space="preserve">
     <value>取消</value>
   </data>
-  <data name="MinVersion" xml:space="preserve">
-    <value>最低支持</value>
-  </data>
-  <data name="AddPlugin" xml:space="preserve">
-    <value>添加插件</value>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
   </data>
 </root>
