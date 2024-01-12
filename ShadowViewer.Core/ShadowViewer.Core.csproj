@@ -7,7 +7,7 @@
 		<UseWinUI>true</UseWinUI>
 		<Nullable>enable</Nullable>
 		<EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
-		<Version>2023.12.31.25</Version>
+		<Version>2023.12.31.33</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
 		<Authors>kitUIN</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -51,7 +51,7 @@
 		<PackageReference Include="SharpCompress" Version="0.35.0" />
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.96" />
 		<PackageReference Include="CustomExtensions.WinUI" Version="0.2.3" />
-		<PackageReference Include="ShadowViewer.Analyzer" Version="1.0.20.10" />
+		<PackageReference Include="ShadowViewer.Analyzer" Version="1.0.20.17" />
 	</ItemGroup>
 
 	<ItemGroup>

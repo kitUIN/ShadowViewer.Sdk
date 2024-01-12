@@ -2,7 +2,7 @@
 using ShadowViewer.Args;
 using Windows.Foundation;
 
-namespace ShadowViewer.Interfaces
+namespace ShadowViewer.Services.Interfaces
 {
     /// <summary>
     /// 通知其他控件的工具类
@@ -57,7 +57,7 @@ namespace ShadowViewer.Interfaces
         /// 插件禁用事件
         /// </summary>
         public event EventHandler<PluginEventArg>? PluginDisabledEvent;
-        
+
         public event EventHandler<TopGridEventArg>? TopGridEvent;
         public event EventHandler<ImportPluginEventArg>? ImportPluginEvent;
         /// <summary>
@@ -80,7 +80,7 @@ namespace ShadowViewer.Interfaces
         /// <summary>
         /// 导入漫画[错误]
         /// </summary>
-        void ImportComicError(ImportComicError error,string message, IReadOnlyList<IStorageItem> items, int index, string[] password);
+        void ImportComicError(ImportComicError error, string message, IReadOnlyList<IStorageItem> items, int index, string[] password);
         /// <summary>
         /// 导入漫画[缩略图]
         /// </summary>
@@ -97,10 +97,10 @@ namespace ShadowViewer.Interfaces
         /// 调试
         /// </summary>
         void Debug();
-        void PluginEnabled(object sender,string id,bool enabled);
-        void PluginDisabled(object sender,string id,bool enabled);
+        void PluginEnabled(object sender, string id, bool enabled);
+        void PluginDisabled(object sender, string id, bool enabled);
         void TopGrid(object sender, UIElement element, TopGridMode mode);
-        void ImportPlugin(object sender,  IReadOnlyList<IStorageItem> items);
+        void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items);
         void NavigationViewPane(object sender);
         void NavigationViewBackRequested(object sender);
         void ChangeOverlapped(AppWindow sender, AppWindowChangedEventArgs args);

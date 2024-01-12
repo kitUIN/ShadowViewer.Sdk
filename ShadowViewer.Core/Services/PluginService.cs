@@ -7,7 +7,7 @@ using SqlSugar;
 
 namespace ShadowViewer.Services;
 
-public class PluginService : IPluginService
+internal class PluginService : IPluginService
 {
     #region DI
     private ILogger Logger { get; }

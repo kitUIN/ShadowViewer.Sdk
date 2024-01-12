@@ -7,6 +7,7 @@ using ShadowViewer.Extensions;
 using SqlSugar;
 using System.Diagnostics;
 using ShadowViewer.Cache;
+using ShadowViewer.Services.Interfaces;
 
 namespace ShadowViewer.Services
 {
@@ -63,10 +64,11 @@ namespace ShadowViewer.Services
         /// <summary>
         /// 直接解压
         /// </summary>
-        public static async Task DeCompress(string zip, string destinationDirectory,
+        public static async Task DeCompressAsync(string zip, string destinationDirectory,
             Action<double>? report=null, XamlRoot? root = null, string? pwd = null,
             CancellationToken cancellationToken = default)
         {
+            // Logger.Information("进入解压流程");
             var readerOptions = new ReaderOptions() { Password = pwd }; 
             try
             {
@@ -77,18 +79,17 @@ namespace ShadowViewer.Services
                     archive.ExtractToDirectory(destinationDirectory, report, cancellationToken);
                 }
             }
-            catch (SharpCompress.Common.CryptographicException ex)
+            catch (CryptographicException ex)
             {
                 if(root != null)
                 {
                     var dialog = XamlHelper.CreateOneTextBoxDialog(root,
-                        ResourcesHelper.GetString(ResourceKey.PasswordError),
-                        "密码",
-                        "请输入压缩包密码", "",
+                        Path.GetFileName(zip)+I18N.PasswordError,
+                        "",I18N.ZipPasswordPlaceholder, "",
                     async (sender, args, text) =>
                     {
                         sender.Hide();
-                        await DeCompress(zip, destinationDirectory, report, root, text);
+                        await DeCompressAsync(zip, destinationDirectory, report, root, text);
                     });
                     await dialog.ShowAsync();
                 }

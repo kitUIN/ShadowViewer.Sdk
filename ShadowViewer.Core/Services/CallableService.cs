@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Windowing;
+using ShadowViewer.Services.Interfaces;
 using Windows.Foundation;
 
 namespace ShadowViewer.Services;
