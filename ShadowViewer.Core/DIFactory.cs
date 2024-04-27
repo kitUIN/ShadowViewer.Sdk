@@ -1,4 +1,5 @@
 ﻿
+using ShadowPluginLoader.WinUI;
 using SqlSugar;
 
 namespace ShadowViewer
@@ -29,7 +30,9 @@ namespace ShadowViewer
             Services.Register(
                 Made.Of(() => Serilog.Log.ForContext(Arg.Index<Type>(0)), r => r.Parent.ImplementationType),
                 setup: Setup.With(condition: r => r.Parent.ImplementationType != null));
-            //Services.Register<IPluginService, PluginService>(Reuse.Singleton);
+
+            AbstractPluginLoader<PluginMetaData, PluginBase>.Services = Services;
+            Services.Register<PluginLoader>(reuse: Reuse.Singleton);
             Services.Register<ICallableService, CallableService>(Reuse.Singleton);
             Services.Register<CompressService>(Reuse.Singleton);
             Services.Register<ResponderService>(Reuse.Singleton);

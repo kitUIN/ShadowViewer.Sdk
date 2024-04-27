@@ -7,8 +7,11 @@
 		<UseWinUI>true</UseWinUI>
 		<Nullable>enable</Nullable>
 		<EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
-		<Version>2023.12.31.43</Version>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+		<Version>2024.4.28.1</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
+		<Owner>kitUIN</Owner>
 		<Authors>kitUIN</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -31,10 +34,6 @@
 		<None Remove="Themes\Generic.xaml" />
 	</ItemGroup>
 	<ItemGroup>
-		<AdditionalFiles Include="ShadowViewer.Core.csproj" CopyToOutputDirectory="PreserveNewest" />
-		<AdditionalFiles Include="Strings/**/*" />
-	</ItemGroup>
-	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Labs.WinUI.SegmentedControl" Version="0.0.3" />
 		<PackageReference Include="CommunityToolkit.Labs.WinUI.SettingsControls" Version="0.0.18" />
 		<PackageReference Include="CommunityToolkit.Labs.WinUI.TokenView" Version="0.0.6" />
@@ -42,17 +41,14 @@
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.UI.Media" Version="7.1.2" />
-		<PackageReference Include="DryIoc.dll" Version="5.4.1" />
 		<PackageReference Include="kitUIN.FluentIcon.WinUI.Filled" Version="1.2.224.2" />
 		<PackageReference Include="kitUIN.FluentIcon.WinUI.Regular" Version="1.2.224.2" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.231008000" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.756" />
-		<PackageReference Include="Serilog" Version="3.0.1" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+		<PackageReference Include="ShadowPluginLoader.WinUI" Version="1.0.2.6" />
 		<PackageReference Include="SharpCompress" Version="0.35.0" />
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.96" />
-		<PackageReference Include="CustomExtensions.WinUI" Version="0.2.3" />
-		<PackageReference Include="ShadowViewer.Analyzer" Version="1.0.20.34" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,7 +60,6 @@
 			<SubType>Designer</SubType>
 		</Page>
 	</ItemGroup>
-
 	<ItemGroup>
 		<Folder Include="Config\" />
 		<Folder Include="Assets\" />

@@ -4,9 +4,9 @@ namespace ShadowViewer.Services;
 
 public class ResponderService
 {
-    private IPluginService PluginService { get; }
+    private PluginLoader PluginService { get; }
 
-    public ResponderService(IPluginService pluginService)
+    public ResponderService(PluginLoader pluginService)
     {
         PluginService = pluginService;
     }

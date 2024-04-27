@@ -15,11 +15,11 @@ public abstract class HistoryResponderBase:IHistoryResponder
     protected ICallableService Caller { get; }
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
-    protected IPluginService PluginService { get; }
+    protected PluginLoader PluginService { get; }
     
-    protected IPlugin? Plugin { get; }
+    protected PluginBase? Plugin { get; }
     protected HistoryResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, IPluginService pluginService,string id)
+        CompressService compressServices, PluginLoader pluginService,string id)
     {
         Caller = callableService;
         Db = sqlSugarClient;

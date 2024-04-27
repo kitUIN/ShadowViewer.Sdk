@@ -9,7 +9,7 @@ namespace ShadowViewer.Models
     public class LocalPicture
     {
         public LocalPicture() { }
-        // <summary>
+        /// <summary>
         /// ID
         /// </summary>
         [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable = false)]
