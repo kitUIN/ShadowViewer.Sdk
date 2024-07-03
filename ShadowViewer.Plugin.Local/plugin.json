@@ -1,0 +1,9 @@
+{
+  "Description": "ShadowViewer\u672C\u5730\u9605\u8BFB\u63D2\u4EF6",
+  "Authors": "kitUIN",
+  "Logo": "fluent://regular/\\uE433",
+  "Id": "ShadowViewer.Plugin.Local",
+  "Name": "\u672C\u5730\u9605\u8BFB\u63D2\u4EF6",
+  "Version": "1.0.5.18",
+  "Dependencies": []
+}

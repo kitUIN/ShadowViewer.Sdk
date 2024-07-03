@@ -10,14 +10,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace ShadowViewer.Controls
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [ContentProperty(Name = "Content")]
     public class TitleBorder : Control
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public TitleBorder()
         {
             this.DefaultStyleKey = typeof(TitleBorder);
@@ -27,15 +30,15 @@ namespace ShadowViewer.Controls
         /// </summary>  
         public object Content
         {
-            get { return (object)GetValue(ContentProperty); }
-            set { SetValue(ContentProperty, value); }
+            get => (object)GetValue(ContentProperty);
+            set => SetValue(ContentProperty, value);
         }
 
         /// <summary>
         /// 标识 Content 依赖属性。
         /// </summary>
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(object), typeof(TitleBorder), new PropertyMetadata(null, OnContentChanged));
+            DependencyProperty.Register(nameof(Content), typeof(object), typeof(TitleBorder), new PropertyMetadata(null, OnContentChanged));
 
         private static void OnContentChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
@@ -55,68 +58,84 @@ namespace ShadowViewer.Controls
         /// </summary>  
         public DataTemplate ContentTemplate
         {
-            get { return (DataTemplate)GetValue(ContentTemplateProperty); }
-            set { SetValue(ContentTemplateProperty, value); }
+            get => (DataTemplate)GetValue(ContentTemplateProperty);
+            set => SetValue(ContentTemplateProperty, value);
         }
 
         /// <summary>
         /// 标识 ContentTemplate 依赖属性。
         /// </summary>
         public static readonly DependencyProperty ContentTemplateProperty =
-            DependencyProperty.Register("ContentTemplate", typeof(DataTemplate), typeof(TitleBorder), new PropertyMetadata(null, OnContentTemplateChanged));
+            DependencyProperty.Register(nameof(ContentTemplate), typeof(DataTemplate), typeof(TitleBorder), new PropertyMetadata(null, OnContentTemplateChanged));
 
         private static void OnContentTemplateChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            TitleBorder target = obj as TitleBorder;
-            DataTemplate oldValue = (DataTemplate)args.OldValue;
-            DataTemplate newValue = (DataTemplate)args.NewValue;
+            var target = obj as TitleBorder;
+            var oldValue = (DataTemplate)args.OldValue;
+            var newValue = (DataTemplate)args.NewValue;
             if (oldValue != newValue)
-                target.OnContentTemplateChanged(oldValue, newValue);
+                target?.OnContentTemplateChanged(oldValue, newValue);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
         protected virtual void OnContentTemplateChanged(DataTemplate oldValue, DataTemplate newValue)
         {
 
         }
 
+        /// <summary>
+        /// Header
+        /// </summary>
         public object Header
         {
-            get { return (object)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get => (object)GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
         }
 
+        /// <summary>
+        /// 标识 Header 依赖属性。
+        /// </summary>
         public static readonly DependencyProperty HeaderProperty =
             DependencyProperty.Register(nameof(Header), typeof(object), typeof(TitleBorder), new PropertyMetadata(null, OnHeaderChanged));
 
         private static void OnHeaderChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            TitleBorder target = obj as TitleBorder;
-            object oldValue = (object)args.OldValue;
-            object newValue = (object)args.NewValue;
+            var target = obj as TitleBorder;
+            var oldValue = (object)args.OldValue;
+            var newValue = (object)args.NewValue;
             if (oldValue != newValue)
-                target.OnHeaderChanged(oldValue, newValue);
+                target?.OnHeaderChanged(oldValue, newValue);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
         protected virtual void OnHeaderChanged(object oldValue, object newValue)
         {
         }
 
         public DataTemplate HeaderTemplate
         {
-            get { return (DataTemplate)GetValue(HeaderTemplateProperty); }
-            set { SetValue(HeaderTemplateProperty, value); }
+            get => (DataTemplate)GetValue(HeaderTemplateProperty);
+            set => SetValue(HeaderTemplateProperty, value);
         }
 
         public static readonly DependencyProperty HeaderTemplateProperty =
-            DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(TitleBorder), new PropertyMetadata(null, OnHeaderTemplateChanged));
+            DependencyProperty.Register(nameof(HeaderTemplate), typeof(DataTemplate), typeof(TitleBorder), new PropertyMetadata(null, OnHeaderTemplateChanged));
 
         private static void OnHeaderTemplateChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args)
         {
-            TitleBorder target = obj as TitleBorder;
-            DataTemplate oldValue = (DataTemplate)args.OldValue;
-            DataTemplate newValue = (DataTemplate)args.NewValue;
+            var target = obj as TitleBorder;
+            var oldValue = (DataTemplate)args.OldValue;
+            var newValue = (DataTemplate)args.NewValue;
             if (oldValue != newValue)
-                target.OnHeaderTemplateChanged(oldValue, newValue);
+                target?.OnHeaderTemplateChanged(oldValue, newValue);
         }
 
         protected virtual void OnHeaderTemplateChanged(DataTemplate oldValue, DataTemplate newValue)

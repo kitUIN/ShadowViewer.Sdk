@@ -43,7 +43,7 @@ public partial class AttributesViewModel : ObservableObject
     /// </summary>
     public bool IsHaveEpisodes => Episodes.Count != 0;
 
-    private readonly IPluginService pluginService;
+    private readonly PluginLoader pluginService;
     private ISqlSugarClient Db { get; }
     private ILogger Logger { get; }
 
@@ -54,7 +54,7 @@ public partial class AttributesViewModel : ObservableObject
         ReLoadEps();
     }
 
-    public AttributesViewModel(IPluginService pluginService, ISqlSugarClient sqlSugarClient, ILogger logger)
+    public AttributesViewModel(PluginLoader pluginService, ISqlSugarClient sqlSugarClient, ILogger logger)
     {
         this.pluginService = pluginService;
         Db = sqlSugarClient;

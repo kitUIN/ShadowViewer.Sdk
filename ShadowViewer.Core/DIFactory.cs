@@ -1,11 +1,17 @@
-﻿
-using ShadowPluginLoader.WinUI;
+﻿using ShadowPluginLoader.WinUI;
 using SqlSugar;
 
 namespace ShadowViewer
 {
+    /// <summary>
+    /// 依赖注入-工厂
+    /// </summary>
     public static class DiFactory
     {
+
+        /// <summary>
+        /// 依赖注入-容器
+        /// </summary>
         public static Container Services { get; }
         static DiFactory()
         {

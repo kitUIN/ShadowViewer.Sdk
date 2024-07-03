@@ -50,7 +50,7 @@ public class LocalHistoryResponder:HistoryResponderBase
     }
 
     public LocalHistoryResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient, 
-        CompressService compressServices, IPluginService pluginService, string id) : base(callableService,
+        CompressService compressServices, PluginLoader pluginService, string id) : base(callableService,
             sqlSugarClient, compressServices, pluginService, id)
     {
     }

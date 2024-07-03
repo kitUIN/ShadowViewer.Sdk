@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DryIoc;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.Windows.ApplicationModel.Resources;
 using Serilog;
-using ShadowViewer.Analyzer.Attributes;
-using ShadowViewer.Enums;
-using ShadowViewer.Extensions;
 using ShadowViewer.Interfaces;
 using ShadowViewer.Models;
 using ShadowViewer.Plugin.Local.Enums;
@@ -16,7 +12,7 @@ using ShadowViewer.Plugin.Local.Pages;
 using ShadowViewer.Plugin.Local.ViewModels;
 using ShadowViewer.Plugins;
 using ShadowViewer.Services;
-
+using ShadowPluginLoader.MetaAttributes;
 using ShadowViewer.ViewModels;
 using SqlSugar;
 
@@ -25,12 +21,22 @@ namespace ShadowViewer.Plugin.Local;
 [AutoPluginMeta]
 public partial class LocalPlugin : PluginBase
 {
-    public LocalPlugin(ICallableService callableService, ISqlSugarClient sqlSugarClient, CompressService compressServices, IPluginService pluginService, ILogger logger) : base(callableService, sqlSugarClient, compressServices, pluginService, logger)
+    public LocalPlugin(ICallableService callableService, 
+        ISqlSugarClient sqlSugarClient,
+        CompressService compressServices, 
+        PluginLoader pluginService, 
+        ILogger logger) : 
+        base(callableService, 
+            sqlSugarClient, 
+            compressServices, 
+            pluginService, logger)
     {
         DiFactory.Services.Register<AttributesViewModel>(Reuse.Transient);
         DiFactory.Services.Register<PicViewModel>(Reuse.Transient);
         DiFactory.Services.Register<BookShelfViewModel>(Reuse.Transient);
     }
+    /// <inheritdoc />
+    public override PluginMetaData MetaData => Meta;
 
     /// <summary>
     /// <inheritdoc/>
@@ -57,19 +63,6 @@ public partial class LocalPlugin : PluginBase
     /// </summary>
     public override bool CanOpenFolder => false;
 
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    protected override void PluginEnabled()
-    {
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    protected override void PluginDisabled()
-    {
-    }
 
     /// <summary>
     /// <inheritdoc/>
@@ -99,8 +92,8 @@ public partial class LocalPlugin : PluginBase
     {
     }
 
-    public override void PluginDeleting()
+    public override string GetId()
     {
-        
+        return Meta.Id;
     }
 }

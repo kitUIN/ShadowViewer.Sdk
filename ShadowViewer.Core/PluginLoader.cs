@@ -1,13 +1,11 @@
 ﻿using ShadowPluginLoader.WinUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShadowViewer;
 
+/// <summary>
+/// ShadowView 插件加载器
+/// </summary>
 public class PluginLoader : AbstractPluginLoader<PluginMetaData, PluginBase>
 {
-
+    public string MinVersion => "2024.7.3";
 }

@@ -5,13 +5,32 @@ namespace ShadowViewer.Plugins;
 
 public abstract partial class PluginBase : AbstractPlugin
 {
+    /// <summary>
+    /// 日志服务
+    /// </summary>
     protected ILogger Logger { get; }
+    /// <summary>
+    /// 通知服务
+    /// </summary>
     protected ICallableService Caller { get; }
+    /// <summary>
+    /// 数据库服务
+    /// </summary>
     protected ISqlSugarClient Db { get; }
+    /// <summary>
+    /// 压缩服务
+    /// </summary>
     protected CompressService CompressServices { get; }
+    /// <summary>
+    /// 插件服务
+    /// </summary>
     protected PluginLoader PluginService { get; }
-    public virtual PluginMetaData MetaData { get; }
+    /// <summary>
+    /// 插件元数据
+    /// </summary>
+    public abstract PluginMetaData MetaData { get; }
 
+    /// <inheritdoc />
     protected PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService,ILogger logger):
         base()
