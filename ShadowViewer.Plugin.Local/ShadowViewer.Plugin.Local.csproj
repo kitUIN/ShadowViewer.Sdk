@@ -35,7 +35,7 @@
 		  <Version>$(Version)</Version>
 		  <Logo>fluent://regular/\uE433</Logo>
 		  <PluginLang>zh-CN</PluginLang>
-		  <WebUrl>$(RepositoryUrl)</WebUrl>
+		  <WebUri>$(PackageProjectUrl)</WebUri>
 		  <Description>$(Description)</Description>
 		  <Authors>$(Authors)</Authors>
 	  </PluginMeta>

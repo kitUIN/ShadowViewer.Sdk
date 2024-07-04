@@ -55,16 +55,6 @@ internal partial class CallableService : ICallableService
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public event EventHandler<PluginEventArg>? PluginEnabledEvent;
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public event EventHandler<PluginEventArg>? PluginDisabledEvent;
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
     public event EventHandler<TopGridEventArg>? TopGridEvent;
 
     /// <summary>
@@ -160,25 +150,6 @@ internal partial class CallableService : ICallableService
         Logger.Debug("触发事件DebugEvent");
     }
 
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public void PluginEnabled(object sender, string id, bool enabled)
-    {
-        Logger.Debug("{Sender}触发事件{Event}", sender.GetType().FullName,
-            nameof(PluginEnabledEvent));
-        PluginEnabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public void PluginDisabled(object sender, string id, bool enabled)
-    {
-        Logger.Debug("{Sender}触发事件{Event}", sender.GetType().FullName,
-            nameof(PluginDisabledEvent));
-        PluginDisabledEvent?.Invoke(sender, new PluginEventArg(id, enabled));
-    }
 
     /// <summary>
     /// <inheritdoc/>

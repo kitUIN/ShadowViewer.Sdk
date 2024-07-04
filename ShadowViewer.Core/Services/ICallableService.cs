@@ -49,14 +49,6 @@ namespace ShadowViewer.Services
         /// 导航栏面板事件
         /// </summary>
         public event EventHandler? NavigationViewPaneEvent;
-        /// <summary>
-        /// 插件启用事件
-        /// </summary>
-        public event EventHandler<PluginEventArg>? PluginEnabledEvent;
-        /// <summary>
-        /// 插件禁用事件
-        /// </summary>
-        public event EventHandler<PluginEventArg>? PluginDisabledEvent;
 
         public event EventHandler<TopGridEventArg>? TopGridEvent;
         public event EventHandler<ImportPluginEventArg>? ImportPluginEvent;
@@ -97,8 +89,6 @@ namespace ShadowViewer.Services
         /// 调试
         /// </summary>
         void Debug();
-        void PluginEnabled(object sender, string id, bool enabled);
-        void PluginDisabled(object sender, string id, bool enabled);
         void TopGrid(object sender, UIElement element, TopGridMode mode);
         void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items);
         void NavigationViewPane(object sender);

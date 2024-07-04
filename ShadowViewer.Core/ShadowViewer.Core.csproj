@@ -38,8 +38,7 @@
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240404000" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-		<PackageReference Include="ShadowPluginLoader.Tool" Version="1.0.5.1" />
-		<PackageReference Include="ShadowPluginLoader.WinUI" Version="1.0.4" />
+		<PackageReference Include="ShadowPluginLoader.WinUI" Version="1.0.5" />
 		<PackageReference Include="SharpCompress" Version="0.35.0" />
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.96" />
 	</ItemGroup>
