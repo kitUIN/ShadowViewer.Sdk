@@ -1,6 +1,8 @@
 ﻿namespace ShadowViewer.Responders;
-
-public interface IHistoryResponder:IResponder
+/// <summary>
+/// 历史记录触发器基类
+/// </summary>
+public interface IHistoryResponder : IResponder
 {
     /// <summary>
     /// 获取历史记录

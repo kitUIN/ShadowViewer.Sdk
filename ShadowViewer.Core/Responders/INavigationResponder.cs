@@ -1,6 +1,8 @@
 ﻿namespace ShadowViewer.Responders;
-
-public interface INavigationResponder:IResponder
+/// <summary>
+/// 导航触发器基类
+/// </summary>
+public interface INavigationResponder : IResponder
 {
     
     /// <summary>
@@ -12,11 +14,11 @@ public interface INavigationResponder:IResponder
     /// 添加到导航栏尾部
     /// </summary>
     IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; }
-    
+
     /// <summary>
     /// 导航点击事件注入
     /// </summary>
-    void NavigationViewItemInvokedHandler(IShadowNavigationItem item, ref Type? page, ref object? parameter);
+    ShadowNavigation? NavigationViewItemInvokedHandler(IShadowNavigationItem item);
     /// <summary>
     /// 导航
     /// </summary>

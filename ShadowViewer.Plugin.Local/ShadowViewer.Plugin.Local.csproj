@@ -6,6 +6,7 @@
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
 	  <Nullable>enable</Nullable>
+	  <LangVersion>12</LangVersion>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 	  <PackageId>ShadowViewer.Plugin.Local</PackageId>
@@ -30,7 +31,7 @@
 	  <NoWarn>MSB3277</NoWarn>
 	  <!--插件元数据 -->
 	  <PluginMeta>
-		  <PackageId>$(PackageId)</PackageId>
+		  <PackageId>Local</PackageId>
 		  <PluginName>本地阅读插件</PluginName>
 		  <Version>$(Version)</Version>
 		  <Logo>fluent://regular/\uE433</Logo>

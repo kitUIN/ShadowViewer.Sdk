@@ -3,7 +3,9 @@ using CommunityToolkit.Mvvm.Input;
 using SqlSugar;
 
 namespace ShadowViewer.Interfaces;
-
+/// <summary>
+/// 历史记录基类
+/// </summary>
 public interface IHistory
 {
     /// <summary>
@@ -26,5 +28,5 @@ public interface IHistory
     /// 来源插件
     /// </summary>
     [SugarColumn(IsIgnore = true)]
-    string Plugin { get; }
+    string PluginId { get; }
 }

@@ -164,12 +164,10 @@ public sealed partial class BookShelfPage : Page
     /// </summary>
     private void ContentGridView_RightTapped(object sender, RightTappedRoutedEventArgs e)
     {
-        if (sender is FrameworkElement element && element.DataContext != null)
-        {
-            var container = (GridViewItem)ContentGridView.ContainerFromItem(element.DataContext);
-            if (container != null && !container.IsSelected) container.IsSelected = true;
-            ShowMenu(sender as UIElement, e.GetPosition(sender as UIElement));
-        }
+        if (sender is not FrameworkElement { DataContext: not null } element) return;
+        var container = (GridViewItem)ContentGridView.ContainerFromItem(element.DataContext);
+        if (container != null && !container.IsSelected) container.IsSelected = true;
+        ShowMenu(element, e.GetPosition(element));
     }
 
     /// <summary>

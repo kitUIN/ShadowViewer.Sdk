@@ -92,8 +92,7 @@ public partial class LocalPlugin : PluginBase
     {
     }
 
-    public override string GetId()
-    {
-        return Meta.Id;
-    }
+
+    /// <inheritdoc />
+    public override string DisplayName => "本地阅读器";
 }

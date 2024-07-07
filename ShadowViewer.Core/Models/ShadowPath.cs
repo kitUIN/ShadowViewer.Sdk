@@ -8,10 +8,10 @@ namespace ShadowViewer.Models
     public class ShadowPath
     {
         private readonly LocalComic comic;
-        public string Name { get => comic.Name; }
-        public string Id { get => comic.Id; }
-        public string Img { get => comic.Img; }
-        public bool IsFolder { get => comic.IsFolder; }
+        public string Name => comic.Name;
+        public string Id => comic.Id;
+        public string Img => comic.Img;
+        public bool IsFolder => comic.IsFolder;
         public List<ShadowPath> Children { get; } = new List<ShadowPath>();
         public ShadowPath(LocalComic comic)
         {

@@ -2,19 +2,26 @@
 using SqlSugar;
 
 namespace ShadowViewer.Responders;
-
-public abstract class NavigationResponderBase: INavigationResponder
+/// <summary>
+/// 导航触发器抽象类
+/// </summary>
+public abstract class NavigationResponderBase : INavigationResponder
 {
+    /// <inheritdoc />
     public string Id { get; }
+    /// <inheritdoc/>
     public virtual IEnumerable<IShadowNavigationItem> NavigationViewMenuItems { get; } = new List<IShadowNavigationItem>();
+
+    /// <inheritdoc />
     public virtual IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; } = new List<IShadowNavigationItem>();
 
-    public virtual void NavigationViewItemInvokedHandler(IShadowNavigationItem item, ref Type? page,
-        ref object? parameter)
+    /// <inheritdoc />
+    public virtual ShadowNavigation? NavigationViewItemInvokedHandler(IShadowNavigationItem item)
     {
-        
+        return null;
     }
 
+    /// <inheritdoc />
     public virtual void Navigate(Uri uri, string[] urls)
     {
         
@@ -25,7 +32,6 @@ public abstract class NavigationResponderBase: INavigationResponder
     protected CompressService CompressServices { get; }
     protected PluginLoader PluginService { get; }
     
-    protected PluginBase? Plugin { get; }
     protected NavigationResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService, string id)
     {
@@ -34,7 +40,6 @@ public abstract class NavigationResponderBase: INavigationResponder
         CompressServices = compressServices;
         PluginService = pluginService;
         Id = id;
-        Plugin = PluginService.GetPlugin(Id);
     }
     
 }
