@@ -5,7 +5,7 @@ namespace ShadowViewer.Responders;
 /// <summary>
 /// 导航触发器抽象类
 /// </summary>
-public abstract class NavigationResponderBase : INavigationResponder
+public abstract class AbstractNavigationResponder : INavigationResponder
 {
     /// <inheritdoc />
     public string Id { get; }
@@ -32,7 +32,15 @@ public abstract class NavigationResponderBase : INavigationResponder
     protected CompressService CompressServices { get; }
     protected PluginLoader PluginService { get; }
     
-    protected NavigationResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="callableService"></param>
+    /// <param name="sqlSugarClient"></param>
+    /// <param name="compressServices"></param>
+    /// <param name="pluginService"></param>
+    /// <param name="id"></param>
+    protected AbstractNavigationResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService, string id)
     {
         Caller = callableService;

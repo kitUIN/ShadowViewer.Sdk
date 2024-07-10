@@ -9,12 +9,14 @@ namespace ShadowViewer;
 /// <summary>
 /// ShadowView 插件加载器
 /// </summary>
-public class PluginLoader : AbstractPluginLoader<PluginMetaData, PluginBase>
+public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData, PluginBase>(logger)
 {
-    public PluginLoader(ILogger logger):base(logger)
-    {
-    }
+    /// <summary>
+    /// 加载器版本
+    /// </summary>
     public string MinVersion => "2024.7.3";
+
+    /// <inheritdoc/>
     protected override void LoadPluginDi(Type tPlugin, PluginBase aPlugin, PluginMetaData meta)
     {
         Type? navigationViewResponder = null;
@@ -22,7 +24,7 @@ public class PluginLoader : AbstractPluginLoader<PluginMetaData, PluginBase>
         Type? historyResponder = null;
         var db = DiFactory.Services.Resolve<ISqlSugarClient>();
         foreach (var type in tPlugin.Assembly.GetExportedTypes())
-            if (type.IsAssignableTo(typeof(NavigationResponderBase))) navigationViewResponder = type;
+            if (type.IsAssignableTo(typeof(AbstractNavigationResponder))) navigationViewResponder = type;
             else if (type.IsAssignableTo(typeof(PicViewResponderBase))) picViewResponder = type;
             else if (type.IsAssignableTo(typeof(HistoryResponderBase))) historyResponder = type;
             else if (type.IsAssignableTo(typeof(IHistory)))

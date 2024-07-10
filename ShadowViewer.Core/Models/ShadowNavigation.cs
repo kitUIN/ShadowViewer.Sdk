@@ -8,7 +8,7 @@ namespace ShadowViewer.Models
     /// <param name="sourcePageType"></param>
     /// <param name="parameter"></param>
     /// <param name="infoOverride"></param>
-    public class ShadowNavigation(Type? sourcePageType, object? parameter, NavigationTransitionInfo? infoOverride)
+    public class ShadowNavigation(Type? sourcePageType, object? parameter =null, NavigationTransitionInfo? infoOverride = null)
     {
         /// <summary>
         /// 跳转目标页
@@ -22,18 +22,5 @@ namespace ShadowViewer.Models
         /// 跳转动画
         /// </summary>
         public NavigationTransitionInfo? TransitionInfo { get; } = infoOverride;
-
-        /// <summary />
-        /// <param name="sourcePageType"></param>
-        /// <param name="parameter"></param>
-        public ShadowNavigation(Type? sourcePageType, object? parameter) : this(sourcePageType, parameter, null)
-        {
-        }
-
-        /// <summary />
-        /// <param name="sourcePageType"></param>
-        public ShadowNavigation(Type? sourcePageType) : this(sourcePageType, null, null)
-        {
-        }
     }
 }
