@@ -10,7 +10,7 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 		<LangVersion>12</LangVersion>
-		<Version>2024.7.27.2</Version>
+		<Version>2024.7.27.14</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
 		<Authors>kitUIN</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -32,8 +32,8 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.0.240109" />
-		<PackageReference Include="kitUIN.FluentIcon.WinUI.Filled" Version="1.2.224.2" />
-		<PackageReference Include="kitUIN.FluentIcon.WinUI.Regular" Version="1.2.224.2" />
+		<PackageReference Include="kitUIN.FluentIcon.WinUI.Filled" Version="1.2.250" />
+		<PackageReference Include="kitUIN.FluentIcon.WinUI.Regular" Version="1.2.250" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240404000" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />

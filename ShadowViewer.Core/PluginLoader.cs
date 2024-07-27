@@ -1,4 +1,5 @@
 ﻿
+using Windows.ApplicationModel;
 using Serilog;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Responders;
@@ -14,8 +15,12 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
     /// <summary>
     /// 加载器版本
     /// </summary>
-    public string MinVersion => "2024.7.27";
-
+    public static Version CoreVersion { get; } = new(
+        Package.Current.Id.Version.Major,
+        Package.Current.Id.Version.Minor,
+        Package.Current.Id.Version.Build,
+        Package.Current.Id.Version.Revision
+    );
     /// <inheritdoc/>
     protected override void LoadPluginDi(Type tPlugin, PluginBase aPlugin, PluginMetaData meta)
     {

@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 *.nuspec
+/ShadowViewer.Core/Assets/FluentSystemIcons-Filled.ttf
+/ShadowViewer.Core/Assets/FluentSystemIcons-Regular.ttf
