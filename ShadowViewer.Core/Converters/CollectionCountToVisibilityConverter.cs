@@ -1,8 +1,5 @@
 ﻿using System.Collections;
-using CommunityToolkit.WinUI.UI.Converters;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Markup;
-using Microsoft.VisualBasic;
+using CommunityToolkit.WinUI.Converters;
 
 namespace ShadowViewer.Converters;
 /// <summary>

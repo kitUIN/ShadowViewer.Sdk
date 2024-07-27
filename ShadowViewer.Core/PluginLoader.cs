@@ -14,7 +14,7 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
     /// <summary>
     /// 加载器版本
     /// </summary>
-    public string MinVersion => "2024.7.3";
+    public string MinVersion => "2024.7.27";
 
     /// <inheritdoc/>
     protected override void LoadPluginDi(Type tPlugin, PluginBase aPlugin, PluginMetaData meta)

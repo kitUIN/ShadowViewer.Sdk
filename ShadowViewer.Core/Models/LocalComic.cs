@@ -1,6 +1,4 @@
-﻿using ColorCode.Compilation.Languages;
-using DryIoc;
-using SqlSugar;
+﻿using SqlSugar;
 namespace ShadowViewer.Models
 {
     /// <summary>

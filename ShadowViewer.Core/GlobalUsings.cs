@@ -21,7 +21,6 @@ global using System.Collections.Specialized;
 global using System.Reflection;
 global using CommunityToolkit.Mvvm.Messaging;
 global using ShadowViewer.Messages;
-global using CommunityToolkit.Labs.WinUI;
 global using Windows.System;
 global using Microsoft.UI.Xaml.Media.Imaging;
 global using Microsoft.UI.Xaml.Automation.Peers;
