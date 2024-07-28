@@ -28,7 +28,7 @@ public abstract class PicViewResponderBase:IPicViewResponder
     protected CompressService CompressServices { get; }
     protected PluginLoader PluginService { get; }
     
-    protected PluginBase? Plugin { get; }
+    protected AShadowViewerPlugin? Plugin { get; }
     protected PicViewResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService,string id)
     {

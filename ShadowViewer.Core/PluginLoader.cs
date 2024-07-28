@@ -10,7 +10,7 @@ namespace ShadowViewer;
 /// <summary>
 /// ShadowView 插件加载器
 /// </summary>
-public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData, PluginBase>(logger)
+public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData, AShadowViewerPlugin>(logger)
 {
     /// <summary>
     /// 加载器版本
@@ -22,7 +22,7 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
         Package.Current.Id.Version.Revision
     );
     /// <inheritdoc/>
-    protected override void LoadPluginDi(Type tPlugin, PluginBase aPlugin, PluginMetaData meta)
+    protected override void LoadPluginDi(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
         Type? navigationViewResponder = null;
         Type? picViewResponder = null;

@@ -1,6 +1,6 @@
 ﻿namespace ShadowViewer.Plugins;
 
-public abstract partial class PluginBase
+public abstract partial class AShadowViewerPlugin
 {
     /// <summary>
     /// <inheritdoc/>

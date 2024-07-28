@@ -17,7 +17,7 @@ public abstract class HistoryResponderBase:IHistoryResponder
     protected CompressService CompressServices { get; }
     protected PluginLoader PluginService { get; }
     
-    protected PluginBase? Plugin { get; }
+    protected AShadowViewerPlugin? Plugin { get; }
     protected HistoryResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService,string id)
     {

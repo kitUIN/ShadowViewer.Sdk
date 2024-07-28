@@ -3,14 +3,9 @@ using Windows.Foundation;
 
 namespace ShadowViewer.Services;
 
-internal partial class CallableService : ICallableService
+internal partial class CallableService(ILogger logger) : ICallableService
 {
-    private ILogger Logger { get; }
-
-    public CallableService(ILogger logger)
-    {
-        Logger = logger;
-    }
+    private ILogger Logger { get; } = logger;
 
     /// <summary>
     /// <inheritdoc/>
@@ -120,7 +115,7 @@ internal partial class CallableService : ICallableService
     {
         var args = new NavigateToEventArgs(page, parameter, force);
         NavigateToEvent?.Invoke(this, args);
-        Logger.Debug("触发事件NavigateTo{A}", args.ToString());
+        Logger.Debug("触发事件NavigateTo,{Args}", args.ToString());
     }
 
     /// <summary>

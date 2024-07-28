@@ -3,7 +3,10 @@ using ShadowPluginLoader.WinUI;
 
 namespace ShadowViewer.Plugins;
 
-public abstract partial class PluginBase : AbstractPlugin
+/// <summary>
+/// ShadowViewer提供的抽象插件类
+/// </summary>
+public abstract partial class AShadowViewerPlugin : AbstractPlugin
 {
     /// <summary>
     /// 日志服务
@@ -31,7 +34,7 @@ public abstract partial class PluginBase : AbstractPlugin
     public abstract PluginMetaData MetaData { get; }
 
     /// <inheritdoc />
-    protected PluginBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
+    protected AShadowViewerPlugin(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService,ILogger logger):
         base()
     {
@@ -43,26 +46,26 @@ public abstract partial class PluginBase : AbstractPlugin
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 标签
     /// </summary>
     public abstract LocalTag AffiliationTag { get; }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 设置页面
     /// </summary>
     public virtual Type? SettingsPage => null;
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 能否开关
     /// </summary>
     public virtual bool CanSwitch { get; } = true;
 
     /// <summary>
-    /// <inheritdoc/>
+    /// 能否删除
     /// </summary>
     public virtual bool CanDelete { get; } = true;
     /// <summary>
-    /// <inheritdoc/>
+    /// 能否打开文件夹
     /// </summary>
     public virtual bool CanOpenFolder { get; } = true;
 }

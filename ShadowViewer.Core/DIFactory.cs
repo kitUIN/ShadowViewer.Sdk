@@ -37,7 +37,7 @@ namespace ShadowViewer
                 Made.Of(() => Serilog.Log.ForContext(Arg.Index<Type>(0)), r => r.Parent.ImplementationType),
                 setup: Setup.With(condition: r => r.Parent.ImplementationType != null));
 
-            AbstractPluginLoader<PluginMetaData, PluginBase>.Services = Services;
+            AbstractPluginLoader<PluginMetaData, AShadowViewerPlugin>.Services = Services;
             Services.Register<PluginLoader>(reuse: Reuse.Singleton);
             Services.Register<ICallableService, CallableService>(Reuse.Singleton);
             Services.Register<CompressService>(Reuse.Singleton);
