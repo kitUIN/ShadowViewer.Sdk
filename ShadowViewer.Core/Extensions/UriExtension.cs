@@ -106,8 +106,8 @@
         /// </summary> 
         public static bool IsPic(this StorageFile file)
         {
-            bool flag = FileHelper.pngs.Contains(file.FileType);
-            Logger.Debug("文件{Paht}是否是图片:{F}", file.Path, flag);
+            bool flag = FileHelper.Pngs.Contains(file.FileType);
+            Logger.Debug("文件{Path}是否是图片:{F}", file.Path, flag);
             return flag;
         }
         /// <summary>
@@ -116,8 +116,8 @@
         public static bool IsPic(this string file)
         {
             string extension = Path.GetExtension(file);
-            bool flag = FileHelper.pngs.Any(x => x == extension);
-            Logger.Debug("文件{Paht}是否是图片:{F}", file, flag);
+            bool flag = FileHelper.Pngs.Any(x => x == extension);
+            Logger.Debug("文件{Path}是否是图片:{F}", file, flag);
             return flag;
         }
         /// <summary>
@@ -127,8 +127,8 @@
         /// <returns></returns>
         public static bool IsZip(this StorageFile file)
         {
-            bool flag = FileHelper.zips.Contains(file.FileType);
-            Logger.Debug("文件{Paht}是否是压缩包:{F}", file.Path, flag);
+            bool flag = FileHelper.Zips.Contains(file.FileType);
+            Logger.Debug("文件{Path}是否是压缩包:{F}", file.Path, flag);
             return flag;
         }
         /// <summary>

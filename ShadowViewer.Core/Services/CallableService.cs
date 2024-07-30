@@ -3,7 +3,7 @@ using Windows.Foundation;
 
 namespace ShadowViewer.Services;
 
-internal partial class CallableService(ILogger logger) : ICallableService
+public partial class CallableService(ILogger logger) : ICallableService
 {
     private ILogger Logger { get; } = logger;
 

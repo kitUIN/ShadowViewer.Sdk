@@ -1,94 +1,125 @@
-﻿using Microsoft.UI.Xaml;
-
-namespace ShadowViewer.Helpers
+﻿namespace ShadowViewer.Helpers;
+/// <summary>
+/// 文件帮助类
+/// </summary>
+public class FileHelper
 {
-    public class FileHelper
+    /// <summary>
+    /// 常见图片后缀
+    /// </summary>
+    public static string[] Pngs => [".png", ".jpg", ".jpeg", ".bmp"];
+    /// <summary>
+    /// 常见压缩包后缀
+    /// </summary>
+    public static string[] Zips => [".zip", ".rar", ".7z", ".tar"];
+
+    /// <summary>
+    /// 选择文件夹
+    /// </summary>
+    /// <param name="element"></param>
+    /// <param name="accessToken"></param>
+    /// <param name="settingsIdentifier"></param>
+    /// <returns></returns>
+    public static async Task<StorageFolder?> SelectFolderAsync(UIElement element, string accessToken = "", string settingsIdentifier = "")
     {
-        public static string[] pngs = { ".png", ".jpg", ".jpeg", ".bmp" };
-        public static string[] zips = { ".zip", ".rar", ".7z" , ".tar"};
-        
-        /// <summary>
-        /// 选择文件夹
-        /// </summary>
-        /// <param name="element"></param>
-        /// <param name="accessToken"></param>
-        /// <returns></returns>
-        public static async Task<StorageFolder?> SelectFolderAsync(UIElement element, string accessToken = "")
+        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(WindowHelper.GetWindowForElement(element));
+        var openPicker = new FolderPicker();
+        if (!string.IsNullOrEmpty(settingsIdentifier)) openPicker.SettingsIdentifier = settingsIdentifier;
+        else openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+        WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+        openPicker.FileTypeFilter.Add("*");
+        var folder = await openPicker.PickSingleFolderAsync();
+        if (folder == null) return null;
+        if (accessToken != "")
         {
-            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(WindowHelper.GetWindowForElement(element));
-            FolderPicker openPicker = new FolderPicker(); 
-            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
-            openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
-            openPicker.FileTypeFilter.Add("*");
-            StorageFolder folder = await openPicker.PickSingleFolderAsync();
-            if (folder != null)
-            {
-                if(accessToken != "")
-                {
-                    StorageApplicationPermissions.FutureAccessList.AddOrReplace(accessToken, folder);
-                }
-                Log.ForContext<FolderPicker>().Information("选择了文件夹:{Path}", folder.Path);
-                return folder;
-            }
-            return null;
+            StorageApplicationPermissions.FutureAccessList.AddOrReplace(accessToken, folder);
         }
-        /// <summary>
-        /// 选择文件
-        /// </summary>
-        public static async Task<StorageFile?> SelectFileAsync(UIElement element, PickerLocationId id, PickerViewMode mode, params string[] filter)
+        Log.ForContext<FolderPicker>().Information("选择了文件夹:{Path}", folder.Path);
+        return folder;
+    }
+
+    /// <summary>
+    /// 选择单个文件
+    /// </summary>
+    public static async Task<StorageFile?> SelectFileAsync(Window window, string settingsIdentifier, PickerViewMode mode, params string[] filter)
+    {
+        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+        var openPicker = new FileOpenPicker();
+        WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+        if (!string.IsNullOrEmpty(settingsIdentifier)) openPicker.SettingsIdentifier = settingsIdentifier;
+        else openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+        openPicker.ViewMode = mode;
+        foreach (var filterItem in filter) openPicker.FileTypeFilter.Add(filterItem);
+        var file = await openPicker.PickSingleFileAsync();
+        if (file == null) return null;
+        Log.ForContext<FileOpenPicker>().Information("选择了文件:{Path}", file.Path);
+        return file;
+    }
+    /// <summary>
+    /// 选择单个文件
+    /// </summary>
+    public static async Task<StorageFile?> SelectFileAsync(UIElement element, string settingsIdentifier, PickerViewMode mode, params string[] filter)
+    {
+        if (WindowHelper.GetWindowForElement(element) is { } window)
         {
-            if(WindowHelper.GetWindowForElement(element) is Window window)
-            {
-                return await SelectFileAsync(window, id, mode, filter);
-            }
-            return null;
+            return await SelectFileAsync(window, settingsIdentifier, mode, filter);
         }
-        public static async Task<StorageFile?> SelectFileAsync(XamlRoot xamlRoot, PickerLocationId id, PickerViewMode mode, params string[] filter)
+        return null;
+    }
+
+    /// <summary>
+    /// 选择单个文件
+    /// </summary>
+    public static async Task<StorageFile?> SelectFileAsync(XamlRoot xamlRoot, string settingsIdentifier, PickerViewMode mode, params string[] filter)
+    {
+        if (WindowHelper.GetWindowForXamlRoot(xamlRoot) is { } window)
         {
-            if (WindowHelper.GetWindowForXamlRoot(xamlRoot) is Window window)
-            {
-                return await SelectFileAsync(window, id, mode, filter);
-            }
-            return null;
+            return await SelectFileAsync(window, settingsIdentifier, mode, filter);
         }
-        public static async Task<StorageFile?> SelectPicFileAsync(XamlRoot xamlRoot)
+        return null;
+    }
+
+    /// <summary>
+    /// 选择多个文件
+    /// </summary>
+    public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(
+        Window window, string settingsIdentifier, PickerViewMode mode, params string[] filter)
+    {
+        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+        var openPicker = new FileOpenPicker();
+        WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+        if (!string.IsNullOrEmpty(settingsIdentifier)) openPicker.SettingsIdentifier = settingsIdentifier;
+        else openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
+        openPicker.ViewMode = mode;
+        foreach (var filterItem in filter) openPicker.FileTypeFilter.Add(filterItem);
+        var files = await openPicker.PickMultipleFilesAsync();
+        if (files == null) return [];
+        Log.ForContext<FileOpenPicker>().Information("选择了{Count}个文件:{Path}", files.Count, files.Select(x => x.Path));
+        return files;
+    }
+    /// <summary>
+    /// 选择多个文件
+    /// </summary>
+    public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(
+        UIElement element, string settingsIdentifier, PickerViewMode mode, params string[] filter)
+    {
+        if (WindowHelper.GetWindowForElement(element) is { } window)
         {
-            return await SelectFileAsync(xamlRoot, PickerLocationId.PicturesLibrary, PickerViewMode.Thumbnail, ".png", ".jpg", ".jpeg", ".bmp", ".gif");;
+            return await SelectMultipleFileAsync(window, settingsIdentifier, mode, filter);
         }
-        public static async Task<StorageFile?> SelectFileAsync(Window window, PickerLocationId id, PickerViewMode mode, params string[] filter)
+        return [];
+    }
+
+    /// <summary>
+    /// 选择多个文件
+    /// </summary>
+    public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(
+        XamlRoot xamlRoot, string settingsIdentifier, PickerViewMode mode, params string[] filter)
+    {
+        if (WindowHelper.GetWindowForXamlRoot(xamlRoot) is { } window)
         {
-            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-            FileOpenPicker openPicker = new FileOpenPicker();
-            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
-            openPicker.SuggestedStartLocation = id;
-            openPicker.ViewMode = mode;
-            foreach (string filterItem in filter) openPicker.FileTypeFilter.Add(filterItem);
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            if (file != null)
-            {
-                Log.ForContext<FileOpenPicker>().Information("选择了文件:{Path}", file.Path);
-                return file;
-            }
-            return null;
+            return await SelectMultipleFileAsync(window, settingsIdentifier, mode, filter);
         }
-        public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(Window window, PickerLocationId id, PickerViewMode mode, params string[] filter)
-        {
-            IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-            FileOpenPicker openPicker = new FileOpenPicker();
-            WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
-            openPicker.SuggestedStartLocation = id;
-            openPicker.ViewMode = mode;
-            foreach (string filterItem in filter) openPicker.FileTypeFilter.Add(filterItem);
-            IReadOnlyList<IStorageItem> files = await openPicker.PickMultipleFilesAsync();
-            if (files != null)
-            {
-                return files;
-            }
-            return null;
-        }
-        public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(UIElement element, params string[] filter)
-        {
-            return await SelectMultipleFileAsync(WindowHelper.GetWindowForElement(element), PickerLocationId.Desktop, PickerViewMode.List, filter);
-        }
+        return [];
     }
 }
