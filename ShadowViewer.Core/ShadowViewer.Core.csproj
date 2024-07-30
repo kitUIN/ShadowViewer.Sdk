@@ -10,7 +10,7 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 		<LangVersion>12</LangVersion>
-		<Version>2024.7.27.14</Version>
+		<Version>2024.7.31.1</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
 		<Authors>kitUIN</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -27,43 +27,22 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.0.240109" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.0.240109" />
-		<PackageReference Include="kitUIN.FluentIcon.WinUI.Filled" Version="1.2.250" />
-		<PackageReference Include="kitUIN.FluentIcon.WinUI.Regular" Version="1.2.250" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240404000" />
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.3233" />
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-		<PackageReference Include="ShadowPluginLoader.WinUI" Version="1.0.6.2" />
+		<PackageReference Include="ShadowPluginLoader.WinUI" Version="1.0.7.2" />
+		<PackageReference Include="ShadowViewer.Analyzer" Version="1.2.5.2" />
+		<PackageReference Include="ShadowViewer.Controls.Notification" Version="1.0.1.2" />
+		<PackageReference Include="ShadowViewer.Controls.PluginLogo" Version="1.0.1.2" />
+		<PackageReference Include="ShadowViewer.Controls.ShadowSettingHeader" Version="1.0.1.2" />
+		<PackageReference Include="ShadowViewer.Controls.TitleBorder" Version="1.0.1.2" />
 		<PackageReference Include="SharpCompress" Version="0.37.2" />
-		<PackageReference Include="SqlSugarCore" Version="5.1.4.96" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<None Remove="Controls\PluginLogo.xaml" />
-		<None Remove="Controls\TipPopup.xaml" />
-		<None Remove="Controls\StatusBlock.xaml" />
-		<None Remove="Themes\Generic.xaml" />
+		<PackageReference Include="SqlSugarCore" Version="5.1.4.166" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="$(OutputPath)\**\*.xbf" Pack="true" PackagePath="lib\net6.0-windows10.0.19041\" />
-	</ItemGroup>
-	<ItemGroup>
-		<Page Update="Controls\PluginLogo.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Controls\StatusBlock.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Controls\TipPopup.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Themes\Generic.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
 	</ItemGroup>
 
 </Project>
