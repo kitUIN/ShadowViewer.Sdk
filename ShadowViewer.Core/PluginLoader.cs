@@ -53,4 +53,7 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
                 Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
         }
     }
+
+    /// <inheritdoc />
+    protected override string PluginFolder => Config.PluginsPath;
 }
