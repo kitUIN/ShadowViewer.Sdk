@@ -39,3 +39,4 @@ global using System.Web;
 global using System.IO;
 global using CustomExtensions.WinUI;
 global using DryIoc;
+global using ShadowPluginLoader.WinUI;
