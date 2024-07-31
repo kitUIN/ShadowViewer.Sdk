@@ -7,7 +7,7 @@ namespace ShadowViewer.Services
     /// <summary>
     /// 通知其他控件的工具类
     /// </summary>
-    public partial interface ICallableService
+    public interface ICallableService
     {
         /// <summary>
         /// 控制页面跳转事件
@@ -41,14 +41,6 @@ namespace ShadowViewer.Services
         /// 调试事件
         /// </summary>
         public event EventHandler? DebugEvent;
-        /// <summary>
-        /// 导航栏后退事件
-        /// </summary>
-        public event EventHandler? NavigationViewBackRequestedEvent;
-        /// <summary>
-        /// 导航栏面板事件
-        /// </summary>
-        public event EventHandler? NavigationViewPaneEvent;
 
         public event EventHandler<TopGridEventArg>? TopGridEvent;
         public event EventHandler<ImportPluginEventArg>? ImportPluginEvent;
@@ -91,8 +83,6 @@ namespace ShadowViewer.Services
         void Debug();
         void TopGrid(object sender, UIElement element, TopGridMode mode);
         void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items);
-        void NavigationViewPane(object sender);
-        void NavigationViewBackRequested(object sender);
         void ChangeOverlapped(AppWindow sender, AppWindowChangedEventArgs args);
     }
 
