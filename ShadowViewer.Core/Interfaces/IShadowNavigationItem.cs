@@ -3,7 +3,7 @@
 /// <summary>
 /// 导航项
 /// </summary>
-public interface IShadowNavigationItem
+public interface IShadowNavigationItem: IPluginId
 {
     /// <summary>
     /// 内容
@@ -20,8 +20,4 @@ public interface IShadowNavigationItem
     /// </summary>
     public string? Id { get;  }
 
-    /// <summary>
-    /// 所属的插件Id
-    /// </summary>
-    public string PluginId { get;  }
 }

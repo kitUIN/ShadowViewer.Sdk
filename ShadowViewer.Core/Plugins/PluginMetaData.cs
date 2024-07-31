@@ -39,33 +39,7 @@ public class PluginMetaData : AbstractPluginMetaData
     /// 4.fluent://filled/\uE714
     /// </example>
     /// </summary>
-    public string Logo
-    {
-        get => logo;
-        init
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                if (value.StartsWith("/") && value != "/")
-                {
-                    logo = value.AssetPath();
-                }
-                else if (value.StartsWith("ms-appx:///"))
-                {
-                    logo = value.Replace("ms-appx://", "").AssetPath();
-                }
-                else if (value.StartsWith("ms-appx://"))
-                {
-                    logo = value.Replace("ms-appx://", "/").AssetPath();
-                }
-                else
-                {
-                    logo = value;
-                }
-            }
-        }
-    }
-    private string logo;
+    public string Logo { get; init; }
 
 }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

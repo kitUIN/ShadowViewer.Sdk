@@ -1,49 +1,42 @@
-﻿using SqlSugar;
-using ShadowPluginLoader.WinUI;
+﻿using ShadowViewer.Analyzer.Attributes;
+using SqlSugar;
 
 namespace ShadowViewer.Plugins;
 
 /// <summary>
 /// ShadowViewer提供的抽象插件类
-/// </summary>
-public abstract partial class AShadowViewerPlugin : AbstractPlugin
+/// </summary> 
+public abstract partial class AShadowViewerPlugin(ICallableService caller, ISqlSugarClient db, CompressService compressService, ILogger logger, PluginLoader pluginService, INotifyService notifyService) : AbstractPlugin
 {
     /// <summary>
-    /// 日志服务
+    /// 触发器服务
     /// </summary>
-    protected ILogger Logger { get; }
-    /// <summary>
-    /// 通知服务
-    /// </summary>
-    protected ICallableService Caller { get; }
+    public ICallableService Caller { get; } = caller;
     /// <summary>
     /// 数据库服务
     /// </summary>
-    protected ISqlSugarClient Db { get; }
+    public ISqlSugarClient Db { get; } = db;
     /// <summary>
-    /// 压缩服务
+    /// 解压缩服务
     /// </summary>
-    protected CompressService CompressServices { get; }
+    public CompressService Compressor { get; } = compressService;
     /// <summary>
-    /// 插件服务
+    /// 日志服务
     /// </summary>
-    protected PluginLoader PluginService { get; }
+    public ILogger Logger { get; } = logger;
+    /// <summary>
+    /// 响应器服务
+    /// </summary>
+    public PluginLoader PluginService { get; } = pluginService;
+    /// <summary>
+    /// 通知服务
+    /// </summary>
+    public INotifyService Notifier { get; } = notifyService;
+
     /// <summary>
     /// 插件元数据
     /// </summary>
     public abstract PluginMetaData MetaData { get; }
-
-    /// <inheritdoc />
-    protected AShadowViewerPlugin(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginLoader pluginService,ILogger logger):
-        base()
-    {
-        PluginService = pluginService;
-        Caller = callableService;
-        Db = sqlSugarClient;
-        CompressServices = compressServices;
-        Logger = logger;
-    }
 
     /// <summary>
     /// 标签

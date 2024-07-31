@@ -10,6 +10,7 @@ namespace ShadowViewer;
 /// </summary>
 public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData, AShadowViewerPlugin>(logger)
 {
+
     /// <summary>
     /// 加载器版本
     /// </summary>
@@ -34,12 +35,25 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
             {
                 db.CodeFirst.InitTables(type);
             }
-
+            else if (type.IsAssignableTo(typeof(ISettingFolder)))
+            {
+                DiFactory.Services.Register(typeof(ISettingFolder),
+                    type,
+                    Reuse.Singleton,
+                    made: Parameters.Of.Type<string>(_ => meta.Id));
+                Log.Information(
+                    "{Id}{Name} Load {INavigationResponder}:{TNavigationResponder}",
+                    meta.Id, meta.Name,
+                    typeof(ISettingFolder), type.Name);
+            }
         if (navigationViewResponder is not null)
         {
             DiFactory.Services.Register(typeof(INavigationResponder), navigationViewResponder,
                 Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
-            Log.Information("{Id}{Name} Load INavigationResponder:{TNavigationResponder}",meta.Id,meta.Name, navigationViewResponder.Name);
+            Log.Information(
+                "{Id}{Name} Load INavigationResponder:{TNavigationResponder}",
+                meta.Id,meta.Name,
+                navigationViewResponder.Name);
         }
 
         if (picViewResponder is not null)
