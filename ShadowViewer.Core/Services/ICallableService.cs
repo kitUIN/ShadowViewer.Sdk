@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI.Windowing;
 using ShadowViewer.Args;
 using Windows.Foundation;
+using CommunityToolkit.WinUI.Helpers;
 
 namespace ShadowViewer.Services
 {
@@ -41,9 +42,13 @@ namespace ShadowViewer.Services
         /// 调试事件
         /// </summary>
         public event EventHandler? DebugEvent;
+        /// <summary>
+        /// 主题变更事件
+        /// </summary>
+        public event EventHandler? ThemeChangedEvent;
 
         public event EventHandler<TopGridEventArg>? TopGridEvent;
-        public event EventHandler<ImportPluginEventArg>? ImportPluginEvent;
+
         /// <summary>
         /// 窗体最大化,最小化,普通事件
         /// </summary>
@@ -81,8 +86,10 @@ namespace ShadowViewer.Services
         /// 调试
         /// </summary>
         void Debug();
+
+        void ThemeChanged();
         void TopGrid(object sender, UIElement element, TopGridMode mode);
-        void ImportPlugin(object sender, IReadOnlyList<IStorageItem> items);
+
         void ChangeOverlapped(AppWindow sender, AppWindowChangedEventArgs args);
     }
 

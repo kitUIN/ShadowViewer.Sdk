@@ -6,30 +6,7 @@ namespace ShadowViewer.Helpers
     /// </summary>
     public static class ThemeHelper
     {
-        private const string SelectedAppThemeKey = "SelectedAppTheme";
-
-        /// <summary>
-        /// Gets the current actual theme of the app based on the requested theme of the
-        /// root element, or if that value is Default, the requested theme of the Application.
-        /// </summary>
-        /*public static ElementTheme ActualTheme
-        {
-            get
-            {
-                foreach (Window window in WindowHelper.ActiveWindows)
-                {
-                    if (window.Content is FrameworkElement rootElement)
-                    {
-                        if (rootElement.RequestedTheme != ElementTheme.Default)
-                        {
-                            return rootElement.RequestedTheme;
-                        }
-                    }
-                }
-
-                return EnumHelper.GetEnum<ElementTheme>(App.Current.RequestedTheme.ToString());
-            }
-        }*/
+        private const string SelectedAppThemeKey = "ShadowViewer_SelectedAppTheme";
 
         /// <summary>
         /// Gets or sets (with LocalSettings persistence) the RequestedTheme of the root element.
@@ -45,7 +22,6 @@ namespace ShadowViewer.Helpers
                         return rootElement.RequestedTheme;
                     }
                 }
-
                 return ElementTheme.Default;
             }
             set
@@ -57,19 +33,31 @@ namespace ShadowViewer.Helpers
                         rootElement.RequestedTheme = value;
                     }
                 }
+                if (ConfigHelper.GetString(SelectedAppThemeKey) != value.ToString())
+                {
+                    DiFactory.Services.Resolve<ICallableService>().ThemeChanged();
+                }
                 ConfigHelper.Set(SelectedAppThemeKey, value.ToString());
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="window"></param>
         public static void Initialize(Window window)
         {
-            string savedTheme = ConfigHelper.GetString(SelectedAppThemeKey);
+            var savedTheme = ConfigHelper.GetString(SelectedAppThemeKey);
             if (savedTheme != null)
             {
                 RootTheme = EnumHelper.GetEnum<ElementTheme>(savedTheme);
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static bool IsDarkTheme()
         {
             if (RootTheme == ElementTheme.Default)

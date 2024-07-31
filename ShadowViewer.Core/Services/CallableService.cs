@@ -50,6 +50,9 @@ internal partial class CallableService(ILogger logger) : ICallableService
     /// </summary>
     public event EventHandler? DebugEvent;
 
+    /// <inheritdoc />
+    public event EventHandler? ThemeChangedEvent;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -60,15 +63,6 @@ internal partial class CallableService(ILogger logger) : ICallableService
     /// </summary>
     public event EventHandler<ImportPluginEventArg>? ImportPluginEvent; 
 
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public event EventHandler? NavigationViewBackRequestedEvent;
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public event EventHandler? NavigationViewPaneEvent;
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
@@ -145,7 +139,14 @@ internal partial class CallableService(ILogger logger) : ICallableService
     public void Debug()
     {
         DebugEvent?.Invoke(this, EventArgs.Empty);
-        Logger.Debug("触发事件DebugEvent");
+        Logger.Debug("触发事件{EventName}", nameof(DebugEvent));
+    }
+
+    /// <inheritdoc />
+    public void ThemeChanged()
+    {
+        ThemeChangedEvent?.Invoke(this, EventArgs.Empty);
+        Logger.Debug("触发事件{EventName}",nameof(ThemeChangedEvent));
     }
 
 
@@ -168,23 +169,6 @@ internal partial class CallableService(ILogger logger) : ICallableService
         Logger.Debug("触发事件{Event}", nameof(ImportPluginEvent));
     }
 
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public void NavigationViewPane(object sender)
-    {
-        NavigationViewPaneEvent?.Invoke(sender, EventArgs.Empty);
-        Logger.Debug("触发事件{Event}", nameof(NavigationViewPaneEvent));
-    }
-
-    /// <summary>
-    /// <inheritdoc/>
-    /// </summary>
-    public void NavigationViewBackRequested(object sender)
-    {
-        NavigationViewBackRequestedEvent?.Invoke(sender, EventArgs.Empty);
-        Logger.Debug("触发事件{Event}", nameof(NavigationViewBackRequestedEvent));
-    }
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
