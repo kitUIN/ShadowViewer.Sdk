@@ -22,7 +22,7 @@ public class FileHelper
     /// <returns></returns>
     public static async Task<StorageFolder?> SelectFolderAsync(UIElement element, string accessToken = "", string settingsIdentifier = "")
     {
-        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(WindowHelper.GetWindowForElement(element));
+        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(WindowHelper.GetWindow(element));
         var openPicker = new FolderPicker();
         if (!string.IsNullOrEmpty(settingsIdentifier)) openPicker.SettingsIdentifier = settingsIdentifier;
         else openPicker.SuggestedStartLocation = PickerLocationId.Downloads;
@@ -60,7 +60,7 @@ public class FileHelper
     /// </summary>
     public static async Task<StorageFile?> SelectFileAsync(UIElement element, string settingsIdentifier, PickerViewMode mode, params string[] filter)
     {
-        if (WindowHelper.GetWindowForElement(element) is { } window)
+        if (WindowHelper.GetWindow(element) is { } window)
         {
             return await SelectFileAsync(window, settingsIdentifier, mode, filter);
         }
@@ -72,7 +72,7 @@ public class FileHelper
     /// </summary>
     public static async Task<StorageFile?> SelectFileAsync(XamlRoot xamlRoot, string settingsIdentifier, PickerViewMode mode, params string[] filter)
     {
-        if (WindowHelper.GetWindowForXamlRoot(xamlRoot) is { } window)
+        if (WindowHelper.GetWindow(xamlRoot) is { } window)
         {
             return await SelectFileAsync(window, settingsIdentifier, mode, filter);
         }
@@ -103,7 +103,7 @@ public class FileHelper
     public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(
         UIElement element, string settingsIdentifier, PickerViewMode mode, params string[] filter)
     {
-        if (WindowHelper.GetWindowForElement(element) is { } window)
+        if (WindowHelper.GetWindow(element) is { } window)
         {
             return await SelectMultipleFileAsync(window, settingsIdentifier, mode, filter);
         }
@@ -116,7 +116,7 @@ public class FileHelper
     public static async Task<IReadOnlyList<IStorageItem>> SelectMultipleFileAsync(
         XamlRoot xamlRoot, string settingsIdentifier, PickerViewMode mode, params string[] filter)
     {
-        if (WindowHelper.GetWindowForXamlRoot(xamlRoot) is { } window)
+        if (WindowHelper.GetWindow(xamlRoot) is { } window)
         {
             return await SelectMultipleFileAsync(window, settingsIdentifier, mode, filter);
         }

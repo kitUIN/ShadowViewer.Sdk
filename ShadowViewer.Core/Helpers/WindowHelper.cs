@@ -1,121 +1,188 @@
 ﻿using Microsoft.UI.Windowing;
-using System.Diagnostics;
-using Windows.UI.WindowManagement;
+using Windows.Foundation;
+using AppWindow = Microsoft.UI.Windowing.AppWindow;
+using AppWindowChangedEventArgs = Microsoft.UI.Windowing.AppWindowChangedEventArgs;
 
+// Base On WinUI 3 Gallery
 namespace ShadowViewer.Helpers
 {
-    // Copy From WinUI 3 Gallery
+    /// <summary>
+    /// 窗体帮助类
+    /// </summary>
     public static class WindowHelper
     {
-        static public Window CreateWindow()
+        #region Event
+        /// <summary>
+        /// 窗体最大化,最小化,普通事件
+        /// </summary>
+        public static event TypedEventHandler<AppWindow, AppWindowChangedEventArgs>? OverlappedChangedEvent;
+
+
+
+        #endregion
+        
+        #region InvokeEvent
+        /// <summary>
+        /// 触发窗体变更事件
+        /// </summary>
+        public static void ChangeOverlapped(AppWindow sender, AppWindowChangedEventArgs args)
         {
-            Window newWindow = new Window();
+            OverlappedChangedEvent?.Invoke(sender, args);
+            Log.Debug("触发事件{EventName},{Kind}", 
+                nameof(OverlappedChangedEvent),
+                sender.Presenter.Kind);
+        }
+        #endregion
+
+        /// <summary>
+        /// 新建窗体
+        /// </summary>
+        public static T CreateWindow<T>() where T : Window, new()
+        {
+            T newWindow = new();
             TrackWindow(newWindow);
             return newWindow;
         }
-        static public void TrackWindow(Window window)
+        /// <summary>
+        /// 跟踪窗体
+        /// </summary>
+        /// <param name="window"></param>
+        public static void TrackWindow(Window window)
         {
-            window.AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-            window.AppWindow.TitleBar.ButtonForegroundColor = Microsoft.UI.Colors.Transparent;
-            window.Closed += (sender, args) => {
-                _activeWindows.Remove(window);
+            window.Closed += (_, _) => {
+                ActiveWindows.Remove(window);
             };
             if (window.AppWindow.Presenter is OverlappedPresenter overlappedPresenter)
             {
-                _appWindowStates.Add(window.AppWindow.Id, overlappedPresenter.State);
+                AppWindowStates.Add(window.AppWindow.Id, overlappedPresenter.State);
             }
             window.AppWindow.Changed += (sender, args) =>
             {
-                if (sender.Presenter is OverlappedPresenter overlappedPresenter)
+                if (sender.Presenter is not OverlappedPresenter presenter) return;
+                if(AppWindowStates.ContainsKey(sender.Id))
                 {
-                    if(_appWindowStates.ContainsKey(sender.Id))
+                    if(presenter.State != AppWindowStates[sender.Id])
                     {
-                        if(overlappedPresenter.State!= _appWindowStates[sender.Id])
-                        {
-                            DiFactory.Services.Resolve<ICallableService>().ChangeOverlapped(sender, args);
-                        }
-                        _appWindowStates[sender.Id] = overlappedPresenter.State;
+                        ChangeOverlapped(sender, args);
                     }
-                    else
-                    {
-                        _appWindowStates.Add(sender.Id, overlappedPresenter.State);
-                    }
+                    AppWindowStates[sender.Id] = presenter.State;
+                }
+                else
+                {
+                    AppWindowStates.Add(sender.Id, presenter.State);
                 }
             };
-            _activeWindows.Add(window);
+            ActiveWindows.Add(window);
         }
-        static public void ColseWindow(Window window)
+
+
+        #region 关闭窗体
+
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        public static void CloseWindow(Window? window)
         {
-            window.Close();
+            window?.Close();
         }
-        static public void ColseWindowFromTitle(string title)
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        /// <param name="title"></param>
+        public static void CloseWindow(string? title)
         {
-            if (title != null)
+            if (title == null) return;
+            foreach (var window in ActiveWindows.Where(window => title == window.Title))
             {
-                foreach (Window window in _activeWindows)
-                {
-                    if (title == window.Title)
-                    {
-                        ColseWindow(window);
-                        return;
-                    }
-                }
+                CloseWindow(window);
+                return;
             }
         }
-        static public Window? GetWindowForTitle(string title)
+
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        public static void CloseWindow(WindowId? windowId)
         {
-            if (title != null)
-            {
-                foreach (Window window in _activeWindows)
-                {
-                    if (title == window.Title)
-                    {
-                        return window;
-                    }
-                }
-            }
-            return null;
+            CloseWindow(GetWindow(windowId));
         }
-        static public void SetWindowTitle(string oldTitle,string title)
+
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        public static void CloseWindow(UIElement? element)
         {
-            foreach (Window window in _activeWindows)
-            {
-                if (oldTitle == window.Title)
-                {
-                    window.Title = title;
-                }
-            }
+            CloseWindow(GetWindow(element));
         }
-        static public Window? GetWindowForElement(UIElement element)
+
+        /// <summary>
+        /// 关闭窗体
+        /// </summary>
+        public static void CloseWindow(XamlRoot? xamlRoot)
         {
-            if (element.XamlRoot != null)
-            {
-                foreach (Window window in _activeWindows)
-                {
-                    if (element.XamlRoot == window.Content.XamlRoot)
-                    {
-                        return window;
-                    }
-                }
-            }
-            return null;
+            CloseWindow(GetWindow(xamlRoot));
         }
-        static public Window? GetWindowForXamlRoot(XamlRoot xamlRoot)
+        #endregion
+
+        #region 获取窗体
+        /// <summary>
+        /// 获取窗体
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public static Window? GetWindow(string? title)
         {
-            if (xamlRoot != null)
-            {
-                foreach (Window window in _activeWindows)
-                {
-                    if (xamlRoot == window.Content.XamlRoot)
-                    {
-                        return window;
-                    }
-                }
-            }
-            return null;
+            return title == null ? null : ActiveWindows.FirstOrDefault(window => title == window.Title);
         }
-        private static Dictionary<WindowId, OverlappedPresenterState> _appWindowStates = new ();
-        public static List<Window> ActiveWindows => _activeWindows;
-        private static readonly List<Window> _activeWindows = new();
+
+        /// <summary>
+        /// 获取窗体
+        /// </summary>
+        public static Window? GetWindow(WindowId? windowId)
+        {
+            return windowId == null ? null : ActiveWindows.FirstOrDefault(window => windowId == window.AppWindow.Id);
+        }
+        /// <summary>
+        /// 获取窗体
+        /// </summary>
+        /// <param name="element"></param>
+        /// <returns></returns>
+        public static Window? GetWindow(UIElement? element)
+        {
+            return GetWindow(element?.XamlRoot);
+        }
+        /// <summary>
+        /// 获取窗体
+        /// </summary>
+        /// <param name="xamlRoot"></param>
+        /// <returns></returns>
+        public static Window? GetWindow(XamlRoot? xamlRoot)
+        {
+            return xamlRoot == null ? null : ActiveWindows.FirstOrDefault(window => xamlRoot == window.Content.XamlRoot);
+        }
+        #endregion
+
+
+
+        /// <summary>
+        /// 设置窗体标题
+        /// </summary>
+        public static void SetWindowTitle(string oldTitle, string newTitle)
+        {
+            foreach (var window in ActiveWindows.Where(window => oldTitle == window.Title))
+            {
+                window.Title = newTitle;
+            }
+        }
+
+        /// <summary>
+        /// 窗体状态
+        /// </summary>
+        private static readonly Dictionary<WindowId, OverlappedPresenterState> AppWindowStates = new ();
+        
+        /// <summary>
+        /// 正在活动的窗体
+        /// </summary>
+        public static List<Window> ActiveWindows { get; } = [];
     }
 }

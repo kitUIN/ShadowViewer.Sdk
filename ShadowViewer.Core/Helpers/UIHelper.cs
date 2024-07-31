@@ -57,7 +57,7 @@ namespace ShadowViewer.Helpers
         // Confirmation of Action
         static public void AnnounceActionForAccessibility(UIElement ue, string annoucement, string activityID)
         {
-            var peer = FrameworkElementAutomationPeer.FromElement(ue);
+            var peer = FrameworkElementAutomationPeer.FromElement(ue); 
             peer.RaiseNotificationEvent(AutomationNotificationKind.ActionCompleted,
                                         AutomationNotificationProcessing.ImportantMostRecent, annoucement, activityID);
         }

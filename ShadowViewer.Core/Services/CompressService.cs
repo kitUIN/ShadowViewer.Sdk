@@ -71,12 +71,10 @@ namespace ShadowViewer.Services
             var readerOptions = new ReaderOptions() { Password = pwd }; 
             try
             {
-                using FileStream fStream = File.OpenRead(zip);
-                using NonDisposingStream stream = NonDisposingStream.Create(fStream);
-                using (IArchive archive = ArchiveFactory.Open(stream, readerOptions))
-                {
-                    archive.ExtractToDirectory(destinationDirectory, report, cancellationToken);
-                }
+                await using var fStream = File.OpenRead(zip);
+                await using var stream = NonDisposingStream.Create(fStream);
+                using var archive = ArchiveFactory.Open(stream, readerOptions);
+                archive.ExtractToDirectory(destinationDirectory, report, cancellationToken);
             }
             catch (CryptographicException ex)
             {

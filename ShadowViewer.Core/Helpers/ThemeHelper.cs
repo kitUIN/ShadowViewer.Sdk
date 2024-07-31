@@ -38,7 +38,7 @@ namespace ShadowViewer.Helpers
         {
             get
             {
-                foreach (Window window in WindowHelper.ActiveWindows)
+                foreach (var window in WindowHelper.ActiveWindows)
                 {
                     if (window.Content is FrameworkElement rootElement)
                     {
@@ -50,7 +50,7 @@ namespace ShadowViewer.Helpers
             }
             set
             {
-                foreach (Window window in WindowHelper.ActiveWindows)
+                foreach (var window in WindowHelper.ActiveWindows)
                 {
                     if (window.Content is FrameworkElement rootElement)
                     {

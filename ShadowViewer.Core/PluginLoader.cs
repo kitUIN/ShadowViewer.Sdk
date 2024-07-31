@@ -1,9 +1,7 @@
-﻿
-using Windows.ApplicationModel;
-using Serilog;
-using ShadowPluginLoader.WinUI;
+﻿using Windows.ApplicationModel;
 using ShadowViewer.Responders;
 using SqlSugar;
+using ShadowPluginLoader.WinUI.Exceptions;
 
 namespace ShadowViewer;
 
@@ -56,4 +54,20 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
 
     /// <inheritdoc />
     protected override string PluginFolder => Config.PluginsPath;
+
+    /// <inheritdoc cref="AbstractPluginLoader{TMeta,TAPlugin}.ImportFromZipAsync"/>
+    public new async Task ImportFromZipAsync(string zipPath)
+    {
+        try
+        {
+            CheckPluginInZip(zipPath);
+            var destinationDirectory = Path.Combine(PluginFolder, Path.GetFileNameWithoutExtension(zipPath));
+            await CompressService.DeCompressAsync(zipPath, destinationDirectory);
+            await this.ImportFromDirAsync(destinationDirectory);
+        }
+        catch (PluginImportException ex)
+        {
+            this.Logger?.Warning("{Pre}{Message}", LoggerPrefix, ex.Message);
+        }
+    }
 }
