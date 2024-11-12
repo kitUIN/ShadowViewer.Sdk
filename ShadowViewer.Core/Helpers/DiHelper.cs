@@ -27,9 +27,9 @@ public static class DiHelper
                     Log.ForContext<ISqlSugarClient>().Debug("{Sql}", sql);
                 };
             }));
+        DiFactory.Services.Register<INotifyService, NotifyService>(Reuse.Singleton);
         DiFactory.Services.Register<PluginLoader>(reuse: Reuse.Singleton);
         DiFactory.Services.Register<ICallableService, CallableService>(Reuse.Singleton);
-        DiFactory.Services.Register<INotifyService, NotifyService>(Reuse.Singleton);
         DiFactory.Services.Register<CompressService>(Reuse.Singleton);
         DiFactory.Services.Register<ResponderService>(Reuse.Singleton);
     }
