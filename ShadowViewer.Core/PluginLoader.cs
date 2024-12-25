@@ -8,9 +8,9 @@ namespace ShadowViewer;
 /// <summary>
 /// ShadowView 插件加载器
 /// </summary>
-public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData, AShadowViewerPlugin>(logger)
+public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
+    : AbstractPluginLoader<PluginMetaData, AShadowViewerPlugin>(logger, pluginEventService)
 {
-
     /// <summary>
     /// 加载器版本
     /// </summary>
@@ -20,6 +20,7 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
         Package.Current.Id.Version.Build,
         Package.Current.Id.Version.Revision
     );
+
     /// <inheritdoc/>
     protected override void LoadPluginDi(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
@@ -46,13 +47,14 @@ public class PluginLoader(ILogger logger) : AbstractPluginLoader<PluginMetaData,
                     meta.Id, meta.Name,
                     typeof(ISettingFolder), type.Name);
             }
+
         if (navigationViewResponder is not null)
         {
             DiFactory.Services.Register(typeof(INavigationResponder), navigationViewResponder,
                 Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
             Log.Information(
                 "{Id}{Name} Load INavigationResponder:{TNavigationResponder}",
-                meta.Id,meta.Name,
+                meta.Id, meta.Name,
                 navigationViewResponder.Name);
         }
 

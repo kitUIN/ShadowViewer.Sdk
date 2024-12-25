@@ -6,12 +6,13 @@ namespace ShadowViewer.Plugins;
 /// <summary>
 /// ShadowViewer提供的抽象插件类
 /// </summary> 
-public abstract partial class AShadowViewerPlugin(ICallableService caller, ISqlSugarClient db, CompressService compressService, ILogger logger, PluginLoader pluginService, INotifyService notifyService) : AbstractPlugin
+public abstract partial class AShadowViewerPlugin(ICallableService caller, ISqlSugarClient db, PluginEventService pluginEventService, CompressService compressService, ILogger logger, PluginLoader pluginService, INotifyService notifyService) : AbstractPlugin( logger, pluginEventService)
 {
     /// <summary>
     /// 触发器服务
     /// </summary>
     public ICallableService Caller { get; } = caller;
+
     /// <summary>
     /// 数据库服务
     /// </summary>
@@ -20,10 +21,7 @@ public abstract partial class AShadowViewerPlugin(ICallableService caller, ISqlS
     /// 解压缩服务
     /// </summary>
     public CompressService Compressor { get; } = compressService;
-    /// <summary>
-    /// 日志服务
-    /// </summary>
-    public ILogger Logger { get; } = logger;
+
     /// <summary>
     /// 响应器服务
     /// </summary>
