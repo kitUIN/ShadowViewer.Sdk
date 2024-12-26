@@ -94,7 +94,9 @@ namespace ShadowViewer.Configs
                 Log.ForContext<Config>().Debug("调试模式关闭");
                 Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
-                .WriteTo.File(Path.Combine(defaultPath, "Logs", "ShadowViewer.log"), outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}", rollingInterval: RollingInterval.Day, shared: true)
+                .WriteTo.File(Path.Combine(defaultPath, "Logs", "ShadowViewer.log"),
+                    outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}",
+                    rollingInterval: RollingInterval.Day, shared: true)
                 .CreateLogger();
             }
         }

@@ -32,4 +32,13 @@ public class ResponderService(PluginLoader pluginService)
             PluginService.IsEnabled(id) == true) return responder;
         return default;
     }
+    /// <summary>
+    /// 获取指定Id的响应类
+    /// </summary>
+    public TResponder? GetResponder<TResponder>(string id) where TResponder : IResponder
+    {
+        if (GetResponders<TResponder>()
+                .FirstOrDefault(x => string.Equals(id, x.Id, StringComparison.CurrentCultureIgnoreCase)) is { } responder) return responder;
+        return default;
+    }
 }
