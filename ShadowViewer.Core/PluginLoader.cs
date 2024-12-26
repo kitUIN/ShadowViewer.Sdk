@@ -14,12 +14,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
     /// <summary>
     /// 加载器版本
     /// </summary>
-    public static Version CoreVersion { get; } = new(
-        Package.Current.Id.Version.Major,
-        Package.Current.Id.Version.Minor,
-        Package.Current.Id.Version.Build,
-        Package.Current.Id.Version.Revision
-    );
+    public static Version CoreVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version!;
 
     /// <inheritdoc/>
     protected override void LoadPluginDi(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
