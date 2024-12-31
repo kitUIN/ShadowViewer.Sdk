@@ -3,7 +3,7 @@ using SqlSugar;
 
 namespace ShadowViewer.Responders;
 
-public abstract class HistoryResponderBase:IHistoryResponder
+public abstract class AbstractHistoryResponder : IHistoryResponder
 {
     public string Id { get; }
     public abstract IEnumerable<IHistory> GetHistories(HistoryMode mode = HistoryMode.Day);
@@ -16,9 +16,11 @@ public abstract class HistoryResponderBase:IHistoryResponder
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
     protected PluginLoader PluginService { get; }
-    
-    protected AShadowViewerPlugin? Plugin { get; }
-    protected HistoryResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
+    /// <summary>
+    /// Plugin
+    /// </summary>
+    protected AShadowViewerPlugin? Plugin => PluginService.GetPlugin(Id);
+    protected AbstractHistoryResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService,string id)
     {
         Caller = callableService;
@@ -26,6 +28,5 @@ public abstract class HistoryResponderBase:IHistoryResponder
         CompressServices = compressServices;
         PluginService = pluginService;
         Id = id;
-        Plugin = PluginService.GetPlugin(Id);
     }
 }

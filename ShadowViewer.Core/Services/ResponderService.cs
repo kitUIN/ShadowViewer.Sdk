@@ -12,7 +12,7 @@ public class ResponderService(PluginLoader pluginService)
     /// </summary>
     public static IEnumerable<TResponder> GetResponders<TResponder>() where TResponder: IResponder
     {
-        return DiFactory.Services.Resolve<IEnumerable<TResponder>>();
+        return DiFactory.Services.ResolveMany<TResponder>();
     }
 
     /// <summary>

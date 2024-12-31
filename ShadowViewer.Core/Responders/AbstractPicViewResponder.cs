@@ -3,7 +3,7 @@ using SqlSugar;
 
 namespace ShadowViewer.Responders;
 
-public abstract class PicViewResponderBase:IPicViewResponder
+public abstract class AbstractPicViewResponder : IPicViewResponder
 {
     /// <summary>
     /// <inheritdoc />
@@ -27,9 +27,11 @@ public abstract class PicViewResponderBase:IPicViewResponder
     protected ISqlSugarClient Db { get; }
     protected CompressService CompressServices { get; }
     protected PluginLoader PluginService { get; }
-    
-    protected AShadowViewerPlugin? Plugin { get; }
-    protected PicViewResponderBase(ICallableService callableService, ISqlSugarClient sqlSugarClient,
+    /// <summary>
+    /// Plugin
+    /// </summary>
+    protected AShadowViewerPlugin? Plugin => PluginService.GetPlugin(Id);
+    protected AbstractPicViewResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
         CompressService compressServices, PluginLoader pluginService,string id)
     {
         Caller = callableService;
@@ -37,6 +39,5 @@ public abstract class PicViewResponderBase:IPicViewResponder
         CompressServices = compressServices;
         PluginService = pluginService;
         Id = id;
-        Plugin = PluginService.GetPlugin(Id);
     }
 }

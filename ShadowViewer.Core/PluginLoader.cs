@@ -25,8 +25,8 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
         var db = DiFactory.Services.Resolve<ISqlSugarClient>();
         foreach (var type in tPlugin.Assembly.GetExportedTypes())
             if (type.IsAssignableTo(typeof(AbstractNavigationResponder))) navigationViewResponder = type;
-            else if (type.IsAssignableTo(typeof(PicViewResponderBase))) picViewResponder = type;
-            else if (type.IsAssignableTo(typeof(HistoryResponderBase))) historyResponder = type;
+            else if (type.IsAssignableTo(typeof(AbstractPicViewResponder))) picViewResponder = type;
+            else if (type.IsAssignableTo(typeof(AbstractHistoryResponder))) historyResponder = type;
             else if (type.IsAssignableTo(typeof(IHistory)))
             {
                 db.CodeFirst.InitTables(type);
@@ -37,7 +37,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                     type,
                     Reuse.Singleton,
                     made: Parameters.Of.Type<string>(_ => meta.Id));
-                Log.Information(
+                Logger.Information(
                     "{Id}{Name} Load {INavigationResponder}:{TNavigationResponder}",
                     meta.Id, meta.Name,
                     typeof(ISettingFolder), type.Name);
@@ -47,19 +47,33 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
         {
             DiFactory.Services.Register(typeof(INavigationResponder), navigationViewResponder,
                 Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
-            Log.Information(
-                "{Id}{Name} Load INavigationResponder:{TNavigationResponder}",
+            Logger.Information(
+                "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
                 navigationViewResponder.Name);
+            
         }
 
         if (picViewResponder is not null)
+        {
             DiFactory.Services.Register(typeof(IPicViewResponder), picViewResponder,
                 Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+            Logger.Information(
+                "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
+                meta.Id, meta.Name,
+                picViewResponder.Name);
+            
+        }
+
         if (historyResponder is not null)
         {
             DiFactory.Services.Register(typeof(IHistoryResponder), historyResponder,
                 Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+            Logger.Information(
+                "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
+                meta.Id, meta.Name,
+                historyResponder.Name);
+            
         }
     }
 
