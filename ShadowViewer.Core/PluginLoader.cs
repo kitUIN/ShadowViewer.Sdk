@@ -79,5 +79,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
 
     /// <inheritdoc />
     protected override string PluginFolder => Config.PluginsPath;
-
+    /// <inheritdoc />
+    protected override string TempFolder => Config.TempPath;
+ 
 }
