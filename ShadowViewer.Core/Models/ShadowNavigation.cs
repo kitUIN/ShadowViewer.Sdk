@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Media.Animation;
+﻿using System;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace ShadowViewer.Models
 {

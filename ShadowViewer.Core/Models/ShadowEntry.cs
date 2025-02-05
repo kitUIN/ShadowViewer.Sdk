@@ -1,4 +1,9 @@
-﻿using ShadowViewer.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DryIoc;
+using ShadowPluginLoader.WinUI;
+using ShadowViewer.Extensions;
 using SharpCompress.Archives;
 using SqlSugar;
 

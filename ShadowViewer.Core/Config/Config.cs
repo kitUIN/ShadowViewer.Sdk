@@ -1,4 +1,8 @@
-﻿using ShadowViewer.Extensions;
+﻿using Serilog;
+using ShadowViewer.Extensions;
+using ShadowViewer.Helpers;
+using System.IO;
+using Windows.Storage;
 
 namespace ShadowViewer.Configs
 {

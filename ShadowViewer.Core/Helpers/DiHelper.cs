@@ -1,4 +1,10 @@
-﻿using SqlSugar;
+﻿using System.IO;
+using Windows.Storage;
+using DryIoc;
+using Serilog;
+using ShadowPluginLoader.WinUI;
+using ShadowViewer.Services;
+using SqlSugar;
 
 namespace ShadowViewer.Helpers;
 
@@ -27,9 +33,7 @@ public static class DiHelper
                     Log.ForContext<ISqlSugarClient>().Debug("{Sql}", sql);
                 };
             }));
-        DiFactory.Services.Register<INotifyService, NotifyService>(Reuse.Singleton);
         DiFactory.Services.Register<PluginLoader>(reuse: Reuse.Singleton);
-        DiFactory.Services.Register<ICallableService, CallableService>(Reuse.Singleton);
         DiFactory.Services.Register<CompressService>(Reuse.Singleton);
         DiFactory.Services.Register<ResponderService>(Reuse.Singleton);
     }

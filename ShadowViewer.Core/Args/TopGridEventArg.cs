@@ -1,4 +1,7 @@
-﻿namespace ShadowViewer.Args;
+﻿using Microsoft.UI.Xaml;
+using ShadowViewer.Enums;
+
+namespace ShadowViewer.Args;
 
 public class TopGridEventArg
 {

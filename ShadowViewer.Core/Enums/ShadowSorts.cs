@@ -1,5 +1,8 @@
 ﻿namespace ShadowViewer.Enums
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum ShadowSorts
     {
         /// <summary>

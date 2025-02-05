@@ -1,14 +1,14 @@
-﻿namespace ShadowViewer.Interfaces;
+﻿namespace ShadowViewer.Models.Interfaces;
 
 /// <summary>
 /// 设置文件夹基类
 /// </summary>
-public interface ISettingFolder: IPluginId
+public interface ISettingFolder : IPluginId
 {
     /// <summary>
     /// 名称
     /// </summary>
-    string Name { get;  }
+    string Name { get; }
 
     /// <summary>
     /// 介绍

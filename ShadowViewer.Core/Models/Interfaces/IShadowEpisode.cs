@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Interfaces;
+﻿namespace ShadowViewer.Models.Interfaces;
 
 public interface IShadowEpisode
 {

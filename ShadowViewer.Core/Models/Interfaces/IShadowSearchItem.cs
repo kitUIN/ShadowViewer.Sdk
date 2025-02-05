@@ -1,15 +1,17 @@
-﻿namespace ShadowViewer.Interfaces;
+﻿using Microsoft.UI.Xaml.Controls;
+
+namespace ShadowViewer.Models.Interfaces;
 
 public interface IShadowSearchItem
 {
     /// <summary>
     /// 主信息
     /// </summary>
-    string Title { get;set;  }
+    string Title { get; set; }
     /// <summary>
     /// 附信息
     /// </summary>
-    string SubTitle { get;set;  }
+    string SubTitle { get; set; }
     /// <summary>
     /// 插件Id
     /// </summary>
@@ -18,5 +20,5 @@ public interface IShadowSearchItem
     /// 图标
     /// </summary>
     IconSource Icon { get; set; }
-    
+
 }

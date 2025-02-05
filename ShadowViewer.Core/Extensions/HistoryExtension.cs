@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using ShadowViewer.Models.Interfaces;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ShadowViewer.Extensions;
 
@@ -8,10 +10,13 @@ namespace ShadowViewer.Extensions;
 public class HistoryExtension : IComparer<IHistory>
 {
 
-    private readonly CaseInsensitiveComparer caseiComp = new();
+    private readonly CaseInsensitiveComparer caseInsensitiveComparer = new();
 
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
     public int Compare(IHistory? x, IHistory? y)
     {
-        return caseiComp.Compare( y?.Time,x?.Time);
+        return caseInsensitiveComparer.Compare( y?.Time,x?.Time);
     }
 }

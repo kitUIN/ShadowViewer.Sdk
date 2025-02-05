@@ -1,4 +1,10 @@
-﻿namespace ShadowViewer.Helpers
+﻿using System;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using ShadowViewer.Enums;
+
+namespace ShadowViewer.Helpers
 {
     public static class XamlHelper
     {

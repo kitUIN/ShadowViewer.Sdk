@@ -7,17 +7,15 @@ namespace ShadowViewer.Converters;
 /// </summary>
 public class CollectionCountToVisibilityConverter: EmptyObjectToObjectConverter
 {
+    /// <inheritdoc />
     protected override bool CheckValueIsEmpty(object value)
     {
-        var isEmpty = true;
-        if (value is int i)
+        var isEmpty = value switch
         {
-            isEmpty = i == 0;
-        }
-        else if (value is IList j)
-        {
-            isEmpty = j.Count == 0;
-        }
+            int i => i == 0,
+            IList j => j.Count == 0,
+            _ => true
+        };
         return isEmpty;
     }
 }

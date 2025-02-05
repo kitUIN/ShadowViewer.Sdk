@@ -1,4 +1,7 @@
-﻿namespace ShadowViewer.Args;
+﻿using Microsoft.UI.Xaml.Controls;
+using ShadowViewer.Enums;
+
+namespace ShadowViewer.Args;
 
 /// <summary>
 /// 小弹窗通知Args

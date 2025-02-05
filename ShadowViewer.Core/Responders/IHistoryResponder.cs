@@ -1,4 +1,8 @@
-﻿namespace ShadowViewer.Responders;
+﻿using System.Collections.Generic;
+using ShadowViewer.Enums;
+using ShadowViewer.Models.Interfaces;
+
+namespace ShadowViewer.Responders;
 
 /// <summary>
 /// 历史记录触发器基类

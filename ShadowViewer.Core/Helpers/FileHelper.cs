@@ -1,4 +1,14 @@
-﻿namespace ShadowViewer.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.AccessCache;
+using Windows.Storage.Pickers;
+using Microsoft.UI.Xaml;
+using Serilog;
+
+namespace ShadowViewer.Helpers;
 /// <summary>
 /// 文件帮助类
 /// </summary>

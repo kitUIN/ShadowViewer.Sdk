@@ -1,8 +1,7 @@
-﻿using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
+﻿using System;
 using SqlSugar;
 
-namespace ShadowViewer.Interfaces;
+namespace ShadowViewer.Models.Interfaces;
 /// <summary>
 /// 历史记录基类
 /// </summary>

@@ -1,4 +1,7 @@
-﻿namespace ShadowViewer.Helpers
+﻿using System;
+using System.Reflection;
+
+namespace ShadowViewer.Helpers
 {
     public static class EnumHelper
     {

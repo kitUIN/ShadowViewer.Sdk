@@ -1,4 +1,9 @@
-﻿namespace ShadowViewer.Responders;
+﻿using System;
+using System.Collections.Generic;
+using ShadowViewer.Models;
+using ShadowViewer.Models.Interfaces;
+
+namespace ShadowViewer.Responders;
 /// <summary>
 /// 导航触发器基类
 /// </summary>

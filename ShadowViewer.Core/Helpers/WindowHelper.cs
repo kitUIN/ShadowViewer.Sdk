@@ -1,7 +1,12 @@
-﻿using Microsoft.UI.Windowing;
+﻿using System.Collections.Generic;
+using Microsoft.UI.Windowing;
 using Windows.Foundation;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using AppWindow = Microsoft.UI.Windowing.AppWindow;
 using AppWindowChangedEventArgs = Microsoft.UI.Windowing.AppWindowChangedEventArgs;
+using Serilog;
+using System.Linq;
 
 // Base On WinUI 3 Gallery
 namespace ShadowViewer.Helpers

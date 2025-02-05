@@ -1,12 +1,22 @@
-﻿using SharpCompress.Archives;
+﻿using System;
+using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.IO;
 using ReaderOptions = SharpCompress.Readers.ReaderOptions;
 using System.Threading;
 using ShadowViewer.Extensions;
 using SqlSugar;
-using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using DryIoc;
+using Serilog;
+using ShadowPluginLoader.WinUI;
 using ShadowViewer.Cache;
+using ShadowViewer.Configs;
+using ShadowViewer.Helpers;
+using ShadowViewer.Models;
+using Microsoft.UI.Xaml;
 
 namespace ShadowViewer.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Interfaces;
+﻿namespace ShadowViewer.Models.Interfaces;
 /// <summary>
 /// 所属的插件Id
 /// </summary>

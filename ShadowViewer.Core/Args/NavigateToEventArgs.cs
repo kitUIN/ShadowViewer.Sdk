@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.Args;
+﻿using System;
+
+namespace ShadowViewer.Args;
 
 /// <summary>
 /// 跳转页面事件

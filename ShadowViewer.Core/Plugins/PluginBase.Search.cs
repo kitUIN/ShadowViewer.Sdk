@@ -1,4 +1,9 @@
-﻿namespace ShadowViewer.Plugins;
+﻿using System.Collections.Generic;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using ShadowViewer.Models.Interfaces;
+
+namespace ShadowViewer.Plugins;
 
 public abstract partial class AShadowViewerPlugin
 {

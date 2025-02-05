@@ -1,7 +1,12 @@
-﻿using Microsoft.UI.Windowing;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.UI.Windowing;
 using ShadowViewer.Args;
 using Windows.Foundation;
-using CommunityToolkit.WinUI.Helpers;
+using Windows.Storage;
+using Microsoft.UI.Xaml;
+using ShadowViewer.Enums;
 
 namespace ShadowViewer.Services
 {

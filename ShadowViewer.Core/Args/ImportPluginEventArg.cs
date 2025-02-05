@@ -1,4 +1,7 @@
-﻿namespace ShadowViewer.Args;
+﻿using System.Collections.Generic;
+using Windows.Storage;
+
+namespace ShadowViewer.Args;
 
 public class ImportPluginEventArg
 {

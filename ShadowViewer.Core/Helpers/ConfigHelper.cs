@@ -1,4 +1,7 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using Windows.Storage;
+using Serilog;
 
 namespace ShadowViewer.Helpers;
 

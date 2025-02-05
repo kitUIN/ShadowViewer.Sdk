@@ -1,4 +1,6 @@
-﻿namespace ShadowViewer.Responders;
+﻿using ShadowViewer.Args;
+
+namespace ShadowViewer.Responders;
 
 /// <summary>
 /// 图片阅读器触发器基类
