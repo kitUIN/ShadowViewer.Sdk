@@ -1,4 +1,5 @@
 ﻿namespace ShadowViewer.Responders;
+
 /// <summary>
 /// 历史记录触发器基类
 /// </summary>

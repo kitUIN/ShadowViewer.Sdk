@@ -1,13 +1,14 @@
-﻿
+﻿using ShadowPluginLoader.MetaAttributes;
 using SqlSugar;
 
 namespace ShadowViewer.Responders;
 /// <summary>
 /// 导航触发器抽象类
 /// </summary>
-public abstract class AbstractNavigationResponder : INavigationResponder
+public abstract partial class AbstractNavigationResponder : INavigationResponder
 {
     /// <inheritdoc />
+    [Autowired]
     public string Id { get; }
     /// <inheritdoc/>
     public virtual IEnumerable<IShadowNavigationItem> NavigationViewMenuItems { get; } = new List<IShadowNavigationItem>();
@@ -26,28 +27,25 @@ public abstract class AbstractNavigationResponder : INavigationResponder
     {
         
     }
-
-    protected ICallableService Caller { get; }
-    protected ISqlSugarClient Db { get; }
-    protected CompressService CompressServices { get; }
-    protected PluginLoader PluginService { get; }
-    
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="callableService"></param>
-    /// <param name="sqlSugarClient"></param>
-    /// <param name="compressServices"></param>
-    /// <param name="pluginService"></param>
-    /// <param name="id"></param>
-    protected AbstractNavigationResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginLoader pluginService, string id)
-    {
-        Caller = callableService;
-        Db = sqlSugarClient;
-        CompressServices = compressServices;
-        PluginService = pluginService;
-        Id = id;
-    }
+    [Autowired]
+    protected ICallableService Caller { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected ISqlSugarClient Db { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected CompressService CompressServices { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected PluginLoader PluginService { get; }
     
 }

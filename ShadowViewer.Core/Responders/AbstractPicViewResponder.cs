@@ -1,14 +1,13 @@
-﻿
+﻿using ShadowPluginLoader.MetaAttributes;
 using SqlSugar;
 
 namespace ShadowViewer.Responders;
-
-public abstract class AbstractPicViewResponder : IPicViewResponder
+/// <summary>
+/// 图片阅读器触发器抽象类
+/// </summary>
+public abstract partial class AbstractPicViewResponder : IPicViewResponder
 {
-    /// <summary>
-    /// <inheritdoc />
-    /// </summary>
-    public string Id { get; }
+
     /// <summary>
     /// <inheritdoc />
     /// </summary>
@@ -23,21 +22,30 @@ public abstract class AbstractPicViewResponder : IPicViewResponder
     {
         
     }
-    protected ICallableService Caller { get; }
-    protected ISqlSugarClient Db { get; }
-    protected CompressService CompressServices { get; }
-    protected PluginLoader PluginService { get; }
     /// <summary>
-    /// Plugin
+    /// 
     /// </summary>
-    protected AShadowViewerPlugin? Plugin => PluginService.GetPlugin(Id);
-    protected AbstractPicViewResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginLoader pluginService,string id)
-    {
-        Caller = callableService;
-        Db = sqlSugarClient;
-        CompressServices = compressServices;
-        PluginService = pluginService;
-        Id = id;
-    }
+    [Autowired]
+    protected ICallableService Caller { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected ISqlSugarClient Db { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected CompressService CompressServices { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected PluginLoader PluginService { get; }
+
+    /// <summary>
+    /// <inheritdoc />
+    /// </summary>
+    [Autowired]
+    public string Id { get; }
 }

@@ -1,6 +1,9 @@
 ﻿namespace ShadowViewer.Responders;
 
-public interface IPicViewResponder:IResponder
+/// <summary>
+/// 图片阅读器触发器基类
+/// </summary>
+public interface IPicViewResponder: IResponder
 {
     /// <summary>
     /// 图片界面章节改变

@@ -1,32 +1,50 @@
-﻿
-using SqlSugar;
+﻿using SqlSugar;
+using ShadowPluginLoader.MetaAttributes;
 
 namespace ShadowViewer.Responders;
-
-public abstract class AbstractHistoryResponder : IHistoryResponder
+/// <summary>
+/// 历史记录触发器抽象类
+/// </summary>
+public abstract partial class AbstractHistoryResponder : IHistoryResponder
 {
-    public string Id { get; }
-    public abstract IEnumerable<IHistory> GetHistories(HistoryMode mode = HistoryMode.Day);
-
-    public abstract void ClickHistoryHandler(IHistory history);
-    
-    public abstract void DeleteHistoryHandler(IHistory history);
-
-    protected ICallableService Caller { get; }
-    protected ISqlSugarClient Db { get; }
-    protected CompressService CompressServices { get; }
-    protected PluginLoader PluginService { get; }
     /// <summary>
-    /// Plugin
+    /// <inheritdoc/>
     /// </summary>
-    protected AShadowViewerPlugin? Plugin => PluginService.GetPlugin(Id);
-    protected AbstractHistoryResponder(ICallableService callableService, ISqlSugarClient sqlSugarClient,
-        CompressService compressServices, PluginLoader pluginService,string id)
-    {
-        Caller = callableService;
-        Db = sqlSugarClient;
-        CompressServices = compressServices;
-        PluginService = pluginService;
-        Id = id;
-    }
+    public abstract IEnumerable<IHistory> GetHistories(HistoryMode mode = HistoryMode.Day);
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public abstract void ClickHistoryHandler(IHistory history);
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public abstract void DeleteHistoryHandler(IHistory history);
+    /// <inheritdoc/>
+    [Autowired]
+    public string Id { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected ICallableService Caller { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected ISqlSugarClient Db { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected CompressService CompressServices { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [Autowired]
+    protected PluginLoader PluginService { get; }
+
 }
