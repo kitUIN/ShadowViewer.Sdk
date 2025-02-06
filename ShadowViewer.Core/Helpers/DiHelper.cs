@@ -24,7 +24,11 @@ public static class DiHelper
                 DbType = SqlSugar.DbType.Sqlite,
                 ConnectionString = $"DataSource={Path.Combine(defaultPath, "ShadowViewer.sqlite")}",
                 IsAutoCloseConnection = true,
-            },
+                MoreSettings = new ConnMoreSettings()
+                {
+                    IsNoReadXmlDescription = true
+                }
+        },
             db =>
             {
                 //单例参数配置，所有上下文生效

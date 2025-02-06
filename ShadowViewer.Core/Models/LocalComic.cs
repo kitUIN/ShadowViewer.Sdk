@@ -5,21 +5,37 @@ using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Cache;
+using ShadowViewer.Models.Interfaces;
 using SqlSugar;
 namespace ShadowViewer.Models
 {
     /// <summary>
     /// 本地漫画
     /// </summary>
-    public partial class LocalComic: ObservableObject
+    public partial class LocalComic: ObservableObject, IComic
     {
         public const string DefaultFolderImg = "ms-appx:///Assets/Default/folder.png";
         #region Private Field
+
+        /// <summary>
+        /// <inheritdoc cref="IComic.Id" />
+        /// </summary>
+        [ObservableProperty]
+        [property: SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable =false)]
         private string id;
+
+        /// <summary>
+        /// <inheritdoc cref="IComic.Name" />
+        /// </summary>
+        [ObservableProperty]
+        [property: SugarColumn(ColumnDataType = "Nvarchar(2048)")]
         private string name;
+
         private string author;
+
         private string img;
-        private string percent;
+
+        private decimal percent;
         private string group;
         private string remark;
         private DateTime createTime;
@@ -34,76 +50,10 @@ namespace ShadowViewer.Models
 
         #endregion
         #region SQL 实体访问器
-        /// <summary>
-        /// ID
-        /// </summary>
-        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable =false)]
-        public string Id
-        {
-            get => id;
-            set => SetProperty(ref id, value,  propertyName: nameof(Id));
-        }
-        /// <summary>
-        /// 名称
-        /// </summary>
-        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
-        public string Name
-        {
-            get => name;
-            set
-            {   string oldValue = name;
-                SetProperty(ref name, value);
-                if(oldValue != null && oldValue != value)
-                {
-                    Update();
-                    var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-                    var cache = db.Queryable<CacheZip>().First(x => x.ComicId == Id);
-                    if(cache != null)
-                    {
-                        cache.Name = value;
-                        db.Updateable<CacheZip>(cache).ExecuteCommand();
-                    }
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Name), oldValue, Name);
-                }
-            }
-        }
-        /// <summary>
-        /// 作者
-        /// </summary>
-        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
-        public string Author
-        {
-            get => author;
-            set
-            {
-                string oldValue = author;
-                SetProperty(ref author, value, propertyName: nameof(Author));
-                if (oldValue != null && oldValue != value)
-                {
-                    Update();
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Author), oldValue, Author);
-                }
-            }
+        
+        [Navigate(typeof(ComicAuthor), nameof(ComicAuthor.ComicId), nameof(ComicAuthor.AuthorId),nameof(LocalComic.Id),nameof(LocalAuthor.Id))]
+        public List<IAuthor> Authors { get; set; }
 
-        }
-        /// <summary>
-        /// 缩略图地址
-        /// </summary>
-        [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
-        public string Img
-        {
-            get => img;
-            set
-            {
-                string oldValue = img;
-                SetProperty(ref img, value, propertyName: nameof(Img));
-                if (oldValue != null && oldValue != value)
-                {
-                    Update();
-                    Logger.Information("Comic[{Id}] {Field}: {Old}->{New}", Id, nameof(Img), oldValue, Img);
-                }
-            }
-        }
         /// <summary>
         /// 阅读进度(0-100%)
         /// </summary>
@@ -357,7 +307,10 @@ namespace ShadowViewer.Models
         {
             get => !IsFolder;
         }
+        /// <summary>
+        /// Logger
+        /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public static ILogger Logger { get; } = Log.ForContext<LocalComic>();
+        private static ILogger Logger { get; } = Log.ForContext<LocalComic>();
     }
 }
