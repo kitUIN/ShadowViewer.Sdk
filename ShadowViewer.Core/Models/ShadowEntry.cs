@@ -122,7 +122,7 @@ namespace ShadowViewer.Models
         /// <summary>
         /// 转化为本地漫画
         /// </summary>
-        public static void ToLocalComic(ShadowEntry root, string initPath, string comicId)
+        public static void ToLocalComic(ShadowEntry root, string initPath, long comicId)
         {
             var one = GetDepthEntries(root);
             var order = 0;
@@ -142,13 +142,13 @@ namespace ShadowViewer.Models
                 }
             }
             // 销毁资源
-            root.Dispose();
-            if (db.Queryable<LocalComic>().First(x => x.Id == comicId) is LocalComic comic)
-            {
-                comic.EpisodeCounts = db.Queryable<LocalEpisode>().Where(x => x.ComicId == comicId).Count();
-                comic.Counts = db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
-                comic.Update();
-            }
+            // root.Dispose();
+            // if (db.Queryable<LocalComic>().First(x => x.Id == comicId) is LocalComic comic)
+            // {
+            //     comic.EpisodeCounts = db.Queryable<LocalEpisode>().Where(x => x.ComicId == comicId).Count();
+            //     comic.Counts = db.Queryable<LocalPicture>().Where(x => x.ComicId == comicId).Count();
+            //     comic.Update();
+            // }
         }
         /// <summary>
         /// 销毁资源

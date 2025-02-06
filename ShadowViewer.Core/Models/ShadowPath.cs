@@ -13,7 +13,7 @@ namespace ShadowViewer.Models
     /// </summary>
     public class ShadowPath
     {
-        private readonly LocalComic comic;
+        /*private readonly LocalComic comic;
         public string Name => comic.Name;
         public string Id => comic.Id;
         public string Img => comic.Img;
@@ -40,6 +40,6 @@ namespace ShadowViewer.Models
             {
                 Children = comics.Where(x => !black.Contains(x.Id)).Select(x=> new ShadowPath(x)).ToList();
             }
-        }
+        }*/
     }
 }

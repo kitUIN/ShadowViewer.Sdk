@@ -20,13 +20,13 @@ namespace ShadowViewer.Models
         /// <summary>
         /// 所属的漫画
         /// </summary>
-        [SugarColumn(ColumnDataType = "Nchar(32)")]
-        public string ComicId { get; set; }
+        [SugarColumn()]
+        public long ComicId { get; set; }
         /// <summary>
         /// 所属的漫画-话
         /// </summary>
-        [SugarColumn(ColumnDataType = "Nchar(32)")]
-        public string EpisodeId { get; set; }
+        [SugarColumn()]
+        public long EpisodeId { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
@@ -46,7 +46,7 @@ namespace ShadowViewer.Models
         /// </summary>
         public DateTime CreateTime { get; set; }
         
-        public static LocalPicture Create(string name, string episodeId, string comicId, string img, long size)
+        public static LocalPicture Create(string name, long episodeId, long comicId, string img, long size)
         {
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             string id = Guid.NewGuid().ToString("N");

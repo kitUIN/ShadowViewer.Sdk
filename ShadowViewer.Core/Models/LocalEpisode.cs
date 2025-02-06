@@ -16,8 +16,8 @@ namespace ShadowViewer.Models
         /// <summary>
         /// ID
         /// </summary>
-        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable = false)]
-        public string Id { get; set; }
+        [SugarColumn(IsPrimaryKey = true, IsNullable = false)]
+        public long Id { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
@@ -30,8 +30,8 @@ namespace ShadowViewer.Models
         /// <summary>
         /// 所属的漫画
         /// </summary>
-        [SugarColumn(ColumnDataType = "Nchar(32)")]
-        public string ComicId { get; set; }
+        [SugarColumn()]
+        public long ComicId { get; set; }
         /// <summary>
         /// 页数
         /// </summary>
@@ -45,18 +45,13 @@ namespace ShadowViewer.Models
         /// </summary>
         public DateTime CreateTime { get; set; }
         
-        public static LocalEpisode Create(string name, int order, string comicId, int counts, long size)
+        public static LocalEpisode Create(string name, int order, long comicId, int counts, long size)
         {
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            string id = Guid.NewGuid().ToString("N");
-            while (db.Queryable<LocalEpisode>().Any(x => x.Id == id))
-            {
-                id = Guid.NewGuid().ToString("N");
-            }
+            
             DateTime time = DateTime.Now;
             return new LocalEpisode()
             {
-                Id = id,
                 Name = name,
                 Order = order,
                 ComicId = comicId,

@@ -16,7 +16,7 @@ namespace ShadowViewer.Models
     {
         private string name;
         private string id;
-        private string comicId;
+        private long comicId;
         private SolidColorBrush foreground;
         private SolidColorBrush background;
         /// <summary>
@@ -31,8 +31,7 @@ namespace ShadowViewer.Models
         /// <summary>
         /// Comic ID
         /// </summary>
-        [SugarColumn(ColumnDataType = "Nchar(32)")]
-        public string ComicId
+        public long ComicId
         {
             get => comicId;
             set => comicId = value;

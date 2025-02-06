@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.IO;
 using Windows.Storage;
 
-namespace App1;
+namespace ShadowViewer.Models;
 
 /// <summary>
 /// 树形文件结构
 /// </summary>
-public class ShadowTreeNode : IDisposable
+public class ShadowTreeNode
 {
     /// <summary>
     /// 文件(夹)名
     /// </summary>
-    public required string Name { get; init; }
+    public string Name { get; init; } = "";
     /// <summary>
     /// 路径
     /// </summary>
-    public required string Path { get; init; }
+    public string Path { get; init; } = "";
     /// <summary>
     /// 深度
     /// </summary>
@@ -43,7 +43,7 @@ public class ShadowTreeNode : IDisposable
     /// </summary>
     /// <param name="folder">选择的文件夹</param>
     /// <returns>树形结构顶层节点</returns>
-    public static ShadowTreeNode? FromFolder(StorageFolder folder)
+    public static ShadowTreeNode FromFolder(StorageFolder folder)
     {
         return FromFolder(folder.Path);
     }
@@ -52,9 +52,12 @@ public class ShadowTreeNode : IDisposable
     /// </summary>
     /// <param name="folderPath">文件夹路径</param>
     /// <returns>树形结构顶层节点</returns>
-    public static ShadowTreeNode? FromFolder(string folderPath)
+    public static ShadowTreeNode FromFolder(string folderPath)
     {
-        if (!Directory.Exists(folderPath)) return null;
+        if (!Directory.Exists(folderPath))
+        {
+            throw new Exception($"folderPath {folderPath} Is not a directory");
+        }
         var currentDir = new DirectoryInfo(folderPath);
         var rootNode = new ShadowTreeNode
         {
@@ -118,19 +121,12 @@ public class ShadowTreeNode : IDisposable
     /// <returns>平铺列表</returns>
     public List<ShadowTreeNode> GetDepthFiles(int depth = 1)
     {
-        if (this.Depth == depth && this.IsDirectory) return [this];
+        if (Depth == depth && IsDirectory) return [this];
         var result = new List<ShadowTreeNode>();
-        foreach (var child in this.Children)
+        foreach (var child in Children)
         {
             result.AddRange(child.GetDepthFiles(depth));
         }
         return result;
-    }
-
-    /// <summary>
-    /// 销毁资源
-    /// </summary>
-    public void Dispose()
-    {
     }
 }

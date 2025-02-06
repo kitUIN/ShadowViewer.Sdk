@@ -170,8 +170,8 @@ namespace ShadowViewer.Helpers
         {
             ContentDialog dialog = CreateContentDialog(xamlRoot);
             dialog.Title = title;
-            dialog.PrimaryButtonText = ResourcesHelper.GetString(ResourceKey.Confirm);
-            dialog.CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel);
+            dialog.PrimaryButtonText = "确认";
+            dialog.CloseButtonText = "取消";
             StackPanel grid = new StackPanel()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
