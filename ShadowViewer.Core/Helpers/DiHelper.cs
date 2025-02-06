@@ -26,7 +26,9 @@ public static class DiHelper
                 IsAutoCloseConnection = true,
                 MoreSettings = new ConnMoreSettings()
                 {
-                    IsNoReadXmlDescription = true
+                    IsNoReadXmlDescription = true,
+                    SqliteCodeFirstEnableDefaultValue = true,
+                    SqliteCodeFirstEnableDescription = true,
                 }
         },
             db =>
