@@ -125,10 +125,10 @@ namespace ShadowViewer.Core.Services
         /// <returns></returns>
         /// <exception cref="TaskCanceledException"></exception>
         public async Task<object> DeCompressAsync(string zip, string destinationDirectory,
-            string comicId, CancellationToken token, ReaderOptions readerOptions = null)
+            long comicId, CancellationToken token, ReaderOptions readerOptions = null)
         {
             Logger.Information("进入解压流程");
-            var path = Path.Combine(destinationDirectory, comicId);
+            var path = Path.Combine(destinationDirectory, comicId.ToString());
             ShadowEntry root = new ShadowEntry()
             {
                 Name = zip.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last(),
@@ -141,8 +141,8 @@ namespace ShadowViewer.Core.Services
             cacheZip ??= CacheZip.Create(md5, sha1);
             if (cacheZip.ComicId != null)
             {
-                comicId = cacheZip.ComicId;
-                path = Path.Combine(destinationDirectory, comicId);
+                comicId = (long)cacheZip.ComicId;
+                path = Path.Combine(destinationDirectory, comicId.ToString());
                 // 缓存文件未被删除
                 if (Directory.Exists(cacheZip.CachePath))
                 {
@@ -169,7 +169,7 @@ namespace ShadowViewer.Core.Services
                         // ms.Seek(0, SeekOrigin.Begin);
                     }
                     var bytes = ms.ToArray();
-                    CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId);
+                    CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId.ToString());
                     Caller.ImportComicThumb(new MemoryStream(bytes));
                 }
                 Logger.Information("开始解压:{Zip}", zip);
