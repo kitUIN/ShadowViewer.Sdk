@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Models.Interfaces;
+﻿namespace ShadowViewer.Core.Models.Interfaces;
 
 /// <summary>
 /// 设置文件夹基类

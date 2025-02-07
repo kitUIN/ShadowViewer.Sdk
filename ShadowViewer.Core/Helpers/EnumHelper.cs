@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.Core.Helpers
 {
     public static class EnumHelper
     {

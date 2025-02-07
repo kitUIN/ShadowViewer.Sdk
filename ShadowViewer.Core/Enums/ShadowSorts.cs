@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Enums
+﻿namespace ShadowViewer.Core.Enums
 {
     /// <summary>
     /// 

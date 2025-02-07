@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.UI.Windowing;
-using ShadowViewer.Args;
 using Windows.Foundation;
 using Windows.Storage;
 using Microsoft.UI.Xaml;
-using ShadowViewer.Enums;
+using ShadowViewer.Core.Enums;
+using ShadowViewer.Core.Args;
 
-namespace ShadowViewer.Services
+namespace ShadowViewer.Core.Services
 {
     /// <summary>
     /// 通知其他控件的工具类

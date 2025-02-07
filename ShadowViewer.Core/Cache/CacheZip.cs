@@ -4,7 +4,7 @@ using ShadowPluginLoader.WinUI;
 using SqlSugar;
 using System;
 
-namespace ShadowViewer.Cache
+namespace ShadowViewer.Core.Cache
 {
     /// <summary>
     /// 缓存的解压密码
@@ -25,7 +25,7 @@ namespace ShadowViewer.Cache
         [SugarColumn(ColumnDataType = "Ntext", IsNullable = true)]
         public string? CachePath { get; set; }
         [SugarColumn(ColumnDataType = "Nchar(32)", IsNullable = true)]
-        public string? ComicId { get;  set; }
+        public string? ComicId { get; set; }
 
         public static string RandomId()
         {
@@ -38,7 +38,7 @@ namespace ShadowViewer.Cache
 
             return id;
         }
-        public static CacheZip Create(string md5, string sha1,string? password=null,string? cachePath= null)
+        public static CacheZip Create(string md5, string sha1, string? password = null, string? cachePath = null)
         {
             // var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var id = RandomId();

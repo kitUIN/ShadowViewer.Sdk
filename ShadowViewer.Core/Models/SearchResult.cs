@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 
-namespace ShadowViewer.Models;
+namespace ShadowViewer.Core.Models;
 
 /// <summary>
 /// 搜索结果

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ShadowViewer.Models
+namespace ShadowViewer.Core.Models
 {
     public class BreadcrumbItem
     {

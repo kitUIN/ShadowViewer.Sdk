@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Responders;
+﻿namespace ShadowViewer.Core.Responders;
 
 /// <summary>
 /// 触发器基类

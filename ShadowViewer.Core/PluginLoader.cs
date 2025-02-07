@@ -3,13 +3,13 @@ using System.Reflection;
 using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
-using ShadowViewer.Responders;
+using ShadowViewer.Core.Responders;
 using SqlSugar;
-using ShadowViewer.Configs;
-using ShadowViewer.Models.Interfaces;
 using ShadowViewer.Plugins;
+using ShadowViewer.Core.Models.Interfaces;
+using ShadowViewer.Core.Plugins;
 
-namespace ShadowViewer;
+namespace ShadowViewer.Core;
 
 /// <summary>
 /// ShadowView 插件加载器
@@ -42,7 +42,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 DiFactory.Services.Register(typeof(ISettingFolder),
                     type,
                     Reuse.Singleton,
-                    made: Parameters.Of.Type<string>(_ => meta.Id));
+                    made: Parameters.Of.Type(_ => meta.Id));
                 Logger.Information(
                     "{Id}{Name} Load {INavigationResponder}:{TNavigationResponder}",
                     meta.Id, meta.Name,
@@ -52,40 +52,39 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
         if (navigationViewResponder is not null)
         {
             DiFactory.Services.Register(typeof(INavigationResponder), navigationViewResponder,
-                Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+                Reuse.Singleton, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
                 navigationViewResponder.Name);
-            
+
         }
 
         if (picViewResponder is not null)
         {
             DiFactory.Services.Register(typeof(IPicViewResponder), picViewResponder,
-                Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+                Reuse.Singleton, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
                 picViewResponder.Name);
-            
+
         }
 
         if (historyResponder is not null)
         {
             DiFactory.Services.Register(typeof(IHistoryResponder), historyResponder,
-                Reuse.Singleton, made: Parameters.Of.Type<string>(_ => meta.Id));
+                Reuse.Singleton, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
                 historyResponder.Name);
-            
         }
     }
 
     /// <inheritdoc />
-    protected override string PluginFolder => Config.PluginsPath;
+    protected override string PluginFolder => CoreSettings.PluginsPath;
     /// <inheritdoc />
-    protected override string TempFolder => Config.TempPath;
- 
+    protected override string TempFolder => CoreSettings.TempPath;
+
 }

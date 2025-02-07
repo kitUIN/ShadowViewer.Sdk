@@ -6,16 +6,14 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using DryIoc;
 using Serilog;
-using ShadowPluginLoader.WinUI;
-using ShadowViewer.Cache;
-using ShadowViewer.Enums;
-using ShadowViewer.Extensions;
-using ShadowViewer.Models;
+using ShadowPluginLoader.WinUI; 
 using SqlSugar;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
+using ShadowViewer.Core.Cache;
+using ShadowViewer.Core.Models;
 
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.Core.Helpers
 {
     /// <summary>
     /// 本地漫画的一些帮助函数
@@ -81,7 +79,7 @@ namespace ShadowViewer.Helpers
         public static string LoadImgFromEntry(ShadowEntry root, string dir, string comicId)
         {
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            if (db.Queryable<CacheImg>().First(x => x.ComicId==comicId) is CacheImg cacheImg)
+            if (db.Queryable<CacheImg>().First(x => x.ComicId == comicId) is CacheImg cacheImg)
             {
                 return cacheImg.Path;
             }
@@ -143,6 +141,6 @@ namespace ShadowViewer.Helpers
         //     return false;
         //
         // }
-        
+
     }
 }

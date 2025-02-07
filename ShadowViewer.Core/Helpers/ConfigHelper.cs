@@ -3,7 +3,7 @@ using System.Configuration;
 using Windows.Storage;
 using Serilog;
 
-namespace ShadowViewer.Helpers;
+namespace ShadowViewer.Core.Helpers;
 
 public class ConfigHelper
 {
@@ -41,7 +41,7 @@ public class ConfigHelper
             return appSettings[key];
         }
     }
-    public static void Set<T>(T key, object value, string container = Container)where T:Enum
+    public static void Set<T>(T key, object value, string container = Container) where T : Enum
     {
         Set(key.ToString(), value, container);
     }
@@ -83,7 +83,7 @@ public class ConfigHelper
         if (res == null) return false;
         return (bool)res;
     }
-    public static bool GetBoolean<T>(T key, string container = Container)where T : Enum
+    public static bool GetBoolean<T>(T key, string container = Container) where T : Enum
     {
         return GetBoolean(key.ToString(), container);
     }

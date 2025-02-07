@@ -5,7 +5,7 @@ using Serilog;
 using ShadowPluginLoader.WinUI;
 using SqlSugar;
 
-namespace ShadowViewer.Models
+namespace ShadowViewer.Core.Models
 {
     /// <summary>
     /// 本地漫画-话
@@ -44,11 +44,11 @@ namespace ShadowViewer.Models
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
-        
+
         public static LocalEpisode Create(string name, int order, long comicId, int counts, long size)
         {
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            
+
             DateTime time = DateTime.Now;
             return new LocalEpisode()
             {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Windows.Storage;
 
-namespace ShadowViewer.Args
+namespace ShadowViewer.Core.Args
 {
     public class ImportComicEventArgs
     {

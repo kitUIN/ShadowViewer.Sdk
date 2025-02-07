@@ -1,7 +1,7 @@
 ﻿using System;
 using SqlSugar;
 
-namespace ShadowViewer.Models.Interfaces;
+namespace ShadowViewer.Core.Models.Interfaces;
 /// <summary>
 /// 历史记录基类
 /// </summary>

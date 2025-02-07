@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShadowViewer.Enums;
+namespace ShadowViewer.Core.Enums;
 
 /// <summary>
 /// 通知所在的位置

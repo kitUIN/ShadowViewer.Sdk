@@ -1,6 +1,6 @@
-﻿using ShadowViewer.Models.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
+using ShadowViewer.Core.Models.Interfaces;
 
 namespace ShadowViewer.Models
 {

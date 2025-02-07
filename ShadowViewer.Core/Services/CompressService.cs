@@ -4,7 +4,6 @@ using SharpCompress.Common;
 using SharpCompress.IO;
 using ReaderOptions = SharpCompress.Readers.ReaderOptions;
 using System.Threading;
-using ShadowViewer.Extensions;
 using SqlSugar;
 using System.IO;
 using System.Linq;
@@ -12,19 +11,23 @@ using System.Threading.Tasks;
 using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
-using ShadowViewer.Cache;
-using ShadowViewer.Configs;
-using ShadowViewer.Helpers;
-using ShadowViewer.Models;
 using Microsoft.UI.Xaml;
+using ShadowViewer.Core.Cache;
+using ShadowViewer.Core.Models;
+using ShadowViewer.Core.Extensions;
+using ShadowViewer.Core.Helpers;
+using ShadowViewer.Core.I18n;
 
-namespace ShadowViewer.Services
+namespace ShadowViewer.Core.Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CompressService
     {
-        private ILogger Logger { get; } 
+        private ILogger Logger { get; }
         private readonly ICallableService caller;
-        public CompressService(ICallableService callableService,ILogger logger)
+        public CompressService(ICallableService callableService, ILogger logger)
         {
             caller = callableService;
             Logger = logger;
@@ -38,7 +41,7 @@ namespace ShadowViewer.Services
             var sha1 = EncryptingHelper.CreateSha1(zip);
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
-            if (cacheZip is { Password: not null } && cacheZip.Password != "")  
+            if (cacheZip is { Password: not null } && cacheZip.Password != "")
             {
                 readerOptions = new ReaderOptions() { Password = cacheZip.Password };
                 Log.Information("自动填充密码:{Pwd}", cacheZip.Password);
@@ -74,11 +77,11 @@ namespace ShadowViewer.Services
         /// 直接解压
         /// </summary>
         public static async Task DeCompressAsync(string zip, string destinationDirectory,
-            Action<double>? report=null, XamlRoot? root = null, string? pwd = null,
+            Action<double>? report = null, XamlRoot? root = null, string? pwd = null,
             CancellationToken cancellationToken = default)
         {
             // Logger.Information("进入解压流程");
-            var readerOptions = new ReaderOptions() { Password = pwd }; 
+            var readerOptions = new ReaderOptions() { Password = pwd };
             try
             {
                 await using var fStream = File.OpenRead(zip);
@@ -88,11 +91,11 @@ namespace ShadowViewer.Services
             }
             catch (CryptographicException ex)
             {
-                if(root != null)
+                if (root != null)
                 {
                     var dialog = XamlHelper.CreateOneTextBoxDialog(root,
-                        Path.GetFileName(zip)+I18N.PasswordError,
-                        "",I18N.ZipPasswordPlaceholder, "",
+                        Path.GetFileName(zip) + I18N.PasswordError,
+                        "", I18N.ZipPasswordPlaceholder, "",
                     async (sender, args, text) =>
                     {
                         sender.Hide();
@@ -166,11 +169,11 @@ namespace ShadowViewer.Services
                         // ms.Seek(0, SeekOrigin.Begin);
                     }
                     var bytes = ms.ToArray();
-                    CacheImg.CreateImage(Config.TempPath, bytes, comicId);
+                    CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId);
                     caller.ImportComicThumb(new MemoryStream(bytes));
                 }
                 Logger.Information("开始解压:{Zip}", zip);
-                
+
                 var i = 0;
                 path.CreateDirectory();
                 foreach (IArchiveEntry entry in total)
@@ -178,7 +181,7 @@ namespace ShadowViewer.Services
                     if (token.IsCancellationRequested) throw new TaskCanceledException();
                     entry.WriteToDirectory(path, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
                     i++;
-                    double result = (double)i / (double)totalCount;
+                    double result = i / (double)totalCount;
                     caller.ImportComicProgress(Math.Round(result * 100, 2));
                     ShadowEntry.LoadEntry(entry, root);
                 }

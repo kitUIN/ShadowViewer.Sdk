@@ -3,10 +3,11 @@ using Windows.Storage;
 using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
-using ShadowViewer.Services;
 using SqlSugar;
+using ShadowViewer.Core.Services;
+using ShadowViewer.Core;
 
-namespace ShadowViewer.Helpers;
+namespace ShadowViewer.Core.Helpers;
 
 /// <summary>
 /// 依赖注入帮助类
@@ -20,16 +21,16 @@ public static class DiHelper
     {
         var defaultPath = ConfigHelper.IsPackaged ? ApplicationData.Current.LocalFolder.Path : System.Environment.CurrentDirectory;
         DiFactory.Services.RegisterInstance<ISqlSugarClient>(new SqlSugarScope(new ConnectionConfig()
+        {
+            DbType = DbType.Sqlite,
+            ConnectionString = $"DataSource={Path.Combine(defaultPath, "ShadowViewer.sqlite")}",
+            IsAutoCloseConnection = true,
+            MoreSettings = new ConnMoreSettings()
             {
-                DbType = SqlSugar.DbType.Sqlite,
-                ConnectionString = $"DataSource={Path.Combine(defaultPath, "ShadowViewer.sqlite")}",
-                IsAutoCloseConnection = true,
-                MoreSettings = new ConnMoreSettings()
-                {
-                    IsNoReadXmlDescription = true,
-                    SqliteCodeFirstEnableDefaultValue = true,
-                    SqliteCodeFirstEnableDescription = true,
-                }
+                IsNoReadXmlDescription = true,
+                SqliteCodeFirstEnableDefaultValue = true,
+                SqliteCodeFirstEnableDescription = true,
+            }
         },
             db =>
             {

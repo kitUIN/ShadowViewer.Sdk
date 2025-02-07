@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using ShadowViewer.Models;
-using ShadowViewer.Models.Interfaces;
+using ShadowViewer.Core.Models;
+using ShadowViewer.Core.Models.Interfaces;
 
-namespace ShadowViewer.Responders;
+namespace ShadowViewer.Core.Responders;
 /// <summary>
 /// 导航触发器基类
 /// </summary>
 public interface INavigationResponder : IResponder
 {
-    
+
     /// <summary>
     /// 添加到导航栏
     /// </summary>

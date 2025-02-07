@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Args
+﻿namespace ShadowViewer.Core.Args
 {
     /// <summary>
     /// 导入漫画进度条事件参数

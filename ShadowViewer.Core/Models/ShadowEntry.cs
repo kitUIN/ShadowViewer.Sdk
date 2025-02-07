@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using DryIoc;
 using ShadowPluginLoader.WinUI;
-using ShadowViewer.Extensions;
+using ShadowViewer.Core.Extensions;
 using SharpCompress.Archives;
 using SqlSugar;
 
-namespace ShadowViewer.Models
+namespace ShadowViewer.Core.Models
 {
-    public class ShadowEntry: IDisposable
+    public class ShadowEntry : IDisposable
     {
         /// <summary>
         /// 名称
@@ -39,7 +39,7 @@ namespace ShadowViewer.Models
         /// 含有
         /// </summary>
         public List<ShadowEntry> Children { get; } = new List<ShadowEntry>();
-        public ShadowEntry(){ }
+        public ShadowEntry() { }
         public static void LoadEntry(IArchiveEntry entry, ShadowEntry root)
         {
             string[] names = entry.Key.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries);
@@ -103,7 +103,7 @@ namespace ShadowViewer.Models
                 Counts = 1;
             }
         }
-        public static List<ShadowEntry> GetDepthEntries(ShadowEntry root,int depth = 1)
+        public static List<ShadowEntry> GetDepthEntries(ShadowEntry root, int depth = 1)
         {
             if (root.Depth == depth)
             {
@@ -127,9 +127,9 @@ namespace ShadowViewer.Models
             var one = GetDepthEntries(root);
             var order = 0;
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            foreach(var child in one)
+            foreach (var child in one)
             {
-                if(child.Children.Count>0)
+                if (child.Children.Count > 0)
                 {
                     var ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
                     db.Insertable(ep).ExecuteCommand();

@@ -1,10 +1,10 @@
 ﻿using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
-using ShadowViewer.Helpers;
+using ShadowViewer.Core.Helpers;
 using SqlSugar;
 
-namespace ShadowViewer.Cache
+namespace ShadowViewer.Core.Cache
 {
     /// <summary>
     /// 缓存的临时缩略图
@@ -15,7 +15,7 @@ namespace ShadowViewer.Cache
 
         [SugarColumn(IsPrimaryKey = true, IsIdentity = true)]
         public int Id { get; set; }
-        [SugarColumn(ColumnDataType = "Nchar(32)",  IsNullable = false)]
+        [SugarColumn(ColumnDataType = "Nchar(32)", IsNullable = false)]
         public string Md5 { get; set; }
         [SugarColumn(ColumnDataType = "Ntext")]
         public string Path { get; set; }
@@ -25,7 +25,7 @@ namespace ShadowViewer.Cache
         [SugarColumn(ColumnDataType = "Nchar(32)")]
         public string ComicId { get; set; }
 
-        public static void CreateImage(string dir,byte[] bytes,string comicId)
+        public static void CreateImage(string dir, byte[] bytes, string comicId)
         {
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();
             var md5 = EncryptingHelper.CreateMd5(bytes);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 
-namespace ShadowViewer.Models.Interfaces;
+namespace ShadowViewer.Core.Models.Interfaces;
 
 public interface IShadowSearchItem
 {

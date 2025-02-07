@@ -7,7 +7,7 @@ using Serilog;
 using ShadowPluginLoader.WinUI;
 using SqlSugar;
 
-namespace ShadowViewer.Models
+namespace ShadowViewer.Core.Models
 {
     /// <summary>
     /// 标签
@@ -50,17 +50,18 @@ namespace ShadowViewer.Models
             set => background = value;
         }
         [SugarColumn(ColumnDataType = "Nvarchar(2048)")]
-        public string Name {
+        public string Name
+        {
             get => name;
             set
             {
-                if(name != value)
+                if (name != value)
                 {
                     name = value;
                 }
             }
         }
-        [SugarColumn(ColumnDataType = "Nvarchar(2048)",ColumnName = "Background")]
+        [SugarColumn(ColumnDataType = "Nvarchar(2048)", ColumnName = "Background")]
         public string BackgroundHex
         {
             get => background.Color.ToHex();
@@ -72,19 +73,21 @@ namespace ShadowViewer.Models
             get => foreground.Color.ToHex();
             set => foreground = new SolidColorBrush(value.ToColor());
         }
-        public LocalTag(string name, SolidColorBrush foreground , SolidColorBrush background)
+        public LocalTag(string name, SolidColorBrush foreground, SolidColorBrush background)
         {
-            this.id = RandomId();
+            id = RandomId();
             this.name = name;
             this.foreground = foreground;
             this.background = background;
         }
-        public LocalTag(string name, Color foreground, Color background) : 
+        public LocalTag(string name, Color foreground, Color background) :
             this(name, new SolidColorBrush(foreground),
-                new SolidColorBrush(background)) { }
-        public LocalTag( string name, string foreground, string background) :
-            this(name,new SolidColorBrush(foreground.ToColor()),
-                new SolidColorBrush(background.ToColor())) { }
+                new SolidColorBrush(background))
+        { }
+        public LocalTag(string name, string foreground, string background) :
+            this(name, new SolidColorBrush(foreground.ToColor()),
+                new SolidColorBrush(background.ToColor()))
+        { }
         public LocalTag() { }
         public LocalTag Copy()
         {
@@ -120,8 +123,8 @@ namespace ShadowViewer.Models
         {
             return $"LocalTag(name={name},foreground={ForegroundHex},background={BackgroundHex})";
         }
-        
+
         [SugarColumn(IsIgnore = true)]
-        public static ILogger Logger { get; } = Serilog.Log.ForContext<LocalTag>();
+        public static ILogger Logger { get; } = Log.ForContext<LocalTag>();
     }
 }

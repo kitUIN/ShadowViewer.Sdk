@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.UI.Xaml.Controls;
-using ShadowViewer.Args;
-using ShadowViewer.Enums;
+using ShadowViewer.Core.Args;
+using ShadowViewer.Core.Enums;
 
-namespace ShadowViewer.Services;
+namespace ShadowViewer.Core.Services;
 
 /// <summary>
 /// 通知服务基类

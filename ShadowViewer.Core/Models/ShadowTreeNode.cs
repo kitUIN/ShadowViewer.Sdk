@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Windows.Storage;
 
-namespace ShadowViewer.Models;
+namespace ShadowViewer.Core.Models;
 
 /// <summary>
 /// 树形文件结构

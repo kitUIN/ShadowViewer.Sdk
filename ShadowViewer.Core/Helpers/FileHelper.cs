@@ -8,7 +8,7 @@ using Windows.Storage.Pickers;
 using Microsoft.UI.Xaml;
 using Serilog;
 
-namespace ShadowViewer.Helpers;
+namespace ShadowViewer.Core.Helpers;
 /// <summary>
 /// 文件帮助类
 /// </summary>

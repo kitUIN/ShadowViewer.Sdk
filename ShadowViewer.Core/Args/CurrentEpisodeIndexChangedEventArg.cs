@@ -1,4 +1,4 @@
-﻿namespace ShadowViewer.Args;
+﻿namespace ShadowViewer.Core.Args;
 
 public class CurrentEpisodeIndexChangedEventArg
 {
@@ -6,7 +6,7 @@ public class CurrentEpisodeIndexChangedEventArg
     public int OldValue { get; set; }
     public string Affiliation { get; set; }
 
-    public CurrentEpisodeIndexChangedEventArg(string affiliation,int oldValue, int newValue)
+    public CurrentEpisodeIndexChangedEventArg(string affiliation, int oldValue, int newValue)
     {
         Affiliation = affiliation;
         OldValue = oldValue;

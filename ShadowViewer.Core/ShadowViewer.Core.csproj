@@ -2,7 +2,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-		<RootNamespace>ShadowViewer</RootNamespace>
+		<RootNamespace>ShadowViewer.Core</RootNamespace>
 		<RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
 		<UseWinUI>true</UseWinUI>
 		<Nullable>enable</Nullable>
@@ -10,7 +10,7 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 		<LangVersion>12</LangVersion>
-		<Version>2025.2.6.1</Version>
+		<Version>2025.2.7.3</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
 		<Authors>kitUIN</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -33,7 +33,7 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.0.240109" />
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
-		<PackageReference Include="ShadowPluginLoader.WinUI" Version="1.5.8" />
+		<PackageReference Include="ShadowPluginLoader.WinUI" Version="1.5.9" />
 		<PackageReference Include="ShadowViewer.Analyzer" Version="1.2.7.1" />
 		<PackageReference Include="ShadowViewer.Controls.PluginLogo" Version="1.0.3.3" />
 		<PackageReference Include="ShadowViewer.Controls.ShadowSettingHeader" Version="1.0.1.3" />

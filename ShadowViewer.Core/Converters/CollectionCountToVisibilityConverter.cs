@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using CommunityToolkit.WinUI.Converters;
 
-namespace ShadowViewer.Converters;
+namespace ShadowViewer.Core.Converters;
 /// <summary>
 /// 检查集合是否为空,请传入Count
 /// </summary>
-public class CollectionCountToVisibilityConverter: EmptyObjectToObjectConverter
+public class CollectionCountToVisibilityConverter : EmptyObjectToObjectConverter
 {
     /// <inheritdoc />
     protected override bool CheckValueIsEmpty(object value)

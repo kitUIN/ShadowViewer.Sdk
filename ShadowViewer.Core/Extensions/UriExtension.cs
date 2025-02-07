@@ -8,9 +8,9 @@ using Windows.Storage;
 using Windows.System;
 using Microsoft.UI.Xaml;
 using Serilog;
-using ShadowViewer.Helpers;
+using ShadowViewer.Core.Helpers;
 
-namespace ShadowViewer.Extensions;
+namespace ShadowViewer.Core.Extensions;
 /// <summary>
 /// 
 /// </summary>
@@ -42,8 +42,8 @@ public static class UriExtension
     /// </summary>
     public static async void LaunchFolderAsync(this string path)
     {
-        var folder = await ToStorageFolder(path);
-        LaunchFolderAsync(folder);
+        var folder = await path.ToStorageFolder();
+        folder.LaunchFolderAsync();
     }
 
     /// <summary>
@@ -52,8 +52,8 @@ public static class UriExtension
     public static async void LaunchFolderAsync(this Uri uri)
     {
 
-        var folder = await ToStorageFolder(uri.DecodePath());
-        LaunchFolderAsync(folder);
+        var folder = await uri.DecodePath().ToStorageFolder();
+        folder.LaunchFolderAsync();
     }
 
     /// <summary>
@@ -71,16 +71,16 @@ public static class UriExtension
     /// </summary>
     public static async void LaunchFileAsync(this Uri uri)
     {
-        var file = await GetFile(uri);
-        LaunchFileAsync(file);
+        var file = await uri.GetFile();
+        file.LaunchFileAsync();
     }
     /// <summary>
     /// 从资源管理器打开文件
     /// </summary>
     public static async void LaunchFileAsync(this string uri)
     {
-        var file = await GetFile(uri);
-        LaunchFileAsync(file);
+        var file = await uri.GetFile();
+        file.LaunchFileAsync();
     }
     /// <summary>
     /// Join
@@ -94,7 +94,7 @@ public static class UriExtension
     /// </summary>
     public static async Task<StorageFile> GetFile(this Uri uri)
     {
-        return await GetFile(uri.DecodePath());
+        return await uri.DecodePath().GetFile();
     }
     /// <summary>
     /// 获取文件

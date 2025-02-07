@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using ShadowPluginLoader.MetaAttributes;
-using ShadowViewer.Models;
-using ShadowViewer.Models.Interfaces;
-using ShadowViewer.Services;
+using ShadowViewer.Core;
+using ShadowViewer.Core.Models;
+using ShadowViewer.Core.Models.Interfaces;
+using ShadowViewer.Core.Responders;
+using ShadowViewer.Core.Services;
 using SqlSugar;
 
-namespace ShadowViewer.Responders;
+namespace ShadowViewer.Core.Responders;
 /// <summary>
 /// 导航触发器抽象类
 /// </summary>

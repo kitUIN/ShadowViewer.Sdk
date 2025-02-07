@@ -4,7 +4,7 @@ using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
 
-namespace ShadowViewer.Models
+namespace ShadowViewer.Core.Models
 {
     /// <summary>
     /// 本地漫画-页
@@ -45,7 +45,7 @@ namespace ShadowViewer.Models
         /// 创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
-        
+
         public static LocalPicture Create(string name, long episodeId, long comicId, string img, long size)
         {
             var db = DiFactory.Services.Resolve<ISqlSugarClient>();

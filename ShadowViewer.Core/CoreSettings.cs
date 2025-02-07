@@ -1,24 +1,34 @@
 ﻿using Serilog;
-using ShadowViewer.Extensions;
-using ShadowViewer.Helpers;
+using ShadowViewer.Core.Extensions;
+using ShadowViewer.Core.Helpers;
 using System.IO;
 using Windows.Storage;
 
-namespace ShadowViewer.Configs
+namespace ShadowViewer.Core
 {
-    public class Config
+    /// <summary>
+    /// 核心设置项
+    /// </summary>
+    public class CoreSettings
     {
+        /// <summary>
+        /// 设置项初始化
+        /// </summary>
         public static void Init()
         {
-            var defaultPath = ConfigHelper.IsPackaged ? ApplicationData.Current.LocalFolder.Path : System.Environment.CurrentDirectory;
+            var defaultPath = ConfigHelper.IsPackaged
+                ? ApplicationData.Current.LocalFolder.Path
+                : System.Environment.CurrentDirectory;
             if (!ConfigHelper.Contains("ComicsPath"))
             {
                 ComicsPath = Path.Combine(defaultPath, "Comics");
             }
+
             if (!ConfigHelper.Contains("TempPath"))
             {
                 TempPath = Path.Combine(defaultPath, "Temps");
             }
+
             if (!ConfigHelper.Contains("PluginsPath"))
             {
                 PluginsPath = Path.Combine(defaultPath, "Plugins");
@@ -31,9 +41,10 @@ namespace ShadowViewer.Configs
             TempPath.CreateDirectory();
             PluginsPath.CreateDirectory();
             // EnabledPlugins.CollectionChanged += EnabledPlugins_CollectionChanged;
-
         }
+
         #region 主程序设置
+
         /// <summary>
         /// 漫画缓存文件夹地址
         /// </summary>
@@ -42,6 +53,7 @@ namespace ShadowViewer.Configs
             get => ConfigHelper.GetString("ComicsPath")!;
             set => ConfigHelper.Set("ComicsPath", value);
         }
+
         /// <summary>
         /// 插件文件夹地址
         /// </summary>
@@ -50,6 +62,7 @@ namespace ShadowViewer.Configs
             get => ConfigHelper.GetString("PluginsPath")!;
             set => ConfigHelper.Set("PluginsPath", value);
         }
+
         /// <summary>
         /// 插件列表网址
         /// </summary>
@@ -58,6 +71,7 @@ namespace ShadowViewer.Configs
             get => ConfigHelper.GetString("PluginsUri")!;
             set => ConfigHelper.Set("PluginsUri", value);
         }
+
         /// <summary>
         /// 临时文件夹地址
         /// </summary>
@@ -66,6 +80,7 @@ namespace ShadowViewer.Configs
             get => ConfigHelper.GetString("TempPath")!;
             set => ConfigHelper.Set("TempPath", value);
         }
+
         /// <summary>
         /// 调试模式
         /// </summary>
@@ -84,28 +99,33 @@ namespace ShadowViewer.Configs
 
         private static void IsDebugEvent()
         {
-            var defaultPath = ConfigHelper.IsPackaged ? ApplicationData.Current.LocalFolder.Path : System.Environment.CurrentDirectory;
+            var defaultPath = ConfigHelper.IsPackaged
+                ? ApplicationData.Current.LocalFolder.Path
+                : System.Environment.CurrentDirectory;
             if (IsDebug)
             {
                 Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.File(Path.Combine(defaultPath, "Logs", "ShadowViewer.log"), outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}", rollingInterval: RollingInterval.Day, shared: true)
-                .CreateLogger();
-                Log.ForContext<Config>().Debug("调试模式开启");
+                    .MinimumLevel.Debug()
+                    .WriteTo.File(Path.Combine(defaultPath, "Logs", "ShadowViewer.log"),
+                        outputTemplate:
+                        "{Timestamp:HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}",
+                        rollingInterval: RollingInterval.Day, shared: true)
+                    .CreateLogger();
+                Log.ForContext<CoreSettings>().Debug("调试模式开启");
             }
             else
             {
-                Log.ForContext<Config>().Debug("调试模式关闭");
+                Log.ForContext<CoreSettings>().Debug("调试模式关闭");
                 Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.File(Path.Combine(defaultPath, "Logs", "ShadowViewer.log"),
-                    outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}",
-                    rollingInterval: RollingInterval.Day, shared: true)
-                .CreateLogger();
+                    .MinimumLevel.Information()
+                    .WriteTo.File(Path.Combine(defaultPath, "Logs", "ShadowViewer.log"),
+                        outputTemplate:
+                        "{Timestamp:HH:mm:ss.fff} [{Level:u4}] {SourceContext} | {Message:lj} {Exception}{NewLine}",
+                        rollingInterval: RollingInterval.Day, shared: true)
+                    .CreateLogger();
             }
         }
-        
-        #endregion
 
+        #endregion
     }
 }

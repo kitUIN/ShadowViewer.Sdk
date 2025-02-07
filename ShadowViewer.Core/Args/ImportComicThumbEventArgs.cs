@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShadowViewer.Args
+namespace ShadowViewer.Core.Args
 {
     /// <summary>
     /// 导入漫画的缩略图

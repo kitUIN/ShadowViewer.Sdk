@@ -1,13 +1,13 @@
 ﻿using Microsoft.UI.Xaml.Controls;
-using ShadowViewer.Enums;
+using ShadowViewer.Core.Enums;
 
-namespace ShadowViewer.Args;
+namespace ShadowViewer.Core.Args;
 
 /// <summary>
 /// 小弹窗通知Args
 /// </summary>
 public class TipPopupEventArgs(InfoBar tipPopup,
-    TipPopupPosition position = TipPopupPosition.Center,double displaySeconds = 2)
+    TipPopupPosition position = TipPopupPosition.Center, double displaySeconds = 2)
 {
     /// <summary>
     /// 通知内容

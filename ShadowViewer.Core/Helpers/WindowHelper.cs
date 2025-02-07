@@ -9,7 +9,7 @@ using Serilog;
 using System.Linq;
 
 // Base On WinUI 3 Gallery
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.Core.Helpers
 {
     /// <summary>
     /// 窗体帮助类
@@ -25,7 +25,7 @@ namespace ShadowViewer.Helpers
 
 
         #endregion
-        
+
         #region InvokeEvent
         /// <summary>
         /// 触发窗体变更事件
@@ -33,7 +33,7 @@ namespace ShadowViewer.Helpers
         public static void ChangeOverlapped(AppWindow sender, AppWindowChangedEventArgs args)
         {
             OverlappedChangedEvent?.Invoke(sender, args);
-            Log.Debug("触发事件{EventName},{Kind}", 
+            Log.Debug("触发事件{EventName},{Kind}",
                 nameof(OverlappedChangedEvent),
                 sender.Presenter.Kind);
         }
@@ -54,7 +54,8 @@ namespace ShadowViewer.Helpers
         /// <param name="window"></param>
         public static void TrackWindow(Window window)
         {
-            window.Closed += (_, _) => {
+            window.Closed += (_, _) =>
+            {
                 ActiveWindows.Remove(window);
             };
             if (window.AppWindow.Presenter is OverlappedPresenter overlappedPresenter)
@@ -64,9 +65,9 @@ namespace ShadowViewer.Helpers
             window.AppWindow.Changed += (sender, args) =>
             {
                 if (sender.Presenter is not OverlappedPresenter presenter) return;
-                if(AppWindowStates.ContainsKey(sender.Id))
+                if (AppWindowStates.ContainsKey(sender.Id))
                 {
-                    if(presenter.State != AppWindowStates[sender.Id])
+                    if (presenter.State != AppWindowStates[sender.Id])
                     {
                         ChangeOverlapped(sender, args);
                     }
@@ -183,8 +184,8 @@ namespace ShadowViewer.Helpers
         /// <summary>
         /// 窗体状态
         /// </summary>
-        private static readonly Dictionary<WindowId, OverlappedPresenterState> AppWindowStates = new ();
-        
+        private static readonly Dictionary<WindowId, OverlappedPresenterState> AppWindowStates = new();
+
         /// <summary>
         /// 正在活动的窗体
         /// </summary>

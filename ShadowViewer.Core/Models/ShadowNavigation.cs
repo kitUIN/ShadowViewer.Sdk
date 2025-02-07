@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.UI.Xaml.Media.Animation;
 
-namespace ShadowViewer.Models
+namespace ShadowViewer.Core.Models
 {
     /// <summary>
     /// 导航实例
@@ -9,7 +9,7 @@ namespace ShadowViewer.Models
     /// <param name="sourcePageType"></param>
     /// <param name="parameter"></param>
     /// <param name="infoOverride"></param>
-    public class ShadowNavigation(Type? sourcePageType, object? parameter =null, NavigationTransitionInfo? infoOverride = null)
+    public class ShadowNavigation(Type? sourcePageType, object? parameter = null, NavigationTransitionInfo? infoOverride = null)
     {
         /// <summary>
         /// 跳转目标页

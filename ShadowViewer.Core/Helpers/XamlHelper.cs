@@ -2,9 +2,10 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
-using ShadowViewer.Enums;
+using ShadowViewer.Core.Enums;
+using ShadowViewer.Core.I18n;
 
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.Core.Helpers
 {
     public static class XamlHelper
     {
@@ -37,7 +38,7 @@ namespace ShadowViewer.Helpers
         {
             return CreateBitmapIcon(new Uri(uriString));
         }
-        
+
         /// <summary>
         /// 创建一个横着的带Header的TextBox
         /// </summary>
@@ -45,7 +46,7 @@ namespace ShadowViewer.Helpers
         /// <param name="placeholder">The placeholder.</param>
         /// <param name="width">The width.</param>
         /// <returns></returns>
-        public static StackPanel CreateOneLineTextBox(string header, string placeholder,string text, int width)
+        public static StackPanel CreateOneLineTextBox(string header, string placeholder, string text, int width)
         {
             var grid = new StackPanel()
             {
@@ -79,7 +80,7 @@ namespace ShadowViewer.Helpers
         {
             var dialog = new ContentDialog();
             dialog.XamlRoot = xamlRoot;
-            dialog.Style = Microsoft.UI.Xaml.Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+            dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
             dialog.DefaultButton = ContentDialogButton.Primary;
             return dialog;
         }
@@ -107,11 +108,11 @@ namespace ShadowViewer.Helpers
                     Child = textBox,
                 }
             };
-            dialog.PrimaryButtonClick += (ContentDialog sender, ContentDialogButtonClickEventArgs args) =>
+            dialog.PrimaryButtonClick += (sender, args) =>
             {
                 primaryAction?.Invoke(sender, args, textBox.Text);
             };
-            dialog.CloseButtonClick += (ContentDialog sender, ContentDialogButtonClickEventArgs args) =>
+            dialog.CloseButtonClick += (sender, args) =>
             {
                 closeAction?.Invoke(sender, args, textBox.Text);
             };
@@ -125,7 +126,7 @@ namespace ShadowViewer.Helpers
         /// <param name="title"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static ContentDialog CreateMessageDialog(XamlRoot xamlRoot,string title,string message)
+        public static ContentDialog CreateMessageDialog(XamlRoot xamlRoot, string title, string message)
         {
             ContentDialog dialog = CreateContentDialog(xamlRoot);
             dialog.Title = title;
@@ -166,23 +167,24 @@ namespace ShadowViewer.Helpers
         /// <param name="xamlRoot">The xaml root.</param>
         /// <param name="oldName">The old name.</param>
         /// <returns></returns>
-        public static ContentDialog CreateOneLineTextBoxDialog(string title, XamlRoot xamlRoot, string oldName="",string header="",string placeholder = "")
+        public static ContentDialog CreateOneLineTextBoxDialog(string title,
+            XamlRoot xamlRoot, string oldName = "", string header = "", string placeholder = "")
         {
-            ContentDialog dialog = CreateContentDialog(xamlRoot);
+            var dialog = CreateContentDialog(xamlRoot);
             dialog.Title = title;
-            dialog.PrimaryButtonText = "确认";
-            dialog.CloseButtonText = "取消";
-            StackPanel grid = new StackPanel()
+            dialog.PrimaryButtonText = I18N.Confirm;
+            dialog.CloseButtonText = I18N.Cancel;
+            var grid = new StackPanel()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 Orientation = Orientation.Vertical,
             };
-            StackPanel nameBox = CreateOneLineTextBox( header, placeholder, oldName, 222);
+            var nameBox = CreateOneLineTextBox(header, placeholder, oldName, 222);
             grid.Children.Add(nameBox);
             dialog.Content = grid;
             dialog.IsPrimaryButtonEnabled = true;
             return dialog;
         }
-        
+
     }
 }

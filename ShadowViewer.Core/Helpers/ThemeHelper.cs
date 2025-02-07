@@ -1,9 +1,9 @@
 using DryIoc;
 using Microsoft.UI.Xaml;
 using ShadowPluginLoader.WinUI;
-using ShadowViewer.Services;
+using ShadowViewer.Core.Services;
 
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.Core.Helpers
 {
     // Copy From WinUI 3 Gallery
     /// <summary>

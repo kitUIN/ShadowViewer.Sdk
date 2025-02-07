@@ -2,7 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 
-namespace ShadowViewer.Helpers
+namespace ShadowViewer.Core.Helpers
 {
     /// <summary>
     /// 加密工具类
@@ -22,11 +22,11 @@ namespace ShadowViewer.Helpers
             return (md5Hash, sha1Hash);
         }
         public static string CreateSha1(string path)
-        { 
+        {
             using FileStream stream = File.OpenRead(path);
             return CreateSha1(stream);
         }
-        
+
         public static string CreateMd5(string path)
         {
             using FileStream stream = File.OpenRead(path);
@@ -37,14 +37,14 @@ namespace ShadowViewer.Helpers
             using SHA1 sha1 = SHA1.Create();
             return Bytes2String(sha1.ComputeHash(stream));
         }
-        
+
         public static string CreateMd5(Stream stream)
         {
             using MD5 md5 = MD5.Create();
             return Bytes2String(md5.ComputeHash(stream));
         }
         public static string CreateMd5(byte[] bytes)
-        { 
+        {
             using MD5 md5 = MD5.Create();
             return Bytes2String(md5.ComputeHash(bytes));
         }
