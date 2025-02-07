@@ -5,9 +5,8 @@ using Serilog;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Core.Responders;
 using SqlSugar;
-using ShadowViewer.Plugins;
-using ShadowViewer.Core.Models.Interfaces;
 using ShadowViewer.Core.Plugins;
+using ShadowViewer.Core.Models.Interfaces;
 
 namespace ShadowViewer.Core;
 

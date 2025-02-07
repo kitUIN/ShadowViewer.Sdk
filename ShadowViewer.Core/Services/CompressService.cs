@@ -12,6 +12,7 @@ using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
 using Microsoft.UI.Xaml;
+using ShadowPluginLoader.MetaAttributes;
 using ShadowViewer.Core.Cache;
 using ShadowViewer.Core.Models;
 using ShadowViewer.Core.Extensions;
@@ -23,15 +24,14 @@ namespace ShadowViewer.Core.Services
     /// <summary>
     /// 
     /// </summary>
-    public class CompressService
+    public partial class CompressService
     {
+        [Autowired]
         private ILogger Logger { get; }
-        private readonly ICallableService caller;
-        public CompressService(ICallableService callableService, ILogger logger)
-        {
-            caller = callableService;
-            Logger = logger;
-        }
+
+        [Autowired]
+        private ICallableService Caller { get; }
+
         /// <summary>
         /// 检测压缩包密码是否正确
         /// </summary>
@@ -170,7 +170,7 @@ namespace ShadowViewer.Core.Services
                     }
                     var bytes = ms.ToArray();
                     CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId);
-                    caller.ImportComicThumb(new MemoryStream(bytes));
+                    Caller.ImportComicThumb(new MemoryStream(bytes));
                 }
                 Logger.Information("开始解压:{Zip}", zip);
 
@@ -182,7 +182,7 @@ namespace ShadowViewer.Core.Services
                     entry.WriteToDirectory(path, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
                     i++;
                     double result = i / (double)totalCount;
-                    caller.ImportComicProgress(Math.Round(result * 100, 2));
+                    Caller.ImportComicProgress(Math.Round(result * 100, 2));
                     ShadowEntry.LoadEntry(entry, root);
                 }
                 root.LoadChildren();

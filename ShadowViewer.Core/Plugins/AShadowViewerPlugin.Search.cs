@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using ShadowViewer.Core.Models.Interfaces;
 
-namespace ShadowViewer.Plugins;
+namespace ShadowViewer.Core.Plugins;
 
 public abstract partial class AShadowViewerPlugin
 {

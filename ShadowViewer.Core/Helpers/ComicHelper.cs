@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.Storage;
 using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI; 
 using SqlSugar;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml;
 using ShadowViewer.Core.Cache;
 using ShadowViewer.Core.Models;
 

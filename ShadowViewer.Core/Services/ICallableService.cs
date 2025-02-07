@@ -91,10 +91,17 @@ namespace ShadowViewer.Core.Services
         /// 调试
         /// </summary>
         void Debug();
-
+        /// <summary>
+        /// 主题变更
+        /// </summary>
         void ThemeChanged();
+        /// <summary>
+        /// 顶部窗体
+        /// </summary>
         void TopGrid(object sender, UIElement element, TopGridMode mode);
-
+        /// <summary>
+        /// 
+        /// </summary>
         void ChangeOverlapped(AppWindow sender, AppWindowChangedEventArgs args);
     }
 
