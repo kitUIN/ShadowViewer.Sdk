@@ -115,36 +115,7 @@ public static class UriExtension
     {
         return HttpUtility.UrlDecode(uri.AbsoluteUri);
     }
-    /// <summary>
-    /// 是否是图片
-    /// </summary> 
-    public static bool IsPic(this StorageFile file)
-    {
-        var flag = FileHelper.Pngs.Contains(file.FileType);
-        Logger.Debug("文件{Path}是否是图片:{F}", file.Path, flag);
-        return flag;
-    }
-    /// <summary>
-    /// 是否是图片
-    /// </summary> 
-    public static bool IsPic(this string file)
-    {
-        var extension = Path.GetExtension(file);
-        var flag = FileHelper.Pngs.Any(x => x == extension);
-        Logger.Debug("文件{Path}是否是图片:{F}", file, flag);
-        return flag;
-    }
-    /// <summary>
-    /// 是否是压缩文件
-    /// </summary>
-    /// <param name="file"></param>
-    /// <returns></returns>
-    public static bool IsZip(this StorageFile file)
-    {
-        bool flag = FileHelper.Zips.Contains(file.FileType);
-        Logger.Debug("文件{Path}是否是压缩包:{F}", file.Path, flag);
-        return flag;
-    }
+    
     /// <summary>
     /// 从url获取StorageFolder,若没有则创建文件夹
     /// </summary>
@@ -220,15 +191,6 @@ public static class UriExtension
             File.Create(path);
             Logger.Information("文件{Dir}不存在,新建", path);
         }
-    }
-    public static bool IsFile(this string path)
-    {
-        return File.Exists(path);
-    }
-
-    public static bool IsFolder(this string path)
-    {
-        return Directory.Exists(path);
     }
     /// <summary>
     /// 从url获取StorageFile,若没有则创建文件
