@@ -14,7 +14,7 @@ public interface IHistory
     /// <summary>
     /// ID
     /// </summary>
-    string Id { get; set; }
+    long Id { get; set; }
     /// <summary>
     /// 图片
     /// </summary>
