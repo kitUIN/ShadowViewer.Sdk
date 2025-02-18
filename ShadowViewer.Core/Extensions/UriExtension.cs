@@ -120,7 +120,7 @@ public static class UriExtension
     /// </summary> 
     public static bool IsPic(this StorageFile file)
     {
-        bool flag = FileHelper.Pngs.Contains(file.FileType);
+        var flag = FileHelper.Pngs.Contains(file.FileType);
         Logger.Debug("文件{Path}是否是图片:{F}", file.Path, flag);
         return flag;
     }
@@ -129,8 +129,8 @@ public static class UriExtension
     /// </summary> 
     public static bool IsPic(this string file)
     {
-        string extension = Path.GetExtension(file);
-        bool flag = FileHelper.Pngs.Any(x => x == extension);
+        var extension = Path.GetExtension(file);
+        var flag = FileHelper.Pngs.Any(x => x == extension);
         Logger.Debug("文件{Path}是否是图片:{F}", file, flag);
         return flag;
     }

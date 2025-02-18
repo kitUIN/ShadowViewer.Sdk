@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Windows.Storage;
+using ShadowViewer.Core.Extensions;
 
 namespace ShadowViewer.Core.Models;
 
@@ -14,30 +16,42 @@ public class ShadowTreeNode
     /// 文件(夹)名
     /// </summary>
     public string Name { get; init; } = "";
+
     /// <summary>
     /// 路径
     /// </summary>
     public string Path { get; init; } = "";
+
     /// <summary>
-    /// 深度
+    /// 深度,当前节点距离根节点的层级数量
     /// </summary>
     public int Depth { get; init; }
+
+    /// <summary>
+    /// 高度,当前节点距离最小子节点的层级数量
+    /// </summary>
+    public int Height { get; set; }
+
     /// <summary>
     /// 数量
     /// </summary>
     public int Count { get; set; }
+
     /// <summary>
     /// 存储大小
     /// </summary>
     public long Size { get; set; }
+
     /// <summary>
     /// 是否是文件夹
     /// </summary>
     public bool IsDirectory { get; init; }
+
     /// <summary>
     /// 子节点
     /// </summary>
     public List<ShadowTreeNode> Children { get; } = [];
+
     /// <summary>
     /// 文件夹转为树形结构
     /// </summary>
@@ -47,6 +61,7 @@ public class ShadowTreeNode
     {
         return FromFolder(folder.Path);
     }
+
     /// <summary>
     /// 文件夹路径转为树形结构
     /// </summary>
@@ -58,6 +73,7 @@ public class ShadowTreeNode
         {
             throw new Exception($"folderPath {folderPath} Is not a directory");
         }
+
         var currentDir = new DirectoryInfo(folderPath);
         var rootNode = new ShadowTreeNode
         {
@@ -79,8 +95,8 @@ public class ShadowTreeNode
     /// <param name="parentNode"></param>
     private static void ProcessFolder(DirectoryInfo currentDir, ShadowTreeNode parentNode)
     {
-        var files = currentDir.GetFiles("*.jpg");
-        foreach (var file in files)
+        foreach (var file in currentDir.EnumerateFiles()
+                     .Where(x => x.Extension.IsPic()))
         {
             var fileNode = new ShadowTreeNode
             {
@@ -112,21 +128,40 @@ public class ShadowTreeNode
             parentNode.Size += dirNode.Size;
             parentNode.Count++;
         }
+        parentNode.Height = parentNode.Children.Count == 0 ? 0 : parentNode.Children.Max(child => child.Height) + 1;
     }
 
     /// <summary>
-    /// 展平深度大于{depth}的树形结构
+    /// 展平深度为{depth}的树形结构
     /// </summary>
     /// <param name="depth">深度,0为当前层</param>
     /// <returns>平铺列表</returns>
-    public List<ShadowTreeNode> GetDepthFiles(int depth = 1)
+    public List<ShadowTreeNode> GetFilesByDepth(int depth = 1)
     {
-        if (Depth == depth && IsDirectory) return [this];
+        if (Depth == depth) return [this];
         var result = new List<ShadowTreeNode>();
         foreach (var child in Children)
         {
-            result.AddRange(child.GetDepthFiles(depth));
+            result.AddRange(child.GetFilesByDepth(depth));
         }
+
+        return result;
+    }
+
+    /// <summary>
+    /// 展平高度的树形结构
+    /// </summary>
+    /// <param name="height">高度,0为最小节点层</param>
+    /// <returns>平铺列表</returns>
+    public List<ShadowTreeNode> GetFilesByHeight(int height)
+    {
+        if (Height == height) return [this];
+        var result = new List<ShadowTreeNode>();
+        foreach (var child in Children)
+        {
+            result.AddRange(child.GetFilesByHeight(height));
+        }
+
         return result;
     }
 }

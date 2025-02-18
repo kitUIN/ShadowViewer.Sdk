@@ -26,11 +26,10 @@ namespace ShadowViewer.Core.Services
     /// </summary>
     public partial class CompressService
     {
-        [Autowired]
-        private ILogger Logger { get; }
+        [Autowired] private ILogger Logger { get; }
 
-        [Autowired]
-        private ICallableService Caller { get; }
+        [Autowired] private ICallableService Caller { get; }
+        [Autowired] private ISqlSugarClient Db { get; }
 
         /// <summary>
         /// 检测压缩包密码是否正确
@@ -46,6 +45,7 @@ namespace ShadowViewer.Core.Services
                 readerOptions = new ReaderOptions() { Password = cacheZip.Password };
                 Log.Information("自动填充密码:{Pwd}", cacheZip.Password);
             }
+
             try
             {
                 using var fStream = File.OpenRead(zip);
@@ -56,13 +56,16 @@ namespace ShadowViewer.Core.Services
                     using var entryStream = entry.OpenEntryStream();
                     // 密码正确添加压缩包密码存档
                     // 能正常打开一个entry就代表正确,所以这个循环只走了一次
-                    if (cacheZip == null && readerOptions?.Password != null || cacheZip is { Password: null } && readerOptions?.Password != null)
+                    if (cacheZip == null && readerOptions?.Password != null ||
+                        cacheZip is { Password: null } && readerOptions?.Password != null)
                     {
                         var cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
                         db.Storageable(cache).ExecuteCommand();
                     }
+
                     return true;
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -73,6 +76,7 @@ namespace ShadowViewer.Core.Services
                 return false;
             }
         }
+
         /// <summary>
         /// 直接解压
         /// </summary>
@@ -96,11 +100,11 @@ namespace ShadowViewer.Core.Services
                     var dialog = XamlHelper.CreateOneTextBoxDialog(root,
                         Path.GetFileName(zip) + I18N.PasswordError,
                         "", I18N.ZipPasswordPlaceholder, "",
-                    async (sender, args, text) =>
-                    {
-                        sender.Hide();
-                        await DeCompressAsync(zip, destinationDirectory, report, root, text);
-                    });
+                        async (sender, args, text) =>
+                        {
+                            sender.Hide();
+                            await DeCompressAsync(zip, destinationDirectory, report, root, text);
+                        });
                     await dialog.ShowAsync();
                 }
                 else
@@ -115,29 +119,29 @@ namespace ShadowViewer.Core.Services
         }
 
         /// <summary>
-        /// 解压流程
+        /// 解压压缩包并且导入
         /// </summary>
         /// <param name="zip"></param>
         /// <param name="destinationDirectory"></param>
         /// <param name="comicId"></param>
+        /// <param name="thumbProgress"></param>
         /// <param name="token"></param>
         /// <param name="readerOptions"></param>
         /// <returns></returns>
         /// <exception cref="TaskCanceledException"></exception>
-        public async Task<object> DeCompressAsync(string zip, string destinationDirectory,
-            long comicId, CancellationToken token, ReaderOptions readerOptions = null)
+        public async Task<object> DeCompressImportAsync(string zip, string destinationDirectory,
+            CancellationToken token,
+            IProgress<MemoryStream>? thumbProgress = null, 
+            IProgress<double>? progress = null,
+            ReaderOptions? readerOptions = null)
         {
-            Logger.Information("进入解压流程");
+            var comicId = SnowFlakeSingle.Instance.NextId();
+                        Logger.Information("进入{Zip}解压流程", zip);
             var path = Path.Combine(destinationDirectory, comicId.ToString());
-            ShadowEntry root = new ShadowEntry()
-            {
-                Name = zip.Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last(),
-            };
-            string md5 = EncryptingHelper.CreateMd5(zip);
-            string sha1 = EncryptingHelper.CreateSha1(zip);
-            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
+            var md5 = EncryptingHelper.CreateMd5(zip);
+            var sha1 = EncryptingHelper.CreateSha1(zip);
             var start = DateTime.Now;
-            CacheZip cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+            var cacheZip = await Db.Queryable<CacheZip>().FirstAsync(x => x.Sha1 == sha1 && x.Md5 == md5, token);
             cacheZip ??= CacheZip.Create(md5, sha1);
             if (cacheZip.ComicId != null)
             {
@@ -150,50 +154,51 @@ namespace ShadowViewer.Core.Services
                     return cacheZip;
                 }
             }
+
+            await using var fStream = File.OpenRead(zip);
+            await using var stream = NonDisposingStream.Create(fStream);
             if (token.IsCancellationRequested) throw new TaskCanceledException();
-            using (FileStream fStream = File.OpenRead(zip))
-            using (NonDisposingStream stream = NonDisposingStream.Create(fStream))
+            using var archive = ArchiveFactory.Open(stream, readerOptions);
+            if (token.IsCancellationRequested) throw new TaskCanceledException();
+            var total = archive.Entries.Where(
+                    entry => !entry.IsDirectory && (entry.Key?.IsPic() ?? false))
+                .OrderBy(x => x.Key);
+            if (token.IsCancellationRequested) throw new TaskCanceledException();
+            var totalCount = total.Count();
+            var ms = new MemoryStream();
+            if (total.FirstOrDefault() is { } img)
+            {
+                await using (var entryStream = img.OpenEntryStream())
+                {
+                    await entryStream.CopyToAsync(ms, token);
+                }
+                var bytes = ms.ToArray();
+                CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId.ToString());
+                thumbProgress?.Report(new MemoryStream(bytes));
+            }
+
+            Logger.Information("开始解压:{Zip}", zip);
+
+            var i = 0;
+            path.CreateDirectory();
+            foreach (var entry in total)
             {
                 if (token.IsCancellationRequested) throw new TaskCanceledException();
-                using var archive = ArchiveFactory.Open(stream, readerOptions);
-                if (token.IsCancellationRequested) throw new TaskCanceledException();
-                var total = archive.Entries.Where(entry => !entry.IsDirectory && entry.Key.IsPic()).OrderBy(x => x.Key);
-                if (token.IsCancellationRequested) throw new TaskCanceledException();
-                var totalCount = total.Count();
-                var ms = new MemoryStream();
-                if (total.FirstOrDefault() is IArchiveEntry img)
-                {
-                    await using (var entryStream = img.OpenEntryStream())
-                    {
-                        await entryStream.CopyToAsync(ms);
-                        // ms.Seek(0, SeekOrigin.Begin);
-                    }
-                    var bytes = ms.ToArray();
-                    CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId.ToString());
-                    Caller.ImportComicThumb(new MemoryStream(bytes));
-                }
-                Logger.Information("开始解压:{Zip}", zip);
-
-                var i = 0;
-                path.CreateDirectory();
-                foreach (IArchiveEntry entry in total)
-                {
-                    if (token.IsCancellationRequested) throw new TaskCanceledException();
-                    entry.WriteToDirectory(path, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
-                    i++;
-                    double result = i / (double)totalCount;
-                    Caller.ImportComicProgress(Math.Round(result * 100, 2));
-                    ShadowEntry.LoadEntry(entry, root);
-                }
-                root.LoadChildren();
-                var stop = DateTime.Now;
-                cacheZip.ComicId = comicId;
-                cacheZip.CachePath = path;
-                cacheZip.Name = Path.GetFileNameWithoutExtension(zip).Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last();
-                db.Storageable(cacheZip).ExecuteCommand();
-                Logger.Information("解压:{Zip} 页数:{Pages} 耗时: {Time} s", zip, totalCount, (stop - start).TotalSeconds);
+                entry.WriteToDirectory(path, new ExtractionOptions() { ExtractFullPath = true, Overwrite = true });
+                i++;
+                var result = i / (double)totalCount;
+                progress?.Report(Math.Round(result * 100, 2) - 0.01D);
             }
-            return root;
+
+            var node = ShadowTreeNode.FromFolder(path);
+            var stop = DateTime.Now;
+            cacheZip.ComicId = comicId;
+            cacheZip.CachePath = path;
+            cacheZip.Name = Path.GetFileNameWithoutExtension(zip)
+                .Split(new char[] { '\\', '/' }, StringSplitOptions.RemoveEmptyEntries).Last();
+            await Db.Storageable(cacheZip).ExecuteCommandAsync(token);
+            Logger.Information("解压成功:{Zip} 页数:{Pages} 耗时: {Time} s", zip, totalCount, (stop - start).TotalSeconds);
+            return node;
         }
     }
 }

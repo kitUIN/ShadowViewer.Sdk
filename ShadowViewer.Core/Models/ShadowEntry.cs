@@ -134,11 +134,7 @@ namespace ShadowViewer.Core.Models
                     var ep = LocalEpisode.Create(child.Name, order, comicId, child.Children.Count, child.Size);
                     db.Insertable(ep).ExecuteCommand();
                     order++;
-                    foreach (var item in child.Children)
-                    {
-                        var pic = LocalPicture.Create(item.Name, ep.Id, comicId, System.IO.Path.Combine(initPath, item.Path), item.Size);
-                        db.Insertable(pic).ExecuteCommand();
-                    }
+                    
                 }
             }
             // 销毁资源
