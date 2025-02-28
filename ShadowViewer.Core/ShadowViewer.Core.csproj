@@ -8,7 +8,7 @@
 		<Nullable>enable</Nullable>
 		<EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-
+		<Platform>AnyCPU</Platform>
 		<LangVersion>12</LangVersion>
 		<Version>2025.2.21.3</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
