@@ -1,4 +1,4 @@
-﻿using ShadowViewer.Core.Models.Interfaces;
+using ShadowViewer.Core.Models.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -17,6 +17,6 @@ public class HistoryComparer : IComparer<IHistory>
     /// </summary>
     public int Compare(IHistory? x, IHistory? y)
     {
-        return caseInsensitiveComparer.Compare(y?.Time, x?.Time);
+        return caseInsensitiveComparer.Compare(y?.LastReadDateTime, x?.LastReadDateTime);
     }
 }

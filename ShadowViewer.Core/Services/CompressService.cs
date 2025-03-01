@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.IO;
@@ -136,7 +136,7 @@ namespace ShadowViewer.Core.Services
             ReaderOptions? readerOptions = null)
         {
             var comicId = SnowFlakeSingle.Instance.NextId();
-                        Logger.Information("进入{Zip}解压流程", zip);
+            Logger.Information("进入{Zip}解压流程", zip);
             var path = Path.Combine(destinationDirectory, comicId.ToString());
             var md5 = EncryptingHelper.CreateMd5(zip);
             var sha1 = EncryptingHelper.CreateSha1(zip);

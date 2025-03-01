@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using SqlSugar;
 using ShadowPluginLoader.MetaAttributes;
 using ShadowViewer.Core.Models.Interfaces;
@@ -26,29 +26,5 @@ public abstract partial class AbstractHistoryResponder : IHistoryResponder
     /// <inheritdoc/>
     [Autowired]
     public string Id { get; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected ICallableService Caller { get; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected ISqlSugarClient Db { get; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected CompressService CompressServices { get; }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected PluginLoader PluginService { get; }
 
 }

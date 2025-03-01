@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Windows.Storage;
 using DryIoc;
 using Serilog;
@@ -42,6 +42,5 @@ public static class DiHelper
             }));
         DiFactory.Services.Register<PluginLoader>(reuse: Reuse.Singleton);
         DiFactory.Services.Register<CompressService>(Reuse.Singleton);
-        DiFactory.Services.Register<ResponderService>(Reuse.Singleton);
     }
 }

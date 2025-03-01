@@ -1,8 +1,5 @@
-﻿using DryIoc;
 using Serilog;
-using ShadowPluginLoader.WinUI;
 using SqlSugar;
-using System;
 
 namespace ShadowViewer.Core.Cache
 {
@@ -11,43 +8,38 @@ namespace ShadowViewer.Core.Cache
     /// </summary>
     public class CacheZip
     {
-        public CacheZip() { }
-        [SugarColumn(ColumnDataType = "Nchar(32)", IsPrimaryKey = true, IsNullable = false)]
-        public string? Id { get; private set; }
-        public string? Md5 { get; private set; }
+        [SugarColumn(IsPrimaryKey = true)]
+        public long Id { get; set; }
+        public string? Md5 { get; set; }
         [SugarColumn(ColumnDataType = "Nvarchar(1024)")]
-        public string? Sha1 { get; private set; }
+        public string? Sha1 { get; set; }
         [SugarColumn(ColumnDataType = "Nvarchar(2048)", IsNullable = true)]
         public string? Password { get; set; }
 
         [SugarColumn(ColumnDataType = "Nvarchar(2048)", IsNullable = true)]
         public string? Name { get; set; }
-        [SugarColumn(ColumnDataType = "NText", IsNullable = true)]
+        [SugarColumn(ColumnDataType = "TEXT", IsNullable = true)]
         public string? CachePath { get; set; }
         [SugarColumn(IsNullable = true)]
         public long? ComicId { get; set; }
 
-        public static string RandomId()
-        {
-            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            var id = Guid.NewGuid().ToString("N");
-            while (db.Queryable<CacheZip>().Any(x => x.Id == id))
-            {
-                id = Guid.NewGuid().ToString("N");
-            }
-
-            return id;
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="md5"></param>
+        /// <param name="sha1"></param>
+        /// <param name="password"></param>
+        /// <param name="cachePath"></param>
+        /// <returns></returns>
         public static CacheZip Create(string md5, string sha1, 
             string? password = null, string? cachePath = null)
         {
-            // var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            var id = RandomId();
+            
             return new CacheZip()
             {
                 Md5 = md5,
                 Sha1 = sha1,
-                Id = id,
+                Id = SnowFlakeSingle.Instance.NextId(),
                 Password = password,
                 CachePath = cachePath,
             };

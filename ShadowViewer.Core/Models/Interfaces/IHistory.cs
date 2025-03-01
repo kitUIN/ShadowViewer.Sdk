@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using SqlSugar;
 
 namespace ShadowViewer.Core.Models.Interfaces;
@@ -10,7 +10,7 @@ public interface IHistory
     /// <summary>
     /// 名称
     /// </summary>
-    string? Title { get; set; }
+    string Title { get; set; }
     /// <summary>
     /// ID
     /// </summary>
@@ -18,11 +18,15 @@ public interface IHistory
     /// <summary>
     /// 图片
     /// </summary>
-    string? Icon { get; set; }
+    string Thumb { get; set; }
     /// <summary>
     /// 阅读时间
     /// </summary>
-    DateTime Time { get; set; }
+    DateTime LastReadDateTime { get; set; }
+    /// <summary>
+    /// 附加信息
+    /// </summary>
+    string? Extra { get; set; }
     /// <summary>
     /// 来源插件
     /// </summary>
