@@ -1,4 +1,4 @@
-﻿using ShadowPluginLoader.MetaAttributes;
+using ShadowPluginLoader.MetaAttributes;
 using ShadowViewer.Core.Args;
 using ShadowViewer.Core.Services;
 using SqlSugar;
@@ -21,31 +21,18 @@ public abstract partial class AbstractPicViewResponder : IPicViewResponder
     /// <summary>
     /// <inheritdoc />
     /// </summary>
+    public virtual void CurrentPageIndexChanged(object sender, string affiliation, int oldValue, int newValue)
+    {
+        
+    }
+
+    /// <summary>
+    /// <inheritdoc />
+    /// </summary>
     public virtual void PicturesLoadStarting(object sender, PicViewArg arg)
     {
         
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected ICallableService Caller { get; }
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected ISqlSugarClient Db { get; }
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected CompressService CompressServices { get; }
-    /// <summary>
-    /// 
-    /// </summary>
-    [Autowired]
-    protected PluginLoader PluginService { get; }
-
     /// <summary>
     /// <inheritdoc />
     /// </summary>
