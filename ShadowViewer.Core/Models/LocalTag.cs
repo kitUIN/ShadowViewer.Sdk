@@ -84,8 +84,7 @@ namespace ShadowViewer.Core.Models
             this(name, new SolidColorBrush(foreground),
                 new SolidColorBrush(background))
         { }
-        public LocalTag(string name, string foreground, string background) :
-            this(name, new SolidColorBrush(foreground.ToColor()),
+        public LocalTag(string name, string foreground, string background) : this(name, new SolidColorBrush(foreground.ToColor()),
                 new SolidColorBrush(background.ToColor()))
         { }
         public LocalTag() { }

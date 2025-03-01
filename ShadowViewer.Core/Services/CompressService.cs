@@ -173,7 +173,7 @@ namespace ShadowViewer.Core.Services
                     await entryStream.CopyToAsync(ms, token);
                 }
                 var bytes = ms.ToArray();
-                CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId.ToString());
+                // CacheImg.CreateImage(CoreSettings.TempPath, bytes, comicId.ToString());
                 thumbProgress?.Report(new MemoryStream(bytes));
             }
 

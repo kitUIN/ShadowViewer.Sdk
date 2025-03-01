@@ -68,35 +68,35 @@ namespace ShadowViewer.Core.Helpers
         //     root.Dispose();
         //     return comic;
         // }
-        /// <summary>
-        /// 从缓存流中加载缩略图
-        /// </summary>
-        public static string LoadImgFromEntry(ShadowEntry root, string dir, string comicId)
-        {
-            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            if (db.Queryable<CacheImg>().First(x => x.ComicId == comicId) is CacheImg cacheImg)
-            {
-                return cacheImg.Path;
-            }
-            static ShadowEntry? Cycle(List<ShadowEntry> entries)
-            {
-                ShadowEntry? imgEntry = null;
-                foreach (ShadowEntry item in entries)
-                {
-                    imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory);
-                    if (imgEntry != null) return imgEntry;
-                }
-                return null;
-            }
-            List<ShadowEntry> two = ShadowEntry.GetDepthEntries(root, 2);
-            var imgEntry = Cycle(two);
-            if (imgEntry == null)
-            {
-                two = ShadowEntry.GetDepthEntries(root, 1);
-                imgEntry = Cycle(two);
-            }
-            return Path.Combine(dir, imgEntry!.Path);
-        }
+        // /// <summary>
+        // /// 从缓存流中加载缩略图
+        // /// </summary>
+        // public static string LoadImgFromEntry(ShadowEntry root, string dir, string comicId)
+        // {
+        //     var db = DiFactory.Services.Resolve<ISqlSugarClient>();
+        //     if (db.Queryable<CacheImg>().First(x => x.ComicId == comicId) is CacheImg cacheImg)
+        //     {
+        //         return cacheImg.Path;
+        //     }
+        //     static ShadowEntry? Cycle(List<ShadowEntry> entries)
+        //     {
+        //         ShadowEntry? imgEntry = null;
+        //         foreach (ShadowEntry item in entries)
+        //         {
+        //             imgEntry = item.Children.FirstOrDefault(x => !x.IsDirectory);
+        //             if (imgEntry != null) return imgEntry;
+        //         }
+        //         return null;
+        //     }
+        //     List<ShadowEntry> two = ShadowEntry.GetDepthEntries(root, 2);
+        //     var imgEntry = Cycle(two);
+        //     if (imgEntry == null)
+        //     {
+        //         two = ShadowEntry.GetDepthEntries(root, 1);
+        //         imgEntry = Cycle(two);
+        //     }
+        //     return Path.Combine(dir, imgEntry!.Path);
+        // }
         // /// <summary>
         // /// 检查重复导入
         // /// </summary>
