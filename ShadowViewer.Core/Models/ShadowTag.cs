@@ -1,3 +1,5 @@
+using CommunityToolkit.WinUI.Helpers;
+using Microsoft.UI.Xaml.Media;
 using SqlSugar;
 using ShadowViewer.Core.Models.Interfaces;
 
@@ -6,19 +8,17 @@ namespace ShadowViewer.Core.Models
     /// <summary>
     /// 标签
     /// </summary>
+    [SugarIndex("unique_shadow_tag_name", nameof(Name), OrderByType.Asc, true)]
     public class ShadowTag : IShadowTag
     {
         /// <summary>
         /// <inheritdoc />
         /// </summary>
-        [SugarColumn(ColumnDataType = "Nvarchar(255)")]
+        [SugarColumn(ColumnDataType = "Nvarchar(255)", IsNullable = false)]
         public string Name { get; set; }
-
-
         /// <summary>
-        /// <inheritdoc />
+        /// Id
         /// </summary>
-
         [SugarColumn(IsPrimaryKey = true)]
         public long Id { get; set; }
 
@@ -35,6 +35,18 @@ namespace ShadowViewer.Core.Models
         /// </summary>
         [SugarColumn(ColumnDataType = "Nvarchar(9)")]
         public string ForegroundHex { get; set; }
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public Brush Background => new SolidColorBrush(BackgroundHex.ToColor());
+
+        /// <summary>
+        /// <inheritdoc />
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public Brush Foreground => new SolidColorBrush(ForegroundHex.ToColor());
 
 
         /// <summary>
@@ -59,20 +71,30 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(IsIgnore = true)]
-        public bool AllowModify => TagType != 0;
+        public bool AllowClick { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        public ShadowTag(string name, string backgroundHex, string foregroundHex, string? icon, string pluginId)
+        public ShadowTag(string name, string backgroundHex,
+            string foregroundHex, string? icon, string pluginId, 
+            bool allowClick = false, int tagType = 0)
         {
             Name = name;
             BackgroundHex = backgroundHex;
             ForegroundHex = foregroundHex;
             Icon = icon;
             PluginId = pluginId;
+            AllowClick = allowClick;
+            TagType = tagType;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ShadowTag()
+        {
+        }
 
         /// <summary>
         /// ToString

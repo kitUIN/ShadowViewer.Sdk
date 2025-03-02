@@ -1,9 +1,4 @@
-using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Media;
 
 namespace ShadowViewer.Core.Models.Interfaces;
 
@@ -18,11 +13,6 @@ public interface IShadowTag
     public string Name { get; set; }
 
     /// <summary>
-    /// Id
-    /// </summary>
-    public long Id { get; set; }
-
-    /// <summary>
     /// 背景颜色，例如 #7cbbe2
     /// </summary>
     public string BackgroundHex { get; set; }
@@ -31,6 +21,16 @@ public interface IShadowTag
     /// 字体颜色，例如 #7cbbe2
     /// </summary>
     public string ForegroundHex { get; set; }
+
+    /// <summary>
+    /// 背景颜色
+    /// </summary>
+    public Brush Background { get; }
+
+    /// <summary>
+    /// 字体颜色
+    /// </summary>
+    public Brush Foreground { get; }
 
     /// <summary>
     /// 图标
@@ -48,7 +48,7 @@ public interface IShadowTag
     public int TagType { get; set; }
 
     /// <summary>
-    /// 能否修改
+    /// 能否点击
     /// </summary>
-    public bool AllowModify { get; }
+    public bool AllowClick { get; }
 }
