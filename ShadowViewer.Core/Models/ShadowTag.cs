@@ -15,7 +15,8 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(ColumnDataType = "Nvarchar(255)", IsNullable = false)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
+
         /// <summary>
         /// Id
         /// </summary>
@@ -27,14 +28,14 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(ColumnDataType = "Nvarchar(9)")]
-        public string BackgroundHex { get; set; }
+        public string BackgroundHex { get; set; } = null!;
 
 
         /// <summary>
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(ColumnDataType = "Nvarchar(9)")]
-        public string ForegroundHex { get; set; }
+        public string ForegroundHex { get; set; } = null!;
 
         /// <summary>
         /// <inheritdoc />
@@ -59,7 +60,7 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(ColumnDescription = "图标")]
-        public string PluginId { get; set; }
+        public string PluginId { get; set; } = null!;
 
         /// <summary>
         /// <inheritdoc />

@@ -36,14 +36,6 @@ namespace ShadowViewer.Core.Services
         /// </summary>
         public event EventHandler<ImportComicErrorEventArgs>? ImportComicErrorEvent;
         /// <summary>
-        /// 导入漫画[缩略图]事件
-        /// </summary>
-        public event EventHandler<ImportComicThumbEventArgs>? ImportComicThumbEvent;
-        /// <summary>
-        /// 导入漫画[进度]事件
-        /// </summary>
-        public event EventHandler<ImportComicProgressEventArgs>? ImportComicProgressEvent;
-        /// <summary>
         /// 调试事件
         /// </summary>
         public event EventHandler? DebugEvent;
