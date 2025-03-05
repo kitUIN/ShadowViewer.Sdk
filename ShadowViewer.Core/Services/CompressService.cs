@@ -30,52 +30,52 @@ namespace ShadowViewer.Core.Services
 
         [Autowired] private ICallableService Caller { get; }
         [Autowired] private ISqlSugarClient Db { get; }
-
-        /// <summary>
-        /// 检测压缩包密码是否正确
-        /// </summary>
-        public static bool CheckPassword(string zip, ref ReaderOptions readerOptions)
-        {
-            var md5 = EncryptingHelper.CreateMd5(zip);
-            var sha1 = EncryptingHelper.CreateSha1(zip);
-            var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-            var cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
-            if (cacheZip is { Password: not null } && cacheZip.Password != "")
-            {
-                readerOptions = new ReaderOptions() { Password = cacheZip.Password };
-                Log.Information("自动填充密码:{Pwd}", cacheZip.Password);
-            }
-
-            try
-            {
-                using var fStream = File.OpenRead(zip);
-                using var stream = NonDisposingStream.Create(fStream);
-                using var archive = ArchiveFactory.Open(stream, readerOptions);
-                foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
-                {
-                    using var entryStream = entry.OpenEntryStream();
-                    // 密码正确添加压缩包密码存档
-                    // 能正常打开一个entry就代表正确,所以这个循环只走了一次
-                    if (cacheZip == null && readerOptions?.Password != null ||
-                        cacheZip is { Password: null } && readerOptions?.Password != null)
-                    {
-                        var cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
-                        db.Storageable(cache).ExecuteCommand();
-                    }
-
-                    return true;
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // 密码错误就删除压缩包密码存档
-                db.DeleteableByObject(cacheZip).ExecuteCommand();
-                Log.Error("解压出错:{Ex}", ex);
-                return false;
-            }
-        }
+        //
+        // /// <summary>
+        // /// 检测压缩包密码是否正确
+        // /// </summary>
+        // public static bool CheckPassword(string zip, ref ReaderOptions readerOptions)
+        // {
+        //     var md5 = EncryptingHelper.CreateMd5(zip);
+        //     var sha1 = EncryptingHelper.CreateSha1(zip);
+        //     var db = DiFactory.Services.Resolve<ISqlSugarClient>();
+        //     var cacheZip = db.Queryable<CacheZip>().First(x => x.Sha1 == sha1 && x.Md5 == md5);
+        //     if (cacheZip is { Password: not null } && cacheZip.Password != "")
+        //     {
+        //         readerOptions = new ReaderOptions() { Password = cacheZip.Password };
+        //         Log.Information("自动填充密码:{Pwd}", cacheZip.Password);
+        //     }
+        //
+        //     try
+        //     {
+        //         using var fStream = File.OpenRead(zip);
+        //         using var stream = NonDisposingStream.Create(fStream);
+        //         using var archive = ArchiveFactory.Open(stream, readerOptions);
+        //         foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+        //         {
+        //             using var entryStream = entry.OpenEntryStream();
+        //             // 密码正确添加压缩包密码存档
+        //             // 能正常打开一个entry就代表正确,所以这个循环只走了一次
+        //             if (cacheZip == null && readerOptions?.Password != null ||
+        //                 cacheZip is { Password: null } && readerOptions?.Password != null)
+        //             {
+        //                 var cache = CacheZip.Create(md5, sha1, password: readerOptions.Password);
+        //                 db.Storageable(cache).ExecuteCommand();
+        //             }
+        //
+        //             return true;
+        //         }
+        //
+        //         return true;
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         // 密码错误就删除压缩包密码存档
+        //         db.DeleteableByObject(cacheZip).ExecuteCommand();
+        //         Log.Error("解压出错:{Ex}", ex);
+        //         return false;
+        //     }
+        // }
 
         /// <summary>
         /// 直接解压
@@ -142,7 +142,7 @@ namespace ShadowViewer.Core.Services
             var sha1 = EncryptingHelper.CreateSha1(zip);
             var start = DateTime.Now;
             var cacheZip = await Db.Queryable<CacheZip>().FirstAsync(x => x.Sha1 == sha1 && x.Md5 == md5, token);
-            cacheZip ??= CacheZip.Create(md5, sha1);
+            // cacheZip ??= CacheZip.Create(md5, sha1);
             if (cacheZip.ComicId != null)
             {
                 comicId = (long)cacheZip.ComicId;

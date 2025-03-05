@@ -97,26 +97,20 @@ namespace ShadowViewer.Core.Helpers
             };
             var dialog = new ContentDialog()
             {
-                DefaultButton = ContentDialogButton.Primary,
                 Title = title,
+                Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
                 PrimaryButtonText = ResourcesHelper.GetString(ResourceKey.Confirm),
                 CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel),
                 XamlRoot = xamlRoot,
                 IsPrimaryButtonEnabled = true,
+                DefaultButton = ContentDialogButton.Primary,
                 Content = new Border()
                 {
                     Child = textBox,
                 }
             };
-            dialog.PrimaryButtonClick += (sender, args) =>
-            {
-                primaryAction?.Invoke(sender, args, textBox.Text);
-            };
-            dialog.CloseButtonClick += (sender, args) =>
-            {
-                closeAction?.Invoke(sender, args, textBox.Text);
-            };
-            // dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+            dialog.PrimaryButtonClick += (sender, args) => primaryAction?.Invoke(sender, args, textBox.Text);
+            dialog.CloseButtonClick += (sender, args) => closeAction?.Invoke(sender, args, textBox.Text);
             return dialog;
         }
         /// <summary>
