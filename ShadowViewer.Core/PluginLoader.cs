@@ -40,7 +40,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
             {
                 DiFactory.Services.Register(typeof(ISettingFolder),
                     type,
-                    Reuse.Singleton,
+                    Reuse.Transient,
                     made: Parameters.Of.Type(_ => meta.Id));
                 Logger.Information(
                     "{Id}{Name} Load {INavigationResponder}:{TNavigationResponder}",
@@ -51,7 +51,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
         if (navigationViewResponder is not null)
         {
             DiFactory.Services.Register(typeof(INavigationResponder), navigationViewResponder,
-                Reuse.Singleton, made: Parameters.Of.Type(_ => meta.Id));
+                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
@@ -62,7 +62,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
         if (picViewResponder is not null)
         {
             DiFactory.Services.Register(typeof(IPicViewResponder), picViewResponder,
-                Reuse.Singleton, made: Parameters.Of.Type(_ => meta.Id));
+                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
@@ -73,7 +73,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
         if (historyResponder is not null)
         {
             DiFactory.Services.Register(typeof(IHistoryResponder), historyResponder,
-                Reuse.Singleton, made: Parameters.Of.Type(_ => meta.Id));
+                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,

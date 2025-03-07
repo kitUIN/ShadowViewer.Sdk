@@ -4,6 +4,7 @@ using ShadowPluginLoader.MetaAttributes;
 using ShadowViewer.Core.Models;
 using ShadowViewer.Core.Models.Interfaces;
 using ShadowViewer.Core.Services;
+using ShadowViewer.Core.Utils;
 using SqlSugar;
 
 namespace ShadowViewer.Core.Responders;
@@ -42,8 +43,8 @@ public abstract partial class AbstractNavigationResponder : INavigationResponder
     /// <summary>
     /// <inheritdoc />
     /// </summary>
-    public virtual void Navigate(Uri uri, string[] urls)
+    public virtual ShadowNavigation? Navigate(Uri uri, string[] urls)
     {
+        return null;
     }
-
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ShadowViewer.Core.Models;
 using ShadowViewer.Core.Models.Interfaces;
+using ShadowViewer.Core.Utils;
 
 namespace ShadowViewer.Core.Responders;
 /// <summary>
@@ -27,5 +28,5 @@ public interface INavigationResponder : IResponder
     /// <summary>
     /// 导航
     /// </summary>
-    void Navigate(Uri uri, string[] urls);
+    ShadowNavigation? Navigate(Uri uri, string[] urls);
 }

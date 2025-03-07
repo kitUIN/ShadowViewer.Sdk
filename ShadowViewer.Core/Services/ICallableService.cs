@@ -16,26 +16,6 @@ namespace ShadowViewer.Core.Services
     public interface ICallableService
     {
         /// <summary>
-        /// 控制页面跳转事件
-        /// </summary>
-        public event EventHandler<NavigateToEventArgs>? NavigateToEvent;
-        /// <summary>
-        /// 刷新书架事件
-        /// </summary>
-        public event EventHandler? RefreshBookEvent;
-        /// <summary>
-        /// 导入漫画完成事件
-        /// </summary>
-        public event EventHandler? ImportComicCompletedEvent;
-        /// <summary>
-        /// 导入漫画事件
-        /// </summary>
-        public event EventHandler<ImportComicEventArgs>? ImportComicEvent;
-        /// <summary>
-        /// 导入漫画[错误]事件
-        /// </summary>
-        public event EventHandler<ImportComicErrorEventArgs>? ImportComicErrorEvent;
-        /// <summary>
         /// 调试事件
         /// </summary>
         public event EventHandler? DebugEvent;
@@ -51,34 +31,6 @@ namespace ShadowViewer.Core.Services
         /// </summary>
         public event TypedEventHandler<AppWindow, AppWindowChangedEventArgs>? OverlappedChangedEvent;
 
-        /// <summary>
-        /// 控制页面跳转
-        /// </summary>
-        void NavigateTo(Type page, object? parameter, bool force = true);
-        /// <summary>
-        /// 刷新书架
-        /// </summary>
-        void RefreshBook();
-        /// <summary>
-        /// 导入漫画
-        /// </summary>
-        void ImportComic(IReadOnlyList<IStorageItem> items, string[] passwords, int index);
-        /// <summary>
-        /// 导入漫画[错误]
-        /// </summary>
-        void ImportComicError(ImportComicError error, string message, IReadOnlyList<IStorageItem> items, int index, string[] password);
-        /// <summary>
-        /// 导入漫画[缩略图]
-        /// </summary>
-        void ImportComicThumb(MemoryStream stream);
-        /// <summary>
-        /// 导入漫画[进度]
-        /// </summary>
-        void ImportComicProgress(double progress);
-        /// <summary>
-        /// 导入漫画完成
-        /// </summary>
-        void ImportComicCompleted();
         /// <summary>
         /// 调试
         /// </summary>

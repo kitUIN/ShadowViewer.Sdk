@@ -9,7 +9,7 @@
 		<EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<LangVersion>12</LangVersion>
-		<Version>2025.3.3.1</Version>
+		<Version>2025.3.7.1</Version>
 		<PackageId>ShadowViewer.Core</PackageId>
 		<Authors>kitUIN</Authors>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
