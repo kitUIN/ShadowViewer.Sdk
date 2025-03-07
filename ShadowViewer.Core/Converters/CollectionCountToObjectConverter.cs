@@ -5,7 +5,7 @@ namespace ShadowViewer.Core.Converters;
 /// <summary>
 /// 检查集合是否为空,请传入Count
 /// </summary>
-public class CollectionCountToVisibilityConverter : EmptyObjectToObjectConverter
+public class CollectionCountToObjectConverter : EmptyObjectToObjectConverter
 {
     /// <inheritdoc />
     protected override bool CheckValueIsEmpty(object value)
