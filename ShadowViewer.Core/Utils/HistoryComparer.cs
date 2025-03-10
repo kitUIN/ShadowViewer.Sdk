@@ -2,7 +2,7 @@ using ShadowViewer.Core.Models.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ShadowViewer.Core.Extensions;
+namespace ShadowViewer.Core.Utils;
 
 /// <summary>
 /// 历史记录拓展类,通过时间比较
