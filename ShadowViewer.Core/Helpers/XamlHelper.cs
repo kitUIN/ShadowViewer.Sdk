@@ -84,7 +84,10 @@ namespace ShadowViewer.Core.Helpers
             dialog.DefaultButton = ContentDialogButton.Primary;
             return dialog;
         }
-        public static ContentDialog CreateOneTextBoxDialog(XamlRoot xamlRoot,
+        /// <summary>
+        /// 创建一个带TextBox的ContentDialog
+        /// </summary>
+        public static ContentDialog CreateOneTextBoxDialog(XamlRoot? xamlRoot,
             string title = "", string header = "", string placeholder = "", string text = "",
             Action<ContentDialog, ContentDialogButtonClickEventArgs, string>? primaryAction = null,
             Action<ContentDialog, ContentDialogButtonClickEventArgs, string>? closeAction = null)
