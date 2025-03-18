@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using System;
+using CommunityToolkit.WinUI.Animations;
+using Microsoft.UI.Xaml.Controls;
 
 namespace ShadowViewer.Core.Models.Interfaces;
 
@@ -22,4 +24,6 @@ public interface IShadowNavigationItem : IPluginId
     /// </summary>
     public string? Id { get; }
 
+    // Tuple<float,float> CenterPoint { get; }
+    AnimationBuilder? StartAnimation { get; }
 }
