@@ -1,46 +1,59 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using ShadowPluginLoader.MetaAttributes;
 using ShadowViewer.Core.Models.Interfaces;
 
-namespace ShadowViewer.Core.Plugins;
+namespace ShadowViewer.Core.Responders;
 
-public abstract partial class AShadowViewerPlugin
+/// <summary>
+/// <inheritdoc />
+/// </summary>
+public partial class AbstractSearchSuggestionResponder : ISearchSuggestionResponder
 {
     /// <summary>
-    /// <inheritdoc/>
+    /// <inheritdoc />
+    /// </summary>
+    [Autowired] public string Id { get; }
+
+    /// <summary>
+    /// <inheritdoc />
     /// </summary>
     public virtual IEnumerable<IShadowSearchItem> SearchTextChanged(AutoSuggestBox sender,
         AutoSuggestBoxTextChangedEventArgs args)
     {
-        return new List<IShadowSearchItem>();
+        return [];
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// <inheritdoc />
     /// </summary>
     public virtual void SearchSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
+        
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// <inheritdoc />
     /// </summary>
     public virtual void SearchQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
+        
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// <inheritdoc />
     /// </summary>
     public virtual void SearchGotFocus(object sender, RoutedEventArgs args)
     {
+
     }
 
     /// <summary>
-    /// <inheritdoc/>
+    /// <inheritdoc />
     /// </summary>
     public virtual void SearchLostFocus(object sender, RoutedEventArgs args)
     {
+
     }
 }

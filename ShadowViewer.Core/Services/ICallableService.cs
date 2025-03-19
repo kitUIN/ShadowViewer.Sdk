@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+using System;
 using Microsoft.UI.Windowing;
 using Windows.Foundation;
-using Windows.Storage;
-using Microsoft.UI.Xaml;
-using ShadowViewer.Core.Enums;
-using ShadowViewer.Core.Args;
 
 namespace ShadowViewer.Core.Services
 {
@@ -24,8 +18,6 @@ namespace ShadowViewer.Core.Services
         /// </summary>
         public event EventHandler? ThemeChangedEvent;
 
-        public event EventHandler<TopGridEventArg>? TopGridEvent;
-
         /// <summary>
         /// 窗体最大化,最小化,普通事件
         /// </summary>
@@ -39,10 +31,7 @@ namespace ShadowViewer.Core.Services
         /// 主题变更
         /// </summary>
         void ThemeChanged();
-        /// <summary>
-        /// 顶部窗体
-        /// </summary>
-        void TopGrid(object sender, UIElement element, TopGridMode mode);
+ 
         /// <summary>
         /// 
         /// </summary>

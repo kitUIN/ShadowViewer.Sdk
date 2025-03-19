@@ -41,6 +41,5 @@ public static class DiHelper
                 };
             }));
         DiFactory.Services.Register<PluginLoader>(reuse: Reuse.Singleton);
-        DiFactory.Services.Register<CompressService>(Reuse.Singleton);
     }
 }

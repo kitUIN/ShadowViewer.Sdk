@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using DryIoc;
 using Serilog;
@@ -27,11 +27,13 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
         Type? navigationViewResponder = null;
         Type? picViewResponder = null;
         Type? historyResponder = null;
+        Type? searchResponder = null;
         var db = DiFactory.Services.Resolve<ISqlSugarClient>();
         foreach (var type in tPlugin.Assembly.GetExportedTypes())
             if (type.IsAssignableTo(typeof(AbstractNavigationResponder))) navigationViewResponder = type;
             else if (type.IsAssignableTo(typeof(AbstractPicViewResponder))) picViewResponder = type;
             else if (type.IsAssignableTo(typeof(AbstractHistoryResponder))) historyResponder = type;
+            else if (type.IsAssignableTo(typeof(AbstractSearchSuggestionResponder))) searchResponder = type;
             else if (type.IsAssignableTo(typeof(IHistory)))
             {
                 db.CodeFirst.InitTables(type);
@@ -78,6 +80,15 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
                 historyResponder.Name);
+        }
+        if (searchResponder is not null)
+        {
+            DiFactory.Services.Register(typeof(ISearchSuggestionResponder), searchResponder,
+                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+            Logger.Information(
+                "{Id}{Name} Load ISearchSuggestionResponder: {TNavigationResponder}",
+                meta.Id, meta.Name,
+                searchResponder.Name);
         }
     }
 
