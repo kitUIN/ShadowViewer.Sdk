@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.WinUI.Animations;
 using Microsoft.UI.Xaml.Controls;
 using ShadowViewer.Core.Models.Interfaces;
 
@@ -12,14 +11,12 @@ namespace ShadowViewer.Core.Models
         /// <param name="id"></param>
         /// <param name="icon"></param>
         /// <param name="content"></param>
-        public ShadowNavigationItem(string pluginId, string id, IconElement? icon, object? content,
-            AnimationBuilder? startAnimation = null)
+        public ShadowNavigationItem(string pluginId, string id, IconElement? icon, object? content)
         {
             Icon = icon;
             Id = id;
             Content = content;
             PluginId = pluginId;
-            StartAnimation = startAnimation;
         }
 
         /// <summary>
@@ -37,9 +34,6 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         public string? Id { get; }
-
-        /// <inheritdoc />
-        public AnimationBuilder? StartAnimation { get; }
 
         /// <summary>
         /// <inheritdoc />

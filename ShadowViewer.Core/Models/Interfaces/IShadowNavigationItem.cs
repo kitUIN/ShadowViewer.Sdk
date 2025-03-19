@@ -23,7 +23,4 @@ public interface IShadowNavigationItem : IPluginId
     /// 跳转的标识符
     /// </summary>
     public string? Id { get; }
-
-    // Tuple<float,float> CenterPoint { get; }
-    AnimationBuilder? StartAnimation { get; }
 }
