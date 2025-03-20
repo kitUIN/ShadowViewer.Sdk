@@ -1,8 +1,8 @@
 ﻿using ShadowPluginLoader.MetaAttributes;
 using ShadowPluginLoader.WinUI;
+using ShadowViewer.Core.Models;
 
 namespace ShadowViewer.Core.Plugins;
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 /// <summary>
 /// 插件元数据
@@ -13,16 +13,17 @@ public class PluginMetaData : AbstractPluginMetaData
     /// <summary>
     /// 介绍
     /// </summary>
-    public string Description { get; init; }
+    public string Description { get; init; } = null!;
+
     /// <summary>
     /// 作者
     /// </summary>
-    public string Authors { get; init; }
+    public string Authors { get; init; } = null!;
 
     /// <summary>
     /// 项目地址
     /// </summary>
-    public string WebUri { get; init; }
+    public string WebUri { get; init; } = null!;
 
     /// <summary>
     /// 图标<br/>
@@ -37,7 +38,35 @@ public class PluginMetaData : AbstractPluginMetaData
     /// 4.fluent://filled/\uE714
     /// </example>
     /// </summary>
-    public string Logo { get; init; }
+    public string Logo { get; init; } = null!;
 
+    /// <summary>
+    /// 能否开关
+    /// </summary>
+    [Meta(Required = false)]
+    public bool CanSwitch { get; init; } = true;
+
+    /// <summary>
+    /// 能否删除
+    /// </summary>
+    [Meta(Required = false)]
+    public bool CanDelete { get; init; } = true;
+
+    /// <summary>
+    /// 能否打开文件夹
+    /// </summary>
+    [Meta(Required = false)]
+    public bool CanOpenFolder { get; init; } = true;
+
+    /// <summary>
+    /// 设置页面
+    /// </summary>
+    [Meta(Required = false)]
+    public string? SettingsPage { get; init; }
+
+    /// <summary>
+    /// 分类标签
+    /// </summary>
+    [Meta(Required = false)]
+    public ShadowTag? AffiliationTag { get; init; }
 }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.

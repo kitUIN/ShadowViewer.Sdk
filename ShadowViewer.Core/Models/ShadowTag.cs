@@ -1,7 +1,8 @@
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Media;
-using SqlSugar;
+using ShadowPluginLoader.MetaAttributes;
 using ShadowViewer.Core.Models.Interfaces;
+using SqlSugar;
 
 namespace ShadowViewer.Core.Models
 {
@@ -21,6 +22,7 @@ namespace ShadowViewer.Core.Models
         /// Id
         /// </summary>
         [SugarColumn(IsPrimaryKey = true)]
+        [Meta(Exclude = true)]
         public long Id { get; set; }
 
 
@@ -41,12 +43,14 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(IsIgnore = true)]
+        [Meta(Exclude = true)]
         public Brush Background => new SolidColorBrush(BackgroundHex.ToColor());
 
         /// <summary>
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(IsIgnore = true)]
+        [Meta(Exclude = true)]
         public Brush Foreground => new SolidColorBrush(ForegroundHex.ToColor());
 
 
@@ -54,6 +58,7 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(ColumnDescription = "图标", IsNullable = true)]
+        [Meta(Required = false)]
         public string? Icon { get; set; }
 
         /// <summary>
@@ -65,6 +70,7 @@ namespace ShadowViewer.Core.Models
         /// <summary>
         /// <inheritdoc />
         /// </summary>
+        [Meta(Exclude = true)]
         public int TagType { get; set; }
 
 
@@ -72,6 +78,7 @@ namespace ShadowViewer.Core.Models
         /// <inheritdoc />
         /// </summary>
         [SugarColumn(IsIgnore = true)]
+        [Meta(Exclude = true)]
         public bool AllowClick { get; }
 
         /// <summary>

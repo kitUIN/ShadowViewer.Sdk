@@ -3,6 +3,7 @@ using ShadowViewer.Core.Models;
 using ShadowViewer.Core.Services;
 using SqlSugar;
 using System;
+using Microsoft.IdentityModel.Tokens;
 using ShadowPluginLoader.MetaAttributes;
 
 namespace ShadowViewer.Core.Plugins;
@@ -34,7 +35,7 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin
     /// 通知服务
     /// </summary>
     [Autowired]
-    public INotifyService Notifier { get; }  
+    public INotifyService Notifier { get; }
 
     /// <summary>
     /// 插件元数据
@@ -49,20 +50,17 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin
     /// <summary>
     /// 设置页面
     /// </summary>
-    public virtual Type? SettingsPage => null;
+    public Type? SettingsPage { get; private set; }
 
     /// <summary>
-    /// 能否开关
+    /// <inheritdoc cref="AbstractPlugin.Init"/>
     /// </summary>
-    public virtual bool CanSwitch { get; } = true;
-
-    /// <summary>
-    /// 能否删除
-    /// </summary>
-    public virtual bool CanDelete { get; } = true;
-
-    /// <summary>
-    /// 能否打开文件夹
-    /// </summary>
-    public virtual bool CanOpenFolder { get; } = true;
+    protected new void Init()
+    {
+        base.Init();
+        if (!MetaData.SettingsPage.IsNullOrEmpty())
+        {
+            this.SettingsPage = Type.GetType(MetaData.SettingsPage!);
+        }
+    }
 }
