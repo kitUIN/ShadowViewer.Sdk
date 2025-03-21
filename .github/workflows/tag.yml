@@ -17,4 +17,4 @@ jobs:
       run: echo "LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
 
     - name: Show latest tag
-      run: echo "The latest tag is: $LATEST_TAG"
+      run: echo "${LATEST_TAG}"
