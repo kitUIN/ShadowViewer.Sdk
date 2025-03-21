@@ -1,0 +1,20 @@
+name: Get Latest Tag
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  get-latest-tag:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Get latest tag
+      run: echo "LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
+
+    - name: Show latest tag
+      run: echo "The latest tag is: $LATEST_TAG"
