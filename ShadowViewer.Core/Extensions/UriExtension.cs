@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -103,14 +103,29 @@ public static class UriExtension
     {
         return await StorageFile.GetFileFromPathAsync(path);
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
     public static string DecodePath(this StorageFile file)
     {
         return HttpUtility.UrlDecode(file.Path);
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="uri"></param>
+    /// <returns></returns>
     public static string DecodePath(this Uri uri)
     {
         return HttpUtility.UrlDecode(uri.AbsolutePath);
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="uri"></param>
+    /// <returns></returns>
     public static string DecodeUri(this Uri uri)
     {
         return HttpUtility.UrlDecode(uri.AbsoluteUri);

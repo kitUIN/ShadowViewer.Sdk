@@ -4,7 +4,7 @@ using ShadowViewer.Core.Services;
 using SqlSugar;
 using System;
 using Microsoft.IdentityModel.Tokens;
-using ShadowPluginLoader.MetaAttributes;
+using ShadowPluginLoader.Attributes;
 
 namespace ShadowViewer.Core.Plugins;
 

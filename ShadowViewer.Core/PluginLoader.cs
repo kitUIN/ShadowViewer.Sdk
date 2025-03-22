@@ -22,7 +22,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
     public static Version CoreVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version!;
 
     /// <inheritdoc/>
-    protected override void LoadPluginDi(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
+    protected override void AfterLoadPlugin(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
         Type? navigationViewResponder = null;
         Type? picViewResponder = null;

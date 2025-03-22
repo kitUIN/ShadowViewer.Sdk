@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using ShadowPluginLoader.MetaAttributes;
+using ShadowPluginLoader.Attributes;
 using ShadowViewer.Core.Models;
 using ShadowViewer.Core.Models.Interfaces;
 using ShadowViewer.Core.Services;

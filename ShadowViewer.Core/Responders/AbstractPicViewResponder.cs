@@ -1,4 +1,4 @@
-using ShadowPluginLoader.MetaAttributes;
+using ShadowPluginLoader.Attributes;
 using ShadowViewer.Core.Args;
 using ShadowViewer.Core.Services;
 using SqlSugar;

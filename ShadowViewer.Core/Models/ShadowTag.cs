@@ -1,6 +1,6 @@
 using CommunityToolkit.WinUI.Helpers;
 using Microsoft.UI.Xaml.Media;
-using ShadowPluginLoader.MetaAttributes;
+using ShadowPluginLoader.Attributes;
 using ShadowViewer.Core.Models.Interfaces;
 using SqlSugar;
 

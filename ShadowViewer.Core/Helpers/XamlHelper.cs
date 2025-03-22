@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -7,8 +7,16 @@ using ShadowViewer.Core.I18n;
 
 namespace ShadowViewer.Core.Helpers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class XamlHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="glyph"></param>
+        /// <returns></returns>
         public static FontIcon CreateFontIcon(string glyph)
         {
             return new FontIcon()
@@ -16,6 +24,11 @@ namespace ShadowViewer.Core.Helpers
                 Glyph = glyph,
             };
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public static ImageIcon CreateImageIcon(Uri uri)
         {
             return new ImageIcon()
@@ -23,10 +36,20 @@ namespace ShadowViewer.Core.Helpers
                 Source = new BitmapImage(uri)
             };
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uriString"></param>
+        /// <returns></returns>
         public static ImageIcon CreateImageIcon(string uriString)
         {
             return CreateImageIcon(new Uri(uriString));
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public static BitmapIcon CreateBitmapIcon(Uri uri)
         {
             return new BitmapIcon()
@@ -34,6 +57,11 @@ namespace ShadowViewer.Core.Helpers
                 UriSource = uri,
             };
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uriString"></param>
+        /// <returns></returns>
         public static BitmapIcon CreateBitmapIcon(string uriString)
         {
             return CreateBitmapIcon(new Uri(uriString));
@@ -44,6 +72,7 @@ namespace ShadowViewer.Core.Helpers
         /// </summary>
         /// <param name="header">The header.</param>
         /// <param name="placeholder">The placeholder.</param>
+        /// <param name="text"></param>
         /// <param name="width">The width.</param>
         /// <returns></returns>
         public static StackPanel CreateOneLineTextBox(string header, string placeholder, string text, int width)
@@ -132,6 +161,12 @@ namespace ShadowViewer.Core.Helpers
             dialog.CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel);
             return dialog;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static StackPanel CreateOneLineTextBlock(string title, string value)
         {
             StackPanel panel = new StackPanel()
@@ -157,12 +192,15 @@ namespace ShadowViewer.Core.Helpers
             panel.Children.Add(text);
             return panel;
         }
+
         /// <summary>
         /// 创建一个原始的对话框
         /// </summary>
         /// <param name="title">The title.</param>
         /// <param name="xamlRoot">The xaml root.</param>
         /// <param name="oldName">The old name.</param>
+        /// <param name="header"></param>
+        /// <param name="placeholder"></param>
         /// <returns></returns>
         public static ContentDialog CreateOneLineTextBoxDialog(string title,
             XamlRoot xamlRoot, string oldName = "", string header = "", string placeholder = "")

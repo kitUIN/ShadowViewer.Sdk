@@ -1,5 +1,8 @@
-﻿namespace ShadowViewer.Core.Enums
+namespace ShadowViewer.Core.Enums
 {
+    /// <summary>
+    /// 视图模式
+    /// </summary>
     public enum ShadowViews
     {
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -64,11 +64,21 @@ public static class FileExtension
         return FileHelper.Zips.ContainsIgnoreCase(file.FileType);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
     public static bool IsFile(this string path)
     {
         return File.Exists(path);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns></returns>
     public static bool IsFolder(this string path)
     {
         return Directory.Exists(path);

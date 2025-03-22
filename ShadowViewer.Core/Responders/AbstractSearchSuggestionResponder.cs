@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using ShadowPluginLoader.MetaAttributes;
+using ShadowPluginLoader.Attributes;
 using ShadowViewer.Core.Models.Interfaces;
 
 namespace ShadowViewer.Core.Responders;

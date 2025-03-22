@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using SqlSugar;
-using ShadowPluginLoader.MetaAttributes;
+using ShadowPluginLoader.Attributes;
 using ShadowViewer.Core.Models.Interfaces;
 using ShadowViewer.Core.Services;
 using ShadowViewer.Core.Enums;

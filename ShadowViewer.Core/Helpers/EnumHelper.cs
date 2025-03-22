@@ -1,10 +1,20 @@
-﻿using System;
+using System;
 using System.Reflection;
 
 namespace ShadowViewer.Core.Helpers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class EnumHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
         public static TEnum GetEnum<TEnum>(string text) where TEnum : struct
         {
             if (!typeof(TEnum).GetTypeInfo().IsEnum)
