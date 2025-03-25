@@ -48,6 +48,11 @@ public class ShadowTreeNode
     public bool IsDirectory { get; init; }
 
     /// <summary>
+    /// 是否是图片
+    /// </summary>
+    public bool IsPic => Name.IsPic();
+
+    /// <summary>
     /// 子节点
     /// </summary>
     public List<ShadowTreeNode> Children { get; } = [];
@@ -128,6 +133,7 @@ public class ShadowTreeNode
             parentNode.Size += dirNode.Size;
             parentNode.Count++;
         }
+
         parentNode.Height = parentNode.Children.Count == 0 ? 0 : parentNode.Children.Max(child => child.Height) + 1;
     }
 

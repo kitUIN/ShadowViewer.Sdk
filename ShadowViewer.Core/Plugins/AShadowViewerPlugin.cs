@@ -43,11 +43,6 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin
     public abstract PluginMetaData MetaData { get; }
 
     /// <summary>
-    /// 类别标签
-    /// </summary>
-    public abstract ShadowTag AffiliationTag { get; }
-
-    /// <summary>
     /// 设置页面
     /// </summary>
     public Type? SettingsPage { get; private set; }
