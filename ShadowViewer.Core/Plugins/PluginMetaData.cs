@@ -1,3 +1,4 @@
+using System;
 using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Core.Models;
@@ -61,8 +62,8 @@ public class PluginMetaData : AbstractPluginMetaData
     /// <summary>
     /// 设置页面
     /// </summary>
-    [Meta(Required = false)]
-    public string? SettingsPage { get; init; }
+    [Meta(Required = false, EntryPointName = "SettingsPage")]
+    public Type? SettingsPage { get; init; }
 
     /// <summary>
     /// 分类标签

@@ -42,20 +42,4 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin
     /// </summary>
     public abstract PluginMetaData MetaData { get; }
 
-    /// <summary>
-    /// 设置页面
-    /// </summary>
-    public Type? SettingsPage { get; private set; }
-
-    /// <summary>
-    /// <inheritdoc cref="AbstractPlugin.Init"/>
-    /// </summary>
-    protected new void Init()
-    {
-        base.Init();
-        if (!MetaData.SettingsPage.IsNullOrEmpty())
-        {
-            this.SettingsPage = Type.GetType(MetaData.SettingsPage!);
-        }
-    }
 }

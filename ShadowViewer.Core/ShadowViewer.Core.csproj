@@ -32,10 +32,9 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
 		<PackageReference Include="FluentIcons.WinUI" Version="1.1.292" />
-		<PackageReference Include="ShadowPluginLoader.WinUI" Version="2.1.2.2" />
+		<PackageReference Include="ShadowPluginLoader.WinUI" Version="2.2.0" />
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.180" />
-		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
-		<PackageReference Include="ShadowPluginLoader.Tool" Version="2.2.1" />
+		<PackageReference Include="System.Private.Uri" Version="4.3.2" /> 
 		<PackageReference Include="ShadowPluginLoader.VersionGen" PrivateAssets="All" Version="1.0.1" />
 	</ItemGroup>
 	<ItemGroup>
