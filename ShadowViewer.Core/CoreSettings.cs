@@ -37,9 +37,9 @@ namespace ShadowViewer.Core
             IsDebug = true;
 #endif
             IsDebugEvent();
-            ComicsPath.CreateDirectory();
-            TempPath.CreateDirectory();
-            PluginsPath.CreateDirectory();
+            if (!Directory.Exists(ComicsPath)) Directory.CreateDirectory(ComicsPath);
+            if (!Directory.Exists(TempPath)) Directory.CreateDirectory(TempPath);
+            if (!Directory.Exists(PluginsPath)) Directory.CreateDirectory(PluginsPath);
             // EnabledPlugins.CollectionChanged += EnabledPlugins_CollectionChanged;
         }
 
