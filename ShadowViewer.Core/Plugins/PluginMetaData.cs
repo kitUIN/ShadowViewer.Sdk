@@ -6,6 +6,36 @@ using ShadowViewer.Core.Models;
 namespace ShadowViewer.Core.Plugins;
 
 /// <summary>
+/// 插件管理器使用数据
+/// </summary>
+public record PluginManage
+{
+    /// <summary>
+    /// 能否开关
+    /// </summary>
+    [Meta(Required = false)]
+    public bool CanSwitch { get; init; } = true;
+
+    /// <summary>
+    /// 能否删除
+    /// </summary>
+    [Meta(Required = false)]
+    public bool CanDelete { get; init; } = true;
+
+    /// <summary>
+    /// 能否打开文件夹
+    /// </summary>
+    [Meta(Required = false)]
+    public bool CanOpenFolder { get; init; } = true;
+
+    /// <summary>
+    /// 设置页面
+    /// </summary>
+    [Meta(Required = false, EntryPointName = "SettingsPage")]
+    public Type? SettingsPage { get; init; }
+}
+
+/// <summary>
 /// 插件元数据
 /// </summary>
 [ExportMeta]
@@ -35,35 +65,17 @@ public class PluginMetaData : AbstractPluginMetaData
     /// <example><br/>
     /// 1.ms-appx:///Assets/Icons/Logo.png<br/>
     /// 2.font://\uE714<br/>
-    /// 3.fluent://regular/\uE714
-    /// 4.fluent://filled/\uE714
+    /// 3.fluent://regular/Apps
+    /// 4.fluent://filled/Apps
     /// </example>
     /// </summary>
     public string Logo { get; init; } = null!;
 
     /// <summary>
-    /// 能否开关
+    /// 插件管理器数据项
     /// </summary>
     [Meta(Required = false)]
-    public bool CanSwitch { get; init; } = true;
-
-    /// <summary>
-    /// 能否删除
-    /// </summary>
-    [Meta(Required = false)]
-    public bool CanDelete { get; init; } = true;
-
-    /// <summary>
-    /// 能否打开文件夹
-    /// </summary>
-    [Meta(Required = false)]
-    public bool CanOpenFolder { get; init; } = true;
-
-    /// <summary>
-    /// 设置页面
-    /// </summary>
-    [Meta(Required = false, EntryPointName = "SettingsPage")]
-    public Type? SettingsPage { get; init; }
+    public PluginManage PluginManage { get; init; } = new();
 
     /// <summary>
     /// 分类标签
