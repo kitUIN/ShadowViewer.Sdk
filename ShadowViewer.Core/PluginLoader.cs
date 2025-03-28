@@ -7,6 +7,7 @@ using ShadowViewer.Core.Responders;
 using SqlSugar;
 using ShadowViewer.Core.Plugins;
 using ShadowViewer.Core.Models.Interfaces;
+using ShadowViewer.Core.Settings;
 
 namespace ShadowViewer.Core;
 
@@ -93,8 +94,8 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
     }
 
     /// <inheritdoc />
-    protected override string PluginFolder => CoreSettings.PluginsPath;
+    protected override string PluginFolder => CoreSettings.Instance.PluginsPath;
     /// <inheritdoc />
-    protected override string TempFolder => CoreSettings.TempPath;
+    protected override string TempFolder => CoreSettings.Instance.TempPath;
 
 }
