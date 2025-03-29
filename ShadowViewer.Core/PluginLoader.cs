@@ -3,6 +3,7 @@ using System.Reflection;
 using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
+using ShadowPluginLoader.WinUI.Exceptions;
 using ShadowViewer.Core.Responders;
 using SqlSugar;
 using ShadowViewer.Core.Plugins;
@@ -21,6 +22,16 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
     /// 加载器版本
     /// </summary>
     public static Version CoreVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version!;
+
+    /// <inheritdoc/>
+    protected override void BeforeLoadPlugin(Type plugin, PluginMetaData meta)
+    {
+        var pluginVersion = new Version(meta.CoreVersion);
+        if (pluginVersion < CoreVersion)
+        {
+            throw new PluginImportException($"插件ID[{meta.Id}]最低支持CoreVersion为:{meta.CoreVersion},实际版本为:{CoreVersion}");
+        }
+    }
 
     /// <inheritdoc/>
     protected override void AfterLoadPlugin(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
@@ -59,7 +70,6 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
                 navigationViewResponder.Name);
-
         }
 
         if (picViewResponder is not null)
@@ -70,7 +80,6 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
                 picViewResponder.Name);
-
         }
 
         if (historyResponder is not null)
@@ -82,6 +91,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 meta.Id, meta.Name,
                 historyResponder.Name);
         }
+
         if (searchResponder is not null)
         {
             DiFactory.Services.Register(typeof(ISearchSuggestionResponder), searchResponder,
@@ -95,7 +105,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
 
     /// <inheritdoc />
     protected override string PluginFolder => CoreSettings.Instance.PluginsPath;
+
     /// <inheritdoc />
     protected override string TempFolder => CoreSettings.Instance.TempPath;
-
 }

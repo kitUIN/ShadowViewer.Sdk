@@ -82,4 +82,8 @@ public class PluginMetaData : AbstractPluginMetaData
     /// </summary>
     [Meta(Required = false)]
     public ShadowTag? AffiliationTag { get; init; }
+    /// <summary>
+    /// Core 最低支持版本号
+    /// </summary>
+    public string CoreVersion { get; init; } = null!;
 }
