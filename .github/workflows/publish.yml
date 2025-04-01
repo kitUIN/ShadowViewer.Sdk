@@ -19,7 +19,15 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-
+      # 缓存 NuGet 包
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ env.Solution_Name }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
       - name: Install .NET
         uses: actions/setup-dotnet@v1
         with:
