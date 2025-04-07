@@ -11,7 +11,7 @@ namespace ShadowViewer.Core.Plugins;
 /// <summary>
 /// ShadowViewer提供的抽象插件类
 /// </summary> 
-public abstract partial class AShadowViewerPlugin : AbstractPlugin
+public abstract partial class AShadowViewerPlugin : AbstractPlugin<PluginMetaData>
 {
     /// <summary>
     /// 触发器服务
@@ -36,10 +36,5 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin
     /// </summary>
     [Autowired]
     public INotifyService Notifier { get; }
-
-    /// <summary>
-    /// 插件元数据
-    /// </summary>
-    public abstract PluginMetaData MetaData { get; }
 
 }
