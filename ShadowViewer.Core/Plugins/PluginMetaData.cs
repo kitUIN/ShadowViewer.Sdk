@@ -19,12 +19,6 @@ public record PluginManage
     public bool CanSwitch { get; init; } = true;
 
     /// <summary>
-    /// 能否删除
-    /// </summary>
-    [Meta(Required = false)]
-    public bool CanDelete { get; init; } = true;
-
-    /// <summary>
     /// 能否打开文件夹
     /// </summary>
     [Meta(Required = false)]
