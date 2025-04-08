@@ -4,6 +4,7 @@ using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
 using ShadowPluginLoader.WinUI.Exceptions;
+using ShadowViewer.Core.Models.Interfaces;
 using ShadowViewer.Core.Responders;
 using SqlSugar;
 using ShadowViewer.Core.Plugins;
@@ -36,42 +37,54 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
     protected override void AfterLoadPlugin(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
         var db = DiFactory.Services.Resolve<ISqlSugarClient>();
-        if (meta.PluginResponder.NavigationResponder != null)
+        var responder = aPlugin.MetaData.PluginResponder;
+        if (responder.NavigationResponder != null)
         {
-            DiFactory.Services.Register(typeof(INavigationResponder), meta.PluginResponder.NavigationResponder,
+            DiFactory.Services.Register(typeof(INavigationResponder), responder.NavigationResponder,
                 Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
-                meta.PluginResponder.NavigationResponder.Name);
+                responder.NavigationResponder.Name);
         }
-        if (meta.PluginResponder.PicViewResponder != null)
+        if (responder.PicViewResponder != null)
         {
-            DiFactory.Services.Register(typeof(IPicViewResponder), meta.PluginResponder.PicViewResponder,
+            DiFactory.Services.Register(typeof(IPicViewResponder), responder.PicViewResponder,
                 Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
-                meta.PluginResponder.PicViewResponder.Name);
+                responder.PicViewResponder.Name);
         }
-        if (meta.PluginResponder.HistoryResponder != null)
+        if (responder.HistoryResponder != null)
         {
-            DiFactory.Services.Register(typeof(IHistoryResponder), meta.PluginResponder.HistoryResponder,
+            DiFactory.Services.Register(typeof(IHistoryResponder), responder.HistoryResponder,
                 Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
-                meta.PluginResponder.HistoryResponder.Name);
+                responder.HistoryResponder.Name);
         }
-        if (meta.PluginResponder.SearchSuggestionResponder != null)
+        if (responder.SearchSuggestionResponder != null)
         {
-            DiFactory.Services.Register(typeof(ISearchSuggestionResponder), meta.PluginResponder.SearchSuggestionResponder,
+            DiFactory.Services.Register(typeof(ISearchSuggestionResponder), responder.SearchSuggestionResponder,
                 Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
             Logger.Information(
                 "{Id}{Name} Load ISearchSuggestionResponder: {TNavigationResponder}",
                 meta.Id, meta.Name,
-                meta.PluginResponder.SearchSuggestionResponder.Name);
+                responder.SearchSuggestionResponder.Name);
         }
+
+        foreach (var folder in responder.SettingFolders)
+        {
+            DiFactory.Services.Register(typeof(ISettingFolder), folder,
+                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+            Logger.Information(
+                "{Id}{Name} Load ISettingFolder: {TNavigationResponder}",
+                meta.Id, meta.Name,
+                folder.Name);
+        }
+         
     }
 
     /// <inheritdoc />
