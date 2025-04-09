@@ -43,7 +43,10 @@ jobs:
           $number = Get-Content "ShadowViewer.Core/.version/number.txt" -Raw
           $date = $date.Trim()
           $number = $number.Trim()
-          $releaseTag = "$date.$number"
+          $year = $date.Substring(0, 4)
+          $month = [int]$date.Substring(5, 2)
+          $day = [int]$date.Substring(8, 2)
+          $releaseTag = "$year.$month.$day.$number"
           "RELEASE_TAG=$releaseTag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Use Release Tag
@@ -65,3 +68,12 @@ jobs:
         env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
       
+      - name: Create GitHub release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.RELEASE_TOKEN }}"
+          automatic_release_tag: $env:RELEASE_TAG
+          title: $env:RELEASE_TAG
+          prerelease: false
+          # files: |
+          #   build/libs/*
