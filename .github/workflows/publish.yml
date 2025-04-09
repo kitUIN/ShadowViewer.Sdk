@@ -36,6 +36,18 @@ jobs:
       
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.2
+      - name: Generate Release Tag
+        shell: pwsh
+        run: |
+          $date = Get-Content "ShadowViewer.Core/.version/date.txt" -Raw
+          $number = Get-Content "ShadowViewer.Core/.version/number.txt" -Raw
+          $date = $date.Trim()
+          $number = $number.Trim()
+          $releaseTag = "$date.$number"
+          "RELEASE_TAG=$releaseTag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Use Release Tag
+        run: echo "The release tag is $env:RELEASE_TAG"
       - name: Create NugetPackages
         run: |
           cd ..\..
@@ -52,3 +64,4 @@ jobs:
           dotnet nuget push "*.nupkg" -s "https://api.nuget.org/v3/index.json" -k $env:NUGET_KEY --skip-duplicate        
         env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
+      
