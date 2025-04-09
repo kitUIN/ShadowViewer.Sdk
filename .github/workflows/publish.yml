@@ -73,6 +73,7 @@ jobs:
         with:
           repo_token: "${{ secrets.RELEASE_TOKEN }}" 
           title: "${{ env.RELEASE_TAG }}"
+          automatic_release_tag: "${{ env.RELEASE_TAG }}"
           prerelease: false
           # files: |
           #   build/libs/*
