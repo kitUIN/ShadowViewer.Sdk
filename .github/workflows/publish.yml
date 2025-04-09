@@ -51,7 +51,7 @@ jobs:
 
       - name: Build Packages
         run: |
-          dotnet restore $env:Solution_Name/$env:Solution_Name.csproj
+          dotnet restore $env:Solution_Name/$env:Solution_Name.csproj --locked-mode
           dotnet build $env:Solution_Name/$env:Solution_Name.csproj -p:Configuration=Release
       - name: Push package to Nuget registry
         run: |
