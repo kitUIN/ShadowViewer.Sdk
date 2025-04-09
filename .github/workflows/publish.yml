@@ -71,9 +71,8 @@ jobs:
       - name: Create GitHub release
         uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.RELEASE_TOKEN }}"
-          automatic_release_tag: $env:RELEASE_TAG
-          title: $env:RELEASE_TAG
+          repo_token: "${{ secrets.RELEASE_TOKEN }}" 
+          title: "${{ env.RELEASE_TAG }}"
           prerelease: false
           # files: |
           #   build/libs/*
