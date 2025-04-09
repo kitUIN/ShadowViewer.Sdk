@@ -19,20 +19,13 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      # 缓存 NuGet 包
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ env.Solution_Name }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+
       - name: Install .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.x
           cache: true
+          cache-dependency-path: ShadowViewer.Core/packages.lock.json
       
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.2
@@ -58,7 +51,7 @@ jobs:
 
       - name: Build Packages
         run: |
-          dotnet restore $env:Solution_Name/$env:Solution_Name.csproj
+          dotnet restore $env:Solution_Name/$env:Solution_Name.csproj --locked-mode
           dotnet build $env:Solution_Name/$env:Solution_Name.csproj -p:Configuration=Release
       - name: Push package to Nuget registry
         run: |
