@@ -21,6 +21,10 @@ namespace ShadowViewer.Core.Services
         /// </summary>
         public event EventHandler<TopLevelControlEventArgs>? TopLevelControlEvent;
         /// <summary>
+        /// 应用初始化成功事件
+        /// </summary>
+        public event EventHandler? AppLoadedEvent;
+        /// <summary>
         /// 主题变更事件
         /// </summary>
         public event EventHandler? ThemeChangedEvent;
@@ -38,6 +42,10 @@ namespace ShadowViewer.Core.Services
         /// 主题变更
         /// </summary>
         void ThemeChanged();
+        /// <summary>
+        /// 应用初始化成功
+        /// </summary>
+        void AppLoaded();
 
         /// <summary>
         /// 窗体最大化,最小化,普通事件
