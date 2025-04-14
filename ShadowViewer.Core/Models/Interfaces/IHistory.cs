@@ -27,9 +27,9 @@ public interface IHistory
     /// 附加信息
     /// </summary>
     string? Extra { get; set; }
+
     /// <summary>
     /// 来源插件
     /// </summary>
-    [SugarColumn(IsIgnore = true)]
     string PluginId { get; }
 }
