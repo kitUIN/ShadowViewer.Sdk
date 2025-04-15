@@ -87,16 +87,16 @@
       },
       "ShadowPluginLoader.WinUI": {
         "type": "Direct",
-        "requested": "[2.4.13, )",
-        "resolved": "2.4.13",
-        "contentHash": "kKWP4RB/XqfpYx1VNKxj9GsD2hH3hChWapdKdAR11sAgpRgBWCarAQeww9XkXaMnuki/6MpmaLR9SKjUfjw25Q==",
+        "requested": "[2.5.1, )",
+        "resolved": "2.5.1",
+        "contentHash": "8S/yZT250ERe49CABs4v06ResO4J58S9M55x/+HeJwRVSUI+/Xig0wvMIU3X55a2fFc8bufoTWZez1aqcTourA==",
         "dependencies": {
           "DryIoc.dll": "5.4.3",
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.756",
           "Microsoft.WindowsAppSDK": "1.5.241107002",
           "Serilog": "4.2.0",
-          "ShadowPluginLoader.SourceGenerator": "2.2.6",
-          "ShadowPluginLoader.Tool": "2.4.3",
+          "ShadowPluginLoader.SourceGenerator": "2.3.1",
+          "ShadowPluginLoader.Tool": "2.5.2",
           "SharpCompress": "0.39.0",
           "kitUIN.CustomExtensions.WinUI": "0.6.4"
         }
@@ -556,20 +556,20 @@
       },
       "ShadowPluginLoader.Attributes": {
         "type": "Transitive",
-        "resolved": "1.6.2",
-        "contentHash": "RTa2JFvGNHEVFC43yoPdELaeMctq4Xt5RiNppwpw9ZVzaHsQuAVKKTdd+gBNoyRP41CZfIPF4p1yNc+qz9fnIA=="
+        "resolved": "1.7.1",
+        "contentHash": "TkoMkv5esmP2G98QMRQakRQ+mgtH5+btolMBYIzwNcw9+9r8P/Xi9y3rLCmrlqLP895xLc5YRNgieRRjos1bHw=="
       },
       "ShadowPluginLoader.SourceGenerator": {
         "type": "Transitive",
-        "resolved": "2.2.6",
-        "contentHash": "c48cyCfkyk9kA5duiD5l1QNqKBDqBx7oEhJIxJzvdnMnt34FpwlgFFZEsIMq3nNB9rm8JtM5CDul1QXZhTkTUA=="
+        "resolved": "2.3.1",
+        "contentHash": "llk2d4SAMKGTAB2T8uAUPTsqBYx7i/rFbZGpJ1YIJcAvrQGAhrC+L9Jm7B26ZZLF5UFQBfbHUWVsUXQzsJ+Jgg=="
       },
       "ShadowPluginLoader.Tool": {
         "type": "Transitive",
-        "resolved": "2.4.3",
-        "contentHash": "32w4IsA7CtdPIdgjWZQTYpNlqAYRt5W7O10IK82Ucsy3jEmSjza9fL4TV5KEPRWmEWgwVvakIl3xrFDrosMFpg==",
+        "resolved": "2.5.2",
+        "contentHash": "D+kYutW+fPwTzE/8jWrCRSfTwXKp6kN8gRQ8BEhvNNUA7AZvUlS/n9nLHyZFBFfPrNv7jjT7n04AKTGAb7V13A==",
         "dependencies": {
-          "ShadowPluginLoader.Attributes": "1.6.2"
+          "ShadowPluginLoader.Attributes": "1.7.1"
         }
       },
       "SharpCompress": {
