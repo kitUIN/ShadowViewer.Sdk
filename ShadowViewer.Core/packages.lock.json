@@ -557,12 +557,12 @@
       "ShadowPluginLoader.Attributes": {
         "type": "Transitive",
         "resolved": "1.7.1",
-        "contentHash": "TkoMkv5esmP2G98QMRQakRQ+mgtH5+btolMBYIzwNcw9+9r8P/Xi9y3rLCmrlqLP895xLc5YRNgieRRjos1bHw=="
+        "contentHash": "LeqfVdnXAXovqy9qOsJTsZO5xz3CSPrbVj7fYVofcJSIPfXS5dutP/RWtH9oIFoPj5vMEuELKFCNCd8Ee699Kg=="
       },
       "ShadowPluginLoader.SourceGenerator": {
         "type": "Transitive",
         "resolved": "2.3.1",
-        "contentHash": "llk2d4SAMKGTAB2T8uAUPTsqBYx7i/rFbZGpJ1YIJcAvrQGAhrC+L9Jm7B26ZZLF5UFQBfbHUWVsUXQzsJ+Jgg=="
+        "contentHash": "RI9PsFyi/j2JHa8K78euHAhsSlAPKf2dmc44vkzvG1w4BJIPfLJ42DVTRR6Dqng9DOlthro6d0UMAOa/Sep6bw=="
       },
       "ShadowPluginLoader.Tool": {
         "type": "Transitive",
