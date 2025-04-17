@@ -562,7 +562,7 @@
       "ShadowPluginLoader.SourceGenerator": {
         "type": "Transitive",
         "resolved": "2.3.4",
-        "contentHash": "seZjlzZkFC7eqP5FI8vRZNi/NknGTLkUSQI8JD+N4cca6mtgf/x7gUrVWhwLzJMkXNACpDV3uL2pzHJtELL1Zw=="
+        "contentHash": "rXq6pdD3iPsB/O6DlIOn7IWXZ6ZY6W6EjfDhOJch47pyXAOU1WvdscGVNIPlHZrn+RATl8nu+tIuItVTyb3+iw=="
       },
       "ShadowPluginLoader.Tool": {
         "type": "Transitive",
