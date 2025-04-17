@@ -8,20 +8,12 @@ namespace ShadowViewer.Core.Args;
 /// <summary>
 /// 
 /// </summary>
-public record ShowSingleFilePickerArgs(
-    FileOpenPicker Picker,
-    TaskCompletionSource<StorageFile?> ResultSource);
-
+public record ShowSinglePickerArgs(
+    object Picker,
+    TaskCompletionSource<IStorageItem?> ResultSource);
 /// <summary>
 /// 
 /// </summary>
-public record ShowMultiFilePickerArgs(
-    FileOpenPicker Picker,
-    TaskCompletionSource<IReadOnlyList<StorageFile>?> ResultSource);
-
-/// <summary>
-/// 
-/// </summary>
-public record ShowSingleFolderPickerArgs(
-    FolderPicker Picker,
-    TaskCompletionSource<StorageFolder?> ResultSource);
+public record ShowMultiPickerArgs(
+    object Picker,
+    TaskCompletionSource<IReadOnlyList<IStorageItem>?> ResultSource);

@@ -1,10 +1,13 @@
-﻿using System;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Serilog;
 using ShadowViewer.Core.Args;
 using ShadowViewer.Core.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace ShadowViewer.Core.Controls;
 
@@ -29,14 +32,20 @@ public partial class ShadowPage : Page
                 Log.Error("ShowDialog: {e}", e);
             }
         });
-        WeakReferenceMessenger.Default.Register<ShowSingleFilePickerArgs>(this, async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<ShowSinglePickerArgs>(this, async void (r, m) =>
         {
             try
             {
                 if (WindowHelper.GetWindow(this) is not { } window) return;
                 var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
                 WinRT.Interop.InitializeWithWindow.Initialize(m.Picker, hWnd);
-                var result = await m.Picker.PickSingleFileAsync();
+                IStorageItem? result = m.Picker switch
+                {
+                    FileSavePicker saver => await saver.PickSaveFileAsync(),
+                    FileOpenPicker opener => await opener.PickSingleFileAsync(),
+                    FolderPicker folder => await folder.PickSingleFolderAsync(),
+                    _ => throw new NotSupportedException($"Unsupported picker type: {m.Picker.GetType()}")
+                };
                 m.ResultSource.SetResult(result);
             }
             catch (Exception e)
@@ -44,14 +53,18 @@ public partial class ShadowPage : Page
                 Log.Error("ShowSingleFilePicker: {e}", e);
             }
         });
-        WeakReferenceMessenger.Default.Register<ShowMultiFilePickerArgs>(this, async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<ShowMultiPickerArgs>(this, async void (r, m) =>
         {
             try
             {
                 if (WindowHelper.GetWindow(this) is not { } window) return;
                 var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
                 WinRT.Interop.InitializeWithWindow.Initialize(m.Picker, hWnd);
-                var result = await m.Picker.PickMultipleFilesAsync();
+                IReadOnlyList<IStorageItem>? result = m.Picker switch
+                {
+                    FileOpenPicker opener => await opener.PickMultipleFilesAsync(),
+                    _ => throw new NotSupportedException($"Unsupported picker type: {m.Picker.GetType()}")
+                };
                 m.ResultSource.SetResult(result);
             }
             catch (Exception e)
@@ -59,21 +72,7 @@ public partial class ShadowPage : Page
                 Log.Error("ShowSingleFilePicker: {e}", e);
             }
         });
-        WeakReferenceMessenger.Default.Register<ShowSingleFolderPickerArgs>(this, async void (r, m) =>
-        {
-            try
-            {
-                if (WindowHelper.GetWindow(this) is not { } window) return;
-                var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-                WinRT.Interop.InitializeWithWindow.Initialize(m.Picker, hWnd);
-                var result = await m.Picker.PickSingleFolderAsync();
-                m.ResultSource.SetResult(result);
-            }
-            catch (Exception e)
-            {
-                Log.Error("ShowSingleFilePicker: {e}", e);
-            }
-        });
+         
     }
 
      
