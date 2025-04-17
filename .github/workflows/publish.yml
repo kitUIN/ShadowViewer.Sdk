@@ -2,9 +2,6 @@ name: Publish Nuget Packages
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "*.*"
 
 jobs:
   build:
