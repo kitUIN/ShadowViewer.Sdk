@@ -1,71 +1,8 @@
-using System;
 using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Core.Models;
-using ShadowViewer.Core.Models.Interfaces;
-using ShadowViewer.Core.Responders;
 
 namespace ShadowViewer.Core.Plugins;
-
-/// <summary>
-/// 插件管理器使用数据
-/// </summary>
-public record PluginManage
-{
-    /// <summary>
-    /// 能否开关
-    /// </summary>
-    [Meta(Required = false)]
-    public bool CanSwitch { get; init; } = true;
-
-    /// <summary>
-    /// 能否打开文件夹
-    /// </summary>
-    [Meta(Required = false)]
-    public bool CanOpenFolder { get; init; } = true;
-
-    /// <summary>
-    /// 设置页面
-    /// </summary>
-    [Meta(Required = false, EntryPointName = nameof(SettingsPage))]
-    public Type? SettingsPage { get; init; }
-}
-
-/// <summary>
-/// 插件触发器
-/// </summary>
-public record PluginResponder
-{
-    /// <summary>
-    /// <inheritdoc cref="AbstractHistoryResponder"/>
-    /// </summary>
-    [Meta(Required = false, EntryPointName = nameof(HistoryResponder))]
-    public Type? HistoryResponder { get; init; }
-
-    /// <summary>
-    /// <inheritdoc cref="AbstractNavigationResponder"/>
-    /// </summary>
-    [Meta(Required = false, EntryPointName = nameof(NavigationResponder))]
-    public Type? NavigationResponder { get; init; }
-
-    /// <summary>
-    /// <inheritdoc cref="AbstractPicViewResponder"/>
-    /// </summary>
-    [Meta(Required = false, EntryPointName = nameof(PicViewResponder))]
-    public Type? PicViewResponder { get; init; }
-
-    /// <summary>
-    /// <inheritdoc cref="AbstractSearchSuggestionResponder"/>
-    /// </summary>
-    [Meta(Required = false, EntryPointName = nameof(SearchSuggestionResponder))]
-    public Type? SearchSuggestionResponder { get; init; }
-
-    /// <summary>
-    /// <inheritdoc cref="ISettingFolder"/>
-    /// </summary>
-    [Meta(Required = false, EntryPointName = nameof(SettingFolders))]
-    public Type[] SettingFolders { get; init; } = [];
-}
 
 /// <summary>
 /// 插件元数据
