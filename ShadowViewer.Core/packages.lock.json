@@ -87,16 +87,16 @@
       },
       "ShadowPluginLoader.WinUI": {
         "type": "Direct",
-        "requested": "[2.5.4, )",
-        "resolved": "2.5.4",
-        "contentHash": "PULO+Qh3LvGaJ/Ch3H8No1CzmFtl5EwRbgye1ASQk+KHuMQv9HEW8WD1q399estmY38p+NTxizdnqu8kP3otQg==",
+        "requested": "[2.5.5, )",
+        "resolved": "2.5.5",
+        "contentHash": "Qcq0Nhi5DMC7ChFig7w+lyTudmgqHoNjSL10uGHZ+O4IGAX1TD9hqVBbGmBXqsNSscDXgiVyF0tsh2Xnr145oA==",
         "dependencies": {
           "DryIoc.dll": "5.4.3",
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.756",
           "Microsoft.WindowsAppSDK": "1.5.241107002",
           "Serilog": "4.2.0",
           "ShadowPluginLoader.SourceGenerator": "2.3.4",
-          "ShadowPluginLoader.Tool": "2.5.2",
+          "ShadowPluginLoader.Tool": "2.5.3",
           "SharpCompress": "0.39.0",
           "kitUIN.CustomExtensions.WinUI": "0.6.4"
         }
@@ -566,8 +566,8 @@
       },
       "ShadowPluginLoader.Tool": {
         "type": "Transitive",
-        "resolved": "2.5.2",
-        "contentHash": "D+kYutW+fPwTzE/8jWrCRSfTwXKp6kN8gRQ8BEhvNNUA7AZvUlS/n9nLHyZFBFfPrNv7jjT7n04AKTGAb7V13A==",
+        "resolved": "2.5.3",
+        "contentHash": "YK4Rc7ocdAshcQgFWIvCMGWfUybLH7uhMzE0zafuAgU3UcQZ4Nmzw1TNcJsQjKi0JavfeHi7N7vpdgDbAOeUpg==",
         "dependencies": {
           "ShadowPluginLoader.Attributes": "1.7.1"
         }
