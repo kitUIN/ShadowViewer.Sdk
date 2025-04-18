@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
-using Microsoft.UI.Xaml;
 using Serilog;
 using CommunityToolkit.Mvvm.Messaging;
-using Microsoft.UI.Xaml.Controls;
 using ShadowViewer.Core.Args;
 
 namespace ShadowViewer.Core.Helpers;
@@ -21,7 +18,7 @@ public class FileHelper
     /// <summary>
     /// 常见图片后缀
     /// </summary>
-    public static string[] Pngs => [".png", ".jpg", ".jpeg", ".bmp"];
+    public static string[] Pngs => [".png", ".jpg", ".jpeg", ".bmp", ".webp", ".avif"];
 
     /// <summary>
     /// 常见压缩包后缀
@@ -90,7 +87,7 @@ public class FileHelper
         Log.ForContext<FileOpenPicker>().Information("保存选择了文件:{Path}", file.Path);
         return file as StorageFile;
     }
-    
+
     /// <summary>
     /// 选择多个文件
     /// </summary>
