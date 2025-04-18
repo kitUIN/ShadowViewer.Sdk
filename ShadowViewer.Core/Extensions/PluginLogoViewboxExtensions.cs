@@ -52,6 +52,7 @@ public static class PluginLogoViewboxExtensions
                 viewbox.Child = new BitmapIcon()
                 {
                     UriSource = uri,
+                    ShowAsMonochrome = false,
                 };
                 break;
             case "font":
