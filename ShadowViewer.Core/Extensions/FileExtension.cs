@@ -49,7 +49,7 @@ public static class FileExtension
     /// <param name="l"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    private static bool ContainsIgnoreCase(this string[] l, string value)
+    public static bool ContainsIgnoreCase(this string[] l, string value)
     {
         return l.Any(s => s.Equals(value, StringComparison.OrdinalIgnoreCase));
     }
