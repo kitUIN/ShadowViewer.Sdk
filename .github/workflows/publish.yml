@@ -55,15 +55,13 @@ jobs:
           cd ..\..\NugetPackages
           ls
           dotnet nuget push "*.nupkg" -s "https://api.nuget.org/v3/index.json" -k $env:NUGET_KEY --skip-duplicate        
+          dotnet nuget push "*.snupkg" -s "https://api.nuget.org/v3/index.json" -k $env:NUGET_KEY --skip-duplicate        
         env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
       
       - name: Create GitHub release
-        uses: marvinpinto/action-automatic-releases@latest
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
         with:
-          repo_token: "${{ secrets.RELEASE_TOKEN }}" 
-          title: "${{ env.RELEASE_TAG }}"
-          automatic_release_tag: "${{ env.RELEASE_TAG }}"
-          prerelease: false
-          # files: |
-          #   build/libs/*
+          body_path: CHANGELOG.txt
+          token: "${{ secrets.RELEASE_TOKEN }}" 

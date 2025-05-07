@@ -21,6 +21,9 @@
 		<PackageOutputPath>..\..\..\NugetPackages</PackageOutputPath>
 		<NoWarn>MVVMTK0045</NoWarn>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<IncludeSource>true</IncludeSource>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
 
@@ -32,7 +35,7 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Converters" Version="8.1.240916" />
 		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
 		<PackageReference Include="FluentIcons.WinUI" Version="1.1.292" />
-		<PackageReference Include="ShadowPluginLoader.WinUI" Version="2.5.10" /> 
+		<PackageReference Include="ShadowPluginLoader.WinUI" Version="2.5.11.2" /> 
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.180" />
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" /> 
 		<PackageReference Include="ShadowPluginLoader.VersionGen" PrivateAssets="All" Version="1.1.3" />

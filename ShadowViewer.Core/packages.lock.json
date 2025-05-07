@@ -87,9 +87,9 @@
       },
       "ShadowPluginLoader.WinUI": {
         "type": "Direct",
-        "requested": "[2.5.10, )",
-        "resolved": "2.5.10",
-        "contentHash": "MyDyNWM5bmiPIOFL1FRC3lVgXQlCAoJ0Q6Q3ZmABW4rYKhBynGpf7tPOj/2MR9q+Gl+1dj4VjGcB3rmfeRDsQQ==",
+        "requested": "[2.5.11.2, )",
+        "resolved": "2.5.11.2",
+        "contentHash": "kLasHwofhpvCjHvWxzxcXHOGk4i8ZqXWd0vFg+67UM8o+F3tp0PQzZD07prJcpPovFGUnycx+2Ry8lL80lvcbA==",
         "dependencies": {
           "DryIoc.dll": "5.4.3",
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.756",
