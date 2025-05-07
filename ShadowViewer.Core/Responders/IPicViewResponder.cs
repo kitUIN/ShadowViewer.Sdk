@@ -10,13 +10,13 @@ public interface IPicViewResponder : IResponder
     /// <summary>
     /// 图片界面当前阅读章节改变
     /// </summary>
-    public void CurrentEpisodeIndexChanged(object sender, string affiliation, int oldValue, int newValue);
+    public void CurrentEpisodeIndexChanged(object sender, PicViewContext ctx, int oldValue, int newValue);
     /// <summary>
     /// 图片界面当前阅读页改变
     /// </summary>
-    public void CurrentPageIndexChanged(object sender, string affiliation, int oldValue, int newValue);
+    public void CurrentPageIndexChanged(object sender, PicViewContext ctx, int oldValue, int newValue);
     /// <summary>
     /// 图片页面加载图片
     /// </summary>
-    public void PicturesLoadStarting(object sender, PicViewArg arg);
+    public void PicturesLoadStarting(object sender, PicViewContext ctx);
 }
