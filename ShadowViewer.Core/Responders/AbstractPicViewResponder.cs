@@ -14,14 +14,14 @@ public abstract partial class AbstractPicViewResponder : IPicViewResponder
     /// <summary>
     /// <inheritdoc />
     /// </summary>
-    public virtual void CurrentEpisodeIndexChanged(object sender, string affiliation, int oldValue, int newValue)
+    public virtual void CurrentEpisodeIndexChanged(object sender, PicViewContext ctx, int oldValue, int newValue)
     {
         
     }
     /// <summary>
     /// <inheritdoc />
     /// </summary>
-    public virtual void CurrentPageIndexChanged(object sender, string affiliation, int oldValue, int newValue)
+    public virtual void CurrentPageIndexChanged(object sender, PicViewContext ctx, int oldValue, int newValue)
     {
         
     }
@@ -29,7 +29,7 @@ public abstract partial class AbstractPicViewResponder : IPicViewResponder
     /// <summary>
     /// <inheritdoc />
     /// </summary>
-    public virtual void PicturesLoadStarting(object sender, PicViewArg arg)
+    public virtual void PicturesLoadStarting(object sender, PicViewContext ctx)
     {
         
     }

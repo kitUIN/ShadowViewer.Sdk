@@ -1,14 +1,16 @@
-using System;
-using System.Reflection;
 using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
 using ShadowPluginLoader.WinUI.Exceptions;
 using ShadowViewer.Core.Models.Interfaces;
-using ShadowViewer.Core.Responders;
-using SqlSugar;
 using ShadowViewer.Core.Plugins;
+using ShadowViewer.Core.Responders;
 using ShadowViewer.Core.Settings;
+using SqlSugar;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text.Json.Nodes;
 
 namespace ShadowViewer.Core;
 
@@ -22,6 +24,11 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
     /// 加载器版本
     /// </summary>
     public static Version CoreVersion { get; } = Assembly.GetExecutingAssembly().GetName().Version!;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Dictionary<string, Type> RegisterForResponders { get; } = new();
 
     /// <inheritdoc/>
     protected override void BeforeLoadPlugin(Type plugin, PluginMetaData meta)
@@ -47,6 +54,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 meta.Id, meta.Name,
                 responder.NavigationResponder.Name);
         }
+
         if (responder.PicViewResponder != null)
         {
             DiFactory.Services.Register(typeof(IPicViewResponder), responder.PicViewResponder,
@@ -56,6 +64,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 meta.Id, meta.Name,
                 responder.PicViewResponder.Name);
         }
+
         if (responder.HistoryResponder != null)
         {
             DiFactory.Services.Register(typeof(IHistoryResponder), responder.HistoryResponder,
@@ -65,6 +74,7 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 meta.Id, meta.Name,
                 responder.HistoryResponder.Name);
         }
+
         if (responder.SearchSuggestionResponder != null)
         {
             DiFactory.Services.Register(typeof(ISearchSuggestionResponder), responder.SearchSuggestionResponder,
@@ -84,7 +94,26 @@ public class PluginLoader(ILogger logger, PluginEventService pluginEventService)
                 meta.Id, meta.Name,
                 folder.Name);
         }
-         
+
+        foreach (var kv in aPlugin.RegisterForResponders)
+        {
+            RegisterForResponders[kv.Key] = kv.Value;
+        }
+
+        if (aPlugin.MetaData.EntryPoints is not JsonObject entryPoints) return;
+
+        foreach (var kv in RegisterForResponders)
+        {
+            if (!entryPoints.ContainsKey(kv.Key) || Type.GetType(entryPoints[kv.Key]!.GetValue<string>()) is
+                    not { } responderType) continue;
+            DiFactory.Services.Register(kv.Value, responderType,
+                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+            Logger.Information(
+                "{Id}{Name} Load {IResponder}: {TResponder}",
+                meta.Id, meta.Name,
+                kv.Value.Name,
+                responderType.Name);
+        }
     }
 
     /// <inheritdoc />

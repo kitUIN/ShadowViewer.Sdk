@@ -3,6 +3,7 @@ using ShadowViewer.Core.Models;
 using ShadowViewer.Core.Services;
 using SqlSugar;
 using System;
+using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
 using ShadowPluginLoader.Attributes;
 
@@ -37,4 +38,8 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin<PluginMetaDat
     [Autowired]
     public INotifyService Notifier { get; }
 
+    /// <summary>
+    /// 注册自定义接收者
+    /// </summary>
+    public virtual Dictionary<string, Type> RegisterForResponders { get; } = new();
 }
