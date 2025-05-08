@@ -1,5 +1,3 @@
-using ShadowViewer.Core.Args;
-
 namespace ShadowViewer.Core.Responders;
 
 /// <summary>

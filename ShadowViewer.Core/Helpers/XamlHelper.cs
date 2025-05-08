@@ -1,8 +1,7 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using ShadowViewer.Core.Enums;
+using Microsoft.UI.Xaml.Media.Imaging; 
 using ShadowViewer.Core.I18n;
 
 namespace ShadowViewer.Core.Helpers
@@ -105,18 +104,19 @@ namespace ShadowViewer.Core.Helpers
         /// <summary>
         /// 创建一个基础的ContentDialog
         /// </summary>
-        public static ContentDialog CreateContentDialog(XamlRoot xamlRoot)
+        public static ContentDialog CreateContentDialog()
         {
-            var dialog = new ContentDialog();
-            dialog.XamlRoot = xamlRoot;
-            dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
-            dialog.DefaultButton = ContentDialogButton.Primary;
+            var dialog = new ContentDialog
+            {
+                Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
+                DefaultButton = ContentDialogButton.Primary
+            };
             return dialog;
         }
         /// <summary>
         /// 创建一个带TextBox的ContentDialog
         /// </summary>
-        public static ContentDialog CreateOneTextBoxDialog(XamlRoot? xamlRoot,
+        public static ContentDialog CreateOneTextBoxDialog(
             string title = "", string header = "", string placeholder = "", string text = "",
             Action<ContentDialog, ContentDialogButtonClickEventArgs, string>? primaryAction = null,
             Action<ContentDialog, ContentDialogButtonClickEventArgs, string>? closeAction = null)
@@ -133,7 +133,6 @@ namespace ShadowViewer.Core.Helpers
                 Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style,
                 PrimaryButtonText = ResourcesHelper.GetString(ResourceKey.Confirm),
                 CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel),
-                XamlRoot = xamlRoot,
                 IsPrimaryButtonEnabled = true,
                 DefaultButton = ContentDialogButton.Primary,
                 Content = new Border()
@@ -154,7 +153,7 @@ namespace ShadowViewer.Core.Helpers
         /// <returns></returns>
         public static ContentDialog CreateMessageDialog(XamlRoot xamlRoot, string title, string message)
         {
-            ContentDialog dialog = CreateContentDialog(xamlRoot);
+            var dialog = CreateContentDialog();
             dialog.Title = title;
             dialog.Content = message;
             dialog.IsPrimaryButtonEnabled = false;
@@ -205,7 +204,7 @@ namespace ShadowViewer.Core.Helpers
         public static ContentDialog CreateOneLineTextBoxDialog(string title,
             XamlRoot xamlRoot, string oldName = "", string header = "", string placeholder = "")
         {
-            var dialog = CreateContentDialog(xamlRoot);
+            var dialog = CreateContentDialog();
             dialog.Title = title;
             dialog.PrimaryButtonText = I18N.Confirm;
             dialog.CloseButtonText = I18N.Cancel;
