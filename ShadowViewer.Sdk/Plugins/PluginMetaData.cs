@@ -53,7 +53,7 @@ public record PluginMetaData : AbstractPluginMetaData
     /// <summary>
     /// <inheritdoc cref="Plugins.PluginResponder"/>
     /// </summary>
-    [Meta(Exclude = false)]
+    [Meta(Exclude = true)]
     public PluginResponder PluginResponder { get; init; } = new();
 
     /// <summary>

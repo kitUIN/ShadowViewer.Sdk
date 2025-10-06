@@ -15,30 +15,30 @@ public record PluginResponder
     /// <summary>
     /// <inheritdoc cref="AbstractHistoryResponder"/>
     /// </summary>
-    [Meta(Exclude = false)]
+    [Meta(Exclude = true)]
     public PluginEntryPointType? HistoryResponder { get; init; }
 
     /// <summary>
     /// <inheritdoc cref="AbstractNavigationResponder"/>
     /// </summary>
-    [Meta(Exclude = false)]
+    [Meta(Exclude = true)]
     public PluginEntryPointType? NavigationResponder { get; init; }
 
     /// <summary>
     /// <inheritdoc cref="AbstractPicViewResponder"/>
     /// </summary>
-    [Meta(Exclude = false)]
+    [Meta(Exclude = true)]
     public PluginEntryPointType? PicViewResponder { get; init; }
 
     /// <summary>
     /// <inheritdoc cref="AbstractSearchSuggestionResponder"/>
     /// </summary>
-    [Meta(Exclude = false)]
+    [Meta(Exclude = true)]
     public PluginEntryPointType? SearchSuggestionResponder { get; init; }
 
     /// <summary>
     /// <inheritdoc cref="ISettingFolder"/>
     /// </summary>
-    [Meta(Exclude = false)]
+    [Meta(Exclude = true)]
     public PluginEntryPointType[] SettingFolders { get; init; } = [];
 }

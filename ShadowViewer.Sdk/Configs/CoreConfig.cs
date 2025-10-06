@@ -1,12 +1,14 @@
-﻿using Microsoft.UI.Xaml;
+﻿using DryIoc;
+using Microsoft.UI.Xaml;
 using Serilog;
 using ShadowObservableConfig.Attributes;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Sdk.Extensions;
+using ShadowViewer.Sdk.Helpers;
 using ShadowViewer.Sdk.Services;
 using System.IO;
-using DryIoc;
 using Windows.Storage;
+using YamlDotNet.Core.Tokens;
 
 namespace ShadowViewer.Sdk.Configs;
 
@@ -14,22 +16,22 @@ namespace ShadowViewer.Sdk.Configs;
 public partial class CoreConfig
 {
     /// <summary>
-    /// 漫画缓存文件夹地址
-    /// </summary>
-    [ObservableConfigProperty(Description = "漫画缓存文件夹地址")]
-    private string comicFolder = "comic";
-
-    /// <summary>
     /// 日志文件夹地址
     /// </summary>
     [ObservableConfigProperty(Description = "日志文件夹地址")]
     private string logFolder = "log";
 
     /// <summary>
+    /// 日志文件夹地址
+    /// </summary>
+    public string LogPath => Path.Combine(StaticValues.BaseFolder, logFolder);
+
+    /// <summary>
     /// 调试模式
     /// </summary>
     [ObservableConfigProperty(Description = "调试模式")]
     private bool isDebug;
+
     /// <summary>
     /// 主题
     /// </summary>
@@ -76,6 +78,14 @@ public partial class CoreConfig
 
     partial void AfterThemeChanged(ElementTheme oldValue, ElementTheme newValue)
     {
+        foreach (var window in WindowHelper.ActiveWindows)
+        {
+            if (window.Content is FrameworkElement rootElement)
+            {
+                rootElement.RequestedTheme = newValue;
+            }
+        }
+
         DiFactory.Services.Resolve<ICallableService>().ThemeChanged();
     }
 }
