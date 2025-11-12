@@ -8,7 +8,6 @@ using ShadowViewer.Sdk.Helpers;
 using ShadowViewer.Sdk.Services;
 using System.IO;
 using Windows.Storage;
-using YamlDotNet.Core.Tokens;
 
 namespace ShadowViewer.Sdk.Configs;
 
@@ -48,8 +47,12 @@ public partial class CoreConfig
         logFolderPath.LaunchFolderAsync();
     }
 
+    partial void AfterConfigInit()
+    {
+        LogInit(IsDebug);
+    }
 
-    partial void AfterIsDebugChanged(bool oldValue, bool newValue)
+    private void LogInit(bool newValue)
     {
         var defaultPath = ApplicationData.Current.LocalFolder.Path;
         if (newValue)
@@ -74,6 +77,11 @@ public partial class CoreConfig
                     rollingInterval: RollingInterval.Day, shared: true)
                 .CreateLogger();
         }
+    }
+
+    partial void AfterIsDebugChanged(bool oldValue, bool newValue)
+    {
+        LogInit(newValue);
     }
 
     partial void AfterThemeChanged(ElementTheme oldValue, ElementTheme newValue)
