@@ -23,6 +23,7 @@ public partial class CoreConfig
     /// <summary>
     /// 日志文件夹地址
     /// </summary>
+    [global::YamlDotNet.Serialization.YamlIgnore]
     public string LogPath => Path.Combine(StaticValues.BaseFolder, logFolder);
 
     /// <summary>
