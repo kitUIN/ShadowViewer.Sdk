@@ -95,6 +95,7 @@ public partial class CoreConfig
             }
         }
 
+        if (!Initialized) return;
         DiFactory.Services.Resolve<ICallableService>().ThemeChanged();
     }
 }
