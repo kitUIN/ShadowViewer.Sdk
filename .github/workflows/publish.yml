@@ -2,12 +2,21 @@ name: Publish Nuget Packages
 
 on:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag (例如 1.0.0)'
+        required: true
+        type: string
+  push:
+    tags:
+      - '*.*.*'   # 匹配 1.0.0 这种格式的 tag
 
 jobs:
   build:
     runs-on: windows-latest
     env:
-      Solution_Name: ShadowViewer.Core
+      Solution_Name: ShadowViewer.Sdk
+      RELEASE_TAG: ${{ github.event.inputs.release_tag || github.ref_name }}
     steps:
       - uses: mickem/clean-after-action@v1
 
@@ -21,38 +30,26 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.x
-          cache: true
-          cache-dependency-path: ShadowViewer.Core/packages.lock.json
+          cache: false
       
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.2
-      - name: Generate Release Tag
-        shell: pwsh
-        run: |
-          $date = Get-Content "ShadowViewer.Core/.version/date.txt" -Raw
-          $number = Get-Content "ShadowViewer.Core/.version/number.txt" -Raw
-          $date = $date.Trim()
-          $number = $number.Trim()
-          $year = $date.Substring(0, 4)
-          $month = [int]$date.Substring(5, 2)
-          $day = [int]$date.Substring(8, 2)
-          $releaseTag = "$year.$month.$day.$number"
-          "RELEASE_TAG=$releaseTag" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Use Release Tag
         run: echo "The release tag is $env:RELEASE_TAG"
+
       - name: Create NugetPackages
         run: |
-          cd ..\..
           mkdir NugetPackages
 
       - name: Build Packages
         run: |
           dotnet restore $env:Solution_Name/$env:Solution_Name.csproj --locked-mode
           dotnet build $env:Solution_Name/$env:Solution_Name.csproj -p:Configuration=Release
+
       - name: Push package to Nuget registry
         run: |
-          cd ..\..\NugetPackages
+          cd NugetPackages
           ls
           dotnet nuget push "*.nupkg" -s "https://api.nuget.org/v3/index.json" -k $env:NUGET_KEY --skip-duplicate        
           dotnet nuget push "*.snupkg" -s "https://api.nuget.org/v3/index.json" -k $env:NUGET_KEY --skip-duplicate        
@@ -63,4 +60,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
-          token: "${{ secrets.RELEASE_TOKEN }}" 
+          token: "${{ secrets.RELEASE_TOKEN }}"
