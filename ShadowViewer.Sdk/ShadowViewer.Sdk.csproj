@@ -11,7 +11,7 @@
 		<LangVersion>12</LangVersion>
 		<PackageId>ShadowViewer.Sdk</PackageId>
 		<Authors>kitUIN</Authors>
-		<Version>3.0.0.9</Version>
+		<Version>3.0.0.10</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/kitUIN/ShadowViewer.Sdk</PackageProjectUrl>
@@ -37,7 +37,7 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.2.250402" />
 		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
 		<PackageReference Include="FluentIcons.WinUI" Version="1.2.315" />
-		<PackageReference Include="ShadowPluginLoader.WinUI" Version="3.0.14" />
+		<PackageReference Include="ShadowPluginLoader.WinUI" Version="3.0.16" />
 		<PackageReference Include="SqlSugarCore" Version="5.1.4.210" />
 		<PackageReference Include="System.Private.Uri" Version="4.3.2" />
 	</ItemGroup>
