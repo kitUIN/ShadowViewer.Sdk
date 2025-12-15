@@ -2,7 +2,6 @@
 using ShadowPluginLoader.WinUI.Models;
 using ShadowViewer.Sdk.Models.Interfaces;
 using ShadowViewer.Sdk.Responders;
-using System;
 
 namespace ShadowViewer.Sdk.Plugins;
 

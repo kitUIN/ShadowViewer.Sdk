@@ -17,7 +17,7 @@ public class MenuFlyoutEnumItemConverter<T> : IValueConverter where T : Enum
         if (value == null) return null;
         if (targetType == typeof(string)) return GetI18N(value.ToString()!);
         if (value is not T mode) return null;
-        var field = typeof(T).GetField(mode.ToString()!);
+        var field = typeof(T).GetField(mode.ToString());
         var icon = field?.GetCustomAttribute<MenuFlyoutItemIconAttribute>();
         if (targetType == typeof(Icon)) return icon?.Icon;
         return icon?.IconVariant;

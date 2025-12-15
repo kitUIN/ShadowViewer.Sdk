@@ -5,7 +5,6 @@ using ShadowPluginLoader.WinUI;
 using ShadowViewer.Sdk.Models.Interfaces;
 using ShadowViewer.Sdk.Plugins;
 using ShadowViewer.Sdk.Responders;
-using SqlSugar;
 
 namespace ShadowViewer.Sdk;
 
@@ -18,7 +17,6 @@ public partial class PluginLoader : AbstractPluginLoader<PluginMetaData, AShadow
     /// <inheritdoc/>
     protected override void AfterLoadPlugin(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
-        var db = DiFactory.Services.Resolve<ISqlSugarClient>();
         var responder = aPlugin.MetaData.PluginResponder;
         if (responder.NavigationResponder != null)
         {

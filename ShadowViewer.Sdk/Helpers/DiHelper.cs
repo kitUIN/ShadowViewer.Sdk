@@ -37,7 +37,7 @@ public static class DiHelper
             db =>
             {
                 //单例参数配置，所有上下文生效
-                db.Aop.OnLogExecuting = (sql, pars) => { Log.ForContext<ISqlSugarClient>().Debug("{Sql}", sql); };
+                db.Aop.OnLogExecuting = (sql, _) => { Log.ForContext<ISqlSugarClient>().Debug("{Sql}", sql); };
             }));
         DiFactory.Init<AShadowViewerPlugin, PluginMetaData>();
         DiFactory.Services.Register<PluginLoader>(

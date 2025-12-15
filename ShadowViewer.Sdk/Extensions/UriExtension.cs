@@ -1,7 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Windows.Storage;
@@ -11,39 +10,58 @@ using Serilog;
 using ShadowViewer.Sdk.Helpers;
 
 namespace ShadowViewer.Sdk.Extensions;
+
 /// <summary>
 /// 
 /// </summary>
 public static class UriExtension
 {
     private static ILogger Logger { get; } = Log.ForContext<FileHelper>();
+
     /// <summary>
     /// 从浏览器打开
     /// </summary>
     public static async void LaunchUriAsync(this Uri uri)
     {
-        if (uri != null)
+        try
         {
             await Launcher.LaunchUriAsync(uri);
         }
+        catch (Exception e)
+        {
+            Log.Error(e, "An error occurred while launching the URI.");
+        }
     }
+
     /// <summary>
     /// 从资源管理器打开文件夹
     /// </summary>
     public static async void LaunchFolderAsync(this StorageFolder folder)
     {
-        if (folder != null)
+        try
         {
             await Launcher.LaunchFolderAsync(folder);
         }
+        catch (Exception e)
+        {
+            Log.Error(e, "An error occurred while launching the folder.");
+        }
     }
+
     /// <summary>
     /// 从资源管理器打开文件夹
     /// </summary>
     public static async void LaunchFolderAsync(this string path)
     {
-        var folder = await path.ToStorageFolder();
-        folder.LaunchFolderAsync();
+        try
+        {
+            var folder = await path.ToStorageFolder();
+            folder.LaunchFolderAsync();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "An error occurred while launching the folder.");
+        }
     }
 
     /// <summary>
@@ -51,9 +69,15 @@ public static class UriExtension
     /// </summary>
     public static async void LaunchFolderAsync(this Uri uri)
     {
-
-        var folder = await uri.DecodePath().ToStorageFolder();
-        folder.LaunchFolderAsync();
+        try
+        {
+            var folder = await uri.DecodePath().ToStorageFolder();
+            folder.LaunchFolderAsync();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "An error occurred while launching the folder.");
+        }
     }
 
     /// <summary>
@@ -61,27 +85,48 @@ public static class UriExtension
     /// </summary>
     public static async void LaunchFileAsync(this StorageFile folder)
     {
-        if (folder != null)
+        try
         {
             await Launcher.LaunchFileAsync(folder);
         }
+        catch (Exception e)
+        {
+            Log.Error(e, "An error occurred while launching the file.");
+        }
     }
+
     /// <summary>
     /// 从资源管理器打开文件
     /// </summary>
     public static async void LaunchFileAsync(this Uri uri)
     {
-        var file = await uri.GetFile();
-        file.LaunchFileAsync();
+        try
+        {
+            var file = await uri.GetFile();
+            file.LaunchFileAsync();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "An error occurred while launching the file.");
+        }
     }
+
     /// <summary>
     /// 从资源管理器打开文件
     /// </summary>
     public static async void LaunchFileAsync(this string uri)
     {
-        var file = await uri.GetFile();
-        file.LaunchFileAsync();
+        try
+        {
+            var file = await uri.GetFile();
+            file.LaunchFileAsync();
+        }
+        catch (Exception e)
+        {
+            Log.Error(e, "An error occurred while launching the file.");
+        }
     }
+
     /// <summary>
     /// Join
     /// </summary> 
@@ -89,6 +134,7 @@ public static class UriExtension
     {
         return string.Join(separator, tags);
     }
+
     /// <summary>
     /// 获取文件
     /// </summary>
@@ -96,6 +142,7 @@ public static class UriExtension
     {
         return await uri.DecodePath().GetFile();
     }
+
     /// <summary>
     /// 获取文件
     /// </summary>
@@ -103,6 +150,7 @@ public static class UriExtension
     {
         return await StorageFile.GetFileFromPathAsync(path);
     }
+
     /// <summary>
     /// 
     /// </summary>
@@ -112,6 +160,7 @@ public static class UriExtension
     {
         return HttpUtility.UrlDecode(file.Path);
     }
+
     /// <summary>
     /// 
     /// </summary>
@@ -121,6 +170,7 @@ public static class UriExtension
     {
         return HttpUtility.UrlDecode(uri.AbsolutePath);
     }
+
     /// <summary>
     /// 
     /// </summary>
@@ -130,7 +180,7 @@ public static class UriExtension
     {
         return HttpUtility.UrlDecode(uri.AbsoluteUri);
     }
-    
+
     /// <summary>
     /// 从url获取StorageFolder,若没有则创建文件夹
     /// </summary>
@@ -139,27 +189,18 @@ public static class UriExtension
         path.CreateDirectory();
         return await StorageFolder.GetFolderFromPathAsync(path);
     }
+
     /// <summary>
     /// 创建文件夹
     /// </summary>
     /// <param name="path"></param>
     public static void CreateDirectory(this string path)
     {
-        string[] substrings = path.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
-        string[] result = new string[substrings.Length];
-        for (int i = 0; i < substrings.Length; i++)
-        {
-            result[i] = string.Join("/", substrings.Take(i + 1));
-        }
-        for (int i = 0; i < result.Length; i++)
-        {
-            if (!Directory.Exists(result[i]))
-            {
-                Directory.CreateDirectory(result[i]);
-                Logger.Information("文件夹{Dir}不存在,新建", result[i]);
-            }
-        }
+        if (Directory.Exists(path)) return;
+        Directory.CreateDirectory(path);
+        Logger.Information("文件夹 {Dir} 不存在, 新建", path);
     }
+
     /// <summary>
     /// 删除文件夹
     /// </summary>
@@ -169,44 +210,40 @@ public static class UriExtension
         {
             return;
         }
-        File.SetAttributes(targetDir, System.IO.FileAttributes.Normal);
-        foreach (string file in Directory.GetFiles(targetDir))
+
+        try
         {
-            File.SetAttributes(file, System.IO.FileAttributes.Normal);
-            File.Delete(file);
+            Directory.Delete(targetDir, true);
+            Logger.Information("删除文件夹 {Dir}", targetDir);
         }
-        foreach (string subDir in Directory.GetDirectories(targetDir))
+        catch (IOException ex)
         {
-            subDir.DeleteDirectory();
+            Logger.Error(ex, "删除文件夹 {Dir} 失败", targetDir);
         }
-        Directory.Delete(targetDir, false);
-        Logger.Information("删除文件夹{Dir}", targetDir);
+        catch (UnauthorizedAccessException ex)
+        {
+            // 如果遇到只读文件，可以在这里处理
+            Logger.Error(ex, "删除文件夹 {Dir} 权限不足", targetDir);
+        }
     }
+
     /// <summary>
     /// 创建文件
     /// </summary>
     public static void CreateFile(this string path)
     {
-        string[] substrings = path.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
-        string[] result = new string[substrings.Length];
-        for (int i = 0; i < substrings.Length; i++)
+        var dir = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
         {
-            result[i] = string.Join("/", substrings.Take(i + 1));
+            Directory.CreateDirectory(dir);
+            Logger.Information("文件夹 {Dir} 不存在, 新建", dir);
         }
-        for (int i = 0; i < result.Length - 1; i++)
-        {
-            if (!Directory.Exists(result[i]))
-            {
-                Directory.CreateDirectory(result[i]);
-                Logger.Information("文件夹{Dir}不存在,新建", result[i]);
-            }
-        }
-        if (!File.Exists(path))
-        {
-            File.Create(path);
-            Logger.Information("文件{Dir}不存在,新建", path);
-        }
+
+        if (File.Exists(path)) return;
+        using (File.Create(path)) { } // 确保释放句柄
+        Logger.Information("文件 {File} 不存在, 新建", path);
     }
+
     /// <summary>
     /// 从url获取StorageFile,若没有则创建文件
     /// </summary>
@@ -215,6 +252,7 @@ public static class UriExtension
         path.CreateFile();
         return await StorageFile.GetFileFromPathAsync(path);
     }
+
     /// <summary>
     /// true -> Visible <br/>
     /// false -> Collapsed

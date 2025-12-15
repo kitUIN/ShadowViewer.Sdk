@@ -11,23 +11,20 @@ namespace ShadowViewer.Sdk.Utils;
 public class InvokeCommandWithArgsAction : DependencyObject, IAction
 {
     /// <summary>
-    ///     Identifies the <seealso cref="P:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.Command" /> dependency
-    ///     property.
+    ///     
     /// </summary>
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(nameof(Command),
         typeof(ICommand), typeof(InvokeCommandWithArgsAction), new PropertyMetadata(null));
 
     /// <summary>
-    ///     Identifies the <seealso cref="P:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.CommandParameter" />
-    ///     dependency property.
+    ///     
     /// </summary>
     public static readonly DependencyProperty CommandParameterProperty =
         DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(InvokeCommandWithArgsAction),
             new PropertyMetadata(null));
 
     /// <summary>
-    ///     Identifies the <seealso cref="P:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.InputConverter" />
-    ///     dependency property.
+    ///     
     /// </summary>
     public static readonly DependencyProperty InputConverterProperty =
         DependencyProperty.Register(nameof(InputConverter), typeof(IValueConverter),
@@ -35,9 +32,7 @@ public class InvokeCommandWithArgsAction : DependencyObject, IAction
             new PropertyMetadata(null));
 
     /// <summary>
-    ///     Identifies the
-    ///     <seealso cref="P:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.InputConverterParameter" />
-    ///     dependency property.
+    ///     
     /// </summary>
     public static readonly DependencyProperty InputConverterParameterProperty =
         DependencyProperty.Register(nameof(InputConverterParameter), typeof(object),
@@ -45,9 +40,7 @@ public class InvokeCommandWithArgsAction : DependencyObject, IAction
             new PropertyMetadata(null));
 
     /// <summary>
-    ///     Identifies the
-    ///     <seealso cref="P:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.InputConverterLanguage" /> dependency
-    ///     property.
+    ///     
     /// </summary>
     public static readonly DependencyProperty InputConverterLanguageProperty =
         DependencyProperty.Register(nameof(InputConverterLanguage), typeof(string), typeof(InvokeCommandWithArgsAction),
@@ -63,11 +56,7 @@ public class InvokeCommandWithArgsAction : DependencyObject, IAction
     }
 
     /// <summary>
-    ///     Gets or sets the parameter that is passed to <see cref="M:System.Windows.Input.ICommand.Execute(System.Object)" />.
-    ///     If this is not set, the parameter from the
-    ///     <seealso cref="M:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.Execute(System.Object,System.Object)" />
-    ///     method will be used.
-    ///     This is an optional dependency property.
+    ///     
     /// </summary>
     public object CommandParameter
     {
@@ -76,10 +65,7 @@ public class InvokeCommandWithArgsAction : DependencyObject, IAction
     }
 
     /// <summary>
-    ///     Gets or sets the converter that is run on the parameter from the
-    ///     <seealso cref="M:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.Execute(System.Object,System.Object)" />
-    ///     method.
-    ///     This is an optional dependency property.
+    ///     
     /// </summary>
     public IValueConverter? InputConverter
     {
@@ -88,10 +74,7 @@ public class InvokeCommandWithArgsAction : DependencyObject, IAction
     }
 
     /// <summary>
-    ///     Gets or sets the parameter that is passed to the
-    ///     <see cref="M:Microsoft.UI.Xaml.Data.IValueConverter.Convert(System.Object,System.Type,System.Object,System.String)" />
-    ///     method of <see cref="P:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.InputConverter" />.
-    ///     This is an optional dependency property.
+    ///     
     /// </summary>
     public object InputConverterParameter
     {
@@ -100,10 +83,7 @@ public class InvokeCommandWithArgsAction : DependencyObject, IAction
     }
 
     /// <summary>
-    ///     Gets or sets the language that is passed to the
-    ///     <see cref="M:Microsoft.UI.Xaml.Data.IValueConverter.Convert(System.Object,System.Type,System.Object,System.String)" />
-    ///     method of <see cref="P:Microsoft.Xaml.Interactions.Core.InvokeCommandWithArgsAction.InputConverter" />.
-    ///     This is an optional dependency property.
+    ///     
     /// </summary>
     public string InputConverterLanguage
     {

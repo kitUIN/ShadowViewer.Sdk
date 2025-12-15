@@ -23,7 +23,7 @@ public partial class CoreConfig
     /// <summary>
     /// 日志文件夹地址
     /// </summary>
-    [global::YamlDotNet.Serialization.YamlIgnore]
+    [YamlDotNet.Serialization.YamlIgnore]
     public string LogPath => Path.Combine(StaticValues.BaseFolder, logFolder);
 
     /// <summary>
@@ -80,11 +80,13 @@ public partial class CoreConfig
         }
     }
 
+    // ReSharper disable once UnusedParameterInPartialMethod
     partial void AfterIsDebugChanged(bool oldValue, bool newValue)
     {
         LogInit(newValue);
     }
-
+    
+    // ReSharper disable once UnusedParameterInPartialMethod
     partial void AfterThemeChanged(ElementTheme oldValue, ElementTheme newValue)
     {
         foreach (var window in WindowHelper.ActiveWindows)

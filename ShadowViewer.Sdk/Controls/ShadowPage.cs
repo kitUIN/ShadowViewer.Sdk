@@ -18,7 +18,7 @@ public partial class ShadowPage : Page
     /// <inheritdoc />
     public ShadowPage()
     {
-        WeakReferenceMessenger.Default.Register<ShowDialogMessageArgs>(this, async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<ShowDialogMessageArgs>(this, async void (_, m) =>
         {
             try
             {
@@ -31,7 +31,7 @@ public partial class ShadowPage : Page
                 Log.Error("ShowDialog: {e}", e);
             }
         });
-        WeakReferenceMessenger.Default.Register<ShowSinglePickerArgs>(this, async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<ShowSinglePickerArgs>(this, async void (_, m) =>
         {
             try
             {
@@ -52,7 +52,7 @@ public partial class ShadowPage : Page
                 Log.Error("ShowSingleFilePicker: {e}", e);
             }
         });
-        WeakReferenceMessenger.Default.Register<ShowMultiPickerArgs>(this, async void (r, m) =>
+        WeakReferenceMessenger.Default.Register<ShowMultiPickerArgs>(this, async void (_, m) =>
         {
             try
             {

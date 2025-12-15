@@ -1,5 +1,4 @@
-﻿using System;
-using ShadowPluginLoader.Attributes;
+﻿using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI.Models;
 
 namespace ShadowViewer.Sdk.Plugins;
