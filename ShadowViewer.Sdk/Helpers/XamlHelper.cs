@@ -1,8 +1,8 @@
-using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using ShadowViewer.Sdk.I18n;
+using System;
 
 namespace ShadowViewer.Sdk.Helpers
 {
@@ -23,6 +23,7 @@ namespace ShadowViewer.Sdk.Helpers
                 Glyph = glyph,
             };
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -35,6 +36,7 @@ namespace ShadowViewer.Sdk.Helpers
                 Source = new BitmapImage(uri)
             };
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -44,6 +46,7 @@ namespace ShadowViewer.Sdk.Helpers
         {
             return CreateImageIcon(new Uri(uriString));
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -56,6 +59,7 @@ namespace ShadowViewer.Sdk.Helpers
                 UriSource = uri,
             };
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -113,6 +117,7 @@ namespace ShadowViewer.Sdk.Helpers
             };
             return dialog;
         }
+
         /// <summary>
         /// 创建一个带TextBox的ContentDialog
         /// </summary>
@@ -147,19 +152,27 @@ namespace ShadowViewer.Sdk.Helpers
         /// <summary>
         /// 通知ContentDialog
         /// </summary>
-        /// <param name="xamlRoot"></param>
-        /// <param name="title"></param>
-        /// <param name="message"></param>
         /// <returns></returns>
-        public static ContentDialog CreateMessageDialog(XamlRoot xamlRoot, string title, string message)
+        public static ContentDialog CreateMessageDialog(string title, string message,
+            Action<ContentDialog, ContentDialogButtonClickEventArgs>? primaryButtonClick)
         {
             var dialog = CreateContentDialog();
             dialog.Title = title;
             dialog.Content = message;
-            dialog.IsPrimaryButtonEnabled = false;
-            dialog.CloseButtonText = ResourcesHelper.GetString(ResourceKey.Cancel);
+            if (primaryButtonClick != null)
+            {
+                dialog.PrimaryButtonText = I18N.Confirm;
+                dialog.IsPrimaryButtonEnabled = true;
+                dialog.PrimaryButtonClick += (sender, args) => primaryButtonClick(sender, args);
+            }
+            else
+            {
+                dialog.IsPrimaryButtonEnabled = false;
+            }
+            dialog.CloseButtonText = I18N.Cancel;
             return dialog;
         }
+
         /// <summary>
         /// 
         /// </summary>
@@ -219,6 +232,5 @@ namespace ShadowViewer.Sdk.Helpers
             dialog.IsPrimaryButtonEnabled = true;
             return dialog;
         }
-
     }
 }
