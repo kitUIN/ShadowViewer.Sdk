@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using ShadowPluginLoader.Attributes;
 using ShadowViewer.Sdk.Models.Interfaces;
@@ -32,16 +31,5 @@ public abstract partial class AbstractNavigationResponder : INavigationResponder
     /// <summary>
     /// <inheritdoc />
     /// </summary>
-    public virtual ShadowNavigation? NavigationViewItemInvokedHandler(IShadowNavigationItem item)
-    {
-        return null;
-    }
-
-    /// <summary>
-    /// <inheritdoc />
-    /// </summary>
-    public virtual ShadowNavigation? Navigate(Uri uri, string[] urls)
-    {
-        return null;
-    }
+    public abstract void Register();
 }
