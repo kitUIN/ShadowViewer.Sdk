@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ShadowViewer.Sdk.Models.Interfaces;
 using ShadowViewer.Sdk.Utils;
 
@@ -21,11 +20,7 @@ public interface INavigationResponder : IResponder
     IEnumerable<IShadowNavigationItem> NavigationViewFooterItems { get; }
 
     /// <summary>
-    /// 导航点击事件注入
+    /// 注册
     /// </summary>
-    ShadowNavigation? NavigationViewItemInvokedHandler(IShadowNavigationItem item);
-    /// <summary>
-    /// 导航
-    /// </summary>
-    ShadowNavigation? Navigate(Uri uri, string[] urls);
+    void Register();
 }

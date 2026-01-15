@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Controls;
+using ShadowViewer.Sdk.Navigation;
 
 namespace ShadowViewer.Sdk.Models.Interfaces;
 
@@ -20,5 +21,10 @@ public interface IShadowNavigationItem : IPluginId
     /// <summary>
     /// 跳转的标识符
     /// </summary>
-    public string? Id { get; }
+    string? Id { get; }
+
+    /// <summary>
+    /// Navigate Uri
+    /// </summary>
+    ShadowUri? Uri { get; }
 }

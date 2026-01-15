@@ -8,7 +8,7 @@
 		<Nullable>enable</Nullable>
 		<EnableCoreMrtTooling Condition=" '$(BuildingInsideVisualStudio)' != 'true' ">false</EnableCoreMrtTooling>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<LangVersion>12</LangVersion>
+		<LangVersion>preview</LangVersion>
 		<PackageId>ShadowViewer.Sdk</PackageId>
 		<Authors>kitUIN</Authors>
 		<Version>3.0.1.0</Version>

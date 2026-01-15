@@ -18,15 +18,6 @@ public partial class PluginLoader : AbstractPluginLoader<PluginMetaData, AShadow
     protected override void AfterLoadPlugin(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
         var responder = aPlugin.MetaData.PluginResponder;
-        if (responder.NavigationResponder != null)
-        {
-            DiFactory.Services.Register(typeof(INavigationResponder), responder.NavigationResponder.EntryPointType,
-                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-            Logger.Information(
-                "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
-                meta.Id, meta.Name,
-                responder.NavigationResponder.EntryPointType);
-        }
 
         if (responder.PicViewResponder != null)
         {
@@ -58,6 +49,16 @@ public partial class PluginLoader : AbstractPluginLoader<PluginMetaData, AShadow
                 responder.SearchSuggestionResponder.EntryPointType);
         }
 
+        if (responder.NavigationResponder != null)
+        {
+            DiFactory.Services.Register(typeof(INavigationResponder), responder.NavigationResponder.EntryPointType,
+                Reuse.Singleton, serviceKey: meta.Id, made: Parameters.Of.Type(_ => meta.Id));
+            Logger.Information(
+                "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
+                meta.Id, meta.Name,
+                responder.NavigationResponder.EntryPointType);
+            DiFactory.Services.Resolve<INavigationResponder>(serviceKey: meta.Id).Register();
+        }
         foreach (var folder in responder.SettingFolders)
         {
             DiFactory.Services.Register(typeof(ISettingFolder), folder.EntryPointType,
@@ -67,6 +68,6 @@ public partial class PluginLoader : AbstractPluginLoader<PluginMetaData, AShadow
                 meta.Id, meta.Name,
                 folder.EntryPointType);
         }
-
+        
     }
 }

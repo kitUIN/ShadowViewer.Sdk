@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.UI.Xaml.Media.Animation;
 using ShadowViewer.Sdk.Args;
+using ShadowViewer.Sdk.Navigation;
 
 namespace ShadowViewer.Sdk.Services;
 
@@ -28,6 +29,10 @@ public interface INavigateService
     /// <summary>
     /// 根据uri进行导航
     /// </summary>
-    /// <param name="uri">Uri</param>
-    void Navigate(Uri uri);
+    void Navigate(Uri uri, NavigationTransitionInfo? info = null);
+    
+    /// <summary>
+    /// 根据uri进行导航
+    /// </summary>
+    void Navigate(ShadowUri uri, NavigationTransitionInfo? info = null);
 }
