@@ -2,8 +2,6 @@ using DryIoc;
 using Serilog;
 using ShadowPluginLoader.WinUI;
 using ShadowPluginLoader.WinUI.Checkers;
-using ShadowPluginLoader.WinUI.Installer;
-using ShadowPluginLoader.WinUI.Scanners;
 using SqlSugar;
 using System.IO;
 using Windows.Storage;
@@ -40,14 +38,6 @@ public static class DiHelper
                 db.Aop.OnLogExecuting = (sql, _) => { Log.ForContext<ISqlSugarClient>().Debug("{Sql}", sql); };
             }));
         DiFactory.Init<AShadowViewerPlugin, PluginMetaData>();
-        DiFactory.Services.Register<PluginLoader>(
-            reuse: Reuse.Singleton,
-            made: Parameters.Of
-                .Type<IDependencyChecker<PluginMetaData>>(serviceKey: "base")
-                .OverrideWith(Parameters.Of.Type<IRemoveChecker>(serviceKey: "base"))
-                .OverrideWith(
-                    Parameters.Of.Type<IPluginScanner<AShadowViewerPlugin, PluginMetaData>>(serviceKey: "base"))
-                .OverrideWith(Parameters.Of.Type<IPluginInstaller<PluginMetaData>>(serviceKey: "base"))
-        );
+        DiFactory.RegisterPluginLoader<PluginLoader>();
     }
 }
