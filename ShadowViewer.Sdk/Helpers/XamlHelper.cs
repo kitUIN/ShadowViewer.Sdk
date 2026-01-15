@@ -149,16 +149,17 @@ namespace ShadowViewer.Sdk.Helpers
             dialog.CloseButtonClick += (sender, args) => closeAction?.Invoke(sender, args, textBox.Text);
             return dialog;
         }
+
         /// <summary>
         /// 通知ContentDialog
         /// </summary>
         /// <returns></returns>
-        public static ContentDialog CreateMessageDialog(string title, string message,
+        public static ContentDialog CreateMessageDialog(string title, string? message,
             Action<ContentDialog, ContentDialogButtonClickEventArgs>? primaryButtonClick)
         {
             var dialog = CreateContentDialog();
             dialog.Title = title;
-            dialog.Content = message;
+            if (message != null) dialog.Content = message;
             if (primaryButtonClick != null)
             {
                 dialog.PrimaryButtonText = I18N.Confirm;
@@ -169,6 +170,7 @@ namespace ShadowViewer.Sdk.Helpers
             {
                 dialog.IsPrimaryButtonEnabled = false;
             }
+
             dialog.CloseButtonText = I18N.Cancel;
             return dialog;
         }
