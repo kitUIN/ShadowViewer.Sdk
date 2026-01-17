@@ -7,5 +7,6 @@ namespace ShadowViewer.Sdk.Args;
 /// 
 /// </summary>
 public record ShowDialogMessageArgs(
+    object? Sender,
     ContentDialog ContentDialog,
     TaskCompletionSource<ContentDialogResult> ResultSource);

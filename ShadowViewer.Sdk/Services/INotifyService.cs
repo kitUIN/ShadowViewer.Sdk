@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using ShadowViewer.Sdk.Args;
 using ShadowViewer.Sdk.Enums;
+using System;
+using System.Threading.Tasks;
 
 namespace ShadowViewer.Sdk.Services;
 
@@ -41,4 +42,11 @@ public interface INotifyService
     void NotifyTip(object sender, InfoBar tipPopup,
         double displaySeconds = 2,
         TipPopupPosition position = TipPopupPosition.Center);
+
+    /// <summary>
+    /// 发送对话框给主窗体,将会在主窗体显示对话框
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="dialog">The dialog.</param>
+    Task<ContentDialogResult> ShowDialog(object? sender, ContentDialog dialog);
 }

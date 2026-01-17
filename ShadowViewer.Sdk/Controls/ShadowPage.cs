@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Windows.Storage;
-using Windows.Storage.Pickers;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Serilog;
 using ShadowViewer.Sdk.Args;
 using ShadowViewer.Sdk.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace ShadowViewer.Sdk.Controls;
 
@@ -15,6 +17,8 @@ namespace ShadowViewer.Sdk.Controls;
 /// </summary>
 public partial class ShadowPage : Page
 {
+    private static readonly SemaphoreSlim DialogSemaphore = new(1, 1);
+
     /// <inheritdoc />
     public ShadowPage()
     {
@@ -23,7 +27,7 @@ public partial class ShadowPage : Page
             try
             {
                 m.ContentDialog.XamlRoot = this.XamlRoot;
-                var result = await m.ContentDialog.ShowAsync();
+                var result = await ShowQueuedDialogAsync(m.ContentDialog);
                 m.ResultSource.SetResult(result);
             }
             catch (Exception e)
@@ -71,8 +75,23 @@ public partial class ShadowPage : Page
                 Log.Error("ShowSingleFilePicker: {e}", e);
             }
         });
-         
     }
+    /// <summary>
+    /// Shows the queued dialog asynchronous.
+    /// </summary>
+    /// <param name="dialog">The dialog.</param>
+    /// <returns></returns>
+    private static async Task<ContentDialogResult> ShowQueuedDialogAsync(ContentDialog dialog)
+    {
+        await DialogSemaphore.WaitAsync();
 
-     
+        try
+        {
+            return await dialog.ShowAsync();
+        }
+        finally
+        {
+            DialogSemaphore.Release();
+        }
+    }
 }
