@@ -12,7 +12,7 @@ on:
       - "*.*"
 
 env:
-  Solution_Name: ShadowViewer.Plugin.Sdk
+  Solution_Name: ShadowViewer.Sdk
   Configuration: Release
   DepsUseNuget: true
   RELEASE_TAG: ${{ github.event.inputs.release_tag || github.ref_name }}
