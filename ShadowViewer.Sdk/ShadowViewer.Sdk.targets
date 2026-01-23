@@ -1,0 +1,5 @@
+﻿<Project>
+	<ItemGroup>
+		<PRIResource Include="$(MSBuildThisPackageRoot)contentFiles\any\any\Strings\**\*.resw" />
+	</ItemGroup>
+</Project>
