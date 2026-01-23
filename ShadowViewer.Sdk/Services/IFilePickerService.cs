@@ -73,8 +73,8 @@ public interface IFilePickerService
     ///     new Dictionary&lt;string, IList&lt;string&gt;&gt; { { "文本文件", new[] { ".txt" } } });
     /// </example>
     Task<StorageFile?> PickSaveFileAsync(
+        IDictionary<string, IList<string>> fileTypeChoices,
         string? suggestedFileName = null,
-        IDictionary<string, IList<string>>? fileTypeChoices = null,
         PickerLocationId suggestedStartLocation = PickerLocationId.DocumentsLibrary,
         string? settingsIdentifier = null);
 }
