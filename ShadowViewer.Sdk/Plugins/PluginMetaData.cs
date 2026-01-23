@@ -8,7 +8,7 @@ namespace ShadowViewer.Sdk.Plugins;
 /// 插件元数据
 /// </summary>
 [ExportMeta]
-public record PluginMetaData : AbstractPluginMetaData
+public record PluginMetaData : BasePluginMetaData
 {
     /// <summary>
     /// 介绍
@@ -43,23 +43,4 @@ public record PluginMetaData : AbstractPluginMetaData
     /// </summary>
     [Meta(Required = false)]
     public string Logo { get; init; } = "font://\\uE714";
-
-    /// <summary>
-    /// <inheritdoc cref="Plugins.PluginManage"/>
-    /// </summary>
-    [Meta(Required = false)]
-    public PluginManage PluginManage { get; init; } = new();
-
-    /// <summary>
-    /// <inheritdoc cref="Plugins.PluginResponder"/>
-    /// </summary>
-    [Meta(Exclude = true)]
-    public PluginResponder PluginResponder { get; init; } = new();
-
-    /// <summary>
-    /// 分类标签
-    /// </summary>
-    [Meta(Required = false)]
-    public ShadowTag? AffiliationTag { get; init; }
-
 }

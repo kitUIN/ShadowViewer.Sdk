@@ -1,10 +1,11 @@
-using System;
 using DryIoc;
+using Microsoft.UI.Xaml.Controls;
 using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Sdk.Models.Interfaces;
 using ShadowViewer.Sdk.Plugins;
 using ShadowViewer.Sdk.Responders;
+using System;
 
 namespace ShadowViewer.Sdk;
 
@@ -17,57 +18,53 @@ public partial class PluginLoader : AbstractPluginLoader<PluginMetaData, AShadow
     /// <inheritdoc/>
     protected override void AfterLoadPlugin(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
-        var responder = aPlugin.MetaData.PluginResponder;
-
-        if (responder.PicViewResponder != null)
+        foreach (var entryPoint in aPlugin.MetaData.EntryPoints)
         {
-            DiFactory.Services.Register(typeof(IPicViewResponder), responder.PicViewResponder.EntryPointType,
-                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-            Logger.Information(
-                "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
-                meta.Id, meta.Name,
-                responder.PicViewResponder.EntryPointType);
+            switch (entryPoint.Name)
+            {
+                case "PicViewResponder":
+                    DiFactory.Services.Register(typeof(IPicViewResponder), entryPoint.EntryPointType,
+                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+                    Logger.Information(
+                        "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
+                        meta.Id, meta.Name,
+                        entryPoint.EntryPointType);
+                    break;
+                case "HistoryResponder":
+                    DiFactory.Services.Register(typeof(IHistoryResponder), entryPoint.EntryPointType,
+                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+                    Logger.Information(
+                        "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
+                        meta.Id, meta.Name,
+                        entryPoint.EntryPointType);
+                    break;
+                case "SearchSuggestionResponder":
+                    DiFactory.Services.Register(typeof(ISearchSuggestionResponder),
+                        entryPoint.EntryPointType,
+                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+                    Logger.Information(
+                        "{Id}{Name} Load ISearchSuggestionResponder: {TNavigationResponder}",
+                        meta.Id, meta.Name,
+                        entryPoint.EntryPointType);
+                    break;
+                case "NavigationResponder":
+                    DiFactory.Services.Register(typeof(INavigationResponder), entryPoint.EntryPointType,
+                        Reuse.Singleton, serviceKey: meta.Id, made: Parameters.Of.Type(_ => meta.Id));
+                    Logger.Information(
+                        "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
+                        meta.Id, meta.Name,
+                        entryPoint.EntryPointType);
+                    DiFactory.Services.Resolve<INavigationResponder>(serviceKey: meta.Id).Register();
+                    break;
+                case "SettingFolders":
+                    DiFactory.Services.Register(typeof(ISettingFolder), entryPoint.EntryPointType,
+                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+                    Logger.Information(
+                        "{Id}{Name} Load ISettingFolder: {TNavigationResponder}",
+                        meta.Id, meta.Name,
+                        entryPoint.EntryPointType);
+                    break;
+            }
         }
-
-        if (responder.HistoryResponder != null)
-        {
-            DiFactory.Services.Register(typeof(IHistoryResponder), responder.HistoryResponder.EntryPointType,
-                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-            Logger.Information(
-                "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
-                meta.Id, meta.Name,
-                responder.HistoryResponder.EntryPointType);
-        }
-
-        if (responder.SearchSuggestionResponder != null)
-        {
-            DiFactory.Services.Register(typeof(ISearchSuggestionResponder), responder.SearchSuggestionResponder.EntryPointType,
-                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-            Logger.Information(
-                "{Id}{Name} Load ISearchSuggestionResponder: {TNavigationResponder}",
-                meta.Id, meta.Name,
-                responder.SearchSuggestionResponder.EntryPointType);
-        }
-
-        if (responder.NavigationResponder != null)
-        {
-            DiFactory.Services.Register(typeof(INavigationResponder), responder.NavigationResponder.EntryPointType,
-                Reuse.Singleton, serviceKey: meta.Id, made: Parameters.Of.Type(_ => meta.Id));
-            Logger.Information(
-                "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
-                meta.Id, meta.Name,
-                responder.NavigationResponder.EntryPointType);
-            DiFactory.Services.Resolve<INavigationResponder>(serviceKey: meta.Id).Register();
-        }
-        foreach (var folder in responder.SettingFolders)
-        {
-            DiFactory.Services.Register(typeof(ISettingFolder), folder.EntryPointType,
-                Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-            Logger.Information(
-                "{Id}{Name} Load ISettingFolder: {TNavigationResponder}",
-                meta.Id, meta.Name,
-                folder.EntryPointType);
-        }
-        
     }
 }
