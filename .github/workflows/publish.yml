@@ -12,7 +12,7 @@ on:
       - "*.*"
 
 env:
-  Solution_Name: ShadowViewer.Plugin.Sdk
+  Solution_Name: ShadowViewer.Sdk
   Configuration: Release
   DepsUseNuget: true
   RELEASE_TAG: ${{ github.event.inputs.release_tag || github.ref_name }}
@@ -25,12 +25,6 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 0
-      
-      - name: Checkout sdk repo
-        uses: actions/checkout@v4
-        with:
-          repository: kitUIN/ShadowViewer.Sdk
-          path: ShadowViewer.Sdk
 
       - name: Install .NET
         uses: actions/setup-dotnet@v4
