@@ -54,6 +54,23 @@ jobs:
           name: build-output
           path: |
             NugetPackages/*
+  release:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: ./output
+
+      - name: Create GitHub release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: "${{ secrets.RELEASE_TOKEN }}"
+          automatic_release_tag: ${{ env.RELEASE_TAG }}
+          title: ${{ env.RELEASE_TAG }}
+          prerelease: false
+          
   nuget:
     runs-on: windows-latest
     needs: build
