@@ -1,7 +1,8 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml.Controls;
 using Serilog;
 using ShadowViewer.Sdk.Args;
+using ShadowViewer.Sdk.Aspects;
 using ShadowViewer.Sdk.Helpers;
 using System;
 using System.Collections.Generic;
