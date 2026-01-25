@@ -30,8 +30,8 @@ public partial class StringToIconConverter : IValueConverter
         string glyph;
         switch (uri.Scheme)
         {
-            case "ms-appx" or "http" or "https":
-                if (uri.Scheme == "ms-appx")
+            case "ms-plugin" or "ms-appx" or "http" or "https":
+                if (uri.Scheme == "ms-plugin")
                 {
                     uri = new Uri(valueString.PluginPath());
                 }
