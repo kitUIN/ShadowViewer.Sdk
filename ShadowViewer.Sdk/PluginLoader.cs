@@ -35,7 +35,7 @@ public partial class PluginLoader : AbstractPluginLoader<PluginMetaData, AShadow
             }
             else
             {
-                Logger.Warning("Unknown responder {Name} in plugin {Id}", entryPoint.Name, meta.Id);
+                Logger.Debug("Unknown responder {Name} in plugin {Id}，Skip", entryPoint.Name, meta.Id);
             }
         }
     }

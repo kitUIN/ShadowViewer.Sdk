@@ -2,12 +2,12 @@ using CustomExtensions.WinUI;
 using Microsoft.UI.Xaml;
 using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI;
+using ShadowViewer.Sdk.Helpers;
 using ShadowViewer.Sdk.Services;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ShadowViewer.Sdk.Helpers;
 
 namespace ShadowViewer.Sdk.Plugins;
 
@@ -40,11 +40,8 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin<PluginMetaDat
     [Autowired]
     public INotifyService Notifier { get; }
 
-    /// <summary>
-    /// 注册自定义接收者
-    /// </summary>
-    public virtual Dictionary<string, Type> RegisterForResponders { get; } = new();
 
+    protected override IEnumerable<string> ResourceDictionaries { get; } = [];
 
     /// <summary>
     /// Init
