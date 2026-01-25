@@ -1,10 +1,11 @@
-using System;
-using System.Text.RegularExpressions;
 using CustomExtensions.WinUI;
 using FluentIcons.Common;
 using FluentIcons.WinUI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System;
+using System.Text.RegularExpressions;
 using static System.Enum;
 
 namespace ShadowViewer.Sdk.Converters;
@@ -36,9 +37,9 @@ public partial class StringToIconConverter : IValueConverter
                     uri = new Uri(valueString.PluginPath());
                 }
 
-                return new BitmapIcon
+                return new ImageIcon
                 {
-                    UriSource = uri
+                    Source = new BitmapImage(uri)
                 };
             case "font":
                 glyph = valueString.Replace("font://", "");

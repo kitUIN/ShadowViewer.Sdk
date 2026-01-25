@@ -1,9 +1,13 @@
-using System;
-using System.Collections.Generic;
+using CustomExtensions.WinUI;
+using Microsoft.UI.Xaml;
 using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Sdk.Services;
 using SqlSugar;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using ShadowViewer.Sdk.Helpers;
 
 namespace ShadowViewer.Sdk.Plugins;
 
@@ -40,4 +44,23 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin<PluginMetaDat
     /// 注册自定义接收者
     /// </summary>
     public virtual Dictionary<string, Type> RegisterForResponders { get; } = new();
+
+
+    /// <summary>
+    /// Init
+    /// </summary>
+    protected override void Init()
+    {
+        WindowHelper.ActiveWindows.First()!.DispatcherQueue.TryEnqueue(() =>
+        {
+            foreach (var item in ResourceDictionaries)
+            {
+                Application.Current.Resources.MergedDictionaries.Add(
+                    new ResourceDictionary()
+                    {
+                        Source = new Uri(item.PluginPath())
+                    });
+            }
+        });
+    }
 }
