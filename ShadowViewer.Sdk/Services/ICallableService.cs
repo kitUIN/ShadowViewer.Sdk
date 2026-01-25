@@ -3,6 +3,7 @@ using Windows.Foundation;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using ShadowViewer.Sdk.Args;
+using ShadowViewer.Sdk.Utils;
 
 namespace ShadowViewer.Sdk.Services
 {
@@ -15,6 +16,7 @@ namespace ShadowViewer.Sdk.Services
         /// 调试事件
         /// </summary>
         public event EventHandler? DebugEvent;
+
         /// <summary>
         /// 顶层控件 事件
         /// </summary>

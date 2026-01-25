@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Windows.Foundation;
 using Microsoft.UI;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Serilog;
@@ -168,7 +169,14 @@ namespace ShadowViewer.Sdk.Helpers
         }
         #endregion
 
-
+        /// <summary>
+        /// Gets the dispatcher queue.
+        /// </summary>
+        /// <returns></returns>
+        public static DispatcherQueue GetDispatcherQueue()
+        {
+            return ActiveWindows.First().DispatcherQueue;
+        }
 
         /// <summary>
         /// 设置窗体标题
