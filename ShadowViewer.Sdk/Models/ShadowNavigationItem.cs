@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.UI.Xaml.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 using ShadowViewer.Sdk.Models.Interfaces;
 using ShadowViewer.Sdk.Navigation;
 
@@ -15,7 +14,7 @@ public partial class ShadowNavigationItem : ObservableObject, IShadowNavigationI
     /// <param name="id"></param>
     /// <param name="icon"></param>
     /// <param name="content"></param>
-    public ShadowNavigationItem(string pluginId, string id, ShadowUri uri, IconElement? icon, object? content)
+    public ShadowNavigationItem(string pluginId, string id, ShadowUri? uri, string? icon, object? content)
     {
         Icon = icon;
         Id = id;
@@ -30,7 +29,7 @@ public partial class ShadowNavigationItem : ObservableObject, IShadowNavigationI
     [ObservableProperty]
     public partial object? Content { get; set; }
 
-    [ObservableProperty] public partial IconElement? Icon { get; set; }
+    [ObservableProperty] public partial string? Icon { get; set; }
 
 
     /// <summary>
