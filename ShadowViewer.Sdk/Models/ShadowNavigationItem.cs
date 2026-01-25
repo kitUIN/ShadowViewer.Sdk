@@ -14,6 +14,7 @@ public partial class ShadowNavigationItem : ObservableObject, IShadowNavigationI
     /// <param name="id"></param>
     /// <param name="icon"></param>
     /// <param name="content"></param>
+    /// <param name="uri"></param>
     public ShadowNavigationItem(string pluginId, string id, ShadowUri? uri, string? icon, object? content)
     {
         Icon = icon;

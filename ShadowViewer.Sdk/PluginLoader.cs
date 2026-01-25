@@ -1,10 +1,7 @@
-using DryIoc;
-using Microsoft.UI.Xaml.Controls;
 using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI;
-using ShadowViewer.Sdk.Models.Interfaces;
 using ShadowViewer.Sdk.Plugins;
-using ShadowViewer.Sdk.Responders;
+using ShadowViewer.Sdk.ResponderProcessors;
 using System;
 
 namespace ShadowViewer.Sdk;
@@ -15,55 +12,30 @@ namespace ShadowViewer.Sdk;
 [CheckAutowired]
 public partial class PluginLoader : AbstractPluginLoader<PluginMetaData, AShadowViewerPlugin>
 {
+    static PluginLoader()
+    {
+        ResponderProcessorRegistry.Register(new PluginResponderProcessor());
+    }
+
     /// <inheritdoc/>
     protected override void AfterLoadPlugin(Type tPlugin, AShadowViewerPlugin aPlugin, PluginMetaData meta)
     {
         foreach (var entryPoint in aPlugin.MetaData.EntryPoints)
         {
-            switch (entryPoint.Name)
+            if (ResponderProcessorRegistry.TryGetProcessor(entryPoint.Name, out var processor))
             {
-                case "PicViewResponder":
-                    DiFactory.Services.Register(typeof(IPicViewResponder), entryPoint.EntryPointType,
-                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
+                var flag = processor!.ResponderProcess(entryPoint, aPlugin, meta);
+                if (flag)
+                {
                     Logger.Information(
-                        "{Id}{Name} Load IPicViewResponder: {TNavigationResponder}",
+                        "{Id}{Name} Load {TNavigationResponder} Success",
                         meta.Id, meta.Name,
                         entryPoint.EntryPointType);
-                    break;
-                case "HistoryResponder":
-                    DiFactory.Services.Register(typeof(IHistoryResponder), entryPoint.EntryPointType,
-                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-                    Logger.Information(
-                        "{Id}{Name} Load IHistoryResponder: {TNavigationResponder}",
-                        meta.Id, meta.Name,
-                        entryPoint.EntryPointType);
-                    break;
-                case "SearchSuggestionResponder":
-                    DiFactory.Services.Register(typeof(ISearchSuggestionResponder),
-                        entryPoint.EntryPointType,
-                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-                    Logger.Information(
-                        "{Id}{Name} Load ISearchSuggestionResponder: {TNavigationResponder}",
-                        meta.Id, meta.Name,
-                        entryPoint.EntryPointType);
-                    break;
-                case "NavigationResponder":
-                    DiFactory.Services.Register(typeof(INavigationResponder), entryPoint.EntryPointType,
-                        Reuse.Singleton, serviceKey: meta.Id, made: Parameters.Of.Type(_ => meta.Id));
-                    Logger.Information(
-                        "{Id}{Name} Load INavigationResponder: {TNavigationResponder}",
-                        meta.Id, meta.Name,
-                        entryPoint.EntryPointType);
-                    DiFactory.Services.Resolve<INavigationResponder>(serviceKey: meta.Id).Register();
-                    break;
-                case "SettingFolders":
-                    DiFactory.Services.Register(typeof(ISettingFolder), entryPoint.EntryPointType,
-                        Reuse.Transient, made: Parameters.Of.Type(_ => meta.Id));
-                    Logger.Information(
-                        "{Id}{Name} Load ISettingFolder: {TNavigationResponder}",
-                        meta.Id, meta.Name,
-                        entryPoint.EntryPointType);
-                    break;
+                }
+            }
+            else
+            {
+                Logger.Warning("Unknown responder {Name} in plugin {Id}", entryPoint.Name, meta.Id);
             }
         }
     }

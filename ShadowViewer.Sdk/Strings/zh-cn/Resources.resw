@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -122,30 +122,5 @@
   </data>
   <data name="Confirm" xml:space="preserve">
     <value>确认</value>
-  </data>
-  <data name="CreateFolder" xml:space="preserve">
-    <value>新建文件夹</value>
-  </data>
-  <data name="DuplicateImport" xml:space="preserve">
-    <value>相同漫画已经存在</value>
-  </data>
-  <data name="ImportError" xml:space="preserve">
-    <value>导入错误</value>
-  </data>
-  <data name="LocalTag" xml:space="preserve">
-    <value>本地</value>
-  </data>
-  <data name="User" xml:space="preserve">
-    <value>用户</value>
-  </data>
-  <data name="Plugin" xml:space="preserve">
-    <value>插件</value>
-  </data>
-  <data name="BookShelf" xml:space="preserve">
-    <value>书架</value>
-    <comment>1231</comment>
-  </data>
-  <data name="Download" xml:space="preserve">
-    <value>下载</value>
   </data>
 </root>
