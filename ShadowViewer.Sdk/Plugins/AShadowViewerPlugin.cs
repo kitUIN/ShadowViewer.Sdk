@@ -40,7 +40,7 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin<PluginMetaDat
     [Autowired]
     public INotifyService Notifier { get; }
 
-
+    /// <inheritdoc/>
     protected override IEnumerable<string> ResourceDictionaries { get; } = [];
 
     /// <summary>

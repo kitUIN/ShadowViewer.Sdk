@@ -1,3 +1,7 @@
+using Microsoft.UI.Xaml;
+using Microsoft.VisualBasic.FileIO;
+using Serilog;
+using ShadowViewer.Sdk.Helpers;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -5,9 +9,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Windows.Storage;
 using Windows.System;
-using Microsoft.UI.Xaml;
-using Serilog;
-using ShadowViewer.Sdk.Helpers;
 
 namespace ShadowViewer.Sdk.Extensions;
 
@@ -204,7 +205,7 @@ public static class UriExtension
     /// <summary>
     /// 删除文件夹
     /// </summary>
-    public static void DeleteDirectory(this string targetDir)
+    public static void DeleteDirectory(this string targetDir, bool recursive = true, bool recycleBin = false)
     {
         if (!Directory.Exists(targetDir))
         {
@@ -213,7 +214,15 @@ public static class UriExtension
 
         try
         {
-            Directory.Delete(targetDir, true);
+            if (recycleBin)
+            {
+                FileSystem.DeleteDirectory(targetDir, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+            }
+            else
+            {
+                Directory.Delete(targetDir, recursive);
+            }
+
             Logger.Information("删除文件夹 {Dir}", targetDir);
         }
         catch (IOException ex)
@@ -240,7 +249,10 @@ public static class UriExtension
         }
 
         if (File.Exists(path)) return;
-        using (File.Create(path)) { } // 确保释放句柄
+        using (File.Create(path))
+        {
+        } // 确保释放句柄
+
         Logger.Information("文件 {File} 不存在, 新建", path);
     }
 
