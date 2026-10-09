@@ -23,6 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          ref: ${{ env.RELEASE_TAG }}
           submodules: recursive
           fetch-depth: 0
 
@@ -47,6 +48,7 @@ jobs:
         run: |
           mkdir -p NugetPackages
           cp -r ../../NugetPackages/* NugetPackages/
+          Copy-Item CHANGELOG.md NugetPackages/CHANGELOG.md
           
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -56,6 +58,8 @@ jobs:
             NugetPackages/*
   release:
     runs-on: windows-latest
+    permissions:
+      contents: write
     needs: build
     steps:
       - uses: actions/download-artifact@v4
@@ -64,11 +68,14 @@ jobs:
           path: ./output
 
       - name: Create GitHub release
-        uses: marvinpinto/action-automatic-releases@latest
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: "${{ secrets.RELEASE_TOKEN }}"
-          automatic_release_tag: ${{ env.RELEASE_TAG }}
-          title: ${{ env.RELEASE_TAG }}
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: ${{ env.RELEASE_TAG }}
+          body_path: ./output/CHANGELOG.md
+          files: |
+            ./output/**/*.nupkg
+            ./output/**/*.snupkg
           prerelease: false
           
   nuget:
@@ -82,7 +89,15 @@ jobs:
 
       - name: Push package to Nuget registry
         run: |
-          dotnet nuget push "output/**/*.nupkg" -s "https://api.nuget.org/v3/index.json" -k $env:NUGET_KEY --skip-duplicate        
-          dotnet nuget push "output/**/*.snupkg" -s "https://api.nuget.org/v3/index.json" -k $env:NUGET_KEY --skip-duplicate        
+          $packages = Get-ChildItem -Path output -Recurse -Filter *.nupkg | Where-Object { $_.Name -notlike '*.symbols.nupkg' }
+          if ($packages.Count -eq 0) { throw 'No NuGet packages were produced.' }
+          foreach ($package in $packages) {
+            dotnet nuget push $package.FullName -s 'https://api.nuget.org/v3/index.json' -k $env:NUGET_KEY --skip-duplicate
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          foreach ($symbols in Get-ChildItem -Path output -Recurse -Filter *.snupkg) {
+            dotnet nuget push $symbols.FullName -s 'https://api.nuget.org/v3/index.json' -k $env:NUGET_KEY --skip-duplicate
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
         env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
