@@ -1,10 +1,10 @@
 using DryIoc;
-using Serilog;
 using ShadowPluginLoader.WinUI;
 using ShadowPluginLoader.WinUI.Checkers;
-using SqlSugar;
+
 using System.IO;
 using Windows.Storage;
+using ShadowViewer.Sdk.Database;
 using ShadowViewer.Sdk.Plugins;
 
 namespace ShadowViewer.Sdk.Helpers;
@@ -20,23 +20,8 @@ public static class DiHelper
     public static void Init()
     {
         var defaultPath = ApplicationData.Current.LocalFolder.Path;
-        DiFactory.Services.RegisterInstance<ISqlSugarClient>(new SqlSugarScope(new ConnectionConfig()
-            {
-                DbType = DbType.Sqlite,
-                ConnectionString = $"DataSource={Path.Combine(defaultPath, "ShadowViewer.sqlite")}",
-                IsAutoCloseConnection = true,
-                MoreSettings = new ConnMoreSettings()
-                {
-                    IsNoReadXmlDescription = true,
-                    SqliteCodeFirstEnableDefaultValue = true,
-                    SqliteCodeFirstEnableDescription = true,
-                }
-            },
-            db =>
-            {
-                //单例参数配置，所有上下文生效
-                db.Aop.OnLogExecuting = (sql, _) => { Log.ForContext<ISqlSugarClient>().Debug("{Sql}", sql); };
-            }));
+        DatabaseRegistration.Register<ShadowDbContext>(DiFactory.Services, Path.Combine(defaultPath, "ShadowViewer.sqlite"),
+            "__EFMigrationsHistory_Sdk", options => new ShadowDbContext(options));
         DiFactory.Init<AShadowViewerPlugin, PluginMetaData>();
         DiFactory.RegisterPluginLoader<PluginLoader>();
     }

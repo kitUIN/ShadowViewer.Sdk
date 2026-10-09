@@ -4,7 +4,9 @@ using ShadowPluginLoader.Attributes;
 using ShadowPluginLoader.WinUI;
 using ShadowViewer.Sdk.Helpers;
 using ShadowViewer.Sdk.Services;
-using SqlSugar;
+
+using Microsoft.EntityFrameworkCore;
+using ShadowViewer.Sdk.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +28,7 @@ public abstract partial class AShadowViewerPlugin : AbstractPlugin<PluginMetaDat
     /// 数据库服务
     /// </summary>
     [Autowired]
-    public ISqlSugarClient Db { get; }
+    public IDbContextFactory<ShadowDbContext> DbFactory { get; }
 
     /// <summary>
     /// 响应器服务
