@@ -364,3 +364,7 @@ FodyWeavers.xsd
 *.nuspec
 /ShadowViewer.Core/Assets/FluentSystemIcons-Filled.ttf
 /ShadowViewer.Core/Assets/FluentSystemIcons-Regular.ttf
+
+# Backup SDK source and regression harness are not generated backup directories.
+!/ShadowViewer.Sdk/Backup/
+!/tests/Backup.Tests/

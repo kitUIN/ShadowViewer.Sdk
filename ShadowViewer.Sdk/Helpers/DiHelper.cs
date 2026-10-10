@@ -4,6 +4,7 @@ using ShadowPluginLoader.WinUI.Checkers;
 
 using System.IO;
 using Windows.Storage;
+using ShadowViewer.Sdk.Backup;
 using ShadowViewer.Sdk.Database;
 using ShadowViewer.Sdk.Plugins;
 
@@ -22,6 +23,7 @@ public static class DiHelper
         var defaultPath = ApplicationData.Current.LocalFolder.Path;
         DatabaseRegistration.Register<ShadowDbContext>(DiFactory.Services, Path.Combine(defaultPath, "ShadowViewer.sqlite"),
             "__EFMigrationsHistory_Sdk", options => new ShadowDbContext(options));
+        DiFactory.Services.RegisterInstance<IBackupService>(new BackupService());
         DiFactory.Init<AShadowViewerPlugin, PluginMetaData>();
         DiFactory.RegisterPluginLoader<PluginLoader>();
     }
