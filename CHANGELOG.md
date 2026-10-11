@@ -1,4 +1,6 @@
-## 4.0.1（暂定，未发布）
+## 4.0.1
+
+- 🔧更新控件依赖至 `ShadowViewer.Controls 1.4.5`，支持通用说明控件
 
 - 新增 `IBackupService` 和 `IBackupSerializer`：带独立快照版本的压缩二进制备份，支持 SQLite、DataTable、JSON 和二进制内容自动识别及插件扩展格式。
 - 新增 SQLite WAL 快照与恢复、DataTable 二进制结构/行数据编码、SHA-256 完整性校验及导入大小限制。
