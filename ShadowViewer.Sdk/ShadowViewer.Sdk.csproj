@@ -47,8 +47,13 @@
 		<None Include="Strings\**\*.resw" Pack="true" PackagePath="buildTransitive\%(RecursiveDir)%(Filename)%(Extension)" />
 		<None Include="ShadowViewer.Sdk.targets" Pack="true" PackagePath="buildTransitive" />
 	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug' Or '$(DepsUseNuget)' != 'true'">
+		<ShadowViewerControlsProject Condition="Exists('..\ShadowViewer.Controls\ShadowViewer.Controls\ShadowViewer.Controls.csproj')">..\ShadowViewer.Controls\ShadowViewer.Controls\ShadowViewer.Controls.csproj</ShadowViewerControlsProject>
+		<ShadowViewerControlsProject Condition="Exists('..\..\ShadowViewer.Controls\ShadowViewer.Controls\ShadowViewer.Controls.csproj')">..\..\ShadowViewer.Controls\ShadowViewer.Controls\ShadowViewer.Controls.csproj</ShadowViewerControlsProject>
+	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="ShadowViewer.Controls" Version="1.4.2" />
+		<ProjectReference Include="$(ShadowViewerControlsProject)" Condition="'$(ShadowViewerControlsProject)' != ''" />
+		<PackageReference Include="ShadowViewer.Controls" Version="1.4.2" Condition="'$(ShadowViewerControlsProject)' == ''" />
 		<PackageReference Include="ShadowViewer.Controls.Notification" Version="1.2.1" />
 	</ItemGroup>
 </Project>
